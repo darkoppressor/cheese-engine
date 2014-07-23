@@ -1,0 +1,7 @@
+<animation>
+	name:example_sprite2
+	frame_count:2
+	animation_speed:533
+	frame_width:32
+	end_behavior:continue
+</animation>

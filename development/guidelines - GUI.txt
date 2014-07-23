@@ -1,0 +1,8 @@
+When creating a window via scripting, always fully define the window before adding any infos or buttons
+
+Any/all scrolling buttons in a window must use the same size font
+
+When specifying the location (or starting position in the case of windows) of a GUI object:
+A value of -1 means "center in parent"
+A value of -2 means "align to parent's right/top"
+A value of -3 means "align to parent's left/bottom"

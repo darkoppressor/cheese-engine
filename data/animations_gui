@@ -1,0 +1,31 @@
+<animation>
+	name:cursor_animated
+	frame_count:2
+	animation_speed:533
+	frame_width:16
+	end_behavior:continue
+</animation>
+
+<animation>
+	name:b_example
+	frame_count:3
+	animation_speed:533
+	frame_width:48
+	end_behavior:continue
+</animation>
+
+<animation>
+	name:b_example_moused
+	frame_count:3
+	animation_speed:533
+	frame_width:48
+	end_behavior:continue
+</animation>
+
+<animation>
+	name:b_example_click
+	frame_count:3
+	animation_speed:533
+	frame_width:48
+	end_behavior:continue
+</animation>

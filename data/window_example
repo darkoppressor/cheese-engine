@@ -1,0 +1,212 @@
+<window>
+	name:example
+	starting_position:-1,-1
+	width:400
+	height:450
+	fit_content:false
+	title:Example
+	font:large
+	font_color:
+	border:
+	background:
+	scrolling_buttons:
+	close_function:
+	disallow_closing:false
+	exclusive:false
+	no_button_sort:false
+	
+	<info>
+		location:-1,30
+		text:Here are some example GUI objects:
+		mutable:false
+		max_text_length:0
+		allowed_input:backspace,letters,numbers,symbols,space,newline
+		tooltip:
+		font:large
+		font_color:
+		background_type:none
+		background_opacity:1.0
+		scrolling:false
+		box:0,0
+		sprite:
+		special_text:
+		special_sprite:
+	</info>
+	
+	<button>
+		location:-1,60
+		text:Example Button
+		tooltip:This is an example tooltip.\nThis button also has\nall 3 alt functions.
+		font:large
+		font_color:
+		event:example_event_1
+		alt_event1:example_event_2
+		alt_event2:example_event_3
+		alt_event3:example_event_4
+		sound_moused:moused_1
+		sound_click:
+		sprite:
+		sprite_moused:
+		sprite_click:
+	</button>
+	
+	<button>
+		location:-1,90
+		text:
+		tooltip:Example sprite-based button\n(with animation!)
+		font:large
+		font_color:red
+		event:
+		sound_moused:moused_1
+		sound_click:click_1
+		sprite:b_example
+		sprite_moused:b_example_moused
+		sprite_click:b_example_click
+	</button>
+	
+	<button>
+		location:-1,120
+		text:Play Example Music
+		tooltip:
+		font:large
+		font_color:
+		event:play_example_music
+		sound_moused:moused_1
+		sound_click:click_1
+		sprite:
+		sprite_moused:
+		sprite_click:
+	</button>
+	
+	<button>
+		location:-1,150
+		text:Stop Example Music
+		tooltip:
+		font:large
+		font_color:
+		event:stop_example_music
+		sound_moused:moused_1
+		sound_click:click_1
+		sprite:
+		sprite_moused:
+		sprite_click:
+	</button>
+	
+	<info>
+		location:-1,180
+		text:
+		tooltip:Example image
+		mutable:false
+		max_text_length:0
+		allowed_input:backspace,letters,numbers,symbols,space,newline
+		font:
+		font_color:
+		background_type:none
+		background_opacity:1.0
+		scrolling:false
+		box:0,0
+		sprite:example_sprite
+		special_text:
+		special_sprite:
+	</info>
+	
+	<info>
+		location:-1,210
+		text:
+		tooltip:Example animated image
+		mutable:false
+		max_text_length:0
+		allowed_input:backspace,letters,numbers,symbols,space,newline
+		font:
+		font_color:
+		background_type:none
+		background_opacity:1.0
+		scrolling:false
+		box:0,0
+		sprite:example_sprite2
+		special_text:
+		special_sprite:
+	</info>
+	
+	<info>
+		location:-1,250
+		text:Edit me!
+		tooltip:Example mutable text
+		mutable:true
+		max_text_length:16
+		allowed_input:backspace,letters,numbers,symbols,space
+		font:small
+		font_color:
+		background_type:standard
+		background_opacity:1.0
+		scrolling:false
+		box:0,0
+		sprite:
+		special_text:
+		special_sprite:
+	</info>
+	
+	<info>
+		location:-1,280
+		text:Testing\ntesting\n1\n2\n3
+		tooltip:Example mutable scrolling text box
+		mutable:true
+		max_text_length:256
+		allowed_input:backspace,letters,numbers,symbols,space,newline
+		font:small
+		font_color:
+		background_type:standard
+		background_opacity:1.0
+		scrolling:true
+		box:17,3
+		sprite:
+		special_text:
+		special_sprite:
+	</info>
+	
+	<info>
+		location:-1,330
+		text:This is a simple box\nwith scrolling text.\nIt is not mutable.
+		tooltip:Example scrolling text box
+		mutable:false
+		max_text_length:256
+		allowed_input:backspace,letters,numbers,symbols,space,newline
+		font:small
+		font_color:
+		background_type:standard
+		background_opacity:1.0
+		scrolling:true
+		box:20,3
+		sprite:
+		special_text:
+		special_sprite:
+	</info>
+	
+	<button>
+		location:-1,380
+		text:Configure Commands
+		tooltip:
+		font:large
+		font_color:
+		event:configure_commands
+		sound_moused:moused_1
+		sound_click:click_1
+		sprite:
+		sprite_moused:
+		sprite_click:
+	</button>
+	
+	<button>
+		location:-1,410
+		text:Quit
+		tooltip:
+		font:large
+		font_color:
+		event:quit
+		sound_moused:moused_1
+		sound_click:click_1
+		sprite:
+		sprite_moused:
+		sprite_click:
+	</button>
+</window>

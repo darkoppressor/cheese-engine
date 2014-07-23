@@ -1,0 +1,26 @@
+else if(button_event=="play_example_music"){
+	music.play_track("example");
+}
+else if(button_event=="stop_example_music"){
+	music.stop_track();
+}
+else if(button_event=="example_event_1"){
+	sound_system.play_sound("click_1");
+
+	engine_interface.make_rumble(-1,1.0f,1000);
+}
+else if(button_event=="example_event_2"){
+	sound_system.play_sound("click_2");
+
+	engine_interface.make_rumble(-1,0.75f,1000);
+}
+else if(button_event=="example_event_3"){
+	sound_system.play_sound("click_3");
+
+	engine_interface.make_rumble(-1,0.5f,1000);
+}
+else if(button_event=="example_event_4"){
+	sound_system.play_sound("click_4");
+
+	engine_interface.make_rumble(-1,0.25f,1000);
+}
