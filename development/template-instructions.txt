@@ -5,6 +5,9 @@ All Platforms
 -------------
 Rename the game directory
 
+Delete the .hg/ directory
+Do hg init in the game directory
+
 Rename the launcher script in the root game directory
 
 Change CHEESIE_GAME_NAME in the launcher script

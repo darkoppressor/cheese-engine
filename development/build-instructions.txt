@@ -49,7 +49,7 @@ Copy data files into android/assets/
 Run android/create-asset-lists.bat to create asset lists within the assets subdirectories
 
 Run android/jni/create-symlinks.bat to create symlinks to the necessary library directories
-Don't forget to remove the symlinks when done building (ExactFile doesn't like them, and they make me nervous)
+Don't forget to remove the symlinks when done building (they make me nervous)
 
 Run create-source-file-list.bat in android/jni/src/
 Copy the results from android/jni/src/source_file_list to android/jni/src/Android.mk
