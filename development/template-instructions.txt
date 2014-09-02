@@ -3,40 +3,43 @@ sorted into what needs to be done per supported platform.
 
 All Platforms
 -------------
-Rename the game directory
+Rename the game directory (all lower case, dashed)
 
+Rename the launcher script in the root game directory (capitalized, dashed)
+
+Change CHEESIE_GAME_NAME in the launcher script (capitalized, dashed)
+
+Rename the ../.layout and ../.cbp files (all lower case, dashed)
+
+Change name and home_directory in ../data/engine (all lower case, dashed)
+
+In Code::Blocks, change Project->Properties->Title (all lower case, dashed)
+
+In Code::Blocks, change Project->Properties->Build targets tab->Build target output filenames
+(capitalized, dashed)
+
+Do this step after all other steps for all platforms:
 Delete the .hg/ directory
 Do hg init in the game directory
 
-Rename the launcher script in the root game directory
-
-Change CHEESIE_GAME_NAME in the launcher script
-
-Rename the ../.layout and ../.cbp files
-
-Change name and home_directory in ../data/engine
-
-In Code::Blocks, change Project->Properties->Title
-
-In Code::Blocks, change Project->Properties->Build targets tab->Build target output filenames
-
 OS X
 ----
-Rename the *.app directory
+Rename the *.app directory (capitalized, spaced)
 
-Change CFBundleName, CFBundleDisplayName, and CFBundleIdentifier in *.app/Contents/Info.plist
+Change CFBundleName and CFBundleDisplayName in *.app/Contents/Info.plist (capitalized, spaced)
+
+Change CFBundleIdentifier in *.app/Contents/Info.plist (all lower case, dashed)
 
 Android
 -------
-Note: The package name should have no spaces, dashes, etc.
+Rename the android/src/org/cheeseandbacon/template directory to the name of the game
+(all lower case, dashed)
 
-Rename the android/src/org/cheeseandbacon/template directory to the name of the game (standard format with dashes)
+Change the package name in Game.java in the above directory (all lower case, no spaces or dashes)
 
-Change the package name in Game.java in the above directory
-
-Change the package name in android/AndroidManifest.xml
+Change the package name in android/AndroidManifest.xml (all lower case, no spaces or dashes)
 If the game will be multiplayer, enable the INTERNET permission in android/AndroidManifest.xml
 
-Change the project name in android/build.xml
+Change the project name in android/build.xml (capitalized, dashed)
 
-Change the app name in android/res/values/strings.xml
+Change the app name in android/res/values/strings.xml (capitalized, spaced)
