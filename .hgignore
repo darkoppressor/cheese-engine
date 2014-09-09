@@ -21,6 +21,7 @@ syntax: regexp
 ^game_commands.cfg$
 
 ^error_log.txt$
+^servers.txt$
 
 syntax: glob
 
