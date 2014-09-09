@@ -1,0 +1,9 @@
+<window>
+	name:server_list_delete
+	starting_position:-1,-1
+	width:256
+	height:144
+	title:Delete Server
+	scrolling_buttons:server_list_delete
+	
+</window>

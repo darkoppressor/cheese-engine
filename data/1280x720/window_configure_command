@@ -1,0 +1,24 @@
+<window>
+	name:configure_command
+	starting_position:-1,-1
+	width:800
+	height:480
+	title:Configure Command
+	close_function:configure_command
+	
+	<info>
+		location:2,36
+		special_text:configure_command
+	</info>
+	
+	<info>
+		location:-1,168
+		text:Press a key, button, or axis\nto bind it to this command
+	</info>
+	
+	<info>
+		location:-1,212
+		text:To cancel:\nPress the Escape key,\nStart, or Back
+	</info>
+	
+</window>

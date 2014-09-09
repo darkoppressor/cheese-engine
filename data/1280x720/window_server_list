@@ -1,0 +1,33 @@
+<window>
+	name:server_list
+	starting_position:-1,-1
+	width:800
+	height:480
+	title:Server List
+	scrolling_buttons:server_list
+	
+	<button>
+		location:320,36
+		text:Add
+		event:add_server_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:364,36
+		text:Edit
+		event:server_list_edit_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:419,36
+		text:Delete
+		event:server_list_delete_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+</window>

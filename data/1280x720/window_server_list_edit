@@ -1,0 +1,9 @@
+<window>
+	name:server_list_edit
+	starting_position:-1,-1
+	width:800
+	height:480
+	title:Edit Server
+	scrolling_buttons:server_list_edit
+	
+</window>

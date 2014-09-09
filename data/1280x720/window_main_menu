@@ -1,0 +1,40 @@
+<window>
+	name:main_menu
+	starting_position:-1,-1
+	width:220
+	height:129
+	title:Main Menu
+	
+	<button>
+		location:-1,36
+		text:Start
+		event:start_game
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,58
+		text:Configure Commands
+		event:configure_commands
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,80
+		text:Show Save Location
+		event:show_data_location
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,102
+		text:Quit
+		event:quit
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+</window>

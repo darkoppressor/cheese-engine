@@ -1,0 +1,80 @@
+<window>
+	name:edit_server
+	starting_position:-1,-1
+	width:800
+	height:151
+	title:Edit Server
+	
+	<info>
+		location:2,36
+		text:Name:
+	</info>
+	
+	<info>
+		location:106,36
+		mutable:true
+		max_text_length:96
+		allowed_input:backspace,letters,numbers,symbols,space
+		font:small
+		background_type:standard
+	</info>
+	
+	<info>
+		location:2,58
+		text:Address:
+	</info>
+	
+	<info>
+		location:106,58
+		mutable:true
+		max_text_length:96
+		allowed_input:backspace,letters,numbers,symbols
+		font:small
+		background_type:standard
+	</info>
+	
+	<info>
+		location:2,80
+		text:Port:
+	</info>
+	
+	<info>
+		location:106,80
+		mutable:true
+		max_text_length:5
+		allowed_input:backspace,numbers
+		font:small
+		background_type:standard
+	</info>
+	
+	<info>
+		location:2,102
+		text:Password:
+	</info>
+	
+	<info>
+		location:106,102
+		mutable:true
+		max_text_length:96
+		allowed_input:backspace,letters,numbers,symbols
+		font:small
+		background_type:standard
+	</info>
+	
+	<button>
+		location:350,124
+		text:OK
+		event:edit_server
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:384,124
+		text:Cancel
+		event:close_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+</window>

@@ -15,9 +15,6 @@ Export as .ogg, samplerate 44100 Hz, bitrate 160 Kbits/s, depth 16 bit integer,
 interpolation Sinc Fastest, oversampling 1x (None), Export as loop
 Then, open in Audacity and export as ogg, default quality
 
-*----Windows----*
-Windows should be no larger than 800x480
-
 *----Notes----*
 Sound effects and music are referred to in the engine by their filename minus their file extension.
 So, to the engine, example.wav and example.ogg are the same sound. Do not include both.

@@ -1,0 +1,48 @@
+<window>
+	name:ingame_menu
+	starting_position:-1,-1
+	width:220
+	height:151
+	title:Main Menu
+	
+	<button>
+		location:-1,36
+		text:Keep Playing
+		event:close_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,58
+		text:Leave Game
+		event:stop_game
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,80
+		text:Configure Commands
+		event:configure_commands
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,102
+		text:Show Save Location
+		event:show_data_location
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+
+	<button>
+		location:-1,124
+		text:Quit
+		event:quit
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+</window>
