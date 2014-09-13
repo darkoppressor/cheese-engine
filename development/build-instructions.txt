@@ -4,8 +4,6 @@ All Platforms
 -------------
 Set save_location to "home" in ../save_location.cfg
 
-Copy the contents of cheese-engine/docs to ../docs
-
 Update the information in ../version.h
 
 Windows
@@ -44,7 +42,7 @@ Choose one of the APP_ABI lines in android/jni/Application.mk and make sure the 
 Choose either release or debug options in android/jni/Application.mk and make sure the other set of options
 is commented out
 
-Copy data files into android/assets/
+Copy data files (../data/ and ../save_location.cfg) into android/assets/
 
 Run android/create-asset-lists.bat to create asset lists within the assets subdirectories
 
