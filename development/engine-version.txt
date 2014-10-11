@@ -1,2 +1,2 @@
-Cheese Engine version 1.0.3
-2014-09-12
+Cheese Engine version 1.0.4
+2014-10-11

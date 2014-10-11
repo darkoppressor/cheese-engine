@@ -1,10 +1,11 @@
 This file contains instructions for starting a new game project from the template,
 sorted into what needs to be done per supported platform.
 
-Note that most of this can also be done automatically in Windows.
-Do 'Rename-Template-Windows-x86_64.exe project-name' in a command prompt.
+Note that most of this can also be done automatically in Windows/Linux.
+Do 'Rename-Template-Windows-x86_64.exe project-name' in a command prompt for Windows.
+Do './Rename-Template-Linux-x86_64 project-name' in a terminal for Linux.
 After running the renaming program:
-Delete Rename-Template-Windows-x86_64.exe
+Delete 'Rename-Template-Windows-x86_64.exe' and 'Rename-Template-Linux-x86_64'
 If the game will be multiplayer, enable the INTERNET permission for Android as instructed below
 Rename the game directory as instructed below
 
@@ -15,8 +16,6 @@ Rename the game directory (all lower case, dashed)
 Rename the launcher script in the root game directory (capitalized, dashed)
 
 Change CHEESIE_GAME_NAME in the launcher script (capitalized, dashed)
-
-Rename the ../.layout and ../.cbp files (all lower case, dashed)
 
 Change name and home_directory in ../data/engine (all lower case, dashed)
 
