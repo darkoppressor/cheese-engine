@@ -9,6 +9,15 @@ When creating a window via scripting, always fully define the window before addi
 
 Windows should be no larger than 800x480
 
+Allowed input types for mutable text:
+backspace
+newline
+space
+letters
+numbers
+symbols
+symbols_posix
+
 256x144:
 
 Initial object height: 18
