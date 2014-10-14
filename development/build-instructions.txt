@@ -50,23 +50,16 @@ Choose one of the APP_ABI lines in android/jni/Application.mk and make sure the 
 Choose either release or debug options in android/jni/Application.mk and make sure the other set of options
 is commented out
 
-Copy data files (../data/ and ../save_location.cfg) into android/assets/
+Prepare everything (assets, etc.) by running:
+'android/android-prep-windows-x86_64.exe' OR 'android/android-prep-linux-x86_64'
 
-Run android/create-asset-lists.bat to create asset lists within the assets subdirectories
+Build the C/C++ source code for the libraries and the game by running:
+'android/build-scripts/windows/build.bat' OR 'android/build-scripts/linux/build'
 
-Run android/jni/create-symlinks.bat to create symlinks to the necessary library directories
-Don't forget to remove the symlinks when done building (they make me nervous)
+Create the .apk by running:
+'android/build-scripts/windows/ant-release-build.bat' OR 'android/build-scripts/linux/ant-release-build'
 
-Run create-source-file-list.bat in android/jni/src/
-Copy the results from android/jni/src/source_file_list to android/jni/src/Android.mk
-Don't forget to remove the "/" after the final source file
-
-Copy ant.properties and local.properties from android/build-scripts/PLATFORM/ to android/
-
-Run android/build-scripts/windows/build.bat to build the C/C++ source code for the libraries and the game
-OR
-Run android/build-scripts/linux/build to build the C/C++ source code for the libraries and the game
-
-Run android/build-scripts/windows/ant-release-build.bat to create the .apk
-OR
-Run android/build-scripts/linux/ant-release-build to create the .apk
+Clean up by removing all build-related files
+(binaries, object files, the stuff created by the prep program, etc.) by running:
+'android/clean.bat' OR '../build-scripts/clean-android'
+DO NOT forget to run this, as it removes the symlinks that the prep program creates in android/jni/
