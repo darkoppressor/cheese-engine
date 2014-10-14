@@ -1,10 +1,24 @@
 This file contains instructions for building/packaging on each supported platform.
 
+Step 1 - Update Files
+*********************
+
 All Platforms
 -------------
 Set save_location to "home" in ../save_location.cfg
 
 Update the information in ../version.h
+
+OS X
+----
+Update CFBundleVersion and CFBundleShortVersionString in *.app/Contents/Info.plist
+
+Android
+-------
+Update the version information in android/AndroidManifest.xml
+
+Step 2 - Build/Package
+**********************
 
 Windows
 -------
@@ -17,8 +31,6 @@ Open the Code::Blocks project, select the desired build target, and press build
 OS X
 ----
 Open the Code::Blocks project, select the desired build target, and press build
-	
-Update CFBundleVersion and CFBundleShortVersionString in *.app/Contents/Info.plist
 
 Place the binary in *.app/Contents/MacOS/ and rename it to 'game'
 
@@ -31,10 +43,6 @@ Create a disk image from the .app directory using Disk Utility
 
 Android
 -------
-Place the .keystore in android/
-
-Update the version information in android/AndroidManifest.xml
-
 Choose one of the APP_ABI lines in android/jni/Application.mk and make sure the other one is commented out
 'all' builds for all supported architectures (Note that currently 'mips' is disabled)
 'armeabi-v7a' builds for ARMv7 (useful for testing)
@@ -53,6 +61,12 @@ Run create-source-file-list.bat in android/jni/src/
 Copy the results from android/jni/src/source_file_list to android/jni/src/Android.mk
 Don't forget to remove the "/" after the final source file
 
-Run android/build.bat to build the C/C++ source code for the libraries and the game
+Copy ant.properties and local.properties from android/build-scripts/PLATFORM/ to android/
 
-Run android/ant-release-build.bat to create the .apk
+Run android/build-scripts/windows/build.bat to build the C/C++ source code for the libraries and the game
+OR
+Run android/build-scripts/linux/build to build the C/C++ source code for the libraries and the game
+
+Run android/build-scripts/windows/ant-release-build.bat to create the .apk
+OR
+Run android/build-scripts/linux/ant-release-build to create the .apk
