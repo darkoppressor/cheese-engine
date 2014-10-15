@@ -1,13 +1,19 @@
-This file contains instructions for starting a new game project from the template,
-sorted into what needs to be done per supported platform.
+This file contains instructions for starting a new game project from the template.
 
-Note that most of this can also be done automatically in Windows/Linux.
-Do 'Rename-Template-Windows-x86_64.exe project-name' in a command prompt for Windows.
-Do './Rename-Template-Linux-x86_64 project-name' in a terminal for Linux.
+Automated
+*********
+
+Most of this can be automated on Windows/Linux. Do:
+'rename-template.exe project-name' OR './rename-template project-name'
+
 After running the renaming program:
-Delete 'Rename-Template-Windows-x86_64.exe' and 'Rename-Template-Linux-x86_64'
-If the game will be multiplayer, enable the INTERNET permission for Android as instructed below
-Rename the game directory as instructed below
+Delete 'rename-template.exe' and 'rename-template'
+If the game will be multiplayer,
+enable the INTERNET permission for Android as instructed in the Android section below
+Rename the game directory as instructed in the All Platforms section below
+
+Manual
+******
 
 All Platforms
 -------------
@@ -24,7 +30,7 @@ In Code::Blocks, change Project->Properties->Title (all lower case, dashed)
 In Code::Blocks, change Project->Properties->Build targets tab->Build target output filenames
 (capitalized, dashed)
 
-Do this step after all other steps for all platforms (including the steps below):
+Do this step after all other steps (including the steps below for specific platforms):
 Delete the ../.hg/ directory
 Do hg init in the game directory
 

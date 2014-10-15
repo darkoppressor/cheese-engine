@@ -1,12 +1,28 @@
 This file contains instructions for building/packaging on each supported platform.
 
-Step 1 - Update Files
-*********************
+This whole process (except the caveats listed below in each step's automation instructions)
+can be automated on the build server
+Copy the project directory somewhere the build server can see it
+(EXCEPT under the ~/build-server/projects/ directory)
+
+On the build server, run:
+'~/build-server/build /path/to/project'
+In that same directory there is also a script specifically for building over SSH (remote-build),
+and another script for building over SSH that won't tie up the terminal (remote-build-detached)
+
+After running the build script:
+Don't forget to check all of the caveats listed in the steps below
+
+Step 1 - Update Version
+***********************
+
+Everything in this step can be automated on Windows/Linux. Do:
+'version-change.exe version-component [status]' OR './version-change version-component [status]'
+The version component must be either 'major', 'minor', or 'micro'
+The status is optional, and will change the release status to whatever string you pass it
 
 All Platforms
 -------------
-Set save_location to "home" in ../save_location.cfg
-
 Update the information in ../version.h
 
 OS X
@@ -17,8 +33,31 @@ Android
 -------
 Update the version information in android/AndroidManifest.xml
 
-Step 2 - Build/Package
-**********************
+Step 2 - Build
+**************
+
+Everything in this step except choosing the Android build options can be automated on Linux
+You need to set those build options first (if you want to change them)
+So, before running the build script(s):
+Choose one of the APP_ABI lines as instructed in the Android section below
+Choose either the release or debug options as instructed in the Android section below
+
+Once you are ready to build, do:
+'build-scripts/build-all'
+You might need to first do 'chmod +x build-scripts/make-executable' and then 'build-scripts/make-executable',
+to make sure all of the relevant scripts are executable
+In addition to build-scripts/build-all, there are separate scripts for building individual platforms/architectures
+There are also corresponding clean and rebuild scripts for everything
+
+After running the build script(s):
+Run the Android clean script as instructed in the Android section below,
+just to be safe (those symlinks make me nervous)
+Note that there is a Windows version of this script, too
+
+All Platforms
+-------------
+Refresh the build date by running:
+'refresh-build-date.exe' OR './refresh-build-date'
 
 Windows
 -------
@@ -32,15 +71,6 @@ OS X
 ----
 Open the Code::Blocks project, select the desired build target, and press build
 
-Place the binary in *.app/Contents/MacOS/ and rename it to 'game'
-
-Copy the data files into *.app/Contents/Resources/
-
-Save the icon as a .png, use Img2icns to convert it to a .icns, and move that into *.app/Contents/Resources/
-Name the icon file icon.icns
-
-Create a disk image from the .app directory using Disk Utility
-
 Android
 -------
 Choose one of the APP_ABI lines in android/jni/Application.mk and make sure the other one is commented out
@@ -51,7 +81,7 @@ Choose either release or debug options in android/jni/Application.mk and make su
 is commented out
 
 Prepare everything (assets, etc.) by running:
-'android/android-prep-windows-x86_64.exe' OR 'android/android-prep-linux-x86_64'
+'android/android-prep.exe' OR 'android/android-prep'
 
 Build the C/C++ source code for the libraries and the game by running:
 'android/build-scripts/windows/build.bat' OR 'android/build-scripts/linux/build'
@@ -63,3 +93,52 @@ Clean up by removing all build-related files
 (binaries, object files, the stuff created by the prep program, etc.) by running:
 'android/clean.bat' OR '../build-scripts/clean-android'
 DO NOT forget to run this, as it removes the symlinks that the prep program creates in android/jni/
+
+Step 3 - Package
+****************
+
+All Platforms
+-------------
+(Optional) Set save_location to "home" in ../save_location.cfg
+
+Windows
+-------
+Create an empty directory called '<project-name>-windows-<version>' (project name is all lower case, dashed)
+
+Copy into this directory:
+The data/ directory
+The docs/ directory
+The Windows binaries
+save_location.cfg
+
+Create a .zip (LZMA compression) archive of this directory
+
+Linux
+-----
+Create an empty directory called '<project-name>-linux-<version>' (project name is all lower case, dashed)
+
+Copy into this directory:
+The data/ directory
+The docs/ directory
+The Linux binaries
+The launcher script
+save_location.cfg
+
+Create a .tar.xz (LZMA2 compression) archive of this directory
+
+OS X
+----
+Place the binary in *.app/Contents/MacOS/ and rename it to 'game'
+
+Copy the data files into *.app/Contents/Resources/
+
+Save the icon as a .png, use Img2icns to convert it to a .icns, and move that into *.app/Contents/Resources/
+Name the icon file 'icon.icns'
+
+Create a disk image (.dmg) from the .app directory using Disk Utility
+
+Name the disk image '<project-name>-osx-<version>' (project name is all lower case, dashed)
+
+Android
+-------
+Name the .apk '<project-name>-android-<version>' (project name is all lower case, dashed)
