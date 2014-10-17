@@ -97,6 +97,9 @@ DO NOT forget to run this, as it removes the symlinks that the prep program crea
 Step 3 - Package
 ****************
 
+Everything in this step can be automated on the build server
+See the instructions at the top of this document
+
 All Platforms
 -------------
 (Optional) Set save_location to "home" in ../save_location.cfg
@@ -124,20 +127,28 @@ The Linux binaries
 The launcher script
 save_location.cfg
 
-Create a .tar.xz (LZMA2 compression) archive of this directory
+Create a .tar.gz archive of this directory
 
 OS X
 ----
 Place the binary in *.app/Contents/MacOS/ and rename it to 'game'
 
-Copy the data files into *.app/Contents/Resources/
+Copy into *.app/Contents/Resources/:
+The data/ directory
+The docs/ directory
+save_location.cfg
 
 Save the icon as a .png, use Img2icns to convert it to a .icns, and move that into *.app/Contents/Resources/
 Name the icon file 'icon.icns'
 
-Create a disk image (.dmg) from the .app directory using Disk Utility
+The final step has two options (option 1 is the default):
 
-Name the disk image '<project-name>-osx-<version>' (project name is all lower case, dashed)
+1. Create a .zip (default (deflate) compression) archive of the *.app directory
+OR
+2. Create a disk image (.dmg) from the .app directory using Disk Utility
+
+Name the .zip or disk image (whichever you created) '<project-name>-osx-<version>'
+(project name is all lower case, dashed)
 
 Android
 -------
