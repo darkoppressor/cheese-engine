@@ -74,7 +74,7 @@ Open the Code::Blocks project, select the desired build target, and press build
 Android
 -------
 Choose one of the APP_ABI lines in android/jni/Application.mk and make sure the other one is commented out
-'all' builds for all supported architectures (Note that currently 'mips' is disabled)
+'all' builds for all supported architectures (Note that some targets are currently disabled)
 'armeabi-v7a' builds for ARMv7 (useful for testing)
 
 Choose either release or debug options in android/jni/Application.mk and make sure the other set of options
@@ -114,7 +114,7 @@ The docs/ directory
 The Windows binaries
 save_location.cfg
 
-Create a .zip (LZMA compression) archive of this directory
+Create a .zip (default (deflate) compression) archive of this directory
 
 Linux
 -----
