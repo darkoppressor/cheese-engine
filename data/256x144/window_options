@@ -1,0 +1,100 @@
+<window>
+	name:options
+	starting_position:-1,-1
+	width:256
+	height:104
+	title:Options
+	
+	<info>
+		location:2,18
+		text:Screen Shake:
+		font:small
+	</info>
+	
+	<button>
+		location:57,18
+		states:Off,On
+		font:small
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<info>
+		location:2,32
+		text:Effect Limit:
+		font:small
+	</info>
+	
+	<info>
+		location:57,32
+		mutable:true
+		max_text_length:10
+		allowed_input:numbers,backspace
+		font:small
+		background_type:standard
+	</info>
+	
+	<button>
+		location:2,46
+		text:Graphics Options
+		font:small
+		event:options_graphics_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:2,60
+		text:Audio Options
+		font:small
+		event:options_audio_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:2,74
+		text:Input Options
+		font:small
+		event:options_input_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:2,88
+		text:Show Save Location
+		font:small
+		event:show_data_location
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:100,88
+		text:OK
+		font:small
+		event:options
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:111,88
+		text:Apply
+		font:small
+		event:options_apply
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:134,88
+		text:Cancel
+		font:small
+		event:close_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+</window>

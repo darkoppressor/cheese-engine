@@ -1,0 +1,104 @@
+<window>
+	name:options_audio
+	starting_position:-1,-1
+	width:704
+	height:195
+	title:Audio Options
+	
+	<info>
+		location:-1,36
+		text:Global
+	</info>
+	
+	<info>
+		location:226,58
+		text:Volume:
+	</info>
+	
+	<button>
+		location:311,58
+		states:Low,Medium,High
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:399,58
+		states:Unmuted,Muted
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<info>
+		location:-1,80
+		text:Sound Effects
+	</info>
+	
+	<info>
+		location:226,102
+		text:Volume:
+	</info>
+	
+	<button>
+		location:311,102
+		states:Low,Medium,High
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:399,102
+		states:Unmuted,Muted
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<info>
+		location:-1,124
+		text:Music
+	</info>
+	
+	<info>
+		location:226,146
+		text:Volume:
+	</info>
+	
+	<button>
+		location:311,146
+		states:Low,Medium,High
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:399,146
+		states:Unmuted,Muted
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:265,168
+		text:OK
+		event:options_audio
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:300,168
+		text:Apply
+		event:options_audio_apply
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:368,168
+		text:Cancel
+		event:close_window
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+</window>

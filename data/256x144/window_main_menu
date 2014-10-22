@@ -1,8 +1,8 @@
 <window>
 	name:main_menu
 	starting_position:-1,-1
-	width:140
-	height:76
+	width:100
+	height:62
 	title:Main Menu
 	
 	<button>
@@ -15,22 +15,14 @@
 	
 	<button>
 		location:-1,32
-		text:Configure Commands
-		event:configure_commands
+		text:Options
+		event:options_window
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
 	
 	<button>
 		location:-1,46
-		text:Show Save Location
-		event:show_data_location
-		sound_moused:moused_1
-		sound_click:click_1
-	</button>
-	
-	<button>
-		location:-1,60
 		text:Quit
 		event:quit
 		sound_moused:moused_1
