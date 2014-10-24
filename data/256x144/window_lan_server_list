@@ -7,7 +7,7 @@
 	scrolling_buttons:lan_server_list
 	
 	<button>
-		location:70,18
+		location:17,18
 		text:Direct IP
 		event:server_list_window
 		sound_moused:moused_1
@@ -15,9 +15,17 @@
 	</button>
 	
 	<button>
-		location:140,18
+		location:87,18
 		text:Refresh
 		event:lan_refresh
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:143,18
+		text:Quick Refresh
+		event:lan_refresh_quick
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>

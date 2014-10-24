@@ -16,7 +16,7 @@
 	<button>
 		location:-1,32
 		text:Start Multiplayer Server
-		event:start_server
+		event:start_server_window
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>

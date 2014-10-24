@@ -2,7 +2,7 @@
 	name:ingame_menu
 	starting_position:-1,-1
 	width:100
-	height:76
+	height:90
 	title:Main Menu
 	
 	<button>
@@ -15,14 +15,22 @@
 	
 	<button>
 		location:-1,32
-		text:Leave Game
-		event:stop_game
+		text:New Game
+		event:start_game
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
 	
 	<button>
 		location:-1,46
+		text:Stop Playing
+		event:stop_game
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<button>
+		location:-1,60
 		text:Options
 		event:options_window
 		sound_moused:moused_1
@@ -30,7 +38,7 @@
 	</button>
 
 	<button>
-		location:-1,60
+		location:-1,74
 		text:Quit
 		event:quit
 		sound_moused:moused_1

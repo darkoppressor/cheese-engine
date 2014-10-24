@@ -6,4 +6,12 @@
 	title:Edit Server
 	scrolling_buttons:server_list_edit
 	
+	<button>
+		location:-1,18
+		text:Refresh
+		event:refresh_server_list
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
 </window>

@@ -1,17 +1,17 @@
 <window>
-	name:edit_server
+	name:start_server
 	starting_position:-1,-1
-	width:256
-	height:104
-	title:Edit Server
+	width:355
+	height:129
+	title:Start Multiplayer Server
 	
 	<info>
-		location:2,18
+		location:2,36
 		text:Name:
 	</info>
 	
 	<info>
-		location:5,32
+		location:5,58
 		mutable:true
 		max_text_length:48
 		allowed_input:backspace,letters,numbers,symbols,space
@@ -20,40 +20,12 @@
 	</info>
 	
 	<info>
-		location:2,46
-		text:Address:
-	</info>
-	
-	<info>
-		location:70,46
-		mutable:true
-		max_text_length:44
-		allowed_input:backspace,letters,numbers,symbols
-		font:small
-		background_type:standard
-	</info>
-	
-	<info>
-		location:2,60
-		text:Port:
-	</info>
-	
-	<info>
-		location:70,60
-		mutable:true
-		max_text_length:5
-		allowed_input:backspace,numbers
-		font:small
-		background_type:standard
-	</info>
-	
-	<info>
-		location:2,74
+		location:2,80
 		text:Password:
 	</info>
 	
 	<info>
-		location:70,74
+		location:106,80
 		mutable:true
 		max_text_length:32
 		allowed_input:backspace,letters,numbers,symbols
@@ -62,15 +34,15 @@
 	</info>
 	
 	<button>
-		location:107,88
+		location:130,102
 		text:OK
-		event:edit_server
+		event:start_server
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
 	
 	<button>
-		location:128,88
+		location:165,102
 		text:Cancel
 		event:close_window
 		sound_moused:moused_1

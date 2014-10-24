@@ -1,7 +1,7 @@
 <window>
 	name:edit_server
 	starting_position:-1,-1
-	width:800
+	width:457
 	height:151
 	title:Edit Server
 	
@@ -13,7 +13,7 @@
 	<info>
 		location:106,36
 		mutable:true
-		max_text_length:96
+		max_text_length:48
 		allowed_input:backspace,letters,numbers,symbols,space
 		font:small
 		background_type:standard
@@ -27,7 +27,7 @@
 	<info>
 		location:106,58
 		mutable:true
-		max_text_length:96
+		max_text_length:44
 		allowed_input:backspace,letters,numbers,symbols
 		font:small
 		background_type:standard
@@ -55,14 +55,14 @@
 	<info>
 		location:106,102
 		mutable:true
-		max_text_length:96
+		max_text_length:32
 		allowed_input:backspace,letters,numbers,symbols
 		font:small
 		background_type:standard
 	</info>
 	
 	<button>
-		location:350,124
+		location:130,124
 		text:OK
 		event:edit_server
 		sound_moused:moused_1
@@ -70,7 +70,7 @@
 	</button>
 	
 	<button>
-		location:384,124
+		location:165,124
 		text:Cancel
 		event:close_window
 		sound_moused:moused_1
