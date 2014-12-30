@@ -20,6 +20,20 @@
 	</button>
 	
 	<info>
+		location:108,18
+		text:Rumble:
+		font:small
+	</info>
+	
+	<button>
+		location:139,18
+		states:Off,On
+		font:small
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+	
+	<info>
 		location:2,32
 		text:Effect Limit:
 		font:small
