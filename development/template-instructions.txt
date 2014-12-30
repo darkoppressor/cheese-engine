@@ -8,8 +8,7 @@ Most of this can be automated on Windows/Linux. Do:
 
 After running the renaming program:
 Delete 'rename-template.exe' and 'rename-template'
-If the game will be multiplayer,
-enable the INTERNET permission for Android as instructed in the Android section below
+Enable any relevant permissions/features for Android as instructed in the Android section below
 Rename the game directory as instructed in the All Platforms section below
 
 Manual
@@ -50,7 +49,10 @@ Rename the android/src/org/cheeseandbacon/template directory to the name of the 
 Change the package name in Game.java in the above directory (all lower case, no spaces or dashes)
 
 Change the package name in android/AndroidManifest.xml (all lower case, no spaces or dashes)
-If the game will be multiplayer, enable the INTERNET permission in android/AndroidManifest.xml
+If the game will use networking, enable the INTERNET permission in android/AndroidManifest.xml
+If the game will use GPS, enable the ACCESS_FINE_LOCATION permission in android/AndroidManifest.xml
+Enable any commented out features in android/AndroidManifest.xml that are going to be used by the game
+(both location and location.gps are relevant for GPS)
 
 Change the project name in android/build.xml (capitalized, dashed)
 

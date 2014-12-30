@@ -82,12 +82,16 @@ is commented out
 
 Prepare everything (assets, etc.) by running:
 'android/android-prep.exe' OR 'android/android-prep'
+Note that if you want to edit ../save_location.cfg as detailed in the Package step below,
+you need to do that before running the android prep script
 
 Build the C/C++ source code for the libraries and the game by running:
 'android/build-scripts/windows/build.bat' OR 'android/build-scripts/linux/build'
 
 Create the .apk by running:
 'android/build-scripts/windows/ant-release-build.bat' OR 'android/build-scripts/linux/ant-release-build'
+Alternatively, substitute 'debug' for 'release' in the above script name to build the debug version
+Also, you can substitute 'install' for 'build' in the above script name to build and then send to the default device
 
 Clean up by removing all build-related files
 (binaries, object files, the stuff created by the prep program, etc.) by running:
