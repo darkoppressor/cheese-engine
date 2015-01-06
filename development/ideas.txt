@@ -1,0 +1,89 @@
+-----------------------------------------------
+Mod support
+For at least most objects created from data files, add code for overriding them
+I.e., if a data file has created a font with a certain name, and later a data file tries to create
+a font with the same name, it doesn't actually create a new font.
+Instead, its points to the already existing object, and each entry simply changes the corresponding
+entry in the object (obviously the name entry can't be changed)
+
+A problem arises when you have objects within objects, like a button in a window
+(in fact I think the window is the ONLY object like this in the template)
+These child objects don't have names, so they can't just be overridden
+An obvious solution is that for these kinds of objects, it works differently and
+trying to create a same-named object just erases the old one and creates a whole new one
+I like this, other than the fact that it is inconsistent with the rest of the objects :-(
+
+For this system to work, I need to ensure that all data files are
+read in alphabetical order (just like for the checksum)
+Since engine is a special case and doesn't create an object anyway,
+it might be even easier to make it work with this system
+
+I should make sure that the engine ONLY loads supported file formats for images/sounds/music(.png and .ogg)
+It should just ignore other formats (is this a problem for the .bmp icon(s)?)
+
+Now, a mods directory goes in the home directory
+A mod is defined by being a sub-directory of the mods directory
+Any files in the mods dir are ignored
+Within a mod dir, it should be arranged exactly as in data/
+Data files can be named anything and placed here just like in data/
+Images/sounds/music should be places in their respective subdirs and named identically to the file they
+want to replace
+A new option mod_order
+mod_order is a list of strings, each the name of a mod dir
+When the game starts, for each level of data script loading
+(engine options, game options, etc.), it first loads the stuff in data/
+Then, it loads the corresponding stuff in each mod dir, following the order of mod_order
+It uses the system outlined above for overriding
+Note that new objects can be created/loaded like this too (not sure if this will help anyone, but)
+Thus, the mod that is last on the order list will be loaded last, and anything it overrides will be
+the final result for an object
+So, mods lower on the list are actually higher priority
+
+For images/music/sounds, it is a bit different
+Each asset name must only be loaded once, and there is no overriding/replacing in memory
+Instead, the game needs to search all mod dirs (starting at the bottom) and then the data dir for
+asset names, and if a name already exists, the new one is ignored
+Then, load all of the assets like normal
+Thus, assets in the lowest mod on the list (i.e., the highest priority mod) will be loaded instead
+of assets in a lower priority mod or the data dir
+
+This system might be a little confusing since data files are loaded from lowest -> highest priority,
+overriding previous data stuff, while asset files are looked at from highest -> lowest priority
+I think it would be OK, and confusion aside, would be very easy to use
+-----------------------------------------------
+
+-----------------------------------------------
+Add android mic recording support
+Add audio comparison code
+Could be used in say bit beast for calling your pet by name
+-----------------------------------------------
+
+-----------------------------------------------
+A program that runs in the background (service on android, maybe a regular program on other platforms) that knows where save data is for cheese and bacon games' games
+Its purpose would be to detect other instances of the program on other devices
+Then it could do street pass like stuff
+Of course, this would only be worth it if the devices could detect each other and connect automatically...
+A program for all cheese and bacon games, free
+Has some kind of currency, earned by simple things like steps taken
+Will be cross platform, so I'd prefer to come up with something simple to earn currency on desktop platforms too
+Knows where cheese and bacon games are saved on the current platform
+What if the user has them elsewhere? Maybe an option to specify the location of various games' save data?
+When setting up first time, user creates a profile name
+User is assigned randomly generated number. Use some actual real life - based seed, better than just time
+These together represent user
+User can also set some basic info about them self, and a personal message
+Through a connection, the program can detect other instances of itself on other devices
+Two instances that see each other do a swap
+The program keeps track of what IDs it has swapped with in the past x hours and won't swap with the same ID until the time has passed
+Both programs must agree to swap for any data to be exchanged
+Both programs agree after swapping of all data is done that it was successful
+Only after registering a swap success is any of the swap data actually saved
+No record will exist of failed/partial swaps
+First, profile data is swapped, including name, message, list of saved games (with swapping permitted), etc.
+Keeps a list of all swaps and when they occurred (and if possible maybe even where they occurred?)
+Each compatible game has a special save file for this, for swap outgoing
+Swapping is enabled on a pergame basis
+The swap file contains the permission boolean, along with the game specific data, which is simply swapped out all in one big string
+Received swap data for a game is stored in a swap incoming file, inside of a <swap> block
+If both programs have a game in common, its data is swapped
+-----------------------------------------------

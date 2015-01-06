@@ -1,62 +1,8 @@
-When loading up game, check current display's video mode
-If no options are saved yet, pick a good res/refresh rate using the display's info
-If options are saved, but they want something the display cannot do, pick something doable
-Otherwise, go with the options
-
 Left and right arrows move text cursor back and forth
 
 MAYBE: Clicking in text box puts the text cursor where you clicked (with mouse)
 
------------------------------------------------
-Mod support
-For at least most objects created from data files, add code for overriding them
-I.e., if a data file has created a font with a certain name, and later a data file tries to create
-a font with the same name, it doesn't actually create a new font.
-Instead, its points to the already existing object, and each entry simply changes the corresponding
-entry in the object (obviously the name entry can't be changed)
+Text editing event stuff for Android
 
-A problem arises when you have objects within objects, like a button in a window
-(in fact I think the window is the ONLY object like this in the template)
-These child objects don't have names, so they can't just be overridden
-An obvious solution is that for these kinds of objects, it works differently and
-trying to create a same-named object just erases the old one and creates a whole new one
-I like this, other than the fact that it is inconsistent with the rest of the objects :-(
-
-For this system to work, I need to ensure that all data files are
-read in alphabetical order (just like for the checksum)
-Since engine is a special case and doesn't create an object anyway,
-it might be even easier to make it work with this system
-
-I should make sure that the engine ONLY loads supported file formats for images/sounds/music(.png and .ogg)
-It should just ignore other formats (is this a problem for the .bmp icon(s)?)
-
-Now, a mods directory goes in the home directory
-A mod is defined by being a sub-directory of the mods directory
-Any files in the mods dir are ignored
-Within a mod dir, it should be arranged exactly as in data/
-Data files can be named anything and placed here just like in data/
-Images/sounds/music should be places in their respective subdirs and named identically to the file they
-want to replace
-A new option mod_order
-mod_order is a list of strings, each the name of a mod dir
-When the game starts, for each level of data script loading
-(engine options, game options, etc.), it first loads the stuff in data/
-Then, it loads the corresponding stuff in each mod dir, following the order of mod_order
-It uses the system outlined above for overriding
-Note that new objects can be created/loaded like this too (not sure if this will help anyone, but)
-Thus, the mod that is last on the order list will be loaded last, and anything it overrides will be
-the final result for an object
-So, mods lower on the list are actually higher priority
-
-For images/music/sounds, it is a bit different
-Each asset name must only be loaded once, and there is no overriding/replacing in memory
-Instead, the game needs to search all mod dirs (starting at the bottom) and then the data dir for
-asset names, and if a name already exists, the new one is ignored
-Then, load all of the assets like normal
-Thus, assets in the lowest mod on the list (i.e., the highest priority mod) will be loaded instead
-of assets in a lower priority mod or the data dir
-
-This system might be a little confusing since data files are loaded from lowest -> highest priority,
-overriding previous data stuff, while asset files are looked at from highest -> lowest priority
-I think it would be OK, and confusion aside, would be very easy to use
------------------------------------------------
+In Desktop mode, fullscreen, 1280x720, the small font looks terrible
+This seems to be true in other modes as well
