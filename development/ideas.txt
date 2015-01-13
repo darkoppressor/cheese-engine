@@ -1,4 +1,12 @@
 -----------------------------------------------
+Add text colors to buttons, windows, tooltips, and toasts
+-----------------------------------------------
+
+-----------------------------------------------
+Scroll bar for scrolling buttons and text
+-----------------------------------------------
+
+-----------------------------------------------
 Mod support
 For at least most objects created from data files, add code for overriding them
 I.e., if a data file has created a font with a certain name, and later a data file tries to create
