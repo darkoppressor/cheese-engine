@@ -22,10 +22,12 @@ symbols_posix
 
 Initial object height: 18
 Object spacing: 14
+Spacing from arbitrary height (such as between bottom of scrolling text box and button): 2
 Window height: Height of bottom object + 16
 
 1280x720:
 
 Initial object height: 36
 Object spacing: 22
+Spacing from arbitrary height (such as between bottom of scrolling text box and button): 5
 Window height: Height of bottom object + 27
