@@ -21,13 +21,11 @@ syntax: regexp
 ^.*Windows-x86.exe$
 ^.*OSX-x86_64$
 
+^[^\/\\]*.dll$
+^[^\/\\]*.depend$
+
 ^options.cfg$
 ^game_commands.cfg$
 
 ^error_log.txt$
 ^servers.txt$
-
-syntax: glob
-
-*.dll
-*.depend
