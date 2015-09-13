@@ -27,3 +27,5 @@ development/android/obj/**
 
 /*.dll
 /*.depend
+
+*Thumbs.db

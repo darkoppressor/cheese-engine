@@ -5,6 +5,12 @@
 # These files should be handled as text with DOS/Windows line endings
 *.bat text eol=crlf
 
+# These files should be converted from binary to text before diffing them
+*.doc diff=astextplain
+*.docx diff=astextplain
+*.pdf diff=astextplain
+*.rtf diff=astextplain
+
 # These files should be handled as binaries
 *.png binary
 *.bmp binary
