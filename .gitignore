@@ -5,14 +5,18 @@ tools/*.exe
 tools/*Linux-x86_64
 
 development/android/assets/**
-development/android/jni/RakNet/**
-development/android/jni/SDL2/**
-development/android/jni/SDL2_image/**
-development/android/jni/SDL2_mixer/**
 development/android/bin/**
 development/android/gen/**
 development/android/libs/**
 development/android/obj/**
+development/android/jni/SDL2/**
+development/android/jni/SDL2_image/**
+development/android/jni/SDL2_mixer/**
+development/android/jni/RakNet/**
+development/android/jni/boost/**
+development/android/jni/src/Android.mk
+development/android/ant.properties
+development/android/local.properties
 
 /*Windows-x86_64.exe
 /*Windows-Debug-x86_64.exe
