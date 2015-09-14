@@ -3,14 +3,21 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-./build-linux-x86_64
+PROJECT_DIRECTORY=$1
 
-./build-linux-x86
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	./build-target $PROJECT_DIRECTORY Release-Linux-x86_64
 
-./build-windows-x86_64
+	./build-target $PROJECT_DIRECTORY Release-Linux-x86
 
-./build-windows-x86
+	./build-target $PROJECT_DIRECTORY Cross-Compile-Windows-x86_64
 
-./build-osx-x86_64
+	./build-target $PROJECT_DIRECTORY Release-Windows-x86
 
-./build-android
+	./build-target $PROJECT_DIRECTORY Release-OSX-x86_64
+
+	./build-android $PROJECT_DIRECTORY
+else
+	echo "build-all - build all targets for the passed project"
+	echo "Usage: build-all PROJECT_DIRECTORY"
+fi

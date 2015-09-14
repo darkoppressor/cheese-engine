@@ -3,14 +3,19 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-../refresh-build-date > log-Release-Android
+PROJECT_DIRECTORY=$1
 
-cd ../android/
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-Release-Android"
 
-./android-prep >> ${DIR}/log-Release-Android
+	../Android-Prep-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
-cd build-scripts/linux/
+	cd $PROJECT_DIRECTORY/development/android/build-scripts/linux/
 
-./rebuild >> ${DIR}/log-Release-Android
+	./rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
 
-./ant-release-rebuild >> ${DIR}/log-Release-Android
+	./ant-release-rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
+else
+	echo "rebuild-android - rebuild the android target for the passed project"
+	echo "Usage: rebuild-android PROJECT_DIRECTORY"
+fi

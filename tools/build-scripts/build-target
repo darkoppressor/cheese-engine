@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+TARGET=$2
+
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
+	../Build-Date-Linux-x86_64 > "$PROJECT_DIRECTORY/log-$TARGET"
+
+	codeblocks --build --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp" >> "$PROJECT_DIRECTORY/log-$TARGET"
+else
+	echo "build-target - build the passed target for the passed project"
+	echo "Usage: build-target PROJECT_DIRECTORY TARGET"
+fi

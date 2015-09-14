@@ -3,14 +3,21 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-./rebuild-linux-x86_64
+PROJECT_DIRECTORY=$1
 
-./rebuild-linux-x86
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	./rebuild-target $PROJECT_DIRECTORY Release-Linux-x86_64
 
-./rebuild-windows-x86_64
+	./rebuild-target $PROJECT_DIRECTORY Release-Linux-x86
 
-./rebuild-windows-x86
+	./rebuild-target $PROJECT_DIRECTORY Cross-Compile-Windows-x86_64
 
-./rebuild-osx-x86_64
+	./rebuild-target $PROJECT_DIRECTORY Release-Windows-x86
 
-./rebuild-android
+	./rebuild-target $PROJECT_DIRECTORY Release-OSX-x86_64
+
+	./rebuild-android $PROJECT_DIRECTORY
+else
+	echo "rebuild-all - rebuild all targets for the passed project"
+	echo "Usage: rebuild-all PROJECT_DIRECTORY"
+fi

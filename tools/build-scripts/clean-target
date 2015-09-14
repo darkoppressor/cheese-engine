@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+TARGET=$2
+
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
+	codeblocks --clean --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp"
+else
+	echo "clean-target - clean the passed target for the passed project"
+	echo "Usage: clean-target PROJECT_DIRECTORY TARGET"
+fi

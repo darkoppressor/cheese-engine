@@ -3,21 +3,26 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-cd ../android/
+PROJECT_DIRECTORY=$1
 
-rm -rf assets/
-rm -rf bin/
-rm -rf gen/
-rm -rf libs/
-rm -rf obj/
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	rm -rf "$PROJECT_DIRECTORY/development/android/assets/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/bin/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/gen/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/libs/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/obj/"
 
-unlink jni/SDL2
-unlink jni/SDL2_image
-unlink jni/SDL2_mixer
-unlink jni/RakNet
-unlink jni/boost
+	unlink "$PROJECT_DIRECTORY/development/android/jni/SDL2"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/SDL2_image"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/SDL2_mixer"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/RakNet"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/boost"
 
-rm -f jni/src/Android.mk
+	rm -f "$PROJECT_DIRECTORY/development/android/jni/src/Android.mk"
 
-rm -f ant.properties
-rm -f local.properties
+	rm -f "$PROJECT_DIRECTORY/development/android/ant.properties"
+	rm -f "$PROJECT_DIRECTORY/development/android/local.properties"
+else
+	echo "clean-android - clean the android target for the passed project"
+	echo "Usage: clean-android PROJECT_DIRECTORY"
+fi

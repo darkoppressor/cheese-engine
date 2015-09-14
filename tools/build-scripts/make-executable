@@ -3,13 +3,14 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-chmod +x *
-chmod -x version
+PROJECT_DIRECTORY=$1
 
-chmod +x ../android/adb-logcat
-chmod +x ../android/adb-logcat-all
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	chmod +x $PROJECT_DIRECTORY/development/android/build-scripts/linux/*
 
-chmod +x ../android/build-scripts/linux/*
-
-chmod -x ../android/build-scripts/linux/ant.properties
-chmod -x ../android/build-scripts/linux/local.properties
+	chmod -x $PROJECT_DIRECTORY/development/android/build-scripts/linux/ant.properties
+	chmod -x $PROJECT_DIRECTORY/development/android/build-scripts/linux/local.properties
+else
+	echo "make-executable - make android build scripts for the passed project executable"
+	echo "Usage: make-executable PROJECT_DIRECTORY"
+fi

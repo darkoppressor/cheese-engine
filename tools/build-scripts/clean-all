@@ -3,14 +3,21 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-./clean-linux-x86_64
+PROJECT_DIRECTORY=$1
 
-./clean-linux-x86
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	./clean-target $PROJECT_DIRECTORY Release-Linux-x86_64
 
-./clean-windows-x86_64
+	./clean-target $PROJECT_DIRECTORY Release-Linux-x86
 
-./clean-windows-x86
+	./clean-target $PROJECT_DIRECTORY Cross-Compile-Windows-x86_64
 
-./clean-osx-x86_64
+	./clean-target $PROJECT_DIRECTORY Release-Windows-x86
 
-./clean-android
+	./clean-target $PROJECT_DIRECTORY Release-OSX-x86_64
+
+	./clean-android $PROJECT_DIRECTORY
+else
+	echo "clean-all - clean all targets for the passed project"
+	echo "Usage: clean-all PROJECT_DIRECTORY"
+fi
