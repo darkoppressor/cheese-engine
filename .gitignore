@@ -1,6 +1,8 @@
 .objs/**
 screenshots/**
 
+tools/**
+
 development/android/assets/**
 development/android/jni/RakNet/**
 development/android/jni/SDL2/**
