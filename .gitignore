@@ -1,7 +1,8 @@
 .objs/**
 screenshots/**
 
-tools/**
+tools/*.exe
+tools/*Linux-x86_64
 
 development/android/assets/**
 development/android/jni/RakNet/**

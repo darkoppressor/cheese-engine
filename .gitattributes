@@ -27,4 +27,3 @@
 *.exe binary
 *.dll binary
 *.ttf binary
-/tools/*linux-x86_64 binary
