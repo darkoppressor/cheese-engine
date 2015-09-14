@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+TARGET=Release-Windows-x86
+
+../refresh-build-date > log-${TARGET}
+
+codeblocks --rebuild --target="${TARGET}" ../../project.cbp >> log-${TARGET}

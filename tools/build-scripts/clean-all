@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+./clean-linux-x86_64
+
+./clean-linux-x86
+
+./clean-windows-x86_64
+
+./clean-windows-x86
+
+./clean-osx-x86_64
+
+./clean-android

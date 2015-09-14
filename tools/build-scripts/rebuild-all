@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+./rebuild-linux-x86_64
+
+./rebuild-linux-x86
+
+./rebuild-windows-x86_64
+
+./rebuild-windows-x86
+
+./rebuild-osx-x86_64
+
+./rebuild-android
