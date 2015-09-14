@@ -6,7 +6,7 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	NDK_PROJECT_PATH="$PROJECT_DIRECTORY/development/android"
+	export NDK_PROJECT_PATH="$PROJECT_DIRECTORY/development/android"
 
 	/home/tails/build-server/android/android-ndk/ndk-build clean
 else
