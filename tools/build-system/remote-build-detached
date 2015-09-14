@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+export DISPLAY=:0.0
+
+echo "Initiating Cheesy Build System in detached mode"
+
+NAME=build
+
+screen -m -d -S $NAME ./build "$@"

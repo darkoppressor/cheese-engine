@@ -1,0 +1,440 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_PATH=$1
+
+CHECKSUM=""
+
+LOG_FILE=""
+LOG_FILE_FALLBACK="./log-build-system"
+
+if [ "${#PROJECT_PATH}" == "0" ]; then
+	echo "build - build a Cheese Engine project" | tee -a ${LOG_FILE_FALLBACK}
+	echo "Usage: build PROJECT_PATH" | tee -a ${LOG_FILE_FALLBACK}
+	echo "PROJECT_PATH may be located anywhere except under '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
+	echo "'build clean' to empty the projects directory" | tee -a ${LOG_FILE_FALLBACK}
+	echo "" | tee -a ${LOG_FILE_FALLBACK}
+	
+	exit
+fi
+
+if [ "${PROJECT_PATH}" == "clean" ]; then
+	rm -rf $HOME/build-server/projects
+	
+	mkdir $HOME/build-server/projects
+
+	echo "Emptying the projects directory" | tee -a ${LOG_FILE_FALLBACK}
+	echo "" | tee -a ${LOG_FILE_FALLBACK}
+	
+	exit
+fi
+
+if [[ "$(readlink -f ${PROJECT_PATH})" == $HOME/build-server/projects* ]]; then
+	echo "PROJECT_PATH must be outside of '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
+	echo "" | tee -a ${LOG_FILE_FALLBACK}
+	
+	exit
+fi
+
+SUCCESS="false"
+
+PROJECT_NAME="$(basename ${PROJECT_PATH})"
+
+NAME="${PROJECT_NAME}"
+
+VERSION="3"
+
+RESULT=""
+
+chmod +x $HOME/build-server/cheese-engine/tools/*-x86_64
+chmod +x $HOME/build-server/cheese-engine/tools/build-scripts/*
+chmod -x $HOME/build-server/cheese-engine/tools/build-scripts/*-x86_64
+chmod -x $HOME/build-server/cheese-engine/tools/build-scripts/*-x86
+chmod -x $HOME/build-server/cheese-engine/tools/build-scripts/clean-android.bat
+chmod +x $HOME/build-server/cheese-engine/tools/build-scripts/android/linux/*
+
+mkdir $HOME/build-server/projects
+
+if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
+	compatible="false"
+	
+	while read line
+	do
+		if [ "$line" == "${VERSION}" ]; then
+			compatible="true"
+		fi
+	done <"${PROJECT_PATH}/development/build-system-version"
+	
+	if [ "$compatible" == "true" ]; then
+		rm -rf "$HOME/build-server/projects/${PROJECT_NAME}"
+	
+		cp -r "${PROJECT_PATH}" "$HOME/build-server/projects/"
+		
+		LOG_FILE="$HOME/build-server/projects/${PROJECT_NAME}/log-build-system"
+		
+		NAME_CAPPED=""
+
+		CAPS="true"
+		for (( i=0; i<${#PROJECT_NAME}; i++ )); do
+			LETTER=${PROJECT_NAME:$i:1}
+			
+			if [ "${CAPS}" == "true" ]; then
+				CAPS="false"
+				NAME_CAPPED=${NAME_CAPPED}${LETTER^}
+			else
+				NAME_CAPPED=${NAME_CAPPED}${LETTER}
+			fi
+			
+			if [ "${LETTER}" == "-" ]; then
+				CAPS="true"
+			fi
+		done
+		
+		log="Initiating Cheesy Build System (version ${VERSION})"
+		echo "${log}" | tee -a ${LOG_FILE}
+		echo "" | tee -a ${LOG_FILE}
+		RESULT="${RESULT}${log}\n\n"
+		log="$(date '+%A, %B %d, %Y')"
+		echo "${log}" | tee -a ${LOG_FILE}
+		RESULT="${RESULT}${log}\n"
+		log="$(date '+%H:%M:%S') $(date '+%Z (%z)')"
+		echo "${log}" | tee -a ${LOG_FILE}
+		echo "" | tee -a ${LOG_FILE}
+		RESULT="${RESULT}${log}\n\n"
+		log="Building ${PROJECT_NAME}"
+		echo "${log}" | tee -a ${LOG_FILE}
+		echo "" | tee -a ${LOG_FILE}
+		RESULT="${RESULT}${log}\n\n"
+		
+		sed -i 's/local/home/g' "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
+		
+		$HOME/build-server/cheese-engine/tools/build-scripts/build-all "$HOME/build-server/projects/${PROJECT_NAME}"
+		
+		PROJECT_VERSION=$(grep -F "android:versionName" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/AndroidManifest.xml")
+		
+		PV_PREFIX="*android:versionName=\""
+		PV_SUFFIX="\"*"
+		PROJECT_VERSION=${PROJECT_VERSION##$PV_PREFIX}
+		PROJECT_VERSION=${PROJECT_VERSION%%$PV_SUFFIX}
+		
+		BUILDS_ALL_WORKED="true"
+		
+		PACKAGING="$HOME/build-server/projects/${PROJECT_NAME}/packaging"
+		PACKAGING_LINUX="${PROJECT_NAME}-linux-${PROJECT_VERSION}"
+		PACKAGING_WINDOWS="${PROJECT_NAME}-windows-${PROJECT_VERSION}"
+		cd "$HOME/build-server/projects/${PROJECT_NAME}/development"
+		PACKAGING_OSX="$(find -maxdepth 1 -type d -name '*.app'| head -n1)"
+		cd $DIR
+		OSX_PREFIX="./"
+		PACKAGING_OSX="${PACKAGING_OSX##$OSX_PREFIX}"
+		PACKAGING_ANDROID="${PROJECT_NAME}-android-${PROJECT_VERSION}"
+		BUILDS="$HOME/build-server/builds"
+		
+		mkdir "${PACKAGING}"
+		mkdir "${PACKAGING}/${PACKAGING_LINUX}"
+		mkdir "${PACKAGING}/${PACKAGING_WINDOWS}"
+		mv "$HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_OSX}" "${PACKAGING}"
+		mkdir "${BUILDS}"
+		
+		PACKAGE_LINUX="true"
+		PACKAGE_WINDOWS="true"
+		PACKAGE_OSX="true"
+		
+		PLATFORM="Linux-x86_64"
+		BINARY="${NAME_CAPPED}-${PLATFORM}"
+		TARGET="Release-${PLATFORM}"
+		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+			chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
+			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
+			
+			log="Build succeeded for ${TARGET}"
+			echo "${log}" | tee -a ${LOG_FILE}
+			RESULT="${RESULT}${log}\n\n"
+		else
+			BUILDS_ALL_WORKED="false"
+			
+			PACKAGE_LINUX="false"
+			
+			error="Build failed for ${TARGET}:\n"
+			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-build-system-${TARGET})"
+			error="${error}\n\n"
+			
+			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+			
+			RESULT="${RESULT}${error}"
+		fi
+		
+		PLATFORM="Linux-x86"
+		BINARY="${NAME_CAPPED}-${PLATFORM}"
+		TARGET="Release-${PLATFORM}"
+		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+			chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
+			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
+			
+			log="Build succeeded for ${TARGET}"
+			echo "${log}" | tee -a ${LOG_FILE}
+			RESULT="${RESULT}${log}\n\n"
+		else
+			BUILDS_ALL_WORKED="false"
+			
+			PACKAGE_LINUX="false"
+			
+			error="Build failed for ${TARGET}:\n"
+			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-build-system-${TARGET})"
+			error="${error}\n\n"
+			
+			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+			
+			RESULT="${RESULT}${error}"
+		fi
+		
+		PLATFORM="Windows-x86_64"
+		BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
+		TARGET="Cross-Compile-${PLATFORM}"
+		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			
+			log="Build succeeded for ${TARGET}"
+			echo "${log}" | tee -a ${LOG_FILE}
+			RESULT="${RESULT}${log}\n\n"
+		else
+			BUILDS_ALL_WORKED="false"
+			
+			PACKAGE_WINDOWS="false"
+			
+			error="Build failed for ${TARGET}:\n"
+			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-build-system-${TARGET})"
+			error="${error}\n\n"
+			
+			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+			
+			RESULT="${RESULT}${error}"
+		fi
+		
+		PLATFORM="Windows-x86"
+		BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
+		TARGET="Release-${PLATFORM}"
+		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			
+			log="Build succeeded for ${TARGET}"
+			echo "${log}" | tee -a ${LOG_FILE}
+			RESULT="${RESULT}${log}\n\n"
+		else
+			BUILDS_ALL_WORKED="false"
+			
+			PACKAGE_WINDOWS="false"
+			
+			error="Build failed for ${TARGET}:\n"
+			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-build-system-${TARGET})"
+			error="${error}\n\n"
+			
+			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+			
+			RESULT="${RESULT}${error}"
+		fi
+		
+		PLATFORM="OSX-x86_64"
+		BINARY="${NAME_CAPPED}-${PLATFORM}"
+		TARGET="Release-${PLATFORM}"
+		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_OSX}/Contents/MacOS/game"
+			
+			log="Build succeeded for ${TARGET}"
+			echo "${log}" | tee -a ${LOG_FILE}
+			RESULT="${RESULT}${log}\n\n"
+		else
+			BUILDS_ALL_WORKED="false"
+			
+			PACKAGE_OSX="false"
+			
+			error="Build failed for ${TARGET}:\n"
+			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-build-system-${TARGET})"
+			error="${error}\n\n"
+			
+			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+			
+			RESULT="${RESULT}${error}"
+		fi
+		
+		BINARY="${NAME_CAPPED}-release.apk"
+		TARGET="Release-Android"
+		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
+			mv "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
+			
+			log="Build succeeded for ${TARGET}"
+			echo "${log}" | tee -a ${LOG_FILE}
+			echo "" | tee -a ${LOG_FILE}
+			RESULT="${RESULT}${log}\n\n"
+		else
+			BUILDS_ALL_WORKED="false"
+			
+			error="Build failed for ${TARGET}:\n"
+			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-build-system-${TARGET})"
+			error="${error}\n\n"
+			
+			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+			echo "" | tee -a ${LOG_FILE}
+			
+			RESULT="${RESULT}${error}"
+		fi
+		
+		CHECKSUM_DIR="$HOME/build-server/projects/${PROJECT_NAME}/data"
+		CHECKSUM="$($HOME/build-server/cheese-engine/tools/Checksum-Linux-x86_64 ${CHECKSUM_DIR} 1)"
+		
+		chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
+		fromdos "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
+		
+		if [ "${PACKAGE_LINUX}" == "true" ]; then
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_LINUX}"
+			
+			cd "${PACKAGING}"
+			
+			tar cpzf "${PACKAGING_LINUX}.tar.gz" "${PACKAGING_LINUX}"
+			
+			mv "${PACKAGING_LINUX}.tar.gz" "${BUILDS}"
+			
+			cd $DIR
+		fi
+		
+		if [ "${PACKAGE_WINDOWS}" == "true" ]; then
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			
+			cd "${PACKAGING}"
+			
+			7z a -tzip -mx=9 -mmt=on "${PACKAGING_WINDOWS}.zip" "${PACKAGING_WINDOWS}"
+			
+			mv "${PACKAGING_WINDOWS}.zip" "${BUILDS}"
+			
+			cd $DIR
+		fi
+		
+		if [ "${PACKAGE_OSX}" == "true" ]; then
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
+			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
+			
+			xcf2png "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.xcf" -o "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
+			
+			png2icns "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources/icon.icns" "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
+			
+			cd "${PACKAGING}"
+			
+			7z a -tzip -mx=9 -mmt=on "${PACKAGING_OSX}.zip" "${PACKAGING_OSX}"
+			
+			mv "${PACKAGING_OSX}.zip" "${BUILDS}/${PROJECT_NAME}-osx-${PROJECT_VERSION}.zip"
+			
+			#DMG="${PROJECT_NAME}-osx-${PROJECT_VERSION}.dmg"
+			
+			# When writing this, I didn't figure out what size to make this
+			# My guess is that I would need to determine the total size of the .app directory and make
+			# it that size.
+			#dd if=/dev/zero of="${DMG}" bs=1M count=130
+			
+			# Instead do 'hformat -l "LABEL" "${DMG}"' to give the .dmg a label
+			# The hformat manpage says that the label can only be 1-27 characters long
+			# That seems like a pain, is it true?
+			#hformat "${DMG}"
+			
+			#mkdir mount_dmg
+			
+			#sudo mount -t hfs -o loop "${DMG}" mount_dmg
+			
+			#sudo cp -r "${PACKAGING}/${PACKAGING_OSX}" "mount_dmg"
+			
+			#sudo umount mount_dmg
+			
+			#rm -rf mount_dmg
+			
+			#mv "${DMG}" "${BUILDS}"
+			
+			cd $DIR
+		fi
+		
+		if [ "${BUILDS_ALL_WORKED}" == "true" ]; then
+			SUCCESS="true"
+		fi
+	else
+		log="Unable to initiate Cheesy Build System:"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n"
+		log="'${PROJECT_NAME}' is incompatible (version ${VERSION} required)"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		echo "" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n\n"
+	fi
+else
+	if [ -f "${PROJECT_PATH}/development/build-scripts/version" ]; then
+		log="Unable to initiate Cheesy Build System:"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n"
+		log="'${PROJECT_NAME}' appears to be compatible with version 2 (version ${VERSION} required)"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		echo "" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n\n"
+	elif [ -f "${PROJECT_PATH}/development/engine-version.txt" ]; then
+		log="Unable to initiate Cheesy Build System:"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n"
+		log="'${PROJECT_NAME}' appears to be compatible with version 1 (version ${VERSION} required)"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		echo "" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n\n"
+	else
+		NAME=${PROJECT_PATH}
+		
+		log="Unable to initiate Cheesy Build System:"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n"
+		log="The directory '${PROJECT_PATH}' does not contain a valid Cheese Engine project"
+		echo "${log}" | tee -a ${LOG_FILE_FALLBACK}
+		echo "" | tee -a ${LOG_FILE_FALLBACK}
+		RESULT="${RESULT}${log}\n\n"
+	fi
+fi
+
+SUBJECT="Build failed for '${NAME}'"
+
+if [ "${SUCCESS}" == "true" ]; then
+	SUBJECT="Build succeeded for '${NAME}'"
+
+	log="Build completed successfully for '${NAME}'"
+else
+	log="Build completed unsuccessfully for '${NAME}'"
+fi
+
+LOG_FINAL=${LOG_FILE_FALLBACK}
+if [ "${#LOG_FILE}" != "0" ]; then
+	LOG_FINAL=${LOG_FILE}
+fi
+
+echo "${log}" | tee -a ${LOG_FINAL}
+echo "" | tee -a ${LOG_FINAL}
+RESULT="${RESULT}${log}\n\n"
+
+if [ "${SUCCESS}" == "true" ]; then
+	log="Checksum: ${CHECKSUM}"
+	echo "${log}" | tee -a ${LOG_FINAL}
+	echo "" | tee -a ${LOG_FINAL}
+	RESULT="${RESULT}${log}\n\n"
+fi
+
+log="$(date '+%A, %B %d, %Y')"
+echo "${log}" | tee -a ${LOG_FINAL}
+RESULT="${RESULT}${log}\n"
+log="$(date '+%H:%M:%S') $(date '+%Z (%z)')"
+echo "${log}" | tee -a ${LOG_FINAL}
+RESULT="${RESULT}${log}\n"
+
+$HOME/server/sendmail "${SUBJECT}" "${RESULT}"
+
+if [ "${SUCCESS}" == "true" ]; then
+	rm -rf "$HOME/build-server/projects/${PROJECT_NAME}"
+fi
