@@ -4,12 +4,11 @@ Automated
 *********
 
 Most of this can be automated on Windows/Linux. Do:
-'rename-template.exe project-name' OR './rename-template project-name'
+'cheese-engine/tools/Rename-Template-Windows-x86_64.exe project-directory project-name' OR
+'cheese-engine/tools/Rename-Template-Linux-x86_64 project-directory project-name'
 
 After running the renaming program:
-Delete 'rename-template.exe' and 'rename-template'
 Enable any relevant permissions/features for Android as instructed in the Android section below
-Rename the game directory as instructed in the All Platforms section below
 
 Manual
 ******
@@ -22,7 +21,7 @@ Rename the launcher script in the root game directory (capitalized, dashed)
 
 Change CHEESIE_GAME_NAME in the launcher script (capitalized, dashed)
 
-Change name and home_directory in ../data/engine (all lower case, dashed)
+Change name and home_directory in data/engine (all lower case, dashed)
 
 In Code::Blocks, change Project->Properties->Title (all lower case, dashed)
 
@@ -30,30 +29,30 @@ In Code::Blocks, change Project->Properties->Build targets tab->Build target out
 (capitalized, dashed)
 
 Do this step after all other steps (including the steps below for specific platforms):
-Delete the ../.hg/ directory
-Do hg init in the game directory
+Delete the .git/ directory
+Do git init in the game directory
 
 OS X
 ----
-Rename the *.app directory (capitalized, spaced)
+Rename the development/*.app directory (capitalized, spaced)
 
-Change CFBundleName and CFBundleDisplayName in *.app/Contents/Info.plist (capitalized, spaced)
+Change CFBundleName and CFBundleDisplayName in development/*.app/Contents/Info.plist (capitalized, spaced)
 
-Change CFBundleIdentifier in *.app/Contents/Info.plist (all lower case, dashed)
+Change CFBundleIdentifier in development/*.app/Contents/Info.plist (all lower case, dashed)
 
 Android
 -------
-Rename the android/src/org/cheeseandbacon/template directory to the name of the game
+Rename the development/android/src/org/cheeseandbacon/template directory to the name of the game
 (all lower case, dashed)
 
 Change the package name in Game.java in the above directory (all lower case, no spaces or dashes)
 
-Change the package name in android/AndroidManifest.xml (all lower case, no spaces or dashes)
-If the game will use networking, enable the INTERNET permission in android/AndroidManifest.xml
-If the game will use GPS, enable the ACCESS_FINE_LOCATION permission in android/AndroidManifest.xml
-Enable any commented out features in android/AndroidManifest.xml that are going to be used by the game
+Change the package name in development/android/AndroidManifest.xml (all lower case, no spaces or dashes)
+If the game will use networking, enable the INTERNET permission in development/android/AndroidManifest.xml
+If the game will use GPS, enable the ACCESS_FINE_LOCATION permission in development/android/AndroidManifest.xml
+Enable any commented out features in development/android/AndroidManifest.xml that are going to be used by the game
 (both location and location.gps are relevant for GPS)
 
-Change the project name in android/build.xml (capitalized, dashed)
+Change the project name in development/android/build.xml (capitalized, dashed)
 
-Change the app name in android/res/values/strings.xml (capitalized, spaced)
+Change the app name in development/android/res/values/strings.xml (capitalized, spaced)
