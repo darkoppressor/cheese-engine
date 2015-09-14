@@ -10,11 +10,9 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	../Android-Prep-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
-	cd $PROJECT_DIRECTORY/development/android/build-scripts/linux/
+	android/linux/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
-	./build >> "$PROJECT_DIRECTORY/log-Release-Android"
-
-	./ant-release-build >> "$PROJECT_DIRECTORY/log-Release-Android"
+	android/linux/ant $PROJECT_DIRECTORY release >> "$PROJECT_DIRECTORY/log-Release-Android"
 else
 	echo "build-android - build the android target for the passed project"
 	echo "Usage: build-android PROJECT_DIRECTORY"
