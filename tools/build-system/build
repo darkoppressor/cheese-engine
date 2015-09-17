@@ -49,11 +49,11 @@ VERSION="3"
 RESULT=""
 
 chmod +x $HOME/build-server/cheese-engine/tools/*-x86_64
-chmod +x $HOME/build-server/cheese-engine/tools/build-scripts/*
-chmod -x $HOME/build-server/cheese-engine/tools/build-scripts/*-x86_64
-chmod -x $HOME/build-server/cheese-engine/tools/build-scripts/*-x86
-chmod -x $HOME/build-server/cheese-engine/tools/build-scripts/clean-android.bat
-chmod +x $HOME/build-server/cheese-engine/tools/build-scripts/android/linux/*
+chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/*
+chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
+chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86
+chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/clean-android.bat
+chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/linux/*
 
 mkdir -p $HOME/build-server/projects
 
@@ -110,7 +110,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 		sed -i 's/local/home/g' "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
 
-		$HOME/build-server/cheese-engine/tools/build-scripts/build-all "$HOME/build-server/projects/${PROJECT_NAME}"
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/build-all "$HOME/build-server/projects/${PROJECT_NAME}"
 
 		PROJECT_VERSION=$(grep -F "android:versionName" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/AndroidManifest.xml")
 

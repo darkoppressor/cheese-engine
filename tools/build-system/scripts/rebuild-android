@@ -6,9 +6,11 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-Release-Android"
+	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-Release-Android"
 
-	../Android-Prep-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	cd ../../
+	./Android-Prep-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	cd $DIR
 
 	android/linux/rebuild $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
