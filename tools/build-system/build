@@ -109,7 +109,59 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 		sed -i 's/local/home/g' "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
 
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/build-all "$HOME/build-server/projects/${PROJECT_NAME}"
+		BUILD_LINUX_64="false"
+		BUILD_LINUX_32="false"
+		BUILD_WINDOWS_64="false"
+		BUILD_WINDOWS_32="false"
+		BUILD_OSX_64="false"
+		BUILD_ANDROID="false"
+
+		if [ -f "${PROJECT_PATH}/development/build-system-targets" ]; then
+			while read line
+			do
+				if [ "$line" == "Release-Linux-x86_64" ]; then
+					BUILD_LINUX_64="true"
+				fi
+				if [ "$line" == "Release-Linux-x86" ]; then
+					BUILD_LINUX_32="true"
+				fi
+				if [ "$line" == "Cross-Compile-Windows-x86_64" ]; then
+					BUILD_WINDOWS_64="true"
+				fi
+				if [ "$line" == "Release-Windows-x86" ]; then
+					BUILD_WINDOWS_32="true"
+				fi
+				if [ "$line" == "Release-OSX-x86_64" ]; then
+					BUILD_OSX_64="true"
+				fi
+				if [[ $line == Android* ]]; then
+					BUILD_ANDROID="true"
+
+					ANDROID_ABI_TARGETS=$(echo $line | sed s/Android//)
+
+					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/jni/Application.mk"
+				fi
+			done <"${PROJECT_PATH}/development/build-system-targets"
+		fi
+
+		if [ "BUILD_LINUX_64" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86_64
+		fi
+		if [ "BUILD_LINUX_32" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86
+		fi
+		if [ "BUILD_WINDOWS_64" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Cross-Compile-Windows-x86_64
+		fi
+		if [ "BUILD_WINDOWS_32" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86
+		fi
+		if [ "BUILD_OSX_64" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-OSX-x86_64
+		fi
+		if [ "BUILD_ANDROID" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$HOME/build-server/projects/${PROJECT_NAME}"
+		fi
 
 		PROJECT_VERSION=$(grep -F "android:versionName" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/AndroidManifest.xml")
 
@@ -135,149 +187,173 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		mkdir "${PACKAGING}/${PACKAGING_LINUX}"
 		mkdir "${PACKAGING}/${PACKAGING_WINDOWS}"
 		mv "$HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_OSX}" "${PACKAGING}"
-		mkdir "${BUILDS}"
+		mkdir -p "${BUILDS}"
 
-		PACKAGE_LINUX="true"
-		PACKAGE_WINDOWS="true"
+		PACKAGE_LINUX_64="true"
+		PACKAGE_LINUX_32="true"
+		PACKAGE_WINDOWS_64="true"
+		PACKAGE_WINDOWS_32="true"
 		PACKAGE_OSX="true"
 
-		PLATFORM="Linux-x86_64"
-		BINARY="${NAME_CAPPED}-${PLATFORM}"
-		TARGET="Release-${PLATFORM}"
-		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-			chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
-			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
+		if [ "BUILD_LINUX_64" == "true" ]; then
+			PLATFORM="Linux-x86_64"
+			BINARY="${NAME_CAPPED}-${PLATFORM}"
+			TARGET="Release-${PLATFORM}"
+			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
 
-			log="Build succeeded for ${TARGET}"
-			echo "${log}" | tee -a ${LOG_FILE}
-			RESULT="${RESULT}${log}\n\n"
+				log="Build succeeded for ${TARGET}"
+				echo "${log}" | tee -a ${LOG_FILE}
+				RESULT="${RESULT}${log}\n\n"
+			else
+				BUILDS_ALL_WORKED="false"
+
+				PACKAGE_LINUX_64="false"
+
+				error="Build failed for ${TARGET}:\n"
+				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}\n\n"
+
+				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+
+				RESULT="${RESULT}${error}"
+			fi
 		else
-			BUILDS_ALL_WORKED="false"
-
-			PACKAGE_LINUX="false"
-
-			error="Build failed for ${TARGET}:\n"
-			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-			error="${error}\n\n"
-
-			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-			RESULT="${RESULT}${error}"
+			PACKAGE_LINUX_64="false"
 		fi
 
-		PLATFORM="Linux-x86"
-		BINARY="${NAME_CAPPED}-${PLATFORM}"
-		TARGET="Release-${PLATFORM}"
-		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-			chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
-			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
+		if [ "BUILD_LINUX_32" == "true" ]; then
+			PLATFORM="Linux-x86"
+			BINARY="${NAME_CAPPED}-${PLATFORM}"
+			TARGET="Release-${PLATFORM}"
+			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
 
-			log="Build succeeded for ${TARGET}"
-			echo "${log}" | tee -a ${LOG_FILE}
-			RESULT="${RESULT}${log}\n\n"
+				log="Build succeeded for ${TARGET}"
+				echo "${log}" | tee -a ${LOG_FILE}
+				RESULT="${RESULT}${log}\n\n"
+			else
+				BUILDS_ALL_WORKED="false"
+
+				PACKAGE_LINUX_32="false"
+
+				error="Build failed for ${TARGET}:\n"
+				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}\n\n"
+
+				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+
+				RESULT="${RESULT}${error}"
+			fi
 		else
-			BUILDS_ALL_WORKED="false"
-
-			PACKAGE_LINUX="false"
-
-			error="Build failed for ${TARGET}:\n"
-			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-			error="${error}\n\n"
-
-			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-			RESULT="${RESULT}${error}"
+			PACKAGE_LINUX_32="false"
 		fi
 
-		PLATFORM="Windows-x86_64"
-		BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
-		TARGET="Cross-Compile-${PLATFORM}"
-		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
+		if [ "BUILD_WINDOWS_64" == "true" ]; then
+			PLATFORM="Windows-x86_64"
+			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
+			TARGET="Cross-Compile-${PLATFORM}"
+			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
-			log="Build succeeded for ${TARGET}"
-			echo "${log}" | tee -a ${LOG_FILE}
-			RESULT="${RESULT}${log}\n\n"
+				log="Build succeeded for ${TARGET}"
+				echo "${log}" | tee -a ${LOG_FILE}
+				RESULT="${RESULT}${log}\n\n"
+			else
+				BUILDS_ALL_WORKED="false"
+
+				PACKAGE_WINDOWS_64="false"
+
+				error="Build failed for ${TARGET}:\n"
+				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}\n\n"
+
+				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+
+				RESULT="${RESULT}${error}"
+			fi
 		else
-			BUILDS_ALL_WORKED="false"
-
-			PACKAGE_WINDOWS="false"
-
-			error="Build failed for ${TARGET}:\n"
-			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-			error="${error}\n\n"
-
-			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-			RESULT="${RESULT}${error}"
+			PACKAGE_WINDOWS_64="false"
 		fi
 
-		PLATFORM="Windows-x86"
-		BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
-		TARGET="Release-${PLATFORM}"
-		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
+		if [ "BUILD_WINDOWS_32" == "true" ]; then
+			PLATFORM="Windows-x86"
+			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
+			TARGET="Release-${PLATFORM}"
+			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
-			log="Build succeeded for ${TARGET}"
-			echo "${log}" | tee -a ${LOG_FILE}
-			RESULT="${RESULT}${log}\n\n"
+				log="Build succeeded for ${TARGET}"
+				echo "${log}" | tee -a ${LOG_FILE}
+				RESULT="${RESULT}${log}\n\n"
+			else
+				BUILDS_ALL_WORKED="false"
+
+				PACKAGE_WINDOWS_32="false"
+
+				error="Build failed for ${TARGET}:\n"
+				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}\n\n"
+
+				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+
+				RESULT="${RESULT}${error}"
+			fi
 		else
-			BUILDS_ALL_WORKED="false"
-
-			PACKAGE_WINDOWS="false"
-
-			error="Build failed for ${TARGET}:\n"
-			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-			error="${error}\n\n"
-
-			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-			RESULT="${RESULT}${error}"
+			PACKAGE_WINDOWS_32="false"
 		fi
 
-		PLATFORM="OSX-x86_64"
-		BINARY="${NAME_CAPPED}-${PLATFORM}"
-		TARGET="Release-${PLATFORM}"
-		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-			mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_OSX}/Contents/MacOS/game"
+		if [ "BUILD_OSX_64" == "true" ]; then
+			PLATFORM="OSX-x86_64"
+			BINARY="${NAME_CAPPED}-${PLATFORM}"
+			TARGET="Release-${PLATFORM}"
+			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_OSX}/Contents/MacOS/game"
 
-			log="Build succeeded for ${TARGET}"
-			echo "${log}" | tee -a ${LOG_FILE}
-			RESULT="${RESULT}${log}\n\n"
+				log="Build succeeded for ${TARGET}"
+				echo "${log}" | tee -a ${LOG_FILE}
+				RESULT="${RESULT}${log}\n\n"
+			else
+				BUILDS_ALL_WORKED="false"
+
+				PACKAGE_OSX="false"
+
+				error="Build failed for ${TARGET}:\n"
+				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}\n\n"
+
+				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+
+				RESULT="${RESULT}${error}"
+			fi
 		else
-			BUILDS_ALL_WORKED="false"
-
 			PACKAGE_OSX="false"
-
-			error="Build failed for ${TARGET}:\n"
-			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-			error="${error}\n\n"
-
-			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-			RESULT="${RESULT}${error}"
 		fi
 
-		BINARY="${NAME_CAPPED}-release.apk"
-		TARGET="Release-Android"
-		if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
-			mv "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
+		if [ "BUILD_ANDROID" == "true" ]; then
+			BINARY="${NAME_CAPPED}-release.apk"
+			TARGET="Release-Android"
+			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
 
-			log="Build succeeded for ${TARGET}"
-			echo "${log}" | tee -a ${LOG_FILE}
-			echo "" | tee -a ${LOG_FILE}
-			RESULT="${RESULT}${log}\n\n"
-		else
-			BUILDS_ALL_WORKED="false"
+				log="Build succeeded for ${TARGET}"
+				echo "${log}" | tee -a ${LOG_FILE}
+				echo "" | tee -a ${LOG_FILE}
+				RESULT="${RESULT}${log}\n\n"
+			else
+				BUILDS_ALL_WORKED="false"
 
-			error="Build failed for ${TARGET}:\n"
-			error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-			error="${error}\n\n"
+				error="Build failed for ${TARGET}:\n"
+				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}\n\n"
 
-			echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-			echo "" | tee -a ${LOG_FILE}
+				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
+				echo "" | tee -a ${LOG_FILE}
 
-			RESULT="${RESULT}${error}"
+				RESULT="${RESULT}${error}"
+			fi
 		fi
 
 		CHECKSUM_DIR="$HOME/build-server/projects/${PROJECT_NAME}/data"
@@ -286,7 +362,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
 		fromdos "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
 
-		if [ "${PACKAGE_LINUX}" == "true" ]; then
+		if [ "$PACKAGE_LINUX_64" == "true" ] || [ "$PACKAGE_LINUX_32" == "true" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_LINUX}"
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_LINUX}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
@@ -301,7 +377,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cd $DIR
 		fi
 
-		if [ "${PACKAGE_WINDOWS}" == "true" ]; then
+		if [ "$PACKAGE_WINDOWS_64" == "true" ] || [ "$PACKAGE_WINDOWS_32" == "true" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
@@ -315,7 +391,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cd $DIR
 		fi
 
-		if [ "${PACKAGE_OSX}" == "true" ]; then
+		if [ "$PACKAGE_OSX" == "true" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
