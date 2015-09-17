@@ -571,7 +571,3 @@ echo "${log}" | tee -a ${LOG_FINAL}
 RESULT="${RESULT}${log}\n"
 
 $HOME/server/sendmail "${SUBJECT}" "${RESULT}"
-
-if [ "${SUCCESS}" == "true" ]; then
-	rm -rf "$HOME/build-server/projects/${PROJECT_NAME}"
-fi
