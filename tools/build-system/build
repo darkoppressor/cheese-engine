@@ -418,12 +418,10 @@ echo "${log}" | tee -a ${LOG_FINAL}
 echo "" | tee -a ${LOG_FINAL}
 RESULT="${RESULT}${log}\n\n"
 
-if [ "${SUCCESS}" == "true" ]; then
-	log="Checksum: ${CHECKSUM}"
-	echo "${log}" | tee -a ${LOG_FINAL}
-	echo "" | tee -a ${LOG_FINAL}
-	RESULT="${RESULT}${log}\n\n"
-fi
+log="${PROJECT_NAME}/data/ checksum: ${CHECKSUM}"
+echo "${log}" | tee -a ${LOG_FINAL}
+echo "" | tee -a ${LOG_FINAL}
+RESULT="${RESULT}${log}\n\n"
 
 log="$(date '+%A, %B %d, %Y')"
 echo "${log}" | tee -a ${LOG_FINAL}
