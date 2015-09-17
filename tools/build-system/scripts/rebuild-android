@@ -14,7 +14,39 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	android/linux/rebuild $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
-	android/linux/ant $PROJECT_DIRECTORY release rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
+	ALL_LIBS_EXIST="true"
+	for d in $PROJECT_DIRECTORY/development/android/libs/* ; do
+		if ! [ -e "$d/libRakNet.so" ]; then
+			ALL_LIBS_EXIST="false"
+			break
+		fi
+
+		if ! [ -e "$d/libSDL2.so" ]; then
+			ALL_LIBS_EXIST="false"
+			break
+		fi
+
+		if ! [ -e "$d/libSDL2_image.so" ]; then
+			ALL_LIBS_EXIST="false"
+			break
+		fi
+
+		if ! [ -e "$d/libSDL2_mixer.so" ]; then
+			ALL_LIBS_EXIST="false"
+			break
+		fi
+
+		if ! [ -e "$d/libmain.so" ]; then
+			ALL_LIBS_EXIST="false"
+			break
+		fi
+	done
+
+	if [ "$ALL_LIBS_EXIST" == "true" ]; then
+		android/linux/ant $PROJECT_DIRECTORY release rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
+	else
+		echo "build-android failed for $PROJECT_DIRECTORY"
+	fi
 else
 	echo "rebuild-android - rebuild the android target for the passed project"
 	echo "Usage: rebuild-android PROJECT_DIRECTORY"
