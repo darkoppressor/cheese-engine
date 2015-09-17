@@ -3,6 +3,15 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-export DISPLAY=:0.0
+PROJECT_DIRECTORY=$1
 
-./build "$@"
+if [ -n "$PROJECT_DIRECTORY" ]; then
+    export DISPLAY=:0.0
+
+    ./build "$@"
+else
+    echo "remote-build - build a Cheese Engine project remotely"
+	echo "Usage: remote-build PROJECT_DIRECTORY"
+	echo "PROJECT_DIRECTORY may be located anywhere except under '~/build-server/projects/'"
+	echo "Do 'remote-build clean' to empty the projects directory"
+fi

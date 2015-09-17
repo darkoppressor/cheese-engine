@@ -10,12 +10,11 @@ CHECKSUM=""
 LOG_FILE=""
 LOG_FILE_FALLBACK="./log-build-system"
 
-if [ "${#PROJECT_PATH}" == "0" ]; then
+if [ -z "$PROJECT_PATH" ]; then
 	echo "build - build a Cheese Engine project" | tee -a ${LOG_FILE_FALLBACK}
-	echo "Usage: build PROJECT_PATH" | tee -a ${LOG_FILE_FALLBACK}
-	echo "PROJECT_PATH may be located anywhere except under '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
-	echo "'build clean' to empty the projects directory" | tee -a ${LOG_FILE_FALLBACK}
-	echo "" | tee -a ${LOG_FILE_FALLBACK}
+	echo "Usage: build PROJECT_DIRECTORY" | tee -a ${LOG_FILE_FALLBACK}
+	echo "PROJECT_DIRECTORY may be located anywhere except under '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
+	echo "Do 'build clean' to empty the projects directory" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
 fi
