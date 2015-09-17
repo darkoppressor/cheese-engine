@@ -179,7 +179,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			RESULT="$RESULT$log\n\n"
 		fi
 		if [ "$BUILD_ANDROID" == "true" ]; then
-			log="Build target Android requested targeting ABIs: $ANDROID_ABI_TARGETS"
+			log="Build target Release-Android requested targeting ABIs: $ANDROID_ABI_TARGETS"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
@@ -220,7 +220,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-OSX-x86_64
 		fi
 		if [ "$BUILD_ANDROID" == "true" ]; then
-			log="Attempting build of Android targeting ABIs: $ANDROID_ABI_TARGETS"
+			log="Attempting build of Release-Android targeting ABIs: $ANDROID_ABI_TARGETS"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
