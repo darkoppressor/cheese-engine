@@ -113,6 +113,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		BUILD_WINDOWS_32="false"
 		BUILD_OSX_64="false"
 		BUILD_ANDROID="false"
+		ANDROID_ABI_TARGETS=""
 
 		if [ -f "${PROJECT_PATH}/development/build-system-targets" ]; then
 			while read line
@@ -153,21 +154,76 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		fi
 
 		if [ "$BUILD_LINUX_64" == "true" ]; then
+			log="Build target Release-Linux-x86_64 requested"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+		fi
+		if [ "$BUILD_LINUX_32" == "true" ]; then
+			log="Build target Release-Linux-x86 requested"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+		fi
+		if [ "$BUILD_WINDOWS_64" == "true" ]; then
+			log="Build target Cross-Compile-Windows-x86_64 requested"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+		fi
+		if [ "$BUILD_WINDOWS_32" == "true" ]; then
+			log="Build target Release-Windows-x86 requested"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+		fi
+		if [ "$BUILD_OSX_64" == "true" ]; then
+			log="Build target Release-OSX-x86_64 requested"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+		fi
+		if [ "$BUILD_ANDROID" == "true" ]; then
+			log="Build target Android requested targeting ABIs: $ANDROID_ABI_TARGETS"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+		fi
+
+		if [ "$BUILD_LINUX_64" == "true" ]; then
+			log="Attempting build of Release-Linux-x86_64"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86_64
 		fi
 		if [ "$BUILD_LINUX_32" == "true" ]; then
+			log="Attempting build of Release-Linux-x86"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86
 		fi
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
+			log="Attempting build of Cross-Compile-Windows-x86_64"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Cross-Compile-Windows-x86_64
 		fi
 		if [ "$BUILD_WINDOWS_32" == "true" ]; then
+			log="Attempting build of Release-Windows-x86"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86
 		fi
 		if [ "$BUILD_OSX_64" == "true" ]; then
+			log="Attempting build of Release-OSX-x86_64"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-OSX-x86_64
 		fi
 		if [ "$BUILD_ANDROID" == "true" ]; then
+			log="Attempting build of Android targeting ABIs: $ANDROID_ABI_TARGETS"
+			echo "$log" | tee -a $LOG_FILE
+			RESULT="$RESULT$log\n\n"
+
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$HOME/build-server/projects/${PROJECT_NAME}"
 		fi
 
