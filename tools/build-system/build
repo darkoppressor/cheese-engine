@@ -25,14 +25,12 @@ if [ "${PROJECT_PATH}" == "clean" ]; then
 	mkdir -p $HOME/build-server/projects
 
 	echo "Emptying the projects directory" | tee -a ${LOG_FILE_FALLBACK}
-	echo "" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
 fi
 
 if [[ "$(readlink -f ${PROJECT_PATH})" == $HOME/build-server/projects* ]]; then
-	echo "PROJECT_PATH must be outside of '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
-	echo "" | tee -a ${LOG_FILE_FALLBACK}
+	echo "PROJECT_DIRECTORY must be outside of '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
 fi
@@ -51,7 +49,7 @@ chmod +x $HOME/build-server/cheese-engine/tools/*-x86_64
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/*
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86
-chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/clean-android.bat
+chmod -x -f $HOME/build-server/cheese-engine/tools/build-system/scripts/clean-android.bat
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/linux/*
 
 mkdir -p $HOME/build-server/projects
@@ -142,24 +140,34 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/jni/Application.mk"
 				fi
 			done <"${PROJECT_PATH}/development/build-system-targets"
+		else
+			echo "'${PROJECT_PATH}/development/build-system-targets' does not exist" | tee -a ${LOG_FILE}
+
+			exit
 		fi
 
-		if [ "BUILD_LINUX_64" == "true" ]; then
+		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_LINUX_32" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_WINDOWS_32" == "false" ] && [ "$BUILD_OSX_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
+			echo "No targets specified for building in '${PROJECT_PATH}/development/build-system-targets'" | tee -a ${LOG_FILE}
+
+			exit
+		fi
+
+		if [ "$BUILD_LINUX_64" == "true" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86_64
 		fi
-		if [ "BUILD_LINUX_32" == "true" ]; then
+		if [ "$BUILD_LINUX_32" == "true" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86
 		fi
-		if [ "BUILD_WINDOWS_64" == "true" ]; then
+		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Cross-Compile-Windows-x86_64
 		fi
-		if [ "BUILD_WINDOWS_32" == "true" ]; then
+		if [ "$BUILD_WINDOWS_32" == "true" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86
 		fi
-		if [ "BUILD_OSX_64" == "true" ]; then
+		if [ "$BUILD_OSX_64" == "true" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-OSX-x86_64
 		fi
-		if [ "BUILD_ANDROID" == "true" ]; then
+		if [ "$BUILD_ANDROID" == "true" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$HOME/build-server/projects/${PROJECT_NAME}"
 		fi
 
@@ -195,7 +203,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		PACKAGE_WINDOWS_32="true"
 		PACKAGE_OSX="true"
 
-		if [ "BUILD_LINUX_64" == "true" ]; then
+		if [ "$BUILD_LINUX_64" == "true" ]; then
 			PLATFORM="Linux-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
@@ -223,7 +231,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_LINUX_64="false"
 		fi
 
-		if [ "BUILD_LINUX_32" == "true" ]; then
+		if [ "$BUILD_LINUX_32" == "true" ]; then
 			PLATFORM="Linux-x86"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
@@ -251,7 +259,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_LINUX_32="false"
 		fi
 
-		if [ "BUILD_WINDOWS_64" == "true" ]; then
+		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			PLATFORM="Windows-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
 			TARGET="Cross-Compile-${PLATFORM}"
@@ -278,7 +286,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_WINDOWS_64="false"
 		fi
 
-		if [ "BUILD_WINDOWS_32" == "true" ]; then
+		if [ "$BUILD_WINDOWS_32" == "true" ]; then
 			PLATFORM="Windows-x86"
 			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
 			TARGET="Release-${PLATFORM}"
@@ -305,7 +313,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_WINDOWS_32="false"
 		fi
 
-		if [ "BUILD_OSX_64" == "true" ]; then
+		if [ "$BUILD_OSX_64" == "true" ]; then
 			PLATFORM="OSX-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
@@ -332,7 +340,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_OSX="false"
 		fi
 
-		if [ "BUILD_ANDROID" == "true" ]; then
+		if [ "$BUILD_ANDROID" == "true" ]; then
 			BINARY="${NAME_CAPPED}-release.apk"
 			TARGET="Release-Android"
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
