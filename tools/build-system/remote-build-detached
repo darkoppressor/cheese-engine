@@ -15,7 +15,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
     screen -m -d -S $NAME ./build "$@"
 else
     echo "remote-build-detached - build a Cheese Engine project remotely in a detached screen session"
-	echo "Usage: remote-build-detached PROJECT_DIRECTORY"
-	echo "PROJECT_DIRECTORY may be located anywhere except under '~/build-server/projects/'"
+	echo "Usage: remote-build-detached PROJECT-DIRECTORY"
+	echo "PROJECT-DIRECTORY may be located anywhere except under '~/build-server/projects/'"
 	echo "Do 'remote-build-detached clean' to empty the projects directory"
 fi

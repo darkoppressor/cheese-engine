@@ -12,8 +12,8 @@ LOG_FILE_FALLBACK="./log-build-system"
 
 if [ -z "$PROJECT_PATH" ]; then
 	echo "build - build a Cheese Engine project" | tee -a ${LOG_FILE_FALLBACK}
-	echo "Usage: build PROJECT_DIRECTORY" | tee -a ${LOG_FILE_FALLBACK}
-	echo "PROJECT_DIRECTORY may be located anywhere except under '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
+	echo "Usage: build PROJECT-DIRECTORY" | tee -a ${LOG_FILE_FALLBACK}
+	echo "PROJECT-DIRECTORY may be located anywhere except under '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
 	echo "Do 'build clean' to empty the projects directory" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
@@ -30,7 +30,7 @@ if [ "${PROJECT_PATH}" == "clean" ]; then
 fi
 
 if [[ "$(readlink -f ${PROJECT_PATH})" == $HOME/build-server/projects* ]]; then
-	echo "PROJECT_DIRECTORY must be outside of '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
+	echo "PROJECT-DIRECTORY must be outside of '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
 fi
