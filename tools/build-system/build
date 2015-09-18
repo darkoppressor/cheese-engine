@@ -251,6 +251,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		mkdir "${PACKAGING}/${PACKAGING_LINUX}"
 		mkdir "${PACKAGING}/${PACKAGING_WINDOWS}"
 		mv "$HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_OSX}" "${PACKAGING}"
+		mkdir -p "$PACKAGING/$PACKAGING_OSX/Contents/MacOS"
+		mkdir -p "$PACKAGING/$PACKAGING_OSX/Contents/Resources"
 		mkdir -p "${BUILDS}"
 
 		PACKAGE_LINUX_64="true"
