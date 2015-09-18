@@ -7,7 +7,7 @@ PROJECT_DIRECTORY=$1
 TARGET=$2
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
-	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-$TARGET"
+	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-$TARGET"
 
 	codeblocks --rebuild --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp" >> "$PROJECT_DIRECTORY/log-$TARGET"
 else

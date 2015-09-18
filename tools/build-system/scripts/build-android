@@ -6,7 +6,7 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-Release-Android"
+	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	cd ../../
 	./Android-Prep-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
@@ -33,27 +33,27 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		ANDROID_ABI_RESULTS="$ANDROID_ABI_RESULTS $LIB_NAME"
 
 		if ! [ -e "$d/libRakNet.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.so'"
+			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libSDL2.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.so'"
+			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libSDL2_image.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.so'"
+			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libSDL2_mixer.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.so'"
+			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libmain.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libmain.so'"
+			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libmain.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 	done
@@ -61,7 +61,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	IFS=' ' read -a ARRAY <<< "$ANDROID_ABI_TARGETS"
 	for i in "${ARRAY[@]}" ; do
 		if ! [[ $ANDROID_ABI_RESULTS == *"$i"* ]]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing ABI '$i'"
+			echo "build-android failed for $PROJECT_DIRECTORY: missing ABI '$i'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 	done
