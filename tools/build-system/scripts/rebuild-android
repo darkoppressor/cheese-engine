@@ -69,5 +69,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	android/linux/ant $PROJECT_DIRECTORY release rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
 else
 	echo "rebuild-android - rebuild the android target for the passed project"
-	echo "Usage: rebuild-android PROJECT_DIRECTORY"
+	echo "Usage: rebuild-android PROJECT-DIRECTORY"
 fi

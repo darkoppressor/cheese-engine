@@ -10,5 +10,5 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 	codeblocks --clean --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp"
 else
 	echo "clean-target - clean the passed target for the passed project"
-	echo "Usage: clean-target PROJECT_DIRECTORY TARGET"
+	echo "Usage: clean-target PROJECT-DIRECTORY TARGET"
 fi

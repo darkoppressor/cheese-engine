@@ -69,5 +69,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	android/linux/ant $PROJECT_DIRECTORY release >> "$PROJECT_DIRECTORY/log-Release-Android"
 else
 	echo "build-android - build the android target for the passed project"
-	echo "Usage: build-android PROJECT_DIRECTORY"
+	echo "Usage: build-android PROJECT-DIRECTORY"
 fi

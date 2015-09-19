@@ -12,5 +12,5 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 	codeblocks --rebuild --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp" >> "$PROJECT_DIRECTORY/log-$TARGET"
 else
 	echo "rebuild-target - rebuild the passed target for the passed project"
-	echo "Usage: rebuild-target PROJECT_DIRECTORY TARGET"
+	echo "Usage: rebuild-target PROJECT-DIRECTORY TARGET"
 fi

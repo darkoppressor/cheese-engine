@@ -19,5 +19,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	./rebuild-android $PROJECT_DIRECTORY
 else
 	echo "rebuild-all - rebuild all targets for the passed project"
-	echo "Usage: rebuild-all PROJECT_DIRECTORY"
+	echo "Usage: rebuild-all PROJECT-DIRECTORY"
 fi

@@ -3,9 +3,9 @@ This file contains instructions for starting a new game project from the templat
 Automated
 *********
 
-Most of this can be automated on Windows/Linux. Do:
-'cheese-engine/tools/Rename-Template-Windows-x86_64.exe project-directory project-name' OR
-'cheese-engine/tools/Rename-Template-Linux-x86_64 project-directory project-name'
+Most of this can be automated on Linux/Windows. Do:
+'cheese-engine/tools/Rename-Template-Windows-x86_64.exe PROJECT-DIRECTORY PROJECT-NAME' OR
+'cheese-engine/tools/Rename-Template-Linux-x86_64 PROJECT-DIRECTORY PROJECT-NAME'
 
 After running the renaming program:
 Enable any relevant permissions/features for Android as instructed in the Android section below

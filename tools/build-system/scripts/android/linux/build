@@ -11,5 +11,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	/home/tails/build-server/android/android-ndk/ndk-build
 else
 	echo "build - run ndk-build on the passed project"
-	echo "Usage: build PROJECT_DIRECTORY"
+	echo "Usage: build PROJECT-DIRECTORY"
 fi

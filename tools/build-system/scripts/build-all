@@ -19,5 +19,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	./build-android $PROJECT_DIRECTORY
 else
 	echo "build-all - build all targets for the passed project"
-	echo "Usage: build-all PROJECT_DIRECTORY"
+	echo "Usage: build-all PROJECT-DIRECTORY"
 fi

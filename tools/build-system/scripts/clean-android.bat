@@ -35,5 +35,5 @@ if not [%PROJECT_DIRECTORY%] == [] (
 	del "%PROJECT_DIRECTORY%\development\android\local.properties"
 ) else (
 	echo "clean-android - clean the android target for the passed project"
-	echo "Usage: clean-android PROJECT_DIRECTORY"
+	echo "Usage: clean-android PROJECT-DIRECTORY"
 )

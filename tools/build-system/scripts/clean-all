@@ -19,5 +19,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	./clean-android $PROJECT_DIRECTORY
 else
 	echo "clean-all - clean all targets for the passed project"
-	echo "Usage: clean-all PROJECT_DIRECTORY"
+	echo "Usage: clean-all PROJECT-DIRECTORY"
 fi

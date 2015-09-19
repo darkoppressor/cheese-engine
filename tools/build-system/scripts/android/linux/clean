@@ -11,5 +11,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	/home/tails/build-server/android/android-ndk/ndk-build clean
 else
 	echo "clean - run ndk-build clean on the passed project"
-	echo "Usage: clean PROJECT_DIRECTORY"
+	echo "Usage: clean PROJECT-DIRECTORY"
 fi

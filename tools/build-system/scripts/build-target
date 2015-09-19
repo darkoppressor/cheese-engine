@@ -12,5 +12,5 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 	codeblocks --build --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp" >> "$PROJECT_DIRECTORY/log-$TARGET"
 else
 	echo "build-target - build the passed target for the passed project"
-	echo "Usage: build-target PROJECT_DIRECTORY TARGET"
+	echo "Usage: build-target PROJECT-DIRECTORY TARGET"
 fi
