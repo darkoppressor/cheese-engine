@@ -1,10 +1,6 @@
------------------------------------------------
 Add text colors to buttons, windows, tooltips, and toasts
------------------------------------------------
 
------------------------------------------------
 Scroll bar for scrolling buttons and text
------------------------------------------------
 
 -----------------------------------------------
 Mod support
@@ -60,13 +56,37 @@ overriding previous data stuff, while asset files are looked at from highest -> 
 I think it would be OK, and confusion aside, would be very easy to use
 -----------------------------------------------
 
------------------------------------------------
+Convert the rest of Engine_Interface's load_*() functions to use the new Data_Reader class functions
+
+Maybe all those engine interface functions that return pointers to various objects
+should each have an "error" object of the corresponding type that they can return
+if they can't find the passed thing
+Those objects that are created via scripts could even be hardcoded into the engine, maybe
+I could even add a dev option that turns on "crash mode",
+and instead of returning error objects, the game just returns null pointers like it does currently
+
+All error messages are located in a script
+Would need a new 'error log add' function
+that takes an error message name and presents the correct message
+Needs to handle an invalid error name
+Maybe combine log and error messages into one thing, with a need to specify the type of message
+
+With mutable text:
+Clicking beyond the end of a line should move the cursor to the end of that line
+Clicking below the last line should move the cursor to the last line
+
+Unit testing for the engine
+
+Other platforms for the Cheese Engine:
+BSDs
+iOS
+
+Dedicated server mode
+
 Add android mic recording support
 Add audio comparison code
 Could be used in say bit beast for calling your pet by name
------------------------------------------------
 
------------------------------------------------
 A program that runs in the background (service on android, maybe a regular program on other platforms) that knows where save data is for cheese and bacon games' games
 Its purpose would be to detect other instances of the program on other devices
 Then it could do street pass like stuff
@@ -94,4 +114,3 @@ Swapping is enabled on a pergame basis
 The swap file contains the permission boolean, along with the game specific data, which is simply swapped out all in one big string
 Received swap data for a game is stored in a swap incoming file, inside of a <swap> block
 If both programs have a game in common, its data is swapped
------------------------------------------------
