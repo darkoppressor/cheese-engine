@@ -4,13 +4,13 @@
 	width:256
 	height:48
 	title:Network Options
-	
+
 	<info>
 		location:2,18
 		text:Name:
 		font:small
 	</info>
-	
+
 	<info>
 		location:25,18
 		mutable:true
@@ -19,13 +19,13 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:100,18
 		text:Chat Timestamps:
 		font:small
 	</info>
-	
+
 	<button>
 		location:167,18
 		states:Off,On
@@ -33,7 +33,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:100,32
 		text:OK
@@ -42,7 +42,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:111,32
 		text:Apply
@@ -51,7 +51,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:134,32
 		text:Cancel
@@ -60,5 +60,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

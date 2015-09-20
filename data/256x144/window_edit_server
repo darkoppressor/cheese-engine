@@ -4,12 +4,12 @@
 	width:256
 	height:104
 	title:Edit Server
-	
+
 	<info>
 		location:2,18
 		text:Name:
 	</info>
-	
+
 	<info>
 		location:5,32
 		mutable:true
@@ -18,12 +18,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,46
 		text:Address:
 	</info>
-	
+
 	<info>
 		location:70,46
 		mutable:true
@@ -32,12 +32,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,60
 		text:Port:
 	</info>
-	
+
 	<info>
 		location:70,60
 		mutable:true
@@ -46,12 +46,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,74
 		text:Password:
 	</info>
-	
+
 	<info>
 		location:70,74
 		mutable:true
@@ -60,7 +60,7 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<button>
 		location:107,88
 		text:OK
@@ -68,7 +68,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:128,88
 		text:Cancel
@@ -76,5 +76,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

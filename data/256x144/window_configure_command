@@ -5,23 +5,23 @@
 	height:144
 	title:Configure Command
 	close_function:configure_command
-	
+
 	<info>
 		location:2,18
 		special_text:configure_command
 		font:small
 	</info>
-	
+
 	<info>
 		location:-1,74
 		text:Press a key, button, or axis\nto bind it to this command
 		font:small
 	</info>
-	
+
 	<info>
 		location:-1,102
 		text:To cancel:\nPress the Escape key,\nStart, or Back
 		font:small
 	</info>
-	
+
 </window>

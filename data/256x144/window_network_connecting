@@ -5,12 +5,12 @@
 	height:48
 	disallow_closing:true
 	exclusive:true
-	
+
 	<info>
 		location:2,18
 		text:Attempting to connect to server...
 	</info>
-	
+
 	<button>
 		location:-1,32
 		text:Cancel
@@ -18,5 +18,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

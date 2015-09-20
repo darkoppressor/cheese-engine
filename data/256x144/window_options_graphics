@@ -4,13 +4,13 @@
 	width:256
 	height:76
 	title:Graphics Options
-	
+
 	<info>
 		location:2,18
 		text:Screen Width:
 		font:small
 	</info>
-	
+
 	<info>
 		location:60,18
 		mutable:true
@@ -19,13 +19,13 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:90,18
 		text:Fullscreen:
 		font:small
 	</info>
-	
+
 	<button>
 		location:156,18
 		states:Off,On
@@ -33,13 +33,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:192,18
 		text:Vsync:
 		font:small
 	</info>
-	
+
 	<button>
 		location:218,18
 		states:Off,On
@@ -47,13 +47,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:2,32
 		text:Screen Height:
 		font:small
 	</info>
-	
+
 	<info>
 		location:60,32
 		mutable:true
@@ -62,13 +62,13 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:90,32
 		text:Fullscreen Mode:
 		font:small
 	</info>
-	
+
 	<button>
 		location:156,32
 		states:Standard,Desktop,Windowed
@@ -76,13 +76,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:192,32
 		text:Show FPS:
 		font:small
 	</info>
-	
+
 	<button>
 		location:230,32
 		states:Off,On
@@ -90,13 +90,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:2,46
 		text:Hardware Cursor:
 		font:small
 	</info>
-	
+
 	<button>
 		location:68,46
 		states:Off,On
@@ -104,13 +104,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:90,46
 		text:Font Shadows:
 		font:small
 	</info>
-	
+
 	<button>
 		location:144,46
 		states:Off,On
@@ -118,13 +118,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:166,46
 		text:Display Number:
 		font:small
 	</info>
-	
+
 	<info>
 		location:228,46
 		mutable:true
@@ -133,7 +133,7 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<button>
 		location:100,60
 		text:OK
@@ -142,7 +142,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:111,60
 		text:Apply
@@ -151,7 +151,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:134,60
 		text:Cancel
@@ -160,5 +160,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

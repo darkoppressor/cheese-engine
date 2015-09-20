@@ -4,7 +4,7 @@
 	width:100
 	height:62
 	title:Main Menu
-	
+
 	<button>
 		location:-1,18
 		text:Play
@@ -12,7 +12,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:-1,32
 		text:Options
@@ -20,7 +20,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:-1,46
 		text:Quit
@@ -28,5 +28,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

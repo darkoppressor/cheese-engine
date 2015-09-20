@@ -5,7 +5,7 @@
 	height:144
 	title:LAN Servers
 	scrolling_buttons:lan_server_list
-	
+
 	<button>
 		location:17,18
 		text:Direct IP
@@ -13,7 +13,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:87,18
 		text:Refresh
@@ -21,7 +21,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:143,18
 		text:Quick Refresh
@@ -29,5 +29,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

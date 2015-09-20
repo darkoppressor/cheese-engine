@@ -4,13 +4,13 @@
 	width:256
 	height:90
 	title:Input Options
-	
+
 	<info>
 		location:2,18
 		text:Bind Cursor to Window:
 		font:small
 	</info>
-	
+
 	<button>
 		location:93,18
 		states:Off,On
@@ -18,13 +18,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:2,32
 		text:Screen Keyboard:
 		font:small
 	</info>
-	
+
 	<button>
 		location:69,32
 		states:Off,On
@@ -32,13 +32,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:2,46
 		text:Accelerometer:
 		font:small
 	</info>
-	
+
 	<button>
 		location:61,46
 		states:Off,On
@@ -46,13 +46,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:2,60
 		text:Touch Controller:
 		font:small
 	</info>
-	
+
 	<button>
 		location:73,60
 		states:Off,On
@@ -60,13 +60,13 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:87,60
 		text:Touch Controller Opacity:
 		font:small
 	</info>
-	
+
 	<button>
 		location:190,60
 		states:Low,Medium,High
@@ -74,7 +74,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:2,74
 		text:Configure Commands
@@ -83,7 +83,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:100,74
 		text:OK
@@ -92,7 +92,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:111,74
 		text:Apply
@@ -101,7 +101,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:134,74
 		text:Cancel
@@ -110,5 +110,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

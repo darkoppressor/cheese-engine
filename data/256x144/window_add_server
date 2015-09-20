@@ -4,12 +4,12 @@
 	width:256
 	height:92
 	title:Add Server
-	
+
 	<info>
 		location:2,18
 		text:Name:
 	</info>
-	
+
 	<info>
 		location:70,18
 		mutable:true
@@ -18,12 +18,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,32
 		text:Address:
 	</info>
-	
+
 	<info>
 		location:70,32
 		mutable:true
@@ -32,12 +32,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,46
 		text:Port:
 	</info>
-	
+
 	<info>
 		location:70,46
 		mutable:true
@@ -46,12 +46,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,60
 		text:Password:
 	</info>
-	
+
 	<info>
 		location:70,60
 		mutable:true
@@ -60,7 +60,7 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<button>
 		location:100,76
 		text:Add
@@ -68,7 +68,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:128,76
 		text:Cancel
@@ -76,5 +76,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

@@ -4,12 +4,12 @@
 	width:704
 	height:85
 	title:Network Options
-	
+
 	<info>
 		location:2,36
 		text:Name:
 	</info>
-	
+
 	<info>
 		location:69,36
 		mutable:true
@@ -17,19 +17,19 @@
 		allowed_input:backspace,space,numbers,letters,symbols
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:275,36
 		text:Chat Timestamps:
 	</info>
-	
+
 	<button>
 		location:459,36
 		states:Off,On
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:265,58
 		text:OK
@@ -37,7 +37,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:300,58
 		text:Apply
@@ -45,7 +45,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:368,58
 		text:Cancel
@@ -53,5 +53,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

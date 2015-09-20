@@ -4,12 +4,12 @@
 	width:355
 	height:129
 	title:Start Multiplayer Server
-	
+
 	<info>
 		location:2,36
 		text:Name:
 	</info>
-	
+
 	<info>
 		location:5,58
 		mutable:true
@@ -18,12 +18,12 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<info>
 		location:2,80
 		text:Password:
 	</info>
-	
+
 	<info>
 		location:106,80
 		mutable:true
@@ -32,7 +32,7 @@
 		font:small
 		background_type:standard
 	</info>
-	
+
 	<button>
 		location:130,102
 		text:OK
@@ -40,7 +40,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:165,102
 		text:Cancel
@@ -48,5 +48,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>

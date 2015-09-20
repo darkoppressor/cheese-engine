@@ -4,36 +4,36 @@
 	width:704
 	height:173
 	title:Options
-	
+
 	<info>
 		location:2,36
 		text:Screen Shake:
 	</info>
-	
+
 	<button>
 		location:157,36
 		states:Off,On
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:295,36
 		text:Rumble:
 	</info>
-	
+
 	<button>
 		location:384,36
 		states:Off,On
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<info>
 		location:2,58
 		text:Effect Limit:
 	</info>
-	
+
 	<info>
 		location:157,58
 		mutable:true
@@ -41,7 +41,7 @@
 		allowed_input:numbers,backspace
 		background_type:standard
 	</info>
-	
+
 	<button>
 		location:2,80
 		text:Graphics Options
@@ -49,7 +49,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:2,102
 		text:Audio Options
@@ -57,7 +57,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:2,124
 		text:Input Options
@@ -65,7 +65,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:2,146
 		text:Show Save Location
@@ -73,7 +73,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:265,146
 		text:OK
@@ -81,7 +81,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:300,146
 		text:Apply
@@ -89,7 +89,7 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 	<button>
 		location:368,146
 		text:Cancel
@@ -97,5 +97,5 @@
 		sound_moused:moused_1
 		sound_click:click_1
 	</button>
-	
+
 </window>
