@@ -32,6 +32,9 @@ development/android/local.properties
 /*error_log.txt
 /*servers.txt
 
+/*_TEMPORARY
+/*_BACKUP
+
 /*.dll
 /*.depend
 /*.cscope_file_list
