@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+#echo "clean-android - clean the android target for the Cheese Engine"
+#echo "Usage: clean-android"
+
+rm -rf "assets/"
+rm -rf "bin/"
+rm -rf "gen/"
+rm -rf "libs/"
+rm -rf "obj/"
+
+unlink "jni/SDL2"
+unlink "jni/SDL2_image"
+unlink "jni/SDL2_mixer"
+unlink "jni/RakNet"
+unlink "jni/boost"

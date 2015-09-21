@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+#echo "android-prep - prepare the android/ directory of the Cheese Engine for building"
+#echo "Usage: android-prep"
+
+ln -s "/home/tails/build-server/android/SDL2" "jni/SDL2"
+ln -s "/home/tails/build-server/android/SDL2_image" "jni/SDL2_image"
+ln -s "/home/tails/build-server/android/SDL2_mixer" "jni/SDL2_mixer"
+ln -s "/home/tails/build-server/android/raknet/raknet" "jni/RakNet"
+ln -s "/home/tails/build-server/linux-x86_64/boost" "jni/boost"

@@ -12,13 +12,18 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$PROJECT_DIRECTORY/development/android/libs/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/obj/"
 
-	unlink "$PROJECT_DIRECTORY/development/android/jni/SDL2"
-	unlink "$PROJECT_DIRECTORY/development/android/jni/SDL2_image"
-	unlink "$PROJECT_DIRECTORY/development/android/jni/SDL2_mixer"
-	unlink "$PROJECT_DIRECTORY/development/android/jni/RakNet"
-	unlink "$PROJECT_DIRECTORY/development/android/jni/boost"
+	rm -rf "$PROJECT_DIRECTORY/development/android/jni/armeabi/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/jni/armeabi-v7a/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/jni/x86/"
 
-	rm -f "$PROJECT_DIRECTORY/development/android/jni/src/Android.mk"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/include/SDL2"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/include/SDL2_image"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/include/SDL2_mixer"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/include/RakNet"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/include/boost"
+	unlink "$PROJECT_DIRECTORY/development/android/jni/include/cheese-engine"
+
+	rm -rf "$PROJECT_DIRECTORY/development/android/jni/include/"
 
 	rm -f "$PROJECT_DIRECTORY/development/android/ant.properties"
 	rm -f "$PROJECT_DIRECTORY/development/android/local.properties"
