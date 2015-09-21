@@ -3,6 +3,7 @@ screenshots/**
 
 tools/*.exe
 tools/*Linux-x86_64
+/*.a
 
 development/android/assets/**
 development/android/bin/**
