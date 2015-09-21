@@ -23,7 +23,7 @@ STATUS is optional, can be any string, and will change the release status to wha
 
 All Platforms
 -------------
-Update the information in version.h
+Update the information in version.cpp
 
 OS X
 ----
@@ -100,7 +100,7 @@ Clean up (by removing all build-related files such as binaries, object files,
 the stuff created by the prep program, etc.) by running:
 'cheese-engine/tools/build-system/scripts/clean-android.bat PROJECT-DIRECTORY' OR
 'cheese-engine/tools/build-system/scripts/clean-android PROJECT-DIRECTORY'
-DO NOT forget to run this, as it removes the symlinks that the prep program creates in development/android/jni/
+DO NOT forget to run this, as it removes the symlinks that the prep program creates in development/android/jni/include/
 
 Step 3 - Package
 ****************
