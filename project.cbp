@@ -359,8 +359,30 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="collision.cpp" />
+		<Unit filename="collision.h" />
+		<Unit filename="color.cpp" />
+		<Unit filename="color.h" />
+		<Unit filename="coords.cpp" />
+		<Unit filename="coords.h" />
+		<Unit filename="directories.cpp" />
+		<Unit filename="directories.h" />
+		<Unit filename="engine.cpp" />
+		<Unit filename="engine.h" />
+		<Unit filename="engine_math.cpp" />
+		<Unit filename="engine_math.h" />
 		<Unit filename="engine_version.cpp" />
 		<Unit filename="engine_version.h" />
+		<Unit filename="file_io.cpp" />
+		<Unit filename="file_io.h" />
+		<Unit filename="log.cpp" />
+		<Unit filename="log.h" />
+		<Unit filename="math_vector.cpp" />
+		<Unit filename="math_vector.h" />
+		<Unit filename="pixels.cpp" />
+		<Unit filename="pixels.h" />
+		<Unit filename="strings.cpp" />
+		<Unit filename="strings.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
