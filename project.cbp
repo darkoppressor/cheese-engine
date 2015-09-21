@@ -359,6 +359,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="engine_version.cpp" />
+		<Unit filename="engine_version.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
