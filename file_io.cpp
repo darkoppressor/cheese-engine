@@ -243,7 +243,7 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
     }
 
     if(save_file(path_temp,data,append,binary)){
-        if(backup && exists(path)){
+        if(backup){
             string path_backup=path+SAVE_SUFFIX_BACKUP;
 
             if(exists(path_backup)){
@@ -252,8 +252,15 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
                 }
             }
 
-            if(!rename_file(path,path_backup)){
-                return false;
+            if(exists(path)){
+                if(!rename_file(path,path_backup)){
+                    return false;
+                }
+            }
+            else{
+                if(!copy_file(path_temp,path_backup)){
+                    return false;
+                }
             }
         }
 
