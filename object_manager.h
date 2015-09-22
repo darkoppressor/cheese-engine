@@ -8,6 +8,7 @@
 #include "file_io.h"
 #include "color.h"
 #include "animation.h"
+#include "controller.h"
 
 #include <vector>
 #include <string>

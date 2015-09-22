@@ -6,11 +6,14 @@
 #define options_h
 
 #include <string>
+#include <stdint.h>
 
 class Options{
 public:
 
     static std::string save_location;
+
+    static std::string version;
 
     static int screen_width;
     static int screen_height;
@@ -36,6 +39,16 @@ public:
     static bool mute_global;
     static bool mute_sound;
     static bool mute_music;
+
+    static uint32_t effect_limit;
+    static double camera_speed;
+    static double camera_zoom;
+    static std::string name;
+    static bool chat_timestamps;
+    static uint32_t max_players;
+    static bool screen_shake;
+    static bool rumble;
+    static bool screensaver;
 };
 
 #endif

@@ -5,10 +5,29 @@
 #ifndef engine_h
 #define engine_h
 
+#include <string>
+#include <stdint.h>
+
+#include <SDL.h>
+
 class Engine{
 public:
 
+    static double UPDATE_RATE;
+    static double SKIP_TICKS;
+
+    static double UPDATE_RATE_RENDER;
+    static double SKIP_TICKS_RENDER;
+
     static bool world_loaded;
+
+    static std::string CHECKSUM;
+
+    static SDL_Event event;
+
+    static void compute_checksum();
+
+    static void get_rgba_masks(uint32_t* rmask,uint32_t* gmask,uint32_t* bmask,uint32_t* amask);
 };
 
 #endif
