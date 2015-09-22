@@ -13,7 +13,6 @@ public:
     static std::string CURRENT_WORKING_DIRECTORY;
 
     static std::string home_directory;
-    static std::string option_save_location;
 
     static bool save_location_loaded;
 

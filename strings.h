@@ -78,7 +78,7 @@ public:
     static void slashes_to_backslash(std::string* str_input);
 
     template<typename Number_Type>
-    inline static std::string num_to_string(const Number_Type& number,int precision=10,bool show_point=false,std::string notation="default"){
+    static std::string num_to_string(const Number_Type& number,int precision=10,bool show_point=false,std::string notation="default"){
         std::stringstream strstream("");
 
         strstream.precision(precision);
@@ -100,7 +100,7 @@ public:
     }
 
     template<typename Number_Type>
-    inline static std::string convert_num_to_roman_numeral(const Number_Type& number){
+    static std::string convert_num_to_roman_numeral(const Number_Type& number){
         std::string message="";
 
         int num=(int)number;

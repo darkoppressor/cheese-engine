@@ -6,6 +6,7 @@
 #include "file_io.h"
 #include "log.h"
 #include "strings.h"
+#include "options.h"
 
 #include <SDL.h>
 
@@ -18,7 +19,6 @@ using namespace std;
 string Directories::CURRENT_WORKING_DIRECTORY="./";
 
 string Directories::home_directory="";
-string Directories::option_save_location="";
 
 bool Directories::save_location_loaded=false;
 
@@ -56,7 +56,7 @@ string Directories::get_save_directory_absolute(){
 string Directories::get_save_directory(){
     string str_home="./";
 
-    if(option_save_location=="home"){
+    if(Options::save_location=="home"){
         string game_name=home_directory;
         #ifdef GAME_DEMO
             game_name+="-demo";
@@ -145,7 +145,7 @@ string Directories::get_save_directory(){
 }
 
 void Directories::make_home_directory(){
-    if(option_save_location=="home"){
+    if(Options::save_location=="home"){
         #ifdef GAME_OS_WINDOWS
             string str_my_games=getenv("USERPROFILE");
             str_my_games+="/My Documents/My Games";
