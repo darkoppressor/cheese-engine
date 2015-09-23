@@ -259,10 +259,10 @@ const int Android::SENSOR_TYPE_STEP_DETECTOR=18;
 
 bool Android::initialized=false;
 
+Android_Sensor Android::sensors[SENSOR_TYPE_COUNT];
+
 void Android::initialize(){
     if(!initialized){
-        initialized=true;
-
         vector<string> value_labels;
 
         value_labels.clear();
@@ -367,6 +367,8 @@ void Android::initialize(){
         #ifdef GAME_OS_ANDROID
             jni_initialize();
         #endif
+
+        initialized=true;
     }
 }
 

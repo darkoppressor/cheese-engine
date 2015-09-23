@@ -16,7 +16,7 @@ public:
 
     Rtt_Data();
 
-    void create_texture(SDL_Renderer* renderer,double get_w,double get_h);
+    void create_texture(double get_w,double get_h);
     void unload_texture();
 };
 

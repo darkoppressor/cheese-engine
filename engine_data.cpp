@@ -53,3 +53,5 @@ string Engine_Data::game_title="";
 string Engine_Data::developer="";
 
 int Engine_Data::controller_dead_zone=0;
+
+vector<string> Engine_Data::starting_windows;

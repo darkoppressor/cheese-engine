@@ -8,6 +8,7 @@
 #include "render.h"
 #include "engine_data.h"
 #include "options.h"
+#include "game_window.h"
 
 using namespace std;
 
@@ -181,7 +182,7 @@ void Touch_Controller::scale(double resolution_x,double resolution_y){
     guide.y=anchor_middle.y+(anchor_h_middle-button_h_middle)/2.0;
 }
 
-bool Touch_Controller::check_button_state(SDL_Renderer* renderer,SDL_GameControllerButton button){
+bool Touch_Controller::check_button_state(SDL_GameControllerButton button){
     for(int i=0;i<SDL_GetNumTouchDevices();i++){
         SDL_TouchID touch_device_id=SDL_GetTouchDevice(i);
 
@@ -190,7 +191,7 @@ bool Touch_Controller::check_button_state(SDL_Renderer* renderer,SDL_GameControl
                 SDL_Finger* touch_finger=SDL_GetTouchFinger(touch_device_id,j);
 
                 if(touch_finger!=0){
-                    vector<SDL_GameControllerButton> touch_buttons=check_for_button_press(renderer,touch_finger->x,touch_finger->y);
+                    vector<SDL_GameControllerButton> touch_buttons=check_for_button_press(touch_finger->x,touch_finger->y);
 
                     for(int t=0;t<touch_buttons.size();t++){
                         if(touch_buttons[t]==button){
@@ -205,10 +206,10 @@ bool Touch_Controller::check_button_state(SDL_Renderer* renderer,SDL_GameControl
     return false;
 }
 
-vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(SDL_Renderer* renderer,float x,float y){
+vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(float x,float y){
     int actual_width=0;
     int actual_height=0;
-    SDL_GetRendererOutputSize(renderer,&actual_width,&actual_height);
+    Game_Window::get_renderer_output_size(&actual_width,&actual_height);
 
     double touch_x=x*(float)actual_width;
     double touch_y=y*(float)actual_height;
@@ -303,42 +304,42 @@ vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(SDL_Re
     return touch_buttons;
 }
 
-void Touch_Controller::render(SDL_Renderer* renderer,int SCREEN_WIDTH,int SCREEN_HEIGHT){
+void Touch_Controller::render(){
     int actual_width=0;
     int actual_height=0;
-    SDL_GetRendererOutputSize(renderer,&actual_width,&actual_height);
+    Game_Window::get_renderer_output_size(&actual_width,&actual_height);
 
-    double scale_x=(double)SCREEN_WIDTH/(double)actual_width;
-    double scale_y=(double)SCREEN_HEIGHT/(double)actual_height;
+    double scale_x=(double)Game_Window::SCREEN_WIDTH/(double)actual_width;
+    double scale_y=(double)Game_Window::SCREEN_HEIGHT/(double)actual_height;
     double scale_mean=(scale_x+scale_y)/2.0;
 
     Image_Data* image_dpad=Image_Manager::get_image("touch_controller_dpad");
-    Render::render_texture(renderer,anchor_dpad.x*scale_x-anchor_dpad.r*scale_mean,anchor_dpad.y*scale_y-anchor_dpad.r*scale_mean,image_dpad,Options::touch_controller_opacity,scale_anchor_dpad*scale_mean,scale_anchor_dpad*scale_mean);
+    Render::render_texture(anchor_dpad.x*scale_x-anchor_dpad.r*scale_mean,anchor_dpad.y*scale_y-anchor_dpad.r*scale_mean,image_dpad,Options::touch_controller_opacity,scale_anchor_dpad*scale_mean,scale_anchor_dpad*scale_mean);
 
     if(Engine_Data::touch_controller_xy){
         Image_Data* image_main=Image_Manager::get_image("touch_controller_main");
-        Render::render_texture(renderer,anchor_main.x*scale_x-anchor_main.r*scale_mean,anchor_main.y*scale_y-anchor_main.r*scale_mean,image_main,Options::touch_controller_opacity,scale_anchor_main*scale_mean,scale_anchor_main*scale_mean);
+        Render::render_texture(anchor_main.x*scale_x-anchor_main.r*scale_mean,anchor_main.y*scale_y-anchor_main.r*scale_mean,image_main,Options::touch_controller_opacity,scale_anchor_main*scale_mean,scale_anchor_main*scale_mean);
     }
     else{
         Image_Data* image_main=Image_Manager::get_image("touch_controller_main_small");
-        Render::render_texture(renderer,anchor_main.x*scale_x-anchor_main.r*scale_mean,anchor_main.y*scale_y-anchor_main.r*scale_mean,image_main,Options::touch_controller_opacity,scale_anchor_main*scale_mean,scale_anchor_main*scale_mean);
+        Render::render_texture(anchor_main.x*scale_x-anchor_main.r*scale_mean,anchor_main.y*scale_y-anchor_main.r*scale_mean,image_main,Options::touch_controller_opacity,scale_anchor_main*scale_mean,scale_anchor_main*scale_mean);
     }
 
     if(Engine_Data::touch_controller_shoulders){
         Image_Data* image_shoulder_left=Image_Manager::get_image("touch_controller_shoulder_left");
-        Render::render_texture(renderer,shoulder_left.x*scale_x-shoulder_left.r*scale_mean,shoulder_left.y*scale_y-shoulder_left.r*scale_mean,image_shoulder_left,Options::touch_controller_opacity,scale_shoulders*scale_mean,scale_shoulders*scale_mean);
+        Render::render_texture(shoulder_left.x*scale_x-shoulder_left.r*scale_mean,shoulder_left.y*scale_y-shoulder_left.r*scale_mean,image_shoulder_left,Options::touch_controller_opacity,scale_shoulders*scale_mean,scale_shoulders*scale_mean);
 
         Image_Data* image_shoulder_right=Image_Manager::get_image("touch_controller_shoulder_right");
-        Render::render_texture(renderer,shoulder_right.x*scale_x-shoulder_right.r*scale_mean,shoulder_right.y*scale_y-shoulder_right.r*scale_mean,image_shoulder_right,Options::touch_controller_opacity,scale_shoulders*scale_mean,scale_shoulders*scale_mean);
+        Render::render_texture(shoulder_right.x*scale_x-shoulder_right.r*scale_mean,shoulder_right.y*scale_y-shoulder_right.r*scale_mean,image_shoulder_right,Options::touch_controller_opacity,scale_shoulders*scale_mean,scale_shoulders*scale_mean);
     }
 
     if(Engine_Data::touch_controller_guide){
         Image_Data* image_middle=Image_Manager::get_image("touch_controller_middle");
-        Render::render_texture(renderer,anchor_middle.x*scale_x,anchor_middle.y*scale_y,image_middle,Options::touch_controller_opacity,scale_anchor_middle_x*scale_x,scale_anchor_middle_y*scale_y);
+        Render::render_texture(anchor_middle.x*scale_x,anchor_middle.y*scale_y,image_middle,Options::touch_controller_opacity,scale_anchor_middle_x*scale_x,scale_anchor_middle_y*scale_y);
     }
     else{
         Image_Data* image_middle=Image_Manager::get_image("touch_controller_middle_small");
-        Render::render_texture(renderer,anchor_middle.x*scale_x,anchor_middle.y*scale_y,image_middle,Options::touch_controller_opacity,scale_anchor_middle_x*scale_x,scale_anchor_middle_y*scale_y);
+        Render::render_texture(anchor_middle.x*scale_x,anchor_middle.y*scale_y,image_middle,Options::touch_controller_opacity,scale_anchor_middle_x*scale_x,scale_anchor_middle_y*scale_y);
     }
 
     ///NOTE:
@@ -346,76 +347,76 @@ void Touch_Controller::render(SDL_Renderer* renderer,int SCREEN_WIDTH,int SCREEN
     /**Collision_Circ* show_circ=0;
 
     show_circ=&dpad_left;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
     show_circ=&dpad_up;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
     show_circ=&dpad_right;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
     show_circ=&dpad_down;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
     show_circ=&dpad_left_up;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
     show_circ=&dpad_up_right;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
     show_circ=&dpad_right_down;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
     show_circ=&dpad_down_left;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
     if(Engine_Data::touch_controller_xy){
         show_circ=&main_x;
-        Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+        Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
         show_circ=&main_y;
-        Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+        Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
     }
 
     show_circ=&main_b;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
     show_circ=&main_a;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"red");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"red");
 
 
     show_circ=&main_x_y;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
     if(Engine_Data::touch_controller_xy){
         show_circ=&main_y_b;
-        Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+        Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
         show_circ=&main_a_x;
-        Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+        Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
     }
 
     show_circ=&main_b_a;
-    Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"green");
+    Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"green");
 
     if(Engine_Data::touch_controller_shoulders){
         show_circ=&shoulder_left;
-        Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"yellow");
+        Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"yellow");
 
         show_circ=&shoulder_right;
-        Render::render_circle(renderer,show_circ->x,show_circ->y,show_circ->r,0.5,"yellow");
+        Render::render_circle(show_circ->x,show_circ->y,show_circ->r,0.5,"yellow");
     }
 
     Collision_Rect* show_box=0;
 
     show_box=&back_button;
-    Render::render_rectangle(renderer,show_box->x,show_box->y,show_box->w,show_box->h,0.5,"blue");
+    Render::render_rectangle(show_box->x,show_box->y,show_box->w,show_box->h,0.5,"blue");
 
     show_box=&start;
-    Render::render_rectangle(renderer,show_box->x,show_box->y,show_box->w,show_box->h,0.5,"blue");
+    Render::render_rectangle(show_box->x,show_box->y,show_box->w,show_box->h,0.5,"blue");
 
     if(Engine_Data::touch_controller_guide){
         show_box=&guide;
-        Render::render_rectangle(renderer,show_box->x,show_box->y,show_box->w,show_box->h,0.5,"blue");
+        Render::render_rectangle(show_box->x,show_box->y,show_box->w,show_box->h,0.5,"blue");
     }*/
 }

@@ -4,6 +4,7 @@
 
 #include "image_data.h"
 #include "render.h"
+#include "game_window.h"
 
 using namespace std;
 
@@ -19,11 +20,11 @@ void Image_Data::load_image(string filename){
     SDL_SetTextureBlendMode(texture,SDL_BLENDMODE_BLEND);
 }
 
-void Image_Data::load_image(SDL_Renderer* renderer,SDL_Surface* surface){
+void Image_Data::load_image(SDL_Surface* surface){
     w=surface->w;
     h=surface->h;
 
-    texture=SDL_CreateTextureFromSurface(renderer,surface);
+    texture=Game_Window::create_texture_from_surface(surface);
 
     SDL_SetTextureBlendMode(texture,SDL_BLENDMODE_BLEND);
 }

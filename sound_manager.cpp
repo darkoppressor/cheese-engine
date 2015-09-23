@@ -14,6 +14,9 @@
 
 using namespace std;
 
+vector<Sound_Data> Sound_Manager::sounds;
+vector<string> Sound_Manager::sound_names;
+
 double Sound_Manager::listener_x=0.0;
 double Sound_Manager::listener_y=0.0;
 double Sound_Manager::listener_zoom=1.0;
@@ -103,23 +106,11 @@ int Sound_Manager::get_free_channel(){
     int allocated_channels=Mix_AllocateChannels(-1);
 
     for(int i=0;i<allocated_channels;i++){
-        //Check through all music tracks currently loaded
-        bool channel_taken_by_music_track=false;
-
-        for(size_t n=0;n<Music_Manager::tracks.size();n++){
-            //If this channel is equal to this track's channel, then this channel is taken
-            if(i==Music_Manager::tracks[n].channel){
-                channel_taken_by_music_track=true;
-
-				break;
-            }
-        }
-
         //If the channel is already playing
         if(Mix_Playing(i)==1){
         }
         //If this channel is already reserved by a music track
-        else if(channel_taken_by_music_track){
+        else if(Music_Manager::channel_used(i)){
         }
         //All tests were passed, and this channel is currently free, so return it
         else{
@@ -195,19 +186,7 @@ void Sound_Manager::stop_sounds(){
     int allocated_channels=Mix_AllocateChannels(-1);
 
     for(int i=0;i<allocated_channels;i++){
-        //Check through all music tracks currently loaded
-        bool channel_taken_by_music_track=false;
-
-        for(size_t n=0;n<Music_Manager::tracks.size();n++){
-            //If this channel is equal to this track's channel, then this channel is taken
-            if(i==Music_Manager::tracks[n].channel){
-                channel_taken_by_music_track=true;
-
-                break;
-            }
-        }
-
-        if(!channel_taken_by_music_track){
+        if(!Music_Manager::channel_used(i)){
             Mix_HaltChannel(i);
         }
     }

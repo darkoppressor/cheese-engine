@@ -20,7 +20,7 @@ Color Pixels::surface_get_pixel(SDL_Surface* surface,int x,int y){
     SDL_GetRGBA(pixel,surface->format,&check_red,&check_green,&check_blue,&check_alpha);
 
     Color color;
-    color.set_rgb(check_red,check_green,check_blue,check_alpha);
+    color.set(check_red,check_green,check_blue,check_alpha);
 
     return color;
 }
@@ -29,7 +29,7 @@ void Pixels::surface_put_pixel(SDL_Surface* surface,int x,int y,Color color){
     //Convert the pixels to 32 bit.
     uint32_t* pixels=(uint32_t*)surface->pixels;
 
-    uint32_t pixel=SDL_MapRGBA(surface->format,color.get_red_short(),color.get_green_short(),color.get_blue_short(),color.get_alpha_short());
+    uint32_t pixel=SDL_MapRGBA(surface->format,(uint8_t)color.get_red(),(uint8_t)color.get_green(),(uint8_t)color.get_blue(),(uint8_t)color.get_alpha());
 
     //Set the pixel.
     pixels[(y*surface->w)+x]=pixel;

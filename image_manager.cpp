@@ -10,16 +10,19 @@
 
 using namespace std;
 
+vector<Image_Data> Image_Manager::images;
+vector<string> Image_Manager::image_names;
+
 Image_Data* Image_Manager::error_image=0;
 
 void Image_Manager::set_error_image(){
     error_image=get_image("error");
 }
 
-void Image_Manager::add_image(string name,SDL_Renderer* renderer,SDL_Surface* surface){
+void Image_Manager::add_image(string name,SDL_Surface* surface){
     images.push_back(Image_Data());
 
-    images.back().load_image(renderer,surface);
+    images.back().load_image(surface);
 
     image_names.push_back(name);
 }

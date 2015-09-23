@@ -6,6 +6,7 @@
 #define engine_data_h
 
 #include <string>
+#include <vector>
 
 class Engine_Data{
 public:

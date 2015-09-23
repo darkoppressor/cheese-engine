@@ -359,6 +359,8 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="android.cpp" />
+		<Unit filename="android.h" />
 		<Unit filename="animation.cpp" />
 		<Unit filename="animation.h" />
 		<Unit filename="collision.cpp" />
@@ -367,6 +369,10 @@
 		<Unit filename="color.h" />
 		<Unit filename="color_theme.cpp" />
 		<Unit filename="color_theme.h" />
+		<Unit filename="controller.cpp" />
+		<Unit filename="controller.h" />
+		<Unit filename="controller_manager.cpp" />
+		<Unit filename="controller_manager.h" />
 		<Unit filename="coords.cpp" />
 		<Unit filename="coords.h" />
 		<Unit filename="custom_sound.cpp" />
@@ -379,14 +385,24 @@
 		<Unit filename="engine.h" />
 		<Unit filename="engine_data.cpp" />
 		<Unit filename="engine_data.h" />
+		<Unit filename="engine_mailman.cpp" />
+		<Unit filename="engine_mailman.h" />
 		<Unit filename="engine_math.cpp" />
 		<Unit filename="engine_math.h" />
 		<Unit filename="engine_version.cpp" />
 		<Unit filename="engine_version.h" />
 		<Unit filename="file_io.cpp" />
 		<Unit filename="file_io.h" />
+		<Unit filename="font.cpp" />
+		<Unit filename="font.h" />
+		<Unit filename="game_input.cpp" />
+		<Unit filename="game_manager.cpp" />
+		<Unit filename="game_manager.h" />
 		<Unit filename="game_option.cpp" />
 		<Unit filename="game_option.h" />
+		<Unit filename="game_window.cpp" />
+		<Unit filename="game_window.h" />
+		<Unit filename="game_world.h" />
 		<Unit filename="image_data.cpp" />
 		<Unit filename="image_data.h" />
 		<Unit filename="image_manager.cpp" />
@@ -412,17 +428,25 @@
 		<Unit filename="rtt_data.h" />
 		<Unit filename="rtt_manager.cpp" />
 		<Unit filename="rtt_manager.h" />
+		<Unit filename="screen_shake.cpp" />
+		<Unit filename="screen_shake.h" />
+		<Unit filename="server.cpp" />
+		<Unit filename="server.h" />
 		<Unit filename="sorting.h" />
 		<Unit filename="sound_data.cpp" />
 		<Unit filename="sound_data.h" />
 		<Unit filename="sound_manager.cpp" />
 		<Unit filename="sound_manager.h" />
+		<Unit filename="sprite.cpp" />
+		<Unit filename="sprite.h" />
 		<Unit filename="strings.cpp" />
 		<Unit filename="strings.h" />
 		<Unit filename="symbols.cpp" />
 		<Unit filename="symbols.h" />
 		<Unit filename="timer.cpp" />
 		<Unit filename="timer.h" />
+		<Unit filename="touch_controller.cpp" />
+		<Unit filename="touch_controller.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

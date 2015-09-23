@@ -6,58 +6,53 @@
 
 using namespace std;
 
-Color_Data::Color_Data(){
-    red=0.0;
-    green=0.0;
-    blue=0.0;
-    alpha=0.0;
-}
-
 Color::Color(){
     name="";
 
-    rgb.red=1.0;
-    rgb.green=1.0;
-    rgb.blue=1.0;
-    rgb.alpha=1.0;
+    set(0.0,0.0,0.0,0.0);
 }
 
-double Color::get_red(){
-    return rgb.red;
-}
-double Color::get_green(){
-    return rgb.green;
-}
-double Color::get_blue(){
-    return rgb.blue;
-}
-double Color::get_alpha(){
-    return rgb.alpha;
+Color::Color(short load_red,short load_green,short load_blue,short load_alpha){
+    name="";
+
+    set(load_red,load_green,load_blue,load_alpha);
 }
 
-short Color::get_red_short(){
-    return (short)(rgb.red*255.0);
-}
-short Color::get_green_short(){
-    return (short)(rgb.green*255.0);
-}
-short Color::get_blue_short(){
-    return (short)(rgb.blue*255.0);
-}
-short Color::get_alpha_short(){
-    return (short)(rgb.alpha*255.0);
+short Color::get_red() const{
+    return red;
 }
 
-void Color::set_rgb(short red,short green,short blue,short alpha){
-    rgb.red=red/255.0;
-    rgb.green=green/255.0;
-    rgb.blue=blue/255.0;
-    rgb.alpha=alpha/255.0;
+short Color::get_green() const{
+    return green;
 }
 
-bool Color::is_equal(Color* color){
-    if(color->get_red_short()==get_red_short() && color->get_green_short()==get_green_short() &&
-       color->get_blue_short()==get_blue_short() && color->get_alpha_short()==get_alpha_short()){
+short Color::get_blue() const{
+    return blue;
+}
+
+short Color::get_alpha() const{
+    return alpha;
+}
+
+double Color::get_red_double() const{
+    return (double)red/255.0;
+}
+
+double Color::get_green_double() const{
+    return (double)green/255.0;
+}
+
+double Color::get_blue_double() const{
+    return (double)blue/255.0;
+}
+
+double Color::get_alpha_double() const{
+    return (double)alpha/255.0;
+}
+
+bool Color::operator==(const Color& color) const{
+    if(color.get_red()==get_red() && color.get_green()==get_green() &&
+       color.get_blue()==get_blue() && color.get_alpha()==get_alpha()){
         return true;
     }
     else{

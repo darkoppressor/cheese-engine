@@ -7,39 +7,55 @@
 
 #include <string>
 
-class Color_Data{
-public:
-
-    double red;
-    double green;
-    double blue;
-    double alpha;
-
-    Color_Data();
-};
-
 class Color{
+private:
+
+    short red;
+    short green;
+    short blue;
+    short alpha;
+
+    template<typename Number_Type>
+    void clamp_color(Number_Type& color){
+        if(color<0){
+            color=0;
+        }
+        else if(color>255){
+            color=255;
+        }
+    }
+
 public:
 
     std::string name;
 
-    Color_Data rgb;
-
     Color();
+    Color(short load_red,short load_green,short load_blue,short load_alpha);
 
-    double get_red();
-    double get_green();
-    double get_blue();
-    double get_alpha();
+    short get_red() const;
+    short get_green() const;
+    short get_blue() const;
+    short get_alpha() const;
 
-    short get_red_short();
-    short get_green_short();
-    short get_blue_short();
-    short get_alpha_short();
+    double get_red_double() const;
+    double get_green_double() const;
+    double get_blue_double() const;
+    double get_alpha_double() const;
 
-    void set_rgb(short red,short green,short blue,short alpha=255);
+    template<typename Number_Type>
+    void set(Number_Type load_red,Number_Type load_green,Number_Type load_blue,Number_Type load_alpha){
+        clamp_color(load_red);
+        clamp_color(load_green);
+        clamp_color(load_blue);
+        clamp_color(load_alpha);
 
-    bool is_equal(Color* color);
+        red=(short)load_red;
+        green=(short)load_green;
+        blue=(short)load_blue;
+        alpha=(short)load_alpha;
+    }
+
+    bool operator==(const Color& color) const;
 };
 
 #endif

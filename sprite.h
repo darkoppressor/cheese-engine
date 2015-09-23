@@ -7,8 +7,6 @@
 
 #include <string>
 
-#include <SDL.h>
-
 class Sprite{
 public:
 
@@ -33,7 +31,7 @@ public:
     void set_name(std::string get_name);
 
     void animate(int animation_speed_override=-1);
-    void render(SDL_Renderer* renderer,double x,double y,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white");
+    void render(double x,double y,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white");
 };
 
 #endif

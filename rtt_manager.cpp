@@ -3,13 +3,19 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "rtt_manager.h"
+#include "log.h"
+#include "game_window.h"
+#include "color.h"
 
 using namespace std;
 
-void Rtt_Manager::add_texture(SDL_Renderer* renderer,string name,double width,double height){
+vector<Rtt_Data> Rtt_Manager::textures;
+vector<string> Rtt_Manager::texture_names;
+
+void Rtt_Manager::add_texture(string name,double width,double height){
     textures.push_back(Rtt_Data());
 
-    textures.back().create_texture(renderer,width,height);
+    textures.back().create_texture(width,height);
 
     texture_names.push_back(name);
 }
@@ -54,21 +60,20 @@ Rtt_Data* Rtt_Manager::get_texture(string name){
     return ptr_object;
 }
 
-void Rtt_Manager::set_render_target(SDL_Renderer* renderer,string name){
+void Rtt_Manager::set_render_target(string name){
     Rtt_Data* ptr=get_texture(name);
 
-    if(SDL_SetRenderTarget(renderer,ptr->texture)!=0){
+    if(Game_Window::set_render_target(ptr->texture)!=0){
         string msg="Unable to set render target to '"+name+"': ";
         msg+=SDL_GetError();
         Log::add_error(msg);
     }
 
-    SDL_SetRenderDrawColor(renderer,0,0,0,0);
-    SDL_RenderClear(renderer);
+    Game_Window::clear_renderer(Color(0,0,0,0));
 }
 
-void Rtt_Manager::reset_render_target(SDL_Renderer* renderer){
-    if(SDL_SetRenderTarget(renderer,NULL)!=0){
+void Rtt_Manager::reset_render_target(){
+    if(Game_Window::set_render_target(0)!=0){
         string msg="Unable to reset render target: ";
         msg+=SDL_GetError();
         Log::add_error(msg);

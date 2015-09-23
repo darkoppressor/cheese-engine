@@ -5,6 +5,8 @@
 #ifndef engine_h
 #define engine_h
 
+#include "color_theme.h"
+
 #include <string>
 #include <stdint.h>
 
@@ -28,6 +30,8 @@ public:
     static void compute_checksum();
 
     static void get_rgba_masks(uint32_t* rmask,uint32_t* gmask,uint32_t* bmask,uint32_t* amask);
+
+    static Color_Theme* current_color_theme();
 };
 
 #endif

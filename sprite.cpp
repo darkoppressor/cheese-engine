@@ -6,6 +6,7 @@
 #include "image_manager.h"
 #include "render.h"
 #include "object_manager.h"
+#include "engine.h"
 
 #include <cmath>
 
@@ -38,7 +39,7 @@ double Sprite::get_height(){
 }
 
 bool Sprite::is_animated(){
-    if(Object_Manager::get_animation(name)!=0){
+    if(Object_Manager::get_animation(name,true)!=0){
         return true;
     }
     else{
@@ -78,11 +79,11 @@ void Sprite::animate(int animation_speed_override){
     }
 }
 
-void Sprite::render(SDL_Renderer* renderer,double x,double y,double opacity,double scale_x,double scale_y,double angle,string color_name){
+void Sprite::render(double x,double y,double opacity,double scale_x,double scale_y,double angle,string color_name){
     if(is_animated()){
-        Render::render_sprite(renderer,x,y,Image_Manager::get_image(name),&Object_Manager::get_animation(name)->sprite_sheet[frame],opacity,scale_x,scale_y,angle,color_name);
+        Render::render_sprite(x,y,Image_Manager::get_image(name),&Object_Manager::get_animation(name)->sprite_sheet[frame],opacity,scale_x,scale_y,angle,color_name);
     }
     else{
-        Render::render_texture(renderer,x,y,Image_Manager::get_image(name),opacity,scale_x,scale_y,angle,color_name);
+        Render::render_texture(x,y,Image_Manager::get_image(name),opacity,scale_x,scale_y,angle,color_name);
     }
 }

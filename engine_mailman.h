@@ -16,6 +16,9 @@ private:
 public:
 
     static void send_letter(std::string letter);
+
+    static bool has_mail();
+    static std::string deliver_letter();
 };
 
 #endif

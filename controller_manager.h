@@ -9,6 +9,7 @@
 #include "touch_controller.h"
 
 #include <vector>
+#include <string>
 #include <stdint.h>
 
 #include <SDL.h>
@@ -24,6 +25,8 @@ private:
 
     static Touch_Controller touch_controller;
 
+    static void remove_controllers();
+
 public:
 
     static const int CONTROLLER_ID_ALL;
@@ -33,19 +36,18 @@ public:
     static bool touch_controls;
 
     static void initialize();
+    static void deinitialize();
 
     static void add_controller(const SDL_Event& event);
     static void remove_controller(const SDL_Event& event);
 
-    static void remove_controllers();
-
     static bool poll_event(SDL_Event* event);
 
-    static void finger_down(const SDL_Event& event,SDL_Renderer* renderer);
+    static void finger_down(const SDL_Event& event);
 
     static void scale_touch_controller(int width,int height);
 
-    static void render_touch_controller(SDL_Renderer* renderer,int SCREEN_WIDTH,int SCREEN_HEIGHT);
+    static void render_touch_controller();
 
     static void get_controller_info(std::string& msg);
 

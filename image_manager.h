@@ -24,7 +24,7 @@ public:
 
     static void set_error_image();
 
-    static void add_image(std::string name,SDL_Renderer* renderer,SDL_Surface* surface);
+    static void add_image(std::string name,SDL_Surface* surface);
     static void remove_image(std::string name);
 
     static void load_images();

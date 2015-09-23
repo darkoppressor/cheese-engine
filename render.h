@@ -14,6 +14,8 @@
 #include <SDL.h>
 
 class Render{
+public:
+
     static SDL_Surface* scale_surface(SDL_Surface* surface,double scale_x,double scale_y);
 
     static SDL_Surface* optimize_surface(SDL_Surface* surface);
@@ -22,21 +24,21 @@ class Render{
 
     static SDL_Texture* load_texture(std::string filename,Image_Data* id);
 
-    static void render_rtt(SDL_Renderer* renderer,double x,double y,Rtt_Data* rtt_source,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
+    static void render_rtt(double x,double y,Rtt_Data* rtt_source,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
 
-    static void render_texture(SDL_Renderer* renderer,double x,double y,Image_Data* image_source,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
+    static void render_texture(double x,double y,Image_Data* image_source,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
 
-    static void render_sprite(SDL_Renderer* renderer,double x,double y,Image_Data* image_source,Collision_Rect* texture_clip=0,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
+    static void render_sprite(double x,double y,Image_Data* image_source,Collision_Rect* texture_clip=0,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
 
-    static void render_rectangle(SDL_Renderer* renderer,double x,double y,double w,double h,double opacity,std::string color_name);
+    static void render_rectangle(double x,double y,double w,double h,double opacity,std::string color_name);
 
-    static void render_rectangle_empty(SDL_Renderer* renderer,double x,double y,double w,double h,double opacity,std::string color_name,double line_width);
+    static void render_rectangle_empty(double x,double y,double w,double h,double opacity,std::string color_name,double line_width);
 
-    static void render_circle(SDL_Renderer* renderer,double x,double y,double radius,double opacity,std::string color_name);
+    static void render_circle(double x,double y,double radius,double opacity,std::string color_name);
 
-    static void render_circle_empty(SDL_Renderer* renderer,double x,double y,double radius,double opacity,std::string color_name);
+    static void render_circle_empty(double x,double y,double radius,double opacity,std::string color_name);
 
-    static void render_line(SDL_Renderer* renderer,double x1,double y1,double x2,double y2,double opacity,std::string color_name);
+    static void render_line(double x1,double y1,double x2,double y2,double opacity,std::string color_name);
 };
 
 #endif

@@ -55,9 +55,9 @@ public:
     Touch_Controller();
 
     void scale(double resolution_x,double resolution_y);
-    bool check_button_state(SDL_Renderer* renderer,SDL_GameControllerButton button);
-    std::vector<SDL_GameControllerButton> check_for_button_press(SDL_Renderer* renderer,float x,float y);
-    void render(SDL_Renderer* renderer,int SCREEN_WIDTH,int SCREEN_HEIGHT);
+    bool check_button_state(SDL_GameControllerButton button);
+    std::vector<SDL_GameControllerButton> check_for_button_press(float x,float y);
+    void render();
 };
 
 #endif

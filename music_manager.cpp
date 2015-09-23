@@ -20,6 +20,9 @@ Music_Data::Music_Data(){
     fade_speed=0.0;
 }
 
+vector<Music_Data> Music_Manager::tracks;
+vector<string> Music_Manager::track_names;
+
 void Music_Manager::set_track_volumes(){
     for(int i=0;i<tracks.size();i++){
         //Set the track's channel volume
@@ -224,4 +227,14 @@ int Music_Manager::get_track_ident(string name){
     }
 
     return track_ident;
+}
+
+bool Music_Manager::channel_used(int channel){
+    for(size_t n=0;n<tracks.size();n++){
+        if(channel==tracks[n].channel){
+            return true;
+        }
+    }
+
+    return false;
 }

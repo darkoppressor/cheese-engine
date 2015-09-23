@@ -10,8 +10,6 @@
 #include <vector>
 #include <string>
 
-#include <SDL.h>
-
 class Rtt_Manager{
 private:
 
@@ -20,15 +18,15 @@ private:
 
 public:
 
-    static void add_texture(SDL_Renderer* renderer,std::string name,double width,double height);
+    static void add_texture(std::string name,double width,double height);
     static void remove_texture(std::string name);
 
     static void unload_textures();
 
     static Rtt_Data* get_texture(std::string name);
 
-    static void set_render_target(SDL_Renderer* renderer,std::string name);
-    static void reset_render_target(SDL_Renderer* renderer);
+    static void set_render_target(std::string name);
+    static void reset_render_target();
 };
 
 #endif

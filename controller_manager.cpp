@@ -5,6 +5,8 @@
 #include "controller_manager.h"
 #include "options.h"
 #include "log.h"
+#include "strings.h"
+#include "android.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -12,16 +14,33 @@ using namespace std;
 
 bool Controller_Manager::initialized=false;
 
+vector<Controller> Controller_Manager::controllers;
+
+vector<SDL_Event> Controller_Manager::touch_controller_events;
+
+Touch_Controller Controller_Manager::touch_controller;
+
 const int Controller_Manager::CONTROLLER_ID_ALL=-1;
 const int Controller_Manager::CONTROLLER_ID_TOUCH=-2;
 
 bool Controller_Manager::touch_controls=false;
 
+void Controller_Manager::remove_controllers(){
+    for(size_t i=0;i<controllers.size();i++){
+        if(controllers[i].haptic!=0 && SDL_HapticOpened(SDL_HapticIndex(controllers[i].haptic))){
+            SDL_HapticClose(controllers[i].haptic);
+        }
+
+        SDL_GameControllerClose(controllers[i].controller);
+    }
+    controllers.clear();
+}
+
 void Controller_Manager::initialize(){
     if(!initialized){
-        initialized=true;
-
         for(int i=0;i<SDL_NumJoysticks();i++){
+            string msg="";
+
             if(SDL_IsGameController(i)){
                 if(Options::accelerometer_controller || !boost::algorithm::icontains(SDL_JoystickNameForIndex(i),"accelerometer")){
                     controllers.push_back(Controller(SDL_GameControllerOpen(i)));
@@ -95,6 +114,16 @@ void Controller_Manager::initialize(){
                 }
             }
         }
+
+        initialized=true;
+    }
+}
+
+void Controller_Manager::deinitialize(){
+    if(initialized){
+        initialized=false;
+
+        remove_controllers();
     }
 }
 
@@ -160,17 +189,6 @@ void Controller_Manager::remove_controller(const SDL_Event& event){
     }
 }
 
-void Controller_Manager::remove_controllers(){
-    for(size_t i=0;i<controllers.size();i++){
-        if(controllers[i].haptic!=0 && SDL_HapticOpened(SDL_HapticIndex(controllers[i].haptic))){
-            SDL_HapticClose(controllers[i].haptic);
-        }
-
-        SDL_GameControllerClose(controllers[i].controller);
-    }
-    controllers.clear();
-}
-
 bool Controller_Manager::poll_event(SDL_Event* event){
     if(touch_controller_events.size()>0){
         *event=touch_controller_events[0];
@@ -184,8 +202,8 @@ bool Controller_Manager::poll_event(SDL_Event* event){
     }
 }
 
-void Controller_Manager::finger_down(const SDL_Event& event,SDL_Renderer* renderer){
-    vector<SDL_GameControllerButton> touch_buttons=touch_controller.check_for_button_press(renderer,event.tfinger.x,event.tfinger.y);
+void Controller_Manager::finger_down(const SDL_Event& event){
+    vector<SDL_GameControllerButton> touch_buttons=touch_controller.check_for_button_press(event.tfinger.x,event.tfinger.y);
 
     for(int i=0;i<touch_buttons.size();i++){
         SDL_Event touch_controller_event;
@@ -206,9 +224,9 @@ void Controller_Manager::scale_touch_controller(int width,int height){
     touch_controller.scale(width,height);
 }
 
-void Controller_Manager::render_touch_controller(SDL_Renderer* renderer,int SCREEN_WIDTH,int SCREEN_HEIGHT){
+void Controller_Manager::render_touch_controller(){
     if(touch_controls){
-        touch_controller.render(renderer,SCREEN_WIDTH,SCREEN_HEIGHT);
+        touch_controller.render();
     }
 }
 

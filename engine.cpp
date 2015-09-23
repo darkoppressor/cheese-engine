@@ -6,6 +6,10 @@
 #include "log.h"
 #include "file_io.h"
 #include "sorting.h"
+#include "object_manager.h"
+#include "engine_data.h"
+#include "strings.h"
+#include "game_window.h"
 
 #include <stdint.h>
 
@@ -22,6 +26,8 @@ double Engine::SKIP_TICKS_RENDER=1000.0/Engine::UPDATE_RATE_RENDER;
 bool Engine::world_loaded=false;
 
 string Engine::CHECKSUM="";
+
+SDL_Event Engine::event;
 
 void Engine::compute_checksum(){
     vector<string> file_list;
@@ -74,4 +80,8 @@ void Engine::get_rgba_masks(uint32_t* rmask,uint32_t* gmask,uint32_t* bmask,uint
         *bmask=0x00ff0000;
         *amask=0xff000000;
     }
+}
+
+Color_Theme* Engine::current_color_theme(){
+    return Object_Manager::get_color_theme(Engine_Data::color_theme);
 }

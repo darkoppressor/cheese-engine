@@ -8,6 +8,7 @@
 #include "log.h"
 #include "object_manager.h"
 #include "image_manager.h"
+#include "game_window.h"
 
 #include <SDL_image.h>
 
@@ -95,7 +96,7 @@ SDL_Texture* Render::load_texture(string filename,Image_Data* id){
     id->w=surface->w;
     id->h=surface->h;
 
-    SDL_Texture* texture=SDL_CreateTextureFromSurface(main_window.renderer,surface);
+    SDL_Texture* texture=Game_Window::create_texture_from_surface(surface);
 
     if(texture==0){
         string msg="Error creating texture: ";
@@ -108,14 +109,14 @@ SDL_Texture* Render::load_texture(string filename,Image_Data* id){
     return texture;
 }
 
-void Render::render_rtt(SDL_Renderer* renderer,double x,double y,Rtt_Data* rtt_source,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
+void Render::render_rtt(double x,double y,Rtt_Data* rtt_source,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
     SDL_Rect rect_dst;
     rect_dst.x=x;
     rect_dst.y=y;
     rect_dst.w=rtt_source->w*scale_x;
     rect_dst.h=rtt_source->h*scale_y;
 
-    SDL_RendererFlip flip=SDL_FLIP_NONE;
+    uint32_t flip=SDL_FLIP_NONE;
     if(flip_x && flip_y){
         flip=SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
     }
@@ -129,19 +130,19 @@ void Render::render_rtt(SDL_Renderer* renderer,double x,double y,Rtt_Data* rtt_s
     SDL_SetTextureAlphaMod(rtt_source->texture,(short)(opacity*255.0));
 
     Color* color=Object_Manager::get_color(color_name);
-    SDL_SetTextureColorMod(rtt_source->texture,color->get_red_short(),color->get_green_short(),color->get_blue_short());
+    SDL_SetTextureColorMod(rtt_source->texture,(uint8_t)color->get_red(),(uint8_t)color->get_green(),(uint8_t)color->get_blue());
 
-    SDL_RenderCopyEx(renderer,rtt_source->texture,0,&rect_dst,-angle,0,flip);
+    Game_Window::render_copy_ex(rtt_source->texture,0,&rect_dst,-angle,0,(SDL_RendererFlip)flip);
 }
 
-void Render::render_texture(SDL_Renderer* renderer,double x,double y,Image_Data* image_source,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
+void Render::render_texture(double x,double y,Image_Data* image_source,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
     SDL_Rect rect_dst;
     rect_dst.x=x;
     rect_dst.y=y;
     rect_dst.w=image_source->w*scale_x;
     rect_dst.h=image_source->h*scale_y;
 
-    SDL_RendererFlip flip=SDL_FLIP_NONE;
+    uint32_t flip=SDL_FLIP_NONE;
     if(flip_x && flip_y){
         flip=SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
     }
@@ -155,12 +156,12 @@ void Render::render_texture(SDL_Renderer* renderer,double x,double y,Image_Data*
     SDL_SetTextureAlphaMod(image_source->texture,(short)(opacity*255.0));
 
     Color* color=Object_Manager::get_color(color_name);
-    SDL_SetTextureColorMod(image_source->texture,color->get_red_short(),color->get_green_short(),color->get_blue_short());
+    SDL_SetTextureColorMod(image_source->texture,(uint8_t)color->get_red(),(uint8_t)color->get_green(),(uint8_t)color->get_blue());
 
-    SDL_RenderCopyEx(renderer,image_source->texture,0,&rect_dst,-angle,0,flip);
+    Game_Window::render_copy_ex(image_source->texture,0,&rect_dst,-angle,0,(SDL_RendererFlip)flip);
 }
 
-void Render::render_sprite(SDL_Renderer* renderer,double x,double y,Image_Data* image_source,Collision_Rect* texture_clip,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
+void Render::render_sprite(double x,double y,Image_Data* image_source,Collision_Rect* texture_clip,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
     SDL_Rect rect_src;
     rect_src.x=texture_clip->x;
     rect_src.y=texture_clip->y;
@@ -173,7 +174,7 @@ void Render::render_sprite(SDL_Renderer* renderer,double x,double y,Image_Data* 
     rect_dst.w=texture_clip->w*scale_x;
     rect_dst.h=texture_clip->h*scale_y;
 
-    SDL_RendererFlip flip=SDL_FLIP_NONE;
+    uint32_t flip=SDL_FLIP_NONE;
     if(flip_x && flip_y){
         flip=SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
     }
@@ -187,16 +188,16 @@ void Render::render_sprite(SDL_Renderer* renderer,double x,double y,Image_Data* 
     SDL_SetTextureAlphaMod(image_source->texture,(short)(opacity*255.0));
 
     Color* color=Object_Manager::get_color(color_name);
-    SDL_SetTextureColorMod(image_source->texture,color->get_red_short(),color->get_green_short(),color->get_blue_short());
+    SDL_SetTextureColorMod(image_source->texture,(uint8_t)color->get_red(),(uint8_t)color->get_green(),(uint8_t)color->get_blue());
 
-    SDL_RenderCopyEx(renderer,image_source->texture,&rect_src,&rect_dst,-angle,0,flip);
+    Game_Window::render_copy_ex(image_source->texture,&rect_src,&rect_dst,-angle,0,(SDL_RendererFlip)flip);
 }
 
-void Render::render_rectangle(SDL_Renderer* renderer,double x,double y,double w,double h,double opacity,string color_name){
-    SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
+void Render::render_rectangle(double x,double y,double w,double h,double opacity,string color_name){
+    Game_Window::set_render_draw_blend_mode(SDL_BLENDMODE_BLEND);
 
     Color* color=Object_Manager::get_color(color_name);
-    SDL_SetRenderDrawColor(renderer,color->get_red_short(),color->get_green_short(),color->get_blue_short(),(short)(opacity*255.0));
+    Game_Window::set_render_draw_color(*color);
 
     SDL_Rect rect;
     rect.x=x;
@@ -204,35 +205,35 @@ void Render::render_rectangle(SDL_Renderer* renderer,double x,double y,double w,
     rect.w=w;
     rect.h=h;
 
-    SDL_RenderFillRect(renderer,&rect);
+    Game_Window::render_fill_rect(&rect);
 }
 
-void Render::render_rectangle_empty(SDL_Renderer* renderer,double x,double y,double w,double h,double opacity,string color_name,double line_width){
-    render_rectangle(renderer,x,y,w,line_width,opacity,color_name);
-    render_rectangle(renderer,x,y,line_width,h,opacity,color_name);
-    render_rectangle(renderer,x,y+h-line_width,w,line_width,opacity,color_name);
-    render_rectangle(renderer,x+w-line_width,y,line_width,h,opacity,color_name);
+void Render::render_rectangle_empty(double x,double y,double w,double h,double opacity,string color_name,double line_width){
+    render_rectangle(x,y,w,line_width,opacity,color_name);
+    render_rectangle(x,y,line_width,h,opacity,color_name);
+    render_rectangle(x,y+h-line_width,w,line_width,opacity,color_name);
+    render_rectangle(x+w-line_width,y,line_width,h,opacity,color_name);
 }
 
-void Render::render_circle(SDL_Renderer* renderer,double x,double y,double radius,double opacity,string color_name){
+void Render::render_circle(double x,double y,double radius,double opacity,string color_name){
     double sprite_size=radius*2.0;
     double sprite_scale=sprite_size/1024.0;
 
-    render_texture(renderer,x-radius,y-radius,Image_Manager::get_image("circle"),opacity,sprite_scale,sprite_scale,0.0,color_name);
+    render_texture(x-radius,y-radius,Image_Manager::get_image("circle"),opacity,sprite_scale,sprite_scale,0.0,color_name);
 }
 
-void Render::render_circle_empty(SDL_Renderer* renderer,double x,double y,double radius,double opacity,string color_name){
+void Render::render_circle_empty(double x,double y,double radius,double opacity,string color_name){
     double sprite_size=radius*2.0;
     double sprite_scale=sprite_size/1024.0;
 
-    render_texture(renderer,x-radius,y-radius,Image_Manager::get_image("circle_empty"),opacity,sprite_scale,sprite_scale,0.0,color_name);
+    render_texture(x-radius,y-radius,Image_Manager::get_image("circle_empty"),opacity,sprite_scale,sprite_scale,0.0,color_name);
 }
 
-void Render::render_line(SDL_Renderer* renderer,double x1,double y1,double x2,double y2,double opacity,string color_name){
-    SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
+void Render::render_line(double x1,double y1,double x2,double y2,double opacity,string color_name){
+    Game_Window::set_render_draw_blend_mode(SDL_BLENDMODE_BLEND);
 
     Color* color=Object_Manager::get_color(color_name);
-    SDL_SetRenderDrawColor(renderer,color->get_red_short(),color->get_green_short(),color->get_blue_short(),(short)(opacity*255.0));
+    Game_Window::set_render_draw_color(*color);
 
-    SDL_RenderDrawLine(renderer,x1,y1,x2,y2);
+    Game_Window::render_draw_line(x1,y1,x2,y2);
 }
