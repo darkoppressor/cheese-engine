@@ -5,6 +5,7 @@
 #include "object_manager.h"
 #include "data_reader.h"
 #include "strings.h"
+#include "game_constants_loader.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -14,12 +15,28 @@ vector<Color> Object_Manager::colors;
 vector<Animation> Object_Manager::animations;
 vector<Bitmap_Font> Object_Manager::fonts;
 vector<Color_Theme> Object_Manager::color_themes;
+vector<Game_Command> Object_Manager::game_commands;
+vector<Game_Option> Object_Manager::game_options;
+vector<Cursor> Object_Manager::cursors;
 
 void Object_Manager::unload_data(){
+    for(size_t i=0;i<cursors.size();i++){
+        cursors[i].free_hw_cursor();
+    }
+
     colors.clear();
     animations.clear();
     fonts.clear();
     color_themes.clear();
+    game_commands.clear();
+    game_options.clear();
+    cursors.clear();
+}
+
+void Object_Manager::load_hw_cursors(){
+    for(size_t i=0;i<cursors.size();i++){
+        cursors[i].load_hw_cursor();
+    }
 }
 
 void Object_Manager::load_color(File_IO_Load* load){
@@ -178,6 +195,214 @@ void Object_Manager::load_color_theme(File_IO_Load* load){
         }
         else if(Data_Reader::check_prefix(line,"gui_selector_2:")){
             color_themes.back().gui_selector_2=line;
+        }
+    }
+}
+
+void Object_Manager::load_game_command(File_IO_Load* load){
+    game_commands.push_back(Game_Command());
+
+    vector<string> lines=Data_Reader::read_data(load,"</game_command>");
+
+    for(size_t i=0;i<lines.size();i++){
+        string& line=lines[i];
+
+        if(Data_Reader::check_prefix(line,"name:")){
+            game_commands.back().name=line;
+        }
+        else if(Data_Reader::check_prefix(line,"title:")){
+            game_commands.back().title=line;
+        }
+        else if(Data_Reader::check_prefix(line,"description:")){
+            game_commands.back().description=Strings::process_newlines(line);
+        }
+        else if(Data_Reader::check_prefix(line,"developer:")){
+            game_commands.back().dev=Strings::string_to_bool(line);
+        }
+        else if(Data_Reader::check_prefix(line,"key:")){
+            game_commands.back().key=SDL_GetScancodeFromName(line.c_str());
+        }
+        else if(Data_Reader::check_prefix(line,"controller_button:")){
+            game_commands.back().button=SDL_GameControllerGetButtonFromString(line.c_str());
+        }
+        else if(Data_Reader::check_prefix(line,"controller_axis:")){
+            game_commands.back().axis=SDL_GameControllerGetAxisFromString(line.c_str());
+        }
+    }
+}
+
+void Object_Manager::load_game_option(File_IO_Load* load){
+    game_options.push_back(Game_Option());
+
+    string option_default="";
+
+    vector<string> lines=Data_Reader::read_data(load,"</game_option>");
+
+    for(size_t i=0;i<lines.size();i++){
+        string& line=lines[i];
+
+        if(Data_Reader::check_prefix(line,"name:")){
+            game_options.back().name=line;
+        }
+        else if(Data_Reader::check_prefix(line,"description:")){
+            game_options.back().description=Strings::process_newlines(line);
+        }
+        else if(Data_Reader::check_prefix(line,"default:")){
+            option_default=line;
+        }
+    }
+
+    if(option_default.length()>0){
+        game_options.back().set_value(option_default);
+    }
+}
+
+void Object_Manager::load_game_constant(File_IO_Load* load){
+    string constant_name="";
+    string constant_value="";
+
+    vector<string> lines=Data_Reader::read_data(load,"</game_constant>");
+
+    for(size_t i=0;i<lines.size();i++){
+        string& line=lines[i];
+
+        if(Data_Reader::check_prefix(line,"name:")){
+            constant_name=line;
+        }
+        else if(Data_Reader::check_prefix(line,"value:")){
+            constant_value=line;
+        }
+    }
+
+    Game_Constants_Loader::set_game_constant(constant_name,constant_value);
+}
+
+void Object_Manager::load_custom_sound(File_IO_Load* load){
+    Custom_Sound sound;
+
+    vector<string> lines=Data_Reader::read_data(load,"</custom_sound>");
+
+    for(size_t i=0;i<lines.size();i++){
+        string& line=lines[i];
+
+        if(Data_Reader::check_prefix(line,"name:")){
+            sound.name=line;
+        }
+        else if(Data_Reader::check_prefix(line,"sample_rate:")){
+            sound.sample_rate=Strings::string_to_long(line);
+        }
+        else if(Data_Reader::check_prefix(line,"tempo:")){
+            sound.tempo=Strings::string_to_double(line);
+        }
+        else if(Data_Reader::check_prefix(line,"channels:")){
+            sound.channels=Strings::string_to_long(line);
+        }
+        else if(Data_Reader::check_prefix(line,"sharps:")){
+            sound.sharps=line;
+        }
+        else if(Data_Reader::check_prefix(line,"flats:")){
+            sound.flats=line;
+        }
+        else if(Data_Reader::check_prefix(line,"length:")){
+            sound.set_length(line);
+        }
+        else if(Data_Reader::check_prefix(line,"volume:")){
+            sound.set_volumes(line);
+        }
+        else if(Data_Reader::check_prefix(line,"waveform:")){
+            sound.set_waveforms(line);
+        }
+        else if(Data_Reader::check_prefix(line,"frequency:")){
+            sound.set_frequencies(line);
+        }
+        else if(Data_Reader::check_prefix(line,"<data>")){
+            load_custom_sound_data(load,sound);
+        }
+    }
+
+    Sound_Manager::add_sound(sound);
+}
+
+void Object_Manager::load_custom_sound_data(File_IO_Load* load,Custom_Sound& sound){
+    vector<string> lines=Data_Reader::read_data(load,"</data>");
+
+    for(size_t i=0;i<lines.size();i++){
+        string& line=lines[i];
+
+        if(Data_Reader::check_prefix(line,"length:")){
+            sound.set_length(line);
+        }
+        else if(Data_Reader::check_prefix(line,"volume:")){
+            sound.set_volumes(line);
+        }
+        else if(Data_Reader::check_prefix(line,"waveform:")){
+            sound.set_waveforms(line);
+        }
+        else if(Data_Reader::check_prefix(line,"frequency:")){
+            sound.set_frequencies(line);
+        }
+        else{
+            vector<string> components;
+            boost::algorithm::split(components,line,boost::algorithm::is_any_of(","));
+
+            if(components.size()>0 && components[0].length()>0){
+                string frequency="";
+                string length="";
+                string waveform="off";
+                double volume=-1.0;
+
+                if(components.size()>=4){
+                    frequency=components[0];
+                    length=components[1];
+                    waveform=components[2];
+                    volume=Strings::string_to_double(components[3]);
+                }
+                else if(components.size()==3){
+                    frequency=components[0];
+                    length=components[1];
+                    waveform=components[2];
+                }
+                else if(components.size()==2){
+                    frequency=components[0];
+                    length=components[1];
+                }
+                else{
+                    if(isdigit(components[0][0])){
+                        frequency=components[0];
+                    }
+                    else if(components[0][0]>='A' && components[0][0]<='G'){
+                        frequency=components[0];
+                    }
+                    else if(components[0]=="rest"){
+                        frequency=components[0];
+                    }
+                    else{
+                        length=components[0];
+                    }
+                }
+
+                //Allow spaces instead of underscores in note length names for convenience
+                boost::algorithm::replace_all(length," ","_");
+
+                sound.add_note(frequency,length,waveform,volume);
+            }
+        }
+    }
+}
+
+void Object_Manager::load_cursor(File_IO_Load* load){
+    cursors.push_back(Cursor());
+
+    vector<string> lines=Data_Reader::read_data(load,"</cursor>");
+
+    for(size_t i=0;i<lines.size();i++){
+        string& line=lines[i];
+
+        if(Data_Reader::check_prefix(line,"name:")){
+            cursors.back().name=line;
+        }
+        else if(Data_Reader::check_prefix(line,"sprite:")){
+            cursors.back().sprite.name=line;
         }
     }
 }

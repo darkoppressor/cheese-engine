@@ -77,6 +77,10 @@ public:
     static int controller_dead_zone;
 
     static std::vector<std::string> starting_windows;
+
+    static double ZOOM_RATE;
+    static double ZOOM_MIN;
+    static double ZOOM_MAX;
 };
 
 #endif

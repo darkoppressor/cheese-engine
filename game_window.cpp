@@ -174,7 +174,7 @@ bool Game_Window::initialize_video(){
 
     SDL_DestroyTexture(texture);
 
-    Engine_Mailman::send_letter("reset_camera_dimensions");
+    Game_Manager::reset_camera_dimensions();
 
     return true;
 }

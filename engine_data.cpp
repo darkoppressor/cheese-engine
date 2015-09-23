@@ -55,3 +55,7 @@ string Engine_Data::developer="";
 int Engine_Data::controller_dead_zone=0;
 
 vector<string> Engine_Data::starting_windows;
+
+double Engine_Data::ZOOM_RATE=0.0;
+double Engine_Data::ZOOM_MIN=0.0;
+double Engine_Data::ZOOM_MAX=0.0;

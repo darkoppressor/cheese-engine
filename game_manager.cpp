@@ -134,12 +134,12 @@ void Game_Manager::center_camera(Collision_Circ circle){
 }
 
 void Game_Manager::zoom_camera_in(Collision_Rect box){
-    if(camera_zoom<ZOOM_MAX){
+    if(camera_zoom<Engine_Data::ZOOM_MAX){
         Collision_Rect camera_location=box/camera_zoom;
 
-        camera_zoom+=camera_zoom*ZOOM_RATE;
-        if(camera_zoom>ZOOM_MAX){
-            camera_zoom=ZOOM_MAX;
+        camera_zoom+=camera_zoom*Engine_Data::ZOOM_RATE;
+        if(camera_zoom>Engine_Data::ZOOM_MAX){
+            camera_zoom=Engine_Data::ZOOM_MAX;
         }
 
         center_camera(camera_location);
@@ -147,12 +147,12 @@ void Game_Manager::zoom_camera_in(Collision_Rect box){
 }
 
 void Game_Manager::zoom_camera_in(Collision_Circ circle){
-    if(camera_zoom<ZOOM_MAX){
+    if(camera_zoom<Engine_Data::ZOOM_MAX){
         Collision_Circ camera_location=circle/camera_zoom;
 
-        camera_zoom+=camera_zoom*ZOOM_RATE;
-        if(camera_zoom>ZOOM_MAX){
-            camera_zoom=ZOOM_MAX;
+        camera_zoom+=camera_zoom*Engine_Data::ZOOM_RATE;
+        if(camera_zoom>Engine_Data::ZOOM_MAX){
+            camera_zoom=Engine_Data::ZOOM_MAX;
         }
 
         center_camera(camera_location);
@@ -160,12 +160,12 @@ void Game_Manager::zoom_camera_in(Collision_Circ circle){
 }
 
 void Game_Manager::zoom_camera_out(Collision_Rect box){
-    if(camera_zoom>ZOOM_MIN){
+    if(camera_zoom>Engine_Data::ZOOM_MIN){
         Collision_Rect camera_location=box/camera_zoom;
 
-        camera_zoom-=camera_zoom*ZOOM_RATE;
-        if(camera_zoom<ZOOM_MIN){
-            camera_zoom=ZOOM_MIN;
+        camera_zoom-=camera_zoom*Engine_Data::ZOOM_RATE;
+        if(camera_zoom<Engine_Data::ZOOM_MIN){
+            camera_zoom=Engine_Data::ZOOM_MIN;
         }
 
         center_camera(camera_location);
@@ -173,12 +173,12 @@ void Game_Manager::zoom_camera_out(Collision_Rect box){
 }
 
 void Game_Manager::zoom_camera_out(Collision_Circ circle){
-    if(camera_zoom>ZOOM_MIN){
+    if(camera_zoom>Engine_Data::ZOOM_MIN){
         Collision_Circ camera_location=circle/camera_zoom;
 
-        camera_zoom-=camera_zoom*ZOOM_RATE;
-        if(camera_zoom<ZOOM_MIN){
-            camera_zoom=ZOOM_MIN;
+        camera_zoom-=camera_zoom*Engine_Data::ZOOM_RATE;
+        if(camera_zoom<Engine_Data::ZOOM_MIN){
+            camera_zoom=Engine_Data::ZOOM_MIN;
         }
 
         center_camera(camera_location);

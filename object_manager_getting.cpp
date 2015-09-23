@@ -78,3 +78,57 @@ Color_Theme* Object_Manager::get_color_theme(string name){
 
     return ptr_object;
 }
+
+Game_Command* Object_Manager::get_game_command(string name){
+    Game_Command* ptr_object=0;
+
+    for(size_t i=0;i<game_commands.size();i++){
+        if(game_commands[i].name==name){
+            ptr_object=&game_commands[i];
+
+            break;
+        }
+    }
+
+    if(ptr_object==0){
+        Log::add_error("Error accessing game command '"+name+"'");
+    }
+
+    return ptr_object;
+}
+
+Game_Option* Object_Manager::get_game_option(string name){
+    Game_Option* ptr_object=0;
+
+    for(size_t i=0;i<game_options.size();i++){
+        if(game_options[i].name==name){
+            ptr_object=&game_options[i];
+
+            break;
+        }
+    }
+
+    if(ptr_object==0){
+        Log::add_error("Error accessing game option '"+name+"'");
+    }
+
+    return ptr_object;
+}
+
+Cursor* Object_Manager::get_cursor(string name){
+    Cursor* ptr_object=0;
+
+    for(size_t i=0;i<cursors.size();i++){
+        if(cursors[i].name==name){
+            ptr_object=&cursors[i];
+
+            break;
+        }
+    }
+
+    if(ptr_object==0){
+        Log::add_error("Error accessing cursor '"+name+"'");
+    }
+
+    return ptr_object;
+}

@@ -2,22 +2,15 @@
 /* This file is licensed under the MIT License. */
 /* See the file docs/LICENSE.txt for the full license text. */
 
-#ifndef game_option_h
-#define game_option_h
+#ifndef game_constants_loader_h
+#define game_constants_loader_h
 
 #include <string>
 
-class Game_Option{
+class Game_Constants_Loader{
 public:
 
-    std::string name;
-    std::string description;
-
-    Game_Option();
-
-    std::string get_value();
-
-    void set_value(std::string new_value);
+    static void set_game_constant(std::string name,std::string value);
 };
 
 #endif
