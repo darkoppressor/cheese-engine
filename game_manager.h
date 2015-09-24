@@ -85,9 +85,9 @@ public:
     static void render_title_background();
     static void render_pause();
     static void render_fps(int render_rate,double ms_per_frame,int logic_frame_rate);
-    static void render_loading_screen(double percentage,std::string load_message);
+    static void render_loading_screen(const Progress_Bar& bar,std::string message);
 
-    static void load_data_game();
+    static void load_data_game(Progress_Bar& bar);
     static void load_data_tag_game(std::string tag,File_IO_Load* load);
     static void unload_data_game();
 };

@@ -10,13 +10,13 @@
 class Timer{
 private:
 
-    //The clock time when the timer started.
+    //The clock time when the timer started
     uint32_t start_ticks;
 
-    //The ticks stored when the timer was paused.
+    //The ticks stored when the timer was paused
     uint32_t paused_ticks;
 
-    //Timer status.
+    //Timer status
     bool paused;
     bool started;
 

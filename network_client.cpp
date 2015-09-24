@@ -221,7 +221,7 @@ void Network_Client::receive_version(){
         Engine::make_notice("Server is running a different game.");
     }
     else{
-        string our_version=engine_interface.get_version();
+        string our_version=Engine_Version::get_version();
         if(version!=our_version){
             Log::add_log("Version mismatch: "+string(packet->systemAddress.ToString(true))+"\nOur version: "+our_version+"\nServer version: "+version);
 

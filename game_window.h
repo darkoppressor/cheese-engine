@@ -26,6 +26,8 @@ private:
     static SDL_Surface* icon;
     static Uint32 icon_colorkey;
 
+    static bool need_to_reload;
+
     static bool initialize_video();
 
     static void cleanup_video();
@@ -42,6 +44,8 @@ private:
     //Returns false if the position was not adjusted
     static bool set_position(int* desired_resolution_x,int* desired_resolution_y,int* position_x,int* position_y);
 
+    static void reload();
+
 public:
 
     //The logical resolution of the game window
@@ -56,7 +60,10 @@ public:
 
     static void deinitialize();
 
-    static void reload();
+    static bool is_initialized();
+
+    static void request_reload();
+    static void reload_check();
 
     static void get_renderer_logical_size(int* width,int* height);
     static void get_renderer_viewport(SDL_Rect* rect);

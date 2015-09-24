@@ -46,6 +46,7 @@ public:
     static bool is_mouse_over_open_window();
 
     static void prepare_for_input();
+    static void handle_input_states();
 
     static void animate();
 

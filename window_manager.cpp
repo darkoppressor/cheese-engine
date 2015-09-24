@@ -441,6 +441,20 @@ void Window_Manager::prepare_for_input(){
     }
 }
 
+void Window_Manager::handle_input_states(){
+    Window* top_window=Window_Manager::get_top_window();
+
+    for(size_t i=0;i<windows.size();i++){
+        if(top_window==0 || top_window!=&windows[i]){
+            windows[i].reset_buttons_moused_over();
+        }
+    }
+
+    if(top_window!=0){
+        top_window->handle_input_states();
+    }
+}
+
 void Window_Manager::animate(){
     for(size_t i=0;i<windows.size();i++){
         windows[i].animate();

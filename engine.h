@@ -7,6 +7,7 @@
 
 #include "color_theme.h"
 #include "toast.h"
+#include "console.h"
 
 #include <string>
 #include <stdint.h>
@@ -22,15 +23,12 @@ public:
     static double UPDATE_RATE_RENDER;
     static double SKIP_TICKS_RENDER;
 
-    static bool world_loaded;
-
     static std::string CHECKSUM;
-
-    static SDL_Event event;
 
     static std::vector<Toast> toasts;
 
-    static int configure_command;
+    static Console console;
+    static Console chat;
 
     //If true, some button is moused over this frame
     static bool mouse_over;
@@ -81,14 +79,24 @@ public:
     static std::vector<std::string>* get_text_input_character_set();
 
     static void handle_text_input(std::string text);
-    static bool handle_input_events_command_set();
 
     static void get_mouse_state(int* mouse_x,int* mouse_y);
     static bool mouse_allowed();
     static bool allow_screen_keyboard();
 
+    static void add_chat(std::string message);
+
+    //Returns true if there is a mutable info selected, and it is the console
+    static bool is_console_selected();
+
+    //Returns true if there is a mutable info selected, and it is the chat box
+    static bool is_chat_selected();
+
     static void make_notice(std::string message);
     static void make_toast(std::string message,std::string length="medium",int custom_length=-1);
+
+    static void update_window_caption(int render_rate,double ms_per_frame,int logic_frame_rate);
+    static std::string get_system_info();
 
     static void animate();
 
@@ -96,6 +104,10 @@ public:
     static void render_small_text_inputter();
     static void render_text_inputter();
     static void render_text_editing();
+
+    static void render_dev_info();
+
+    static void render(int render_rate,double ms_per_frame,int logic_frame_rate);
 };
 
 #endif

@@ -92,18 +92,18 @@ void GUI_Manager::set_gui_mode(string new_gui_mode){
     if(previous_gui_mode!=gui_mode){
         //Only reset selected object if we are switching to or from mouse mode
         if(previous_gui_mode=="mouse" || gui_mode=="mouse"){
-            bool was_console=is_console_selected();
-            bool was_chat=is_chat_selected();
+            bool was_console=Engine::is_console_selected();
+            bool was_chat=Engine::is_chat_selected();
 
             Engine::clear_mutable_info();
 
             reset_gui_selected_object();
 
             if(was_console){
-                console.toggle_on();
+                Engine::console.toggle_on();
             }
             else if(was_chat){
-                chat.toggle_on();
+                Engine::chat.toggle_on();
             }
         }
 
@@ -407,11 +407,11 @@ void GUI_Manager::confirm_gui_object(){
 }
 
 void GUI_Manager::scroll_gui_object_up(){
-    if(is_console_selected()){
-        console.info_display.scroll_up(0);
+    if(Engine::is_console_selected()){
+        Engine::console.info_display.scroll_up(0);
     }
-    else if(is_chat_selected()){
-        chat.info_display.scroll_up(0);
+    else if(Engine::is_chat_selected()){
+        Engine::chat.info_display.scroll_up(0);
     }
     else if(gui_selected_object!=-1){
         Window* top_window=Window_Manager::get_top_window();
@@ -429,11 +429,11 @@ void GUI_Manager::scroll_gui_object_up(){
 }
 
 void GUI_Manager::scroll_gui_object_down(){
-    if(is_console_selected()){
-        console.info_display.scroll_down(0);
+    if(Engine::is_console_selected()){
+        Engine::console.info_display.scroll_down(0);
     }
-    else if(is_chat_selected()){
-        chat.info_display.scroll_down(0);
+    else if(Engine::is_chat_selected()){
+        Engine::chat.info_display.scroll_down(0);
     }
     else if(gui_selected_object!=-1){
         Window* top_window=Window_Manager::get_top_window();
@@ -646,7 +646,7 @@ void GUI_Manager::render_gui_selector(){
             double thickness=Engine_Data::gui_border_thickness;
             double offset=Engine_Data::gui_border_thickness;
 
-            if(Engine::mutable_info_selected() && !is_console_selected() && !is_chat_selected()){
+            if(Engine::mutable_info_selected() && !Engine::is_console_selected() && !Engine::is_chat_selected()){
                 thickness+=2.0;
                 offset+=2.0;
             }
@@ -657,7 +657,7 @@ void GUI_Manager::render_gui_selector(){
         if(Engine_Data::gui_selector_style=="corners"){
             double corner_size=Engine_Data::gui_border_thickness+4.0;
 
-            if(Engine::mutable_info_selected() && !is_console_selected() && !is_chat_selected()){
+            if(Engine::mutable_info_selected() && !Engine::is_console_selected() && !Engine::is_chat_selected()){
                 corner_size+=2.0;
             }
 
@@ -670,7 +670,7 @@ void GUI_Manager::render_gui_selector(){
         if(Engine_Data::gui_selector_style=="underline"){
             double thickness=Engine_Data::gui_border_thickness+1.0;
 
-            if(Engine::mutable_info_selected() && !is_console_selected() && !is_chat_selected()){
+            if(Engine::mutable_info_selected() && !Engine::is_console_selected() && !Engine::is_chat_selected()){
                 thickness+=3.0;
             }
 
@@ -682,7 +682,7 @@ void GUI_Manager::render_gui_selector(){
         if(Engine_Data::gui_selector_style=="chasers"){
             double chaser_size=Engine_Data::gui_border_thickness+4.0;
 
-            if(Engine::mutable_info_selected() && !is_console_selected() && !is_chat_selected()){
+            if(Engine::mutable_info_selected() && !Engine::is_console_selected() && !Engine::is_chat_selected()){
                 chaser_size+=2.0;
             }
 

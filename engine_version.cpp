@@ -4,16 +4,82 @@
 
 #include "engine_version.h"
 
+#include <boost/algorithm/string.hpp>
+
 using namespace std;
 
-Version_Series::Version_Series(int get_major_1,int get_minor_1,int get_micro_1,int get_major_2,int get_minor_2,int get_micro_2){
-    major_1=get_major_1;
-    minor_1=get_minor_1;
-    micro_1=get_micro_1;
+Version_Series::Version_Series(string get_first_version,string get_last_version){
+    first_version=get_first_version;
+    last_version=get_last_version;
+}
 
-    major_2=get_major_2;
-    minor_2=get_minor_2;
-    micro_2=get_micro_2;
+Version::Version(int get_major,int get_minor,int get_micro){
+    major=get_major;
+    minor=get_minor;
+    micro=get_micro;
+}
+
+Version::Version(string version_string){
+    vector<string> version_components;
+    boost::algorithm::split(version_components,version_string,boost::algorithm::is_any_of("."));
+
+    if(version_components.size()==3){
+        major=Strings::string_to_long(version_components[0]);
+        minor=Strings::string_to_long(version_components[1]);
+        micro=Strings::string_to_long(version_components[2]);
+    }
+    else{
+        major=-1;
+        minor=-1;
+        micro=-1;
+    }
+}
+
+bool Version::operator==(const Version& version){
+    return major==version.major && minor==version.minor && micro==version.micro;
+}
+
+bool Version::operator<(const Version& version){
+    if(major<version.major){
+        return true;
+    }
+    else if(major==version.major){
+        if(minor<version.minor){
+            return true;
+        }
+        else if(minor==version.minor){
+            if(micro<version.micro){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Version::operator>(const Version& version){
+    return version<(*this);
+}
+
+bool Version::operator<=(const Version& version){
+    return !operator>(version);
+}
+
+bool Version::operator>=(const Version& version){
+    return !operator<(version);
+}
+
+int Version::get_version_series(const vector<Version_Series>& version_series){
+    for(size_t i=0;i<version_series.size();i++){
+        Version first(version_series[i].first_version);
+        Version last(version_series[i].last_version);
+
+        if(operator>=(first) && operator<=(last)){
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 string Engine_Version::get_engine_version(){
@@ -36,75 +102,22 @@ string Engine_Version::get_build_date(){
     return year+"-"+month+"-"+day;
 }
 
-int Engine_Version::version_compare(int major_1,int minor_1,int micro_1,int major_2,int minor_2,int micro_2){
-    if(major_1==major_2){
-        if(minor_1==minor_2){
-            if(micro_1==micro_2){
-                return 0;
-            }
-            else if(micro_1<micro_2){
-                return -1;
-            }
-            else if(micro_1>micro_2){
-                return 1;
-            }
-        }
-        else if(minor_1<minor_2){
-            return -1;
-        }
-        else if(minor_1>minor_2){
-            return 1;
-        }
-    }
-    else if(major_1<major_2){
-        return -1;
-    }
-    else if(major_1>major_2){
-        return 1;
-    }
-}
-
-int Engine_Version::which_version_series(vector<Version_Series>* version_series,int major,int minor,int micro){
-    for(int i=0;i<version_series->size();i++){
-        if(version_compare(major,minor,micro,version_series->at(i).major_1,version_series->at(i).minor_1,version_series->at(i).micro_1)>=0 &&
-           version_compare(major,minor,micro,version_series->at(i).major_2,version_series->at(i).minor_2,version_series->at(i).micro_2)<=0){
-            return i;
-        }
-    }
-
-    return -1;
-}
-
-bool Engine_Version::version_compatible(string name_to_check){
-    int current_major=get_major();
-    int current_minor=get_minor();
-    int current_micro=get_micro();
-
-    int major=0;
-    int minor=0;
-    int micro=0;
-
-    vector<string> version_strings;
-    boost::algorithm::split(version_strings,Options::version,boost::algorithm::is_any_of("."));
-
-    major=Strings::string_to_long(version_strings[0]);
-    minor=Strings::string_to_long(version_strings[1]);
-    micro=Strings::string_to_long(version_strings[2]);
-
-    //Version series are defined by a start version and an end version.
-    //The start version must be less than or equal to the end version.
+bool Engine_Version::version_is_compatible(){
     vector<Version_Series> version_series;
+    populate_version_series(version_series);
 
-    version_series.push_back(Version_Series(0,0,0,0,0,1));
+    Version options_version(Options::version);
+    Version current_version(get_version());
 
-    if(which_version_series(&version_series,major,minor,micro)!=which_version_series(&version_series,current_major,current_minor,current_micro)){
-        string error_message="Version incompatibility! Save data was created with version "+Options::version;
-        error_message+=". Current version is "+get_version()+".";
+    int options_version_series=options_version.get_version_series(version_series);
+    int current_version_series=current_version.get_version_series(version_series);
 
-        Log::add_error(error_message);
+    if(options_version_series==current_version_series && options_version_series>-1){
+        return true;
+    }
+    else{
+        Log::add_error("Version incompatibility! Save data was created with version: "+Options::version+"\n"+"Current version is: "+get_version());
 
         return false;
     }
-
-    return true;
 }

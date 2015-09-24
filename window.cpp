@@ -555,9 +555,9 @@ bool Window::handle_input_events(){
         bool window_opened_on_top=false;
 
         if(!event_consumed){
-            switch(Engine::event.type){
+            switch(Engine_Input::event.type){
                 case SDL_MOUSEBUTTONDOWN:
-                    if(!event_consumed && Engine::event.button.button==SDL_BUTTON_LEFT){
+                    if(!event_consumed && Engine_Input::event.button.button==SDL_BUTTON_LEFT){
                         bool button_clicked=false;
 
                         //Look through all of the buttons.
@@ -605,7 +605,7 @@ bool Window::handle_input_events(){
                     break;
 
                 case SDL_MOUSEWHEEL:
-                    if(!event_consumed && Engine::event.wheel.y<0){
+                    if(!event_consumed && Engine_Input::event.wheel.y<0){
                         if(scrolling_buttons.length()>0){
                             Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
                             Collision_Rect box_b(x,y+Engine_Data::scrolling_buttons_offset,w,h-Engine_Data::scrolling_buttons_offset-6);
@@ -617,7 +617,7 @@ bool Window::handle_input_events(){
                             }
                         }
                     }
-                    else if(!event_consumed && Engine::event.wheel.y>0){
+                    else if(!event_consumed && Engine_Input::event.wheel.y>0){
                         if(scrolling_buttons.length()>0){
                             Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
                             Collision_Rect box_b(x,y+Engine_Data::scrolling_buttons_offset,w,h-Engine_Data::scrolling_buttons_offset-6);
@@ -632,7 +632,7 @@ bool Window::handle_input_events(){
                     break;
 
                 case SDL_MOUSEBUTTONUP:
-                    if(!event_consumed && Engine::event.button.button==SDL_BUTTON_LEFT){
+                    if(!event_consumed && Engine_Input::event.button.button==SDL_BUTTON_LEFT){
                         //Stop moving the window.
                         moving=false;
 

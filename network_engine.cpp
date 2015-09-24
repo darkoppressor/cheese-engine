@@ -154,7 +154,7 @@ void Network_Engine::receive_packets(){
                             if(client->name.length()>0){
                                 string msg=client->name+" ("+packet->systemAddress.ToString(true)+") has disconnected";
 
-                                engine_interface.add_chat(msg);
+                                Engine::add_chat(msg);
                                 send_chat_message(msg,packet->guid,true);
                             }
 
@@ -182,7 +182,7 @@ void Network_Engine::receive_packets(){
                         if(client!=0){
                             string msg=client->name+" ("+packet->systemAddress.ToString(true)+") has dropped";
 
-                            engine_interface.add_chat(msg);
+                            Engine::add_chat(msg);
                             send_chat_message(msg,packet->guid,true);
 
                             int client_index=get_client_index(client);
@@ -495,7 +495,7 @@ void Network_Engine::receive_chat_message(){
     RakNet::RakString rstring;
     bitstream.ReadCompressed(rstring);
 
-    engine_interface.add_chat(rstring.C_String());
+    Engine::add_chat(rstring.C_String());
 
     if(status=="server"){
         send_chat_message(rstring.C_String(),packet->guid,true);

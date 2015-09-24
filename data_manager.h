@@ -6,8 +6,26 @@
 #define data_manager_h
 
 class Data_Manager{
+private:
+
+    static bool images_loaded;
+    static bool fonts_loaded;
+    static bool colors_loaded;
+    static bool world_loaded;
+
 public:
 
+    //The total number of progress bar items in load_world(),
+    //excluding load_data_game(), which has its own constant
+    static const int world_load_item_count;
+
+    static bool are_images_loaded();
+    static bool are_fonts_loaded();
+    static bool are_colors_loaded();
+    static bool is_world_loaded();
+
+    static void add_rtts();
+    static bool load_world(Progress_Bar& bar);
     static void unload_world();
 
     static void unload_data();
@@ -18,7 +36,7 @@ public:
     static bool load_data_engine();
 
     //Loads everything but engine data and game options
-    static void load_data_main();
+    static void load_data_main(Progress_Bar& bar);
 
     //Loads only game options
     static void load_data_game_options();

@@ -7,7 +7,6 @@
 #include "directories.h"
 #include "engine.h"
 #include "strings.h"
-#include "engine_mailman.h"
 #include "network_engine.h"
 
 #include <sstream>
@@ -386,7 +385,7 @@ void Options::apply_options_graphics(const string& cl_screen_width,const string&
 
     if(old_screen_width!=cl_screen_width || old_screen_height!=cl_screen_height || old_display_number!=cl_display_number ||
        old_fullscreen_state!=cl_fullscreen_state || old_fullscreen_mode!=cl_fullscreen_mode){
-        Engine_Mailman::send_letter("reload");
+        Game_Window::request_reload();
     }
 }
 

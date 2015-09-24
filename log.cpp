@@ -6,7 +6,6 @@
 #include "file_io.h"
 #include "directories.h"
 #include "engine.h"
-#include "engine_mailman.h"
 
 using namespace std;
 
@@ -19,8 +18,8 @@ void Log::add_error(string message,bool allow_save){
 
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_ERROR,message.c_str());
 
-    if(Engine::world_loaded){
-        Engine_Mailman::send_letter("console:"+message);
+    if(Data_Manager::is_world_loaded()){
+        Engine::console.add_text(message);
     }
 
     if(Directories::save_location_loaded && allow_save){
@@ -37,8 +36,8 @@ void Log::add_log(string message){
 
     SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_INFO,message.c_str());
 
-    if(Engine::world_loaded){
-        Engine_Mailman::send_letter("console:"+message);
+    if(Data_Manager::is_world_loaded()){
+        Engine::console.add_text(message);
     }
 }
 

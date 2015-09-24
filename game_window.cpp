@@ -10,7 +10,6 @@
 #include "options.h"
 #include "controller_manager.h"
 #include "engine.h"
-#include "engine_mailman.h"
 
 #include <SDL_mixer.h>
 #include <SDL_image.h>
@@ -26,6 +25,8 @@ SDL_Renderer* Game_Window::renderer=0;
 
 SDL_Surface* Game_Window::icon=0;
 Uint32 Game_Window::icon_colorkey=0;
+
+bool Game_Window::need_to_reload=false;
 
 int Game_Window::SCREEN_WIDTH=0;
 int Game_Window::SCREEN_HEIGHT=0;
@@ -365,6 +366,96 @@ bool Game_Window::set_position(int* desired_resolution_x,int* desired_resolution
     return false;
 }
 
+void Game_Window::reload(){
+    int position_x=SDL_WINDOWPOS_CENTERED;
+    int position_y=SDL_WINDOWPOS_CENTERED;
+    int desired_resolution_x=0;
+    int desired_resolution_y=0;
+
+    if(set_resolution(&desired_resolution_x,&desired_resolution_y)){
+        bool position_adjusted=set_position(&desired_resolution_x,&desired_resolution_y,&position_x,&position_y);
+
+        if(!position_adjusted && Engine_Data::resolution_mode!="fixed" && Options::fullscreen){
+            Engine_Rect display_res=get_display_resolution();
+            Engine_Rect display_res_max=get_display_resolution_max();
+
+            if(display_res.w>-1 && display_res.h>-1){
+                if(Options::fullscreen_mode=="standard"){
+                    if(display_res_max.w>-1 && display_res_max.h>-1){
+                        if(desired_resolution_x>display_res_max.w || desired_resolution_y>display_res_max.h){
+                            Log::add_error("Window dimensions of "+Strings::num_to_string(desired_resolution_x)+"x"+Strings::num_to_string(desired_resolution_y)+" exceed the maximum display dimensions of "+
+                                           Strings::num_to_string(display_res_max.w)+"x"+Strings::num_to_string(display_res_max.h)+", adjusting window resolution to current display resolution");
+
+                            desired_resolution_x=display_res.w;
+                            desired_resolution_y=display_res.h;
+                        }
+                    }
+                }
+                else if(Options::fullscreen_mode=="windowed"){
+                    if(desired_resolution_x!=display_res.w || desired_resolution_y!=display_res.h){
+                        desired_resolution_x=display_res.w;
+                        desired_resolution_y=display_res.h;
+                    }
+                }
+            }
+        }
+
+        int toggle_fullscreen=0;
+
+        if(Options::fullscreen){
+            if(Options::fullscreen_mode=="desktop"){
+                if(position_adjusted){
+                    toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
+                }
+
+                if(toggle_fullscreen==0){
+                    if(position_adjusted){
+                        SDL_SetWindowPosition(screen,position_x,position_y);
+                    }
+
+                    toggle_fullscreen=SDL_SetWindowFullscreen(screen,SDL_WINDOW_FULLSCREEN_DESKTOP);
+                }
+            }
+            else if(Options::fullscreen_mode=="standard"){
+                toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
+
+                if(toggle_fullscreen==0){
+                    SDL_SetWindowSize(screen,desired_resolution_x,desired_resolution_y);
+
+                    if(position_adjusted){
+                        SDL_SetWindowPosition(screen,position_x,position_y);
+                    }
+
+                    toggle_fullscreen=SDL_SetWindowFullscreen(screen,SDL_WINDOW_FULLSCREEN);
+                }
+            }
+            else if(Options::fullscreen_mode=="windowed"){
+                toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
+                SDL_SetWindowBordered(screen,SDL_FALSE);
+                SDL_SetWindowSize(screen,desired_resolution_x,desired_resolution_y);
+                SDL_SetWindowPosition(screen,position_x,position_y);
+            }
+        }
+        else{
+            toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
+            SDL_SetWindowBordered(screen,SDL_TRUE);
+            SDL_SetWindowSize(screen,desired_resolution_x,desired_resolution_y);
+            SDL_SetWindowPosition(screen,position_x,position_y);
+        }
+
+        if(toggle_fullscreen!=0){
+            string msg="Error toggling fullscreen: ";
+            msg+=SDL_GetError();
+            Log::add_error(msg);
+        }
+
+        int actual_width=0;
+        int actual_height=0;
+        SDL_GetRendererOutputSize(renderer,&actual_width,&actual_height);
+        Controller_Manager::scale_touch_controller(actual_width,actual_height);
+    }
+}
+
 bool Game_Window::pre_initialize(){
     if(!pre_initialized){
         if(SDL_Init(SDL_INIT_EVERYTHING)!=0){
@@ -490,93 +581,19 @@ void Game_Window::deinitialize(){
     }
 }
 
-void Game_Window::reload(){
-    int position_x=SDL_WINDOWPOS_CENTERED;
-    int position_y=SDL_WINDOWPOS_CENTERED;
-    int desired_resolution_x=0;
-    int desired_resolution_y=0;
+bool Game_Window::is_initialized(){
+    return initialized;
+}
 
-    if(set_resolution(&desired_resolution_x,&desired_resolution_y)){
-        bool position_adjusted=set_position(&desired_resolution_x,&desired_resolution_y,&position_x,&position_y);
+void Game_Window::request_reload(){
+    need_to_reload=true;
+}
 
-        if(!position_adjusted && Engine_Data::resolution_mode!="fixed" && Options::fullscreen){
-            Engine_Rect display_res=get_display_resolution();
-            Engine_Rect display_res_max=get_display_resolution_max();
+void Game_Window::reload_check(){
+    if(need_to_reload){
+        need_to_reload=false;
 
-            if(display_res.w>-1 && display_res.h>-1){
-                if(Options::fullscreen_mode=="standard"){
-                    if(display_res_max.w>-1 && display_res_max.h>-1){
-                        if(desired_resolution_x>display_res_max.w || desired_resolution_y>display_res_max.h){
-                            Log::add_error("Window dimensions of "+Strings::num_to_string(desired_resolution_x)+"x"+Strings::num_to_string(desired_resolution_y)+" exceed the maximum display dimensions of "+
-                                           Strings::num_to_string(display_res_max.w)+"x"+Strings::num_to_string(display_res_max.h)+", adjusting window resolution to current display resolution");
-
-                            desired_resolution_x=display_res.w;
-                            desired_resolution_y=display_res.h;
-                        }
-                    }
-                }
-                else if(Options::fullscreen_mode=="windowed"){
-                    if(desired_resolution_x!=display_res.w || desired_resolution_y!=display_res.h){
-                        desired_resolution_x=display_res.w;
-                        desired_resolution_y=display_res.h;
-                    }
-                }
-            }
-        }
-
-        int toggle_fullscreen=0;
-
-        if(Options::fullscreen){
-            if(Options::fullscreen_mode=="desktop"){
-                if(position_adjusted){
-                    toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
-                }
-
-                if(toggle_fullscreen==0){
-                    if(position_adjusted){
-                        SDL_SetWindowPosition(screen,position_x,position_y);
-                    }
-
-                    toggle_fullscreen=SDL_SetWindowFullscreen(screen,SDL_WINDOW_FULLSCREEN_DESKTOP);
-                }
-            }
-            else if(Options::fullscreen_mode=="standard"){
-                toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
-
-                if(toggle_fullscreen==0){
-                    SDL_SetWindowSize(screen,desired_resolution_x,desired_resolution_y);
-
-                    if(position_adjusted){
-                        SDL_SetWindowPosition(screen,position_x,position_y);
-                    }
-
-                    toggle_fullscreen=SDL_SetWindowFullscreen(screen,SDL_WINDOW_FULLSCREEN);
-                }
-            }
-            else if(Options::fullscreen_mode=="windowed"){
-                toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
-                SDL_SetWindowBordered(screen,SDL_FALSE);
-                SDL_SetWindowSize(screen,desired_resolution_x,desired_resolution_y);
-                SDL_SetWindowPosition(screen,position_x,position_y);
-            }
-        }
-        else{
-            toggle_fullscreen=SDL_SetWindowFullscreen(screen,0);
-            SDL_SetWindowBordered(screen,SDL_TRUE);
-            SDL_SetWindowSize(screen,desired_resolution_x,desired_resolution_y);
-            SDL_SetWindowPosition(screen,position_x,position_y);
-        }
-
-        if(toggle_fullscreen!=0){
-            string msg="Error toggling fullscreen: ";
-            msg+=SDL_GetError();
-            Log::add_error(msg);
-        }
-
-        int actual_width=0;
-        int actual_height=0;
-        SDL_GetRendererOutputSize(renderer,&actual_width,&actual_height);
-        Controller_Manager::scale_touch_controller(actual_width,actual_height);
+        reload();
     }
 }
 

@@ -16,8 +16,10 @@ public:
     Game_Option();
 
     std::string get_value();
-
     void set_value(std::string new_value);
+
+    bool game_get_value(std::string& value);
+    void game_set_value(std::string value);
 };
 
 #endif

@@ -2,26 +2,27 @@
 /* This file is licensed under the MIT License. */
 /* See the file docs/LICENSE.txt for the full license text. */
 
-#ifndef game_world_h
-#define game_world_h
+#ifndef update_h
+#define update_h
 
-class Game_World{
+class Update{
 public:
 
-    static void clear_world();
-    static void generate_world();
-
     static void ai();
+
+    static void input();
+
     static void tick();
+
     static void movement();
+
     static void events();
+
     static void animate();
-    static void render();
 
-    static void render_to_textures();
+    static void camera(int frame_rate,double ms_per_frame,int logic_frame_rate);
 
-    static void update_background();
-    static void render_background();
+    static void render(int frame_rate,double ms_per_frame,int logic_frame_rate);
 };
 
 #endif

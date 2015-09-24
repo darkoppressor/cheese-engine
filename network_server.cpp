@@ -103,7 +103,7 @@ void Network_Server::update_offline_ping_response(){
         data+=Strings::num_to_string(get_client_count())+"@";
         data+=Strings::num_to_string(Network_Engine::peer->GetMaximumIncomingConnections()+1)+"@";
 
-        data+=engine_interface.get_version()+"@";
+        data+=Engine_Version::get_version()+"@";
 
         data+=Engine_Data::game_title+"@";
 
@@ -140,7 +140,7 @@ void Network_Server::send_version(){
 
         bitstream.WriteCompressed((RakNet::RakString)Engine_Data::game_title.c_str());
 
-        bitstream.WriteCompressed((RakNet::RakString)engine_interface.get_version().c_str());
+        bitstream.WriteCompressed((RakNet::RakString)Engine_Version::get_version().c_str());
 
         if(!ignore_checksum){
             bitstream.WriteCompressed((RakNet::RakString)Engine::CHECKSUM.c_str());
@@ -199,7 +199,7 @@ void Network_Server::send_name_change(string old_name,string new_name,bool own_n
 
         string msg=old_name+" has changed their name to "+new_name;
 
-        engine_interface.add_chat(msg);
+        Engine::add_chat(msg);
         Network_Engine::send_chat_message(msg,RakNet::UNASSIGNED_RAKNET_GUID,true);
 
         send_client_list();
@@ -235,7 +235,7 @@ void Network_Server::receive_connected(){
 
         string msg=client->name+" has connected from "+Network_Engine::packet->systemAddress.ToString(true);
 
-        engine_interface.add_chat(msg);
+        Engine::add_chat(msg);
         Network_Engine::send_chat_message(msg,Network_Engine::packet->guid,true);
 
         send_client_list();

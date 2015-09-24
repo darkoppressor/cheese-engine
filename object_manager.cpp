@@ -177,16 +177,16 @@ int Object_Manager::game_command_state(string name){
 }
 
 void Object_Manager::output_command_configuration_info(string& text){
-    if(Engine::configure_command!=-1 && Engine::configure_command<game_commands.size()){
-        text+="Inputs currently bound to \""+game_commands[Engine::configure_command].title+"\":"+"\n\n";
+    if(Engine_Input::configure_command!=-1 && Engine_Input::configure_command<game_commands.size()){
+        text+="Inputs currently bound to \""+game_commands[Engine_Input::configure_command].title+"\":"+"\n\n";
 
-        const char* ckey=SDL_GetScancodeName(game_commands[Engine::configure_command].key);
-        const char* cbutton=SDL_GameControllerGetStringForButton(game_commands[Engine::configure_command].button);
-        const char* caxis=SDL_GameControllerGetStringForAxis(game_commands[Engine::configure_command].axis);
+        const char* ckey=SDL_GetScancodeName(game_commands[Engine_Input::configure_command].key);
+        const char* cbutton=SDL_GameControllerGetStringForButton(game_commands[Engine_Input::configure_command].button);
+        const char* caxis=SDL_GameControllerGetStringForAxis(game_commands[Engine_Input::configure_command].axis);
 
         bool allow_keys_and_buttons=true;
         bool allow_axes=true;
-        if(caxis!=0 && game_commands[Engine::configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
+        if(caxis!=0 && game_commands[Engine_Input::configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
             allow_keys_and_buttons=false;
         }
         else{
@@ -195,7 +195,7 @@ void Object_Manager::output_command_configuration_info(string& text){
 
         if(allow_keys_and_buttons){
             text+="Keyboard Key: ";
-            if(ckey!=0 && game_commands[Engine::configure_command].key!=SDL_SCANCODE_UNKNOWN){
+            if(ckey!=0 && game_commands[Engine_Input::configure_command].key!=SDL_SCANCODE_UNKNOWN){
                 text+=Strings::first_letter_capital(ckey);
             }
             else{
@@ -204,7 +204,7 @@ void Object_Manager::output_command_configuration_info(string& text){
             text+="\n\n";
 
             text+="Controller Button: ";
-            if(cbutton!=0 && game_commands[Engine::configure_command].button!=SDL_CONTROLLER_BUTTON_INVALID){
+            if(cbutton!=0 && game_commands[Engine_Input::configure_command].button!=SDL_CONTROLLER_BUTTON_INVALID){
                 text+=Strings::first_letter_capital(cbutton);
             }
             else{
@@ -215,7 +215,7 @@ void Object_Manager::output_command_configuration_info(string& text){
 
         if(allow_axes){
             text+="Controller Axis: ";
-            if(caxis!=0 && game_commands[Engine::configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
+            if(caxis!=0 && game_commands[Engine_Input::configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
                 text+=Strings::first_letter_capital(caxis);
             }
             else{

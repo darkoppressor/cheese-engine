@@ -23,15 +23,12 @@ double Engine::SKIP_TICKS=1000.0/Engine::UPDATE_RATE;
 double Engine::UPDATE_RATE_RENDER=200.0;
 double Engine::SKIP_TICKS_RENDER=1000.0/Engine::UPDATE_RATE_RENDER;
 
-bool Engine::world_loaded=false;
-
 string Engine::CHECKSUM="";
-
-SDL_Event Engine::event;
 
 vector<Toast> Engine::toasts;
 
-int Engine::configure_command=-1;
+Console Engine::console;
+Console Engine::chat;
 
 bool Engine::mouse_over=false;
 
@@ -447,80 +444,6 @@ void Engine::handle_text_input(string text){
     }
 }
 
-bool Engine::handle_input_events_command_set(){
-    bool event_consumed=false;
-
-    if(configure_command!=-1){
-        const uint8_t* keystates=SDL_GetKeyboardState(NULL);
-
-        bool allow_keys_and_buttons=true;
-        bool allow_axes=true;
-
-        if(configure_command<Object_Manager::game_commands.size()){
-            const char* ckey=SDL_GetScancodeName(Object_Manager::game_commands[configure_command].key);
-            const char* cbutton=SDL_GameControllerGetStringForButton(Object_Manager::game_commands[configure_command].button);
-            const char* caxis=SDL_GameControllerGetStringForAxis(Object_Manager::game_commands[configure_command].axis);
-
-            if(caxis!=0 && Object_Manager::game_commands[configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
-                allow_keys_and_buttons=false;
-            }
-            else{
-                allow_axes=false;
-            }
-        }
-
-        switch(event.type){
-            case SDL_CONTROLLERBUTTONDOWN:
-                if(!event_consumed && (event.cbutton.button==SDL_CONTROLLER_BUTTON_START || allow_keys_and_buttons)){
-                    if(event.cbutton.button!=SDL_CONTROLLER_BUTTON_START){
-                        if(configure_command<Object_Manager::game_commands.size()){
-                            Object_Manager::game_commands[configure_command].button=(SDL_GameControllerButton)event.cbutton.button;
-                        }
-
-                        Options::save_game_commands();
-                    }
-
-                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
-
-                    event_consumed=true;
-                }
-                break;
-
-            case SDL_KEYDOWN:
-                if(!event_consumed && event.key.repeat==0 &&
-                   (event.key.keysym.scancode==SDL_SCANCODE_ESCAPE || event.key.keysym.scancode==SDL_SCANCODE_AC_BACK || allow_keys_and_buttons)){
-                    if(event.key.keysym.scancode!=SDL_SCANCODE_ESCAPE && event.key.keysym.scancode!=SDL_SCANCODE_AC_BACK && event.key.keysym.scancode!=SDL_SCANCODE_MENU){
-                        if(configure_command<Object_Manager::game_commands.size()){
-                            Object_Manager::game_commands[configure_command].key=event.key.keysym.scancode;
-                        }
-
-                        Options::save_game_commands();
-                    }
-
-                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
-
-                    event_consumed=true;
-                }
-                break;
-
-            case SDL_CONTROLLERAXISMOTION:
-                if(!event_consumed && allow_axes){
-                    if(configure_command<Object_Manager::game_commands.size()){
-                        Object_Manager::game_commands[configure_command].axis=(SDL_GameControllerAxis)event.caxis.axis;
-                    }
-
-                    Options::save_game_commands();
-                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
-
-                    event_consumed=true;
-                }
-                break;
-        }
-    }
-
-    return event_consumed;
-}
-
 void Engine::get_mouse_state(int* mouse_x,int* mouse_y){
     SDL_Rect rect;
     Game_Window::get_renderer_viewport(&rect);
@@ -549,6 +472,28 @@ bool Engine::mouse_allowed(){
 
 bool Engine::allow_screen_keyboard(){
     if(Options::screen_keyboard && SDL_HasScreenKeyboardSupport()){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+void Engine::add_chat(string message){
+    chat.add_text(message);
+}
+
+bool Engine::is_console_selected(){
+    if(mutable_info_selected() && mutable_info_this(&console.info_input)){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool Engine::is_chat_selected(){
+    if(mutable_info_selected() && mutable_info_this(&chat.info_input)){
         return true;
     }
     else{
@@ -598,7 +543,120 @@ void Engine::make_toast(string message,string length,int custom_length){
     }
 }
 
+void Engine::update_window_caption(int render_rate,double ms_per_frame,int logic_frame_rate){
+    string msg="";
+
+    //Set the window caption
+    if(Options::dev){
+        msg=Engine_Data::game_title+" (DEV Mode)";
+    }
+    else{
+        msg=Engine_Data::game_title;
+    }
+
+    msg+=Game_Manager::get_game_window_caption();
+
+    if(Options::fps){
+        msg+="  FPS: "+Strings::num_to_string(render_rate);
+
+        msg+="  LUPS: "+Strings::num_to_string(logic_frame_rate);
+
+        msg+="  MS/Frame: "+Strings::num_to_string(ms_per_frame);
+    }
+
+    Game_Window::set_title(msg);
+}
+
+string Engine::get_system_info(){
+    string msg="";
+
+    int logical_width=0;
+    int logical_height=0;
+    Game_Window::get_renderer_logical_size(&logical_width,&logical_height);
+
+    SDL_Rect rect;
+    Game_Window::get_renderer_viewport(&rect);
+
+    float scale_x=0.0;
+    float scale_y=0.0;
+    Game_Window::get_renderer_scale(&scale_x,&scale_y);
+
+    int actual_width=0;
+    int actual_height=0;
+    Game_Window::get_renderer_output_size(&actual_width,&actual_height);
+
+    SDL_RendererInfo info;
+    Game_Window::get_renderer_info(&info);
+    string renderer_name=info.name;
+
+    int mouse_x=0;
+    int mouse_y=0;
+    Engine::get_mouse_state(&mouse_x,&mouse_y);
+
+    int mouse_real_x=0;
+    int mouse_real_y=0;
+    SDL_GetMouseState(&mouse_real_x,&mouse_real_y);
+
+    int power_seconds=0;
+    int power_percentage=0;
+    SDL_PowerState power_state=SDL_GetPowerInfo(&power_seconds,&power_percentage);
+    string str_power_seconds=Strings::time_string(power_seconds)+" remaining";
+    string str_power_percentage=Strings::num_to_string(power_percentage)+"%";
+
+    Controller_Manager::get_controller_info(msg);
+
+    msg+="Resolution (Logical): "+Strings::num_to_string(logical_width)+" x "+Strings::num_to_string(logical_height)+"\n";
+    msg+="Logical Viewport: "+Strings::num_to_string(rect.x)+","+Strings::num_to_string(rect.y)+","+Strings::num_to_string(rect.w)+","+Strings::num_to_string(rect.h)+"\n";
+    msg+="Render Scale: "+Strings::num_to_string(scale_x)+","+Strings::num_to_string(scale_y)+"\n";
+    msg+="Resolution (Actual): "+Strings::num_to_string(actual_width)+" x "+Strings::num_to_string(actual_height)+"\n";
+    msg+="Renderer: "+renderer_name+"\n";
+    msg+="Max Texture Size: "+Strings::num_to_string(info.max_texture_width)+" x "+Strings::num_to_string(info.max_texture_height)+"\n";
+    msg+="Current Gui Mode: "+Strings::first_letter_capital(GUI_Manager::gui_mode)+"\n";
+
+    msg+="Mouse Position (Logical): "+Strings::num_to_string(mouse_x)+","+Strings::num_to_string(mouse_y)+"\n";
+    msg+="Mouse Position (Actual): "+Strings::num_to_string(mouse_real_x)+","+Strings::num_to_string(mouse_real_y)+"\n";
+
+    msg+="Power State: ";
+    if(power_state==SDL_POWERSTATE_UNKNOWN){
+        msg+="Unknown";
+    }
+    else if(power_state==SDL_POWERSTATE_ON_BATTERY){
+        msg+="Unplugged, on battery";
+    }
+    else if(power_state==SDL_POWERSTATE_NO_BATTERY){
+        msg+="Plugged in, no battery";
+    }
+    else if(power_state==SDL_POWERSTATE_CHARGING){
+        msg+="Plugged in, charging";
+    }
+    else if(power_state==SDL_POWERSTATE_CHARGED){
+        msg+="Plugged in, fully charged";
+    }
+    if(power_seconds!=-1 || power_percentage!=-1){
+        msg+=" (";
+    }
+    if(power_percentage!=-1){
+        msg+=str_power_percentage;
+    }
+    if(power_seconds!=-1){
+        if(power_percentage!=-1){
+            msg+=", ";
+        }
+        msg+=str_power_seconds;
+    }
+    if(power_seconds!=-1 || power_percentage!=-1){
+        msg+=")";
+    }
+
+    return msg;
+}
+
 void Engine::animate(){
+    Window_Manager::animate();
+
+    console.animate();
+    chat.animate();
+
     if(toasts.size()>0){
         toasts[0].animate();
 
@@ -625,6 +683,10 @@ void Engine::animate(){
             cursor_opacity-=1;
         }
     }
+
+    Object_Manager::animate_cursors();
+
+    GUI_Manager::animate();
 }
 
 void Engine::render_toast(){
@@ -837,5 +899,70 @@ void Engine::render_text_editing(){
                          font->spacing_y,0.75,current_color_theme()->window_background);
 
         font->show((Game_Window::SCREEN_WIDTH-(text.length()*font->spacing_x))/2.0,Engine_Data::window_border_thickness,text,current_color_theme()->window_font);
+    }
+}
+
+void Engine::render(int render_rate,double ms_per_frame,int logic_frame_rate){
+    if(!GUI_Manager::hide_gui){
+        if(Game_Manager::in_progress && Game_Manager::paused){
+            Game_Manager::render_pause();
+        }
+
+        Window_Manager::render();
+
+        GUI_Manager::render_gui_selector();
+
+        console.render();
+        chat.render();
+
+        Tooltip::render();
+
+        render_toast();
+
+        if(mutable_info_selected() && GUI_Manager::gui_mode=="controller" && !allow_screen_keyboard()){
+            if(!Engine_Data::controller_text_entry_small){
+                render_text_inputter();
+            }
+            else{
+                render_small_text_inputter();
+            }
+        }
+
+        if(mutable_info_selected() && allow_screen_keyboard() && Game_Window::is_screen_keyboard_shown()){
+            render_text_editing();
+        }
+
+        Controller_Manager::render_touch_controller();
+
+        if(Options::dev){
+            render_dev_info();
+        }
+
+        if(Options::fps){
+            Game_Manager::render_fps(render_rate,ms_per_frame,logic_frame_rate);
+        }
+
+        if(GUI_Manager::gui_mode=="mouse" && (Engine_Data::cursor_render_always || Window_Manager::is_any_window_open() || console.on)){
+            int mouse_x=0;
+            int mouse_y=0;
+            get_mouse_state(&mouse_x,&mouse_y);
+
+            if(!mouse_over){
+                Object_Manager::get_cursor(Engine_Data::cursor)->render(mouse_x,mouse_y);
+            }
+            else{
+                Object_Manager::get_cursor(Engine_Data::cursor_mouse_over)->render(mouse_x,mouse_y);
+            }
+        }
+        else{
+            if(Options::hw_cursor){
+                SDL_ShowCursor(SDL_DISABLE);
+            }
+        }
+    }
+    else{
+        if(Options::hw_cursor){
+            SDL_ShowCursor(SDL_DISABLE);
+        }
     }
 }

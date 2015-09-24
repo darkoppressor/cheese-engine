@@ -6,9 +6,96 @@
 
 using namespace std;
 
+bool Data_Manager::images_loaded=false;
+bool Data_Manager::fonts_loaded=false;
+bool Data_Manager::colors_loaded=false;
+bool Data_Manager::world_loaded=false;
+
+const int Data_Manager::world_load_item_count=24;
+
+bool Data_Manager::are_images_loaded(){
+    return images_loaded;
+}
+
+bool Data_Manager::are_fonts_loaded(){
+    return fonts_loaded;
+}
+
+bool Data_Manager::are_colors_loaded(){
+    return colors_loaded;
+}
+
+bool Data_Manager::is_world_loaded(){
+    return world_loaded;
+}
+
+bool Data_Manager::load_world(Progress_Bar& bar){
+    GUI_Manager::initialize();
+
+    load_data_game_options();
+
+    if(!Options::load_options()){
+        return false;
+    }
+
+    if(!Game_Window::initialize()){
+        return false;
+    }
+
+    bar.progress("Loading images",4);
+
+    Image_Manager::load_images();
+
+    images_loaded=true;
+
+    bar.progress("Loading sounds");
+
+    Sound_Manager::load_sounds();
+
+    bar.progress("Loading music");
+
+    Music_Manager::prepare_tracks();
+
+    load_data_main(bar);
+
+    bar.progress("Preparing render target textures",3);
+
+    add_rtts();
+
+    bar.progress("Preparing console");
+
+    Engine::console.setup(false);
+
+    bar.progress("Preparing chat box");
+
+    Engine::chat.setup(true);
+
+    bar.progress("Loading game commands");
+
+    if(!Options::load_game_commands()){
+        return false;
+    }
+
+    bar.progress("Loading servers list");
+
+    Options::load_servers();
+
+    bar.progress("Loading error image");
+
+    //To be safe, this should be at the very bottom of load_world()
+    Image_Manager::set_error_image();
+
+    world_loaded=true;
+
+    return true;
+}
+
 void Data_Manager::unload_world(){
-    if(Engine::world_loaded){
-        Engine::world_loaded=false;
+    if(world_loaded){
+        world_loaded=false;
+        colors_loaded=false;
+        fonts_loaded=false;
+        images_loaded=false;
 
         Image_Manager::unload_images();
 
@@ -42,18 +129,50 @@ bool Data_Manager::load_data_engine(){
     return load_result;
 }
 
-void Data_Manager::load_data_main(){
-    load_data("font");
-    load_data("cursor");
+void Data_Manager::load_data_main(Progress_Bar& bar){
+    bar.progress("Loading colors");
+
     load_data("color");
+
+    colors_loaded=true;
+
+    bar.progress("Loading fonts");
+
+    load_data("font");
+
+    fonts_loaded=true;
+
+    bar.progress("Loading cursors");
+
+    load_data("cursor");
+
+    bar.progress("Loading color themes");
+
     load_data("color_theme");
+
+    bar.progress("Loading animations");
+
     load_data("animation");
+
+    bar.progress("Loading windows");
+
     load_data("window");
+
+    bar.progress("Loading game commands");
+
     load_data("game_command");
+
+    bar.progress("Loading game constants");
+
     load_data("game_constant");
+
+    bar.progress("Loading custom sounds");
+
     load_data("custom_sound");
 
-    Game_Manager::load_data_game();
+    Game_Manager::load_data_game(bar);
+
+    bar.progress("Completing main data loading process");
 
     Window_Manager::create_window_close_buttons();
 

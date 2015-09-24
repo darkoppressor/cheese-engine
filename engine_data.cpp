@@ -167,49 +167,49 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
             spaces_per_tab=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_move_speed:")){
-            console.move_speed=Strings::string_to_long(line);
+            Engine::console.move_speed=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_max_command_length:")){
-            console.max_command_length=Strings::string_to_long(line);
+            Engine::console.max_command_length=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_max_log_recall:")){
-            console.max_log_recall=Strings::string_to_long(line);
+            Engine::console.max_log_recall=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_max_command_recall:")){
-            console.max_command_recall=Strings::string_to_long(line);
+            Engine::console.max_command_recall=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_font:")){
-            console.font=line;
+            Engine::console.font=line;
         }
         else if(Data_Reader::check_prefix(line,"console_font_color:")){
-            console.font_color=line;
+            Engine::console.font_color=line;
         }
         else if(Data_Reader::check_prefix(line,"console_opacity:")){
-            console.background_opacity=Strings::string_to_double(line);
+            Engine::console.background_opacity=Strings::string_to_double(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_move_speed:")){
-            chat.move_speed=Strings::string_to_long(line);
+            Engine::chat.move_speed=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_max_command_length:")){
-            chat.max_command_length=Strings::string_to_long(line);
+            Engine::chat.max_command_length=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_max_log_recall:")){
-            chat.max_log_recall=Strings::string_to_long(line);
+            Engine::chat.max_log_recall=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_max_command_recall:")){
-            chat.max_command_recall=Strings::string_to_long(line);
+            Engine::chat.max_command_recall=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_font:")){
-            chat.font=line;
+            Engine::chat.font=line;
         }
         else if(Data_Reader::check_prefix(line,"chat_font_color:")){
-            chat.font_color=line;
+            Engine::chat.font_color=line;
         }
         else if(Data_Reader::check_prefix(line,"chat_opacity:")){
-            chat.background_opacity=Strings::string_to_double(line);
+            Engine::chat.background_opacity=Strings::string_to_double(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_line_timeout:")){
-            chat.line_timeout=Strings::string_to_long(line);
+            Engine::chat.line_timeout=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"gui_selector_style:")){
             gui_selector_style=line;

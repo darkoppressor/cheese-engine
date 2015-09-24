@@ -426,9 +426,9 @@ bool Information::handle_input_events(int mouse_x,int mouse_y,int x_offset,int y
     Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
     Collision_Rect box_b(x_offset+x,y_offset+y,w,h);
 
-    switch(Engine::event.type){
+    switch(Engine_Input::event.type){
         case SDL_MOUSEBUTTONDOWN:
-            if(Engine::event.button.button==SDL_BUTTON_LEFT){
+            if(Engine_Input::event.button.button==SDL_BUTTON_LEFT){
                 if(text_mutable){
                     if(Collision::check_rect(box_a,box_b)){
                         if(scrolling && text.length()>0){
@@ -466,7 +466,7 @@ bool Information::handle_input_events(int mouse_x,int mouse_y,int x_offset,int y
             break;
 
         case SDL_MOUSEWHEEL:
-            if(Engine::event.wheel.y<0){
+            if(Engine_Input::event.wheel.y<0){
                 if(scrolling){
                     if(Collision::check_rect(box_a,box_b)){
                         scroll_down(y_offset);
@@ -475,7 +475,7 @@ bool Information::handle_input_events(int mouse_x,int mouse_y,int x_offset,int y
                     }
                 }
             }
-            else if(Engine::event.wheel.y>0){
+            else if(Engine_Input::event.wheel.y>0){
                 if(scrolling){
                     if(Collision::check_rect(box_a,box_b)){
                         scroll_up(y_offset);

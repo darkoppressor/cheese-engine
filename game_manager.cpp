@@ -123,6 +123,22 @@ void Game_Manager::start_client(){
     }
 }
 
+void Game_Manager::stop(){
+    Network_Engine::stop();
+
+    if(in_progress){
+        in_progress=false;
+
+        reset();
+
+        Game_World::clear_world();
+
+        if(Engine::chat.on){
+            Engine::chat.toggle_on();
+        }
+    }
+}
+
 void Game_Manager::center_camera(Collision_Rect box){
     camera.x=box.center_x()*camera_zoom-camera.w/2.0;
     camera.y=box.center_y()*camera_zoom-camera.h/2.0;
