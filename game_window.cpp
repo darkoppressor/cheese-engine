@@ -313,7 +313,7 @@ bool Game_Window::set_position(int* desired_resolution_x,int* desired_resolution
             if(Options::display_number>=displays){
                 Options::display_number=0;
 
-                Engine_Mailman::send_letter("save_options");
+                Options::save_options();
             }
 
             SDL_Rect display_bounds={0,0,0,0};
@@ -661,7 +661,7 @@ void Game_Window::update_display_number(){
         if(display_index!=Options::display_number){
             Options::display_number=display_index;
 
-            Engine_Mailman::send_letter("save_options");
+            Options::save_options();
         }
     }
     else{

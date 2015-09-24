@@ -32,6 +32,8 @@ vector<string> Data_Reader::read_data(File_IO_Load* load,string end_tag){
             else if(boost::algorithm::starts_with(line,"//")){
             }
             else if(boost::algorithm::starts_with(line,end_tag)){
+                lines.push_back(line);
+
                 break;
             }
             else{

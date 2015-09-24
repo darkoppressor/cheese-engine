@@ -74,6 +74,8 @@ public:
     static std::string game_title;
     static std::string developer;
 
+    static std::string gui_selector_style;
+
     static int controller_dead_zone;
 
     static std::vector<std::string> starting_windows;
@@ -81,6 +83,8 @@ public:
     static double ZOOM_RATE;
     static double ZOOM_MIN;
     static double ZOOM_MAX;
+
+    static void load_engine_data(File_IO_Load* load);
 };
 
 #endif

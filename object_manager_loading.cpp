@@ -316,17 +316,15 @@ void Object_Manager::load_custom_sound(File_IO_Load* load){
             sound.set_frequencies(line);
         }
         else if(Data_Reader::check_prefix(line,"<data>")){
-            load_custom_sound_data(load,sound);
+            i=load_custom_sound_data(lines,i+1,sound);
         }
     }
 
     Sound_Manager::add_sound(sound);
 }
 
-void Object_Manager::load_custom_sound_data(File_IO_Load* load,Custom_Sound& sound){
-    vector<string> lines=Data_Reader::read_data(load,"</data>");
-
-    for(size_t i=0;i<lines.size();i++){
+size_t Object_Manager::load_custom_sound_data(vector<string>& lines,size_t line_index,Custom_Sound& sound){
+    for(size_t i=line_index;i<lines.size();i++){
         string& line=lines[i];
 
         if(Data_Reader::check_prefix(line,"length:")){
@@ -340,6 +338,9 @@ void Object_Manager::load_custom_sound_data(File_IO_Load* load,Custom_Sound& sou
         }
         else if(Data_Reader::check_prefix(line,"frequency:")){
             sound.set_frequencies(line);
+        }
+        else if(Data_Reader::check_prefix(line,"</data>")){
+            return i;
         }
         else{
             vector<string> components;
@@ -388,6 +389,8 @@ void Object_Manager::load_custom_sound_data(File_IO_Load* load,Custom_Sound& sou
             }
         }
     }
+
+    return lines.size()-1;
 }
 
 void Object_Manager::load_cursor(File_IO_Load* load){

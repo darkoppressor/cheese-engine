@@ -49,6 +49,49 @@ public:
     static bool screen_shake;
     static bool rumble;
     static bool screensaver;
+
+    static bool save_save_location();
+    static bool load_save_location();
+
+    static std::string get_option_value(std::string option);
+    static std::string get_option_description(std::string option);
+    static void change_option(std::string option,std::string new_value);
+
+    static void apply_options(const std::string& cl_effect_limit,const std::string& cl_screen_shake,const std::string& cl_rumble);
+
+    static void apply_options_graphics(const std::string& cl_screen_width,const std::string& cl_screen_height,const std::string& cl_display_number,
+                                const std::string& cl_fullscreen_state,const std::string& cl_fullscreen_mode,const std::string& cl_vsync,
+                                const std::string& cl_fps,const std::string& cl_hw_cursor,const std::string& cl_font_shadows);
+
+    static void apply_options_audio(const std::string& cl_volume_global,const std::string& cl_mute_global,
+                             const std::string& cl_volume_sound,const std::string& cl_mute_sound,
+                             const std::string& cl_volume_music,const std::string& cl_mute_music);
+
+    static void apply_options_input(const std::string& cl_bind_cursor,const std::string& cl_screen_keyboard,const std::string& cl_accelerometer_controller,
+                             const std::string& cl_touch_controller_state,const std::string& cl_touch_controller_opacity);
+
+    static void apply_options_network(const std::string& cl_name,const std::string& cl_chat_timestamps);
+
+    //Returns false if options could not be saved
+    //Returns true otherwise
+    static bool save_options();
+    //Returns false if options could not be loaded
+    //Returns true otherwise
+    static bool load_options();
+
+    //Returns false if game commands could not be saved
+    //Returns true otherwise
+    static bool save_game_commands();
+    //Returns false if game commands could not be loaded
+    //Returns true otherwise
+    static bool load_game_commands();
+
+    //Returns false if servers could not be saved
+    //Returns true otherwise
+    static bool save_servers();
+    //Returns false if servers could not be loaded
+    //Returns true otherwise
+    static bool load_servers();
 };
 
 #endif

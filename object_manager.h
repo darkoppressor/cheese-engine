@@ -18,6 +18,7 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 
 class Object_Manager{
 private:
@@ -44,7 +45,7 @@ public:
     static void load_game_option(File_IO_Load* load);
     static void load_game_constant(File_IO_Load* load);
     static void load_custom_sound(File_IO_Load* load);
-    static void load_custom_sound_data(File_IO_Load* load,Custom_Sound& sound);
+    static size_t load_custom_sound_data(std::vector<std::string>& lines,size_t line_index,Custom_Sound& sound);
     static void load_cursor(File_IO_Load* load);
 
     static Color* get_color(std::string name);
@@ -56,6 +57,28 @@ public:
     static Cursor* get_cursor(std::string name);
 
     static void animate_cursors();
+
+    static void save_game_commands(std::stringstream& save);
+    static void load_game_commands(std::string& line);
+    static void save_game_options(std::stringstream& save);
+    static void load_game_options(std::string& line);
+
+    static std::string get_game_option_value(const std::string& option);
+    static std::string get_game_option_description(const std::string& option);
+    static bool set_game_option(const std::string& option,const std::string& new_value);
+    //Add game options to console commands list
+    static void add_game_options_to_commands(std::vector<std::string>& commands);
+
+    static const std::vector<Game_Command>& get_game_commands();
+    static void clear_game_commands();
+    //If the game command uses a key or button:
+    //Returns 1 if the passed game command's corresponding input is currently pressed
+    //Returns 0 if the passed game command's corresponding input is currently unpressed
+    //If the game command uses an axis:
+    //Returns the axis state as a value from -32768 to 32767
+    static int game_command_state(std::string name);
+    static void output_command_configuration_info(std::string& text);
+    static void add_game_command_scrolling_button(std::vector<Button>& buttons);
 };
 
 #endif

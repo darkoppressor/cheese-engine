@@ -63,10 +63,6 @@ public:
     static void zoom_camera_out(Collision_Rect box);
     static void zoom_camera_out(Collision_Circ circle);
 
-    static void set_camera();
-
-    static void render_scoreboard();
-
     static void prepare_for_input();
 
     static void handle_command_states_multiplayer();
@@ -78,6 +74,22 @@ public:
     static bool handle_game_command(std::string command_name);
     static bool handle_input_events_gui();
     static bool handle_input_events();
+
+    static void set_camera();
+
+    static void handle_drag_and_drop(std::string file);
+
+    static std::string get_game_window_caption();
+
+    static void render_scoreboard();
+    static void render_title_background();
+    static void render_pause();
+    static void render_fps(int render_rate,double ms_per_frame,int logic_frame_rate);
+    static void render_loading_screen(double percentage,std::string load_message);
+
+    static void load_data_game();
+    static void load_data_tag_game(std::string tag,File_IO_Load* load);
+    static void unload_data_game();
 };
 
 #endif
