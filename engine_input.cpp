@@ -3,12 +3,25 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "engine_input.h"
+#include "controller_manager.h"
+#include "engine.h"
+#include "tooltip.h"
+#include "gui_manager.h"
+#include "game_window.h"
+#include "window_manager.h"
+#include "object_manager.h"
+#include "game_manager.h"
+#include "engine_data.h"
+#include "sound_manager.h"
+#include "options.h"
+#include "strings.h"
+#include "window.h"
+
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
 SDL_Event Engine_Input::event;
-
-int Engine_Input::configure_command=-1;
 
 bool Engine_Input::poll_event(SDL_Event* event_storage){
     if(SDL_PollEvent(event_storage)){
@@ -42,7 +55,7 @@ void Engine_Input::input_newline(){
 
 void Engine_Input::prepare_for_input(){
     //Start each frame of updates with the tooltip off
-    Tooltip::on=false;
+    Tooltip::set_on(false);
 
     Engine::mouse_over=false;
 
@@ -55,80 +68,6 @@ void Engine_Input::prepare_for_input(){
     }
 
     Window_Manager::prepare_for_input();
-}
-
-bool Engine_Input::handle_input_events_command_set(){
-    bool event_consumed=false;
-
-    if(configure_command!=-1){
-        const uint8_t* keystates=SDL_GetKeyboardState(NULL);
-
-        bool allow_keys_and_buttons=true;
-        bool allow_axes=true;
-
-        if(configure_command<Object_Manager::game_commands.size()){
-            const char* ckey=SDL_GetScancodeName(Object_Manager::game_commands[configure_command].key);
-            const char* cbutton=SDL_GameControllerGetStringForButton(Object_Manager::game_commands[configure_command].button);
-            const char* caxis=SDL_GameControllerGetStringForAxis(Object_Manager::game_commands[configure_command].axis);
-
-            if(caxis!=0 && Object_Manager::game_commands[configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
-                allow_keys_and_buttons=false;
-            }
-            else{
-                allow_axes=false;
-            }
-        }
-
-        switch(event.type){
-            case SDL_CONTROLLERBUTTONDOWN:
-                if(!event_consumed && (event.cbutton.button==SDL_CONTROLLER_BUTTON_START || allow_keys_and_buttons)){
-                    if(event.cbutton.button!=SDL_CONTROLLER_BUTTON_START){
-                        if(configure_command<Object_Manager::game_commands.size()){
-                            Object_Manager::game_commands[configure_command].button=(SDL_GameControllerButton)event.cbutton.button;
-                        }
-
-                        Options::save_game_commands();
-                    }
-
-                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
-
-                    event_consumed=true;
-                }
-                break;
-
-            case SDL_KEYDOWN:
-                if(!event_consumed && event.key.repeat==0 &&
-                   (event.key.keysym.scancode==SDL_SCANCODE_ESCAPE || event.key.keysym.scancode==SDL_SCANCODE_AC_BACK || allow_keys_and_buttons)){
-                    if(event.key.keysym.scancode!=SDL_SCANCODE_ESCAPE && event.key.keysym.scancode!=SDL_SCANCODE_AC_BACK && event.key.keysym.scancode!=SDL_SCANCODE_MENU){
-                        if(configure_command<Object_Manager::game_commands.size()){
-                            Object_Manager::game_commands[configure_command].key=event.key.keysym.scancode;
-                        }
-
-                        Options::save_game_commands();
-                    }
-
-                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
-
-                    event_consumed=true;
-                }
-                break;
-
-            case SDL_CONTROLLERAXISMOTION:
-                if(!event_consumed && allow_axes){
-                    if(configure_command<Object_Manager::game_commands.size()){
-                        Object_Manager::game_commands[configure_command].axis=(SDL_GameControllerAxis)event.caxis.axis;
-                    }
-
-                    Options::save_game_commands();
-                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
-
-                    event_consumed=true;
-                }
-                break;
-        }
-    }
-
-    return event_consumed;
 }
 
 bool Engine_Input::handle_input_events_drag_and_drop(){

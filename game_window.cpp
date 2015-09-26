@@ -3,12 +3,13 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "game_window.h"
-#include "strings.h"
-#include "log.h"
-#include "directories.h"
-#include "engine_data.h"
 #include "options.h"
+#include "engine_data.h"
+#include "log.h"
+#include "strings.h"
+#include "game_manager.h"
 #include "controller_manager.h"
+#include "directories.h"
 #include "engine.h"
 
 #include <SDL_mixer.h>
@@ -23,13 +24,13 @@ SDL_Window* Game_Window::screen=0;
 
 SDL_Renderer* Game_Window::renderer=0;
 
+int Game_Window::SCREEN_WIDTH=0;
+int Game_Window::SCREEN_HEIGHT=0;
+
 SDL_Surface* Game_Window::icon=0;
 Uint32 Game_Window::icon_colorkey=0;
 
 bool Game_Window::need_to_reload=false;
-
-int Game_Window::SCREEN_WIDTH=0;
-int Game_Window::SCREEN_HEIGHT=0;
 
 bool Game_Window::initialize_video(){
     int position_x=SDL_WINDOWPOS_CENTERED;
@@ -595,6 +596,14 @@ void Game_Window::reload_check(){
 
         reload();
     }
+}
+
+int Game_Window::width(){
+    return SCREEN_WIDTH;
+}
+
+int Game_Window::height(){
+    return SCREEN_HEIGHT;
 }
 
 void Game_Window::get_renderer_logical_size(int* width,int* height){

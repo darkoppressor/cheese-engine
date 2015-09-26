@@ -3,7 +3,6 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "rtt_data.h"
-#include "log.h"
 #include "game_window.h"
 
 using namespace std;

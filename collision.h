@@ -48,7 +48,7 @@ public:
     Collision_Event();
     Collision_Event(uint32_t get_object1,uint32_t get_object2);
 
-    bool operator==(Collision_Event collision1);
+    bool operator==(const Collision_Event& collision1) const;
 };
 
 class Collision{

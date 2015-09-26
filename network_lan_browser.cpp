@@ -3,6 +3,20 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "network_lan_browser.h"
+#include "network_client.h"
+#include "window_manager.h"
+#include "network_server.h"
+#include "network_engine.h"
+#include "strings.h"
+#include "engine_data.h"
+#include "log.h"
+
+#include <boost/algorithm/string.hpp>
+
+#include "raknet/Source/BitStream.h"
+#include "raknet/Source/GetTime.h"
+
+using namespace std;
 
 vector<Server> Network_LAN_Browser::lan_server_list;
 int Network_LAN_Browser::lan_connecting_index=-1;
@@ -28,14 +42,14 @@ void Network_LAN_Browser::add_lan_server(string get_name,string get_address,unsi
     //This server is not already in the list
     if(existing_index==-1){
         lan_server_list.push_back(Server());
-        lan_server_list[lan_server_list.size()-1].name=get_name;
-        lan_server_list[lan_server_list.size()-1].address=get_address;
-        lan_server_list[lan_server_list.size()-1].port=get_port;
-        lan_server_list[lan_server_list.size()-1].password_required=password_required;
-        lan_server_list[lan_server_list.size()-1].slots_filled=slots_filled;
-        lan_server_list[lan_server_list.size()-1].slots_total=slots_total;
-        lan_server_list[lan_server_list.size()-1].version=version;
-        lan_server_list[lan_server_list.size()-1].ping=ping;
+        lan_server_list.back().name=get_name;
+        lan_server_list.back().address=get_address;
+        lan_server_list.back().port=get_port;
+        lan_server_list.back().password_required=password_required;
+        lan_server_list.back().slots_filled=slots_filled;
+        lan_server_list.back().slots_total=slots_total;
+        lan_server_list.back().version=version;
+        lan_server_list.back().ping=ping;
     }
     //This server is already in the list
     else{
@@ -61,7 +75,7 @@ Server* Network_LAN_Browser::get_lan_server(int index){
 }
 
 void Network_LAN_Browser::lan_refresh(){
-    if(status=="off"){
+    if(Network_Engine::status=="off"){
         Network_Server::start_as_server(false);
     }
 
@@ -73,7 +87,7 @@ void Network_LAN_Browser::lan_refresh(){
 }
 
 void Network_LAN_Browser::lan_refresh_quick(){
-    if(status=="off"){
+    if(Network_Engine::status=="off"){
         Network_Server::start_as_server(false);
     }
 
@@ -83,7 +97,7 @@ void Network_LAN_Browser::lan_refresh_quick(){
 }
 
 void Network_LAN_Browser::receive_server_browser_info(){
-    RakNet::BitStream bitstream(packet->data,packet->length,false);
+    RakNet::BitStream bitstream(Network_Engine::packet->data,Network_Engine::packet->length,false);
     Network_Engine::stat_counter_bytes_received+=bitstream.GetNumberOfBytesUsed();
 
     RakNet::MessageID type_id;
@@ -138,8 +152,8 @@ void Network_LAN_Browser::receive_server_browser_info(){
         //If this is a normal server that is accepting clients
         //and this server is not us
         //and the server is running the game we are playing
-        if(connection_slots_total>1 && Network_Engine::packet->guid!=id && connection_game_title==Engine_Data::game_title){
-            Network_Engine::add_lan_server(connection_name,connection_address,connection_port,connection_password_required,connection_slots_filled,connection_slots_total,connection_version,connection_ping);
+        if(connection_slots_total>1 && Network_Engine::packet->guid!=Network_Engine::id && connection_game_title==Engine_Data::game_title){
+            add_lan_server(connection_name,connection_address,connection_port,connection_password_required,connection_slots_filled,connection_slots_total,connection_version,connection_ping);
 
             //If this server is on the saved server list, update it
             for(int i=0;i<Network_Client::server_list.size();i++){

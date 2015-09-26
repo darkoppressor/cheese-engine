@@ -5,7 +5,7 @@
 #ifndef cursor_h
 #define cursor_h
 
-#include <sprite.h>
+#include "sprite.h"
 
 #include <string>
 

@@ -3,6 +3,9 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "engine_version.h"
+#include "strings.h"
+#include "options.h"
+#include "log.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -35,11 +38,11 @@ Version::Version(string version_string){
     }
 }
 
-bool Version::operator==(const Version& version){
+bool Version::operator==(const Version& version) const{
     return major==version.major && minor==version.minor && micro==version.micro;
 }
 
-bool Version::operator<(const Version& version){
+bool Version::operator<(const Version& version) const{
     if(major<version.major){
         return true;
     }
@@ -57,19 +60,19 @@ bool Version::operator<(const Version& version){
     return false;
 }
 
-bool Version::operator>(const Version& version){
+bool Version::operator>(const Version& version) const{
     return version<(*this);
 }
 
-bool Version::operator<=(const Version& version){
+bool Version::operator<=(const Version& version) const{
     return !operator>(version);
 }
 
-bool Version::operator>=(const Version& version){
+bool Version::operator>=(const Version& version) const{
     return !operator<(version);
 }
 
-int Version::get_version_series(const vector<Version_Series>& version_series){
+int Version::get_version_series(const vector<Version_Series>& version_series) const{
     for(size_t i=0;i<version_series.size();i++){
         Version first(version_series[i].first_version);
         Version last(version_series[i].last_version);
@@ -80,6 +83,10 @@ int Version::get_version_series(const vector<Version_Series>& version_series){
     }
 
     return -1;
+}
+
+string Engine_Version::get_engine_status(){
+    return "beta";
 }
 
 string Engine_Version::get_engine_version(){

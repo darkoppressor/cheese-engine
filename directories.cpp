@@ -3,10 +3,10 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "directories.h"
-#include "file_io.h"
 #include "log.h"
 #include "strings.h"
 #include "options.h"
+#include "file_io.h"
 
 #include <SDL.h>
 

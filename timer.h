@@ -29,10 +29,10 @@ public:
     void pause();
     void unpause();
 
-    uint32_t get_ticks();
+    bool is_started() const;
+    bool is_paused() const;
 
-    bool is_started();
-    bool is_paused();
+    uint32_t get_ticks() const;
 };
 
 #endif

@@ -26,24 +26,24 @@ public:
 
     static std::string underscore_to_space(const std::string& str_input);
 
-    //Prepares newlines (\n) in a string to be written to disk.
+    //Prepares newlines (\n) in a string to be written to disk
     static std::string add_newlines(const std::string& str_input);
 
-    //Process newlines (\n) in a string that has been read from disk.
+    //Process newlines (\n) in a string that has been read from disk
     static std::string process_newlines(const std::string& str_input);
 
-    //Returns the number of newlines in the passed string.
+    //Returns the number of newlines in the passed string
     static int newline_count(const std::string& str_input);
 
-    //Returns the length of the last line in the passed string.
-    //Simply returns the length of the string if it has only one line.
+    //Returns the length of the last line in the passed string
+    //Simply returns the length of the string if it has only one line
     static int length_of_last_line(const std::string& str_input);
 
-    //Returns the length of line number line in the passed string.
+    //Returns the length of line number line in the passed string
     //Returns 0 if an invalid line number is passed
     static int length_of_line(const std::string& str_input,int line);
 
-    //Returns the length of the longest line in the passed string.
+    //Returns the length of the longest line in the passed string
     static int longest_line(const std::string& str_input);
 
     //Returns the line that the passed character is on
@@ -63,8 +63,8 @@ public:
 
     static bool is_number(const std::string& str_input);
 
-    //Returns a string with the time represented by seconds.
-    //If highest is true, only shows the highest unit of time possible.
+    //Returns a string with the time represented by seconds
+    //If highest is true, only shows the highest unit of time possible
     static std::string time_string(int64_t seconds,bool highest=false);
 
     static bool string_to_bool(const std::string& get_string);

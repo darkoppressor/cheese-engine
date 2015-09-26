@@ -5,8 +5,6 @@
 #ifndef math_vector_h
 #define math_vector_h
 
-#include <stdint.h>
-
 class Vector_Components{
 public:
 

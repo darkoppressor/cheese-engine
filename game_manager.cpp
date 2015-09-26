@@ -3,11 +3,13 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "game_manager.h"
-#include "strings.h"
-#include "sound_manager.h"
 #include "options.h"
 #include "game_window.h"
+#include "sound_manager.h"
 #include "game_world.h"
+#include "network_engine.h"
+#include "engine.h"
+#include "engine_data.h"
 
 using namespace std;
 
@@ -49,8 +51,8 @@ void Game_Manager::reset(){
 }
 
 void Game_Manager::reset_camera_dimensions(){
-    camera.w=Game_Window::SCREEN_WIDTH;
-    camera.h=Game_Window::SCREEN_HEIGHT;
+    camera.w=Game_Window::width();
+    camera.h=Game_Window::height();
 }
 
 string Game_Manager::get_random_direction_cardinal(){

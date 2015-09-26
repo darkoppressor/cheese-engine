@@ -3,11 +3,9 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "custom_sound.h"
-#include "engine_math.h"
-#include "strings.h"
 #include "rng.h"
-
-#include <cmath>
+#include "strings.h"
+#include "engine_math.h"
 
 #include <boost/algorithm/string.hpp>
 

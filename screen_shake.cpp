@@ -6,8 +6,7 @@
 #include "math_vector.h"
 #include "options.h"
 #include "engine.h"
-
-#include <cmath>
+#include "engine_math.h"
 
 using namespace std;
 
@@ -74,7 +73,7 @@ void Screen_Shake::add_shake(double get_magnitude,int get_length){
 
 void Screen_Shake::movement(const Collision_Rect& camera){
     if(is_active()){
-        Vector velocity((0.65/pow(1.0-magnitude,0.25))*((camera.w+camera.h)/2.0),direction);
+        Vector velocity((0.65/Math::pow(1.0-magnitude,0.25))*((camera.w+camera.h)/2.0),direction);
 
         Vector_Components vc=velocity.get_components();
 
@@ -85,10 +84,10 @@ void Screen_Shake::movement(const Collision_Rect& camera){
         y+=move_y;
 
         if(!returning){
-            distance_moved+=abs(move_x);
-            distance_moved+=abs(move_y);
+            distance_moved+=Math::abs(move_x);
+            distance_moved+=Math::abs(move_y);
 
-            if(distance_moved>=(0.045/(pow(magnitude,0.5)))*magnitude*((camera.w+camera.h)/2.0)){
+            if(distance_moved>=(0.045/(Math::pow(magnitude,0.5)))*magnitude*((camera.w+camera.h)/2.0)){
                 distance_moved=0.0;
 
                 returning=!returning;
@@ -125,7 +124,7 @@ void Screen_Shake::movement(const Collision_Rect& camera){
             }
         }
 
-        length-=(int)ceil(1000.0/Engine::UPDATE_RATE);
+        length-=(int)Math::ceil(1000.0/Engine::UPDATE_RATE);
 
         if(length<=0){
             reset();

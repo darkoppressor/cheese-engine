@@ -6,10 +6,56 @@
 
 #include <cmath>
 
-using namespace std;
-
 const double Math::PI=3.14159265358979323846;
 const double Math::E=2.71828182845904523536;
+
+double Math::abs(double x){
+    return std::abs(x);
+}
+
+double Math::ceil(double x){
+    return std::ceil(x);
+}
+
+double Math::floor(double x){
+    return std::floor(x);
+}
+
+double Math::pow(double base,double exponent){
+    return std::pow(base,exponent);
+}
+
+double Math::sqrt(double x){
+    return std::sqrt(x);
+}
+
+double Math::cos(double x){
+    return std::cos(x);
+}
+
+double Math::sin(double x){
+    return std::sin(x);
+}
+
+double Math::tan(double x){
+    return std::tan(x);
+}
+
+double Math::acos(double x){
+    return std::acos(x);
+}
+
+double Math::asin(double x){
+    return std::asin(x);
+}
+
+double Math::atan(double x){
+    return std::atan(x);
+}
+
+double Math::atan2(double y,double x){
+    return std::atan2(y,x);
+}
 
 double Math::degrees_to_radians(double degrees){
     return degrees*(PI/180.0);

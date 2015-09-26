@@ -12,6 +12,8 @@
 #include <vector>
 #include <stdint.h>
 
+#include "raknet/Source/MessageIdentifiers.h"
+
 enum{
     ID_GAME_VERSION=ID_USER_PACKET_ENUM,
     ID_GAME_CLIENT_DATA,

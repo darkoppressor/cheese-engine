@@ -3,12 +3,10 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "sprite.h"
-#include "image_manager.h"
-#include "render.h"
 #include "object_manager.h"
+#include "image_manager.h"
 #include "engine.h"
-
-#include <cmath>
+#include "render.h"
 
 using namespace std;
 

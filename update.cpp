@@ -3,14 +3,16 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "update.h"
-#include "music_manager.h"
-#include "rtt_manager.h"
-#include "controller_manager.h"
-#include "data_reader.h"
-#include "game_window.h"
-#include "log.h"
+#include "game_manager.h"
+#include "game_world.h"
+#include "engine_input.h"
 #include "engine.h"
+#include "controller_manager.h"
+#include "object_manager.h"
+#include "window_manager.h"
 #include "sound_manager.h"
+#include "music_manager.h"
+#include "game_window.h"
 
 using namespace std;
 
@@ -45,11 +47,11 @@ void Update::input(){
         }
 
         if(!event_consumed){
-            event_consumed=Engine_Input::handle_input_events_command_set();
+            event_consumed=Object_Manager::handle_input_events_command_set();
         }
 
         //If we are still binding a command input
-        if(Engine_Input::configure_command!=-1){
+        if(Object_Manager::configure_command!=-1){
             event_ignore_command_set=true;
         }
         else{

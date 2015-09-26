@@ -4,8 +4,8 @@
 
 #include "controller_manager.h"
 #include "options.h"
-#include "log.h"
 #include "strings.h"
+#include "log.h"
 #include "android.h"
 
 #include <boost/algorithm/string.hpp>

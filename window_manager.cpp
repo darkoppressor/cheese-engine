@@ -3,6 +3,15 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "window_manager.h"
+#include "data_reader.h"
+#include "strings.h"
+#include "log.h"
+#include "engine.h"
+#include "collision.h"
+#include "engine_data.h"
+#include "gui_manager.h"
+
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -316,7 +325,7 @@ void Window_Manager::open_window(Window* window){
     if(!is_window_open(window)){
         window_z_order.insert(window_z_order.begin(),window);
 
-        reset_gui_selected_object();
+        GUI_Manager::reset_gui_selected_object();
     }
 }
 
@@ -325,7 +334,7 @@ void Window_Manager::close_window(Window* window){
         if(window_z_order[i]==window){
             window_z_order.erase(window_z_order.begin()+i);
 
-            reset_gui_selected_object();
+            GUI_Manager::reset_gui_selected_object();
 
             break;
         }

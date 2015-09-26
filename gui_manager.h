@@ -6,6 +6,10 @@
 #define gui_manager_h
 
 #include "gui_object.h"
+#include "sprite.h"
+#include "coords.h"
+#include "button.h"
+#include "information.h"
 
 #include <vector>
 #include <string>

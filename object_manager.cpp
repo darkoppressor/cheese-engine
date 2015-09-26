@@ -3,12 +3,94 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "object_manager.h"
+#include "engine_input.h"
+#include "options.h"
+#include "window_manager.h"
+#include "strings.h"
+#include "data_reader.h"
+#include "controller_manager.h"
 
 #include <SDL.h>
 
 #include <boost/algorithm/string.hpp>
 
 using namespace std;
+
+int Object_Manager::configure_command=-1;
+
+bool Object_Manager::handle_input_events_command_set(){
+    bool event_consumed=false;
+
+    if(configure_command!=-1){
+        const uint8_t* keystates=SDL_GetKeyboardState(NULL);
+
+        bool allow_keys_and_buttons=true;
+        bool allow_axes=true;
+
+        if(configure_command<game_commands.size()){
+            const char* ckey=SDL_GetScancodeName(game_commands[configure_command].key);
+            const char* cbutton=SDL_GameControllerGetStringForButton(game_commands[configure_command].button);
+            const char* caxis=SDL_GameControllerGetStringForAxis(game_commands[configure_command].axis);
+
+            if(caxis!=0 && game_commands[configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
+                allow_keys_and_buttons=false;
+            }
+            else{
+                allow_axes=false;
+            }
+        }
+
+        switch(Engine_Input::event.type){
+            case SDL_CONTROLLERBUTTONDOWN:
+                if(!event_consumed && (Engine_Input::event.cbutton.button==SDL_CONTROLLER_BUTTON_START || allow_keys_and_buttons)){
+                    if(Engine_Input::event.cbutton.button!=SDL_CONTROLLER_BUTTON_START){
+                        if(configure_command<game_commands.size()){
+                            game_commands[configure_command].button=(SDL_GameControllerButton)Engine_Input::event.cbutton.button;
+                        }
+
+                        Options::save_game_commands();
+                    }
+
+                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
+
+                    event_consumed=true;
+                }
+                break;
+
+            case SDL_KEYDOWN:
+                if(!event_consumed && Engine_Input::event.key.repeat==0 &&
+                   (Engine_Input::event.key.keysym.scancode==SDL_SCANCODE_ESCAPE || Engine_Input::event.key.keysym.scancode==SDL_SCANCODE_AC_BACK || allow_keys_and_buttons)){
+                    if(Engine_Input::event.key.keysym.scancode!=SDL_SCANCODE_ESCAPE && Engine_Input::event.key.keysym.scancode!=SDL_SCANCODE_AC_BACK && Engine_Input::event.key.keysym.scancode!=SDL_SCANCODE_MENU){
+                        if(configure_command<game_commands.size()){
+                            game_commands[configure_command].key=Engine_Input::event.key.keysym.scancode;
+                        }
+
+                        Options::save_game_commands();
+                    }
+
+                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
+
+                    event_consumed=true;
+                }
+                break;
+
+            case SDL_CONTROLLERAXISMOTION:
+                if(!event_consumed && allow_axes){
+                    if(configure_command<game_commands.size()){
+                        game_commands[configure_command].axis=(SDL_GameControllerAxis)Engine_Input::event.caxis.axis;
+                    }
+
+                    Options::save_game_commands();
+                    Window_Manager::get_window("configure_command")->toggle_on(true,false);
+
+                    event_consumed=true;
+                }
+                break;
+        }
+    }
+
+    return event_consumed;
+}
 
 void Object_Manager::animate_cursors(){
     for(size_t i=0;i<cursors.size();i++){
@@ -177,16 +259,16 @@ int Object_Manager::game_command_state(string name){
 }
 
 void Object_Manager::output_command_configuration_info(string& text){
-    if(Engine_Input::configure_command!=-1 && Engine_Input::configure_command<game_commands.size()){
-        text+="Inputs currently bound to \""+game_commands[Engine_Input::configure_command].title+"\":"+"\n\n";
+    if(configure_command!=-1 && configure_command<game_commands.size()){
+        text+="Inputs currently bound to \""+game_commands[configure_command].title+"\":"+"\n\n";
 
-        const char* ckey=SDL_GetScancodeName(game_commands[Engine_Input::configure_command].key);
-        const char* cbutton=SDL_GameControllerGetStringForButton(game_commands[Engine_Input::configure_command].button);
-        const char* caxis=SDL_GameControllerGetStringForAxis(game_commands[Engine_Input::configure_command].axis);
+        const char* ckey=SDL_GetScancodeName(game_commands[configure_command].key);
+        const char* cbutton=SDL_GameControllerGetStringForButton(game_commands[configure_command].button);
+        const char* caxis=SDL_GameControllerGetStringForAxis(game_commands[configure_command].axis);
 
         bool allow_keys_and_buttons=true;
         bool allow_axes=true;
-        if(caxis!=0 && game_commands[Engine_Input::configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
+        if(caxis!=0 && game_commands[configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
             allow_keys_and_buttons=false;
         }
         else{
@@ -195,7 +277,7 @@ void Object_Manager::output_command_configuration_info(string& text){
 
         if(allow_keys_and_buttons){
             text+="Keyboard Key: ";
-            if(ckey!=0 && game_commands[Engine_Input::configure_command].key!=SDL_SCANCODE_UNKNOWN){
+            if(ckey!=0 && game_commands[configure_command].key!=SDL_SCANCODE_UNKNOWN){
                 text+=Strings::first_letter_capital(ckey);
             }
             else{
@@ -204,7 +286,7 @@ void Object_Manager::output_command_configuration_info(string& text){
             text+="\n\n";
 
             text+="Controller Button: ";
-            if(cbutton!=0 && game_commands[Engine_Input::configure_command].button!=SDL_CONTROLLER_BUTTON_INVALID){
+            if(cbutton!=0 && game_commands[configure_command].button!=SDL_CONTROLLER_BUTTON_INVALID){
                 text+=Strings::first_letter_capital(cbutton);
             }
             else{
@@ -215,7 +297,7 @@ void Object_Manager::output_command_configuration_info(string& text){
 
         if(allow_axes){
             text+="Controller Axis: ";
-            if(caxis!=0 && game_commands[Engine_Input::configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
+            if(caxis!=0 && game_commands[configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
                 text+=Strings::first_letter_capital(caxis);
             }
             else{
@@ -226,7 +308,7 @@ void Object_Manager::output_command_configuration_info(string& text){
     }
 }
 
-void Object_Manager::add_game_command_scrolling_button(vector<Button>& buttons){
+void Object_Manager::add_game_command_scrolling_button(const string& font,vector<Button>& buttons){
     for(int i=0;i<game_commands.size();i++){
         if(!game_commands[i].dev){
             buttons.push_back(Button());

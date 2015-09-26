@@ -11,6 +11,19 @@ public:
     static const double PI;
     static const double E;
 
+    static double abs(double x);
+    static double ceil(double x);
+    static double floor(double x);
+    static double pow(double base,double exponent);
+    static double sqrt(double x);
+    static double cos(double x);
+    static double sin(double x);
+    static double tan(double x);
+    static double acos(double x);
+    static double asin(double x);
+    static double atan(double x);
+    static double atan2(double y,double x);
+
     static double degrees_to_radians(double degrees);
     static double radians_to_degrees(double radians);
 

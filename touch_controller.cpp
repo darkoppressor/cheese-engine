@@ -3,12 +3,12 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "touch_controller.h"
+#include "engine_data.h"
+#include "game_window.h"
 #include "image_data.h"
 #include "image_manager.h"
 #include "render.h"
-#include "engine_data.h"
 #include "options.h"
-#include "game_window.h"
 
 using namespace std;
 
@@ -309,8 +309,8 @@ void Touch_Controller::render(){
     int actual_height=0;
     Game_Window::get_renderer_output_size(&actual_width,&actual_height);
 
-    double scale_x=(double)Game_Window::SCREEN_WIDTH/(double)actual_width;
-    double scale_y=(double)Game_Window::SCREEN_HEIGHT/(double)actual_height;
+    double scale_x=(double)Game_Window::width()/(double)actual_width;
+    double scale_y=(double)Game_Window::height()/(double)actual_height;
     double scale_mean=(scale_x+scale_y)/2.0;
 
     Image_Data* image_dpad=Image_Manager::get_image("touch_controller_dpad");

@@ -3,6 +3,20 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "network_server.h"
+#include "network_engine.h"
+#include "options.h"
+#include "log.h"
+#include "window_manager.h"
+#include "engine.h"
+#include "strings.h"
+#include "engine_version.h"
+#include "engine_data.h"
+#include "game_manager.h"
+
+#include "raknet/Source/BitStream.h"
+#include "raknet/Source/GetTime.h"
+
+using namespace std;
 
 unsigned int Network_Server::max_clients=0;
 unsigned short Network_Server::port=0;
@@ -28,7 +42,7 @@ bool Network_Server::start_as_server(bool allow_clients){
         Network_Engine::peer=RakNet::RakPeerInterface::GetInstance();
 
         RakNet::SocketDescriptor sd(actual_port,"");
-        RakNet::StartupResult startup=peer->Startup(max_clients,&sd,1);
+        RakNet::StartupResult startup=Network_Engine::peer->Startup(max_clients,&sd,1);
 
         if(startup==RakNet::RAKNET_STARTED){
             Network_Engine::status="server";
@@ -43,8 +57,8 @@ bool Network_Server::start_as_server(bool allow_clients){
 
             update_server_password();
 
-            id=Network_Engine::peer->GetGuidFromSystemAddress(RakNet::UNASSIGNED_SYSTEM_ADDRESS);
-            address=Network_Engine::peer->GetSystemAddressFromGuid(Network_Engine::id);
+            Network_Engine::id=Network_Engine::peer->GetGuidFromSystemAddress(RakNet::UNASSIGNED_SYSTEM_ADDRESS);
+            Network_Engine::address=Network_Engine::peer->GetSystemAddressFromGuid(Network_Engine::id);
 
             Network_Engine::clients.push_back(Client_Data(Network_Engine::id,Network_Engine::address,Options::name,true));
             Network_Engine::clients[0].connected=true;
@@ -194,7 +208,7 @@ void Network_Server::receive_client_data(){
 void Network_Server::send_name_change(string old_name,string new_name,bool own_name){
     if(Network_Engine::status=="server"){
         if(own_name){
-            clients[0].name=new_name;
+            Network_Engine::clients[0].name=new_name;
         }
 
         string msg=old_name+" has changed their name to "+new_name;
@@ -213,7 +227,7 @@ void Network_Server::send_initial_game_data(){
 
         bitstream.Write(Engine::UPDATE_RATE);
 
-        write_initial_game_data(&bitstream);
+        Network_Engine::write_initial_game_data(&bitstream);
 
         Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
         Network_Engine::peer->Send(&bitstream,MEDIUM_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_CONNECTION,Network_Engine::packet->guid,false);
@@ -227,7 +241,7 @@ void Network_Server::receive_connected(){
     RakNet::MessageID type_id;
     bitstream.Read(type_id);
 
-    Client_Data* client=get_packet_client();
+    Client_Data* client=Network_Engine::get_packet_client();
 
     if(client!=0){
         client->connected=true;
@@ -317,7 +331,7 @@ void Network_Server::send_update(Client_Data* client,uint32_t client_rate_bytes)
         bitstream.Write(RakNet::GetTime());
         bitstream.Write((RakNet::MessageID)ID_GAME_UPDATE);
 
-        write_update(&bitstream);
+        Network_Engine::write_update(&bitstream);
 
         uint32_t stream_bytes=bitstream.GetNumberOfBytesUsed();
         if(client->bytes_this_second+stream_bytes<=client_rate_bytes){
@@ -337,7 +351,7 @@ void Network_Server::receive_input(){
     RakNet::MessageID type_id;
     bitstream.Read(type_id);
 
-    Client_Data* client=get_packet_client();
+    Client_Data* client=Network_Engine::get_packet_client();
 
     if(client!=0){
         client->command_states.clear();

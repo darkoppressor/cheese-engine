@@ -5,6 +5,12 @@
 #ifndef window_manager_h
 #define window_manager_h
 
+#include "file_io.h"
+#include "window.h"
+
+#include <vector>
+#include <string>
+
 class Window_Manager{
 private:
 

@@ -43,9 +43,9 @@ void Image_Manager::remove_image(string name){
 void Image_Manager::load_images(){
     error_image=0;
 
-    //Look through all of the files in the directory.
+    //Look through all of the files in the directory
     for(File_IO_Directory_Iterator it("data/images");it.evaluate();it.iterate()){
-        //If the file is not a directory.
+        //If the file is not a directory
         if(it.is_regular_file()){
             string file_name=it.get_file_name();
 

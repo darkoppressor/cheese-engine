@@ -5,8 +5,8 @@
 #ifndef game_window_h
 #define game_window_h
 
-#include "coords.h"
 #include "color.h"
+#include "coords.h"
 
 #include <string>
 #include <stdint.h>
@@ -22,6 +22,10 @@ private:
     static SDL_Window* screen;
 
     static SDL_Renderer* renderer;
+
+    //The logical resolution of the game window
+    static int SCREEN_WIDTH;
+    static int SCREEN_HEIGHT;
 
     static SDL_Surface* icon;
     static Uint32 icon_colorkey;
@@ -48,10 +52,6 @@ private:
 
 public:
 
-    //The logical resolution of the game window
-    static int SCREEN_WIDTH;
-    static int SCREEN_HEIGHT;
-
     static bool pre_initialize();
 
     //Returns true if everything initialized properly
@@ -64,6 +64,9 @@ public:
 
     static void request_reload();
     static void reload_check();
+
+    static int width();
+    static int height();
 
     static void get_renderer_logical_size(int* width,int* height);
     static void get_renderer_viewport(SDL_Rect* rect);

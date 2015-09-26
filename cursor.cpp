@@ -3,10 +3,10 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "cursor.h"
-#include "pixels.h"
 #include "render.h"
-#include "options.h"
 #include "engine.h"
+#include "pixels.h"
+#include "options.h"
 
 #include <stdint.h>
 

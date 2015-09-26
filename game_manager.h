@@ -5,8 +5,10 @@
 #ifndef game_manager_h
 #define game_manager_h
 
-#include <rng.h>
-#include <collision.h>
+#include "rng.h"
+#include "collision.h"
+#include "progress_bar.h"
+#include "file_io.h"
 
 #include <string>
 #include <vector>

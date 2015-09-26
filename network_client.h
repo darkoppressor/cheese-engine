@@ -11,6 +11,8 @@
 #include <string>
 #include <stdint.h>
 
+#include "raknet/Source/RakPeerInterface.h"
+
 class Network_Client{
 public:
 

@@ -5,6 +5,8 @@
 #ifndef data_manager_h
 #define data_manager_h
 
+#include "progress_bar.h"
+
 class Data_Manager{
 private:
 

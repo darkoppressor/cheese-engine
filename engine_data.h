@@ -5,6 +5,8 @@
 #ifndef engine_data_h
 #define engine_data_h
 
+#include "file_io.h"
+
 #include <string>
 #include <vector>
 

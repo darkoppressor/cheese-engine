@@ -3,13 +3,17 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "console.h"
-#include "strings.h"
-#include "log.h"
 #include "game_window.h"
 #include "object_manager.h"
 #include "engine_data.h"
-#include "options.h"
+#include "strings.h"
 #include "engine.h"
+#include "options.h"
+#include "log.h"
+#include "network_engine.h"
+#include "engine_input.h"
+#include "gui_manager.h"
+#include "game_manager.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -54,7 +58,7 @@ void Console::setup(bool get_chat){
     info_display.background_type="standard";
     info_display.background_opacity=background_opacity;
     info_display.scrolling=true;
-    info_display.scroll_width=Game_Window::SCREEN_WIDTH/Object_Manager::get_font(info_display.font)->spacing_x-1;
+    info_display.scroll_width=Game_Window::width()/Object_Manager::get_font(info_display.font)->spacing_x-1;
     if(!chat){
         info_display.scroll_height=Engine_Data::console_height;
     }
@@ -65,13 +69,13 @@ void Console::setup(bool get_chat){
     info_display.start_x=info_display.x;
     info_display.start_y=info_display.y;
     info_display.set_dimensions();
-    info_display.center_in_window(Game_Window::SCREEN_WIDTH,Game_Window::SCREEN_HEIGHT);
+    info_display.center_in_window(Game_Window::width(),Game_Window::height());
 
     if(!chat){
         info_display.y=-info_display.h;
     }
     else{
-        info_display.y=Game_Window::SCREEN_HEIGHT;
+        info_display.y=Game_Window::height();
     }
 
     y=info_display.y;
@@ -87,16 +91,16 @@ void Console::setup(bool get_chat){
     info_input.font_color=font_color;
     info_input.background_type="standard";
     info_input.background_opacity=background_opacity;
-    info_input.scroll_width=Game_Window::SCREEN_WIDTH/Object_Manager::get_font(info_input.font)->spacing_x-1;
+    info_input.scroll_width=Game_Window::width()/Object_Manager::get_font(info_input.font)->spacing_x-1;
     info_input.scroll_height=1;
     info_input.x=-1;
     info_input.y=y+info_display.h;
     info_input.start_x=info_input.x;
     info_input.start_y=info_input.y;
     info_input.set_dimensions();
-    info_input.center_in_window(Game_Window::SCREEN_WIDTH,Game_Window::SCREEN_HEIGHT);
+    info_input.center_in_window(Game_Window::width(),Game_Window::height());
 
-    //If the command strings vector is larger or smaller than it is allowed to be, resize it.
+    //If the command strings vector is larger or smaller than it is allowed to be, resize it
     while(recalled_command_strings.size()<max_command_recall){
         recalled_command_strings.push_back("\x1F");
     }
@@ -104,8 +108,8 @@ void Console::setup(bool get_chat){
         recalled_command_strings.erase(recalled_command_strings.begin());
     }
 
-    if(recalled_command_strings[recalled_command_strings.size()-1]=="\x1F"){
-        recalled_command_strings[recalled_command_strings.size()-1]="";
+    if(recalled_command_strings.back()=="\x1F"){
+        recalled_command_strings.back()="";
     }
 
     reset_current_recalled_command_string();
@@ -197,7 +201,7 @@ void Console::add_text(string text){
             text_timers.push_back(Timer());
 
             //Start this line's timer
-            text_timers[text_timers.size()-1].start();
+            text_timers.back().start();
         }
 
         while(text_timers.size()>max_log_recall){
@@ -282,21 +286,21 @@ void Console::movement(){
     }
     else{
         if(move_speed>0){
-            if(on && y>Game_Window::SCREEN_HEIGHT-info_display.h-info_input.h){
+            if(on && y>Game_Window::height()-info_display.h-info_input.h){
                 y-=(int)ceil((double)move_speed/Engine::UPDATE_RATE);
 
-                if(y<Game_Window::SCREEN_HEIGHT-info_display.h-info_input.h){
-                    y=Game_Window::SCREEN_HEIGHT-info_display.h-info_input.h;
+                if(y<Game_Window::height()-info_display.h-info_input.h){
+                    y=Game_Window::height()-info_display.h-info_input.h;
                 }
 
                 info_display.y=y;
                 info_input.y=y+info_display.h;
             }
-            else if(!on && y<Game_Window::SCREEN_HEIGHT){
+            else if(!on && y<Game_Window::height()){
                 y+=(int)ceil((double)move_speed/Engine::UPDATE_RATE);
 
-                if(y>Game_Window::SCREEN_HEIGHT){
-                    y=Game_Window::SCREEN_HEIGHT;
+                if(y>Game_Window::height()){
+                    y=Game_Window::height();
                 }
 
                 info_display.y=y;
@@ -305,13 +309,13 @@ void Console::movement(){
         }
         else{
             if(on){
-                y=Game_Window::SCREEN_HEIGHT-info_display.h-info_input.h;
+                y=Game_Window::height()-info_display.h-info_input.h;
 
                 info_display.y=y;
                 info_input.y=y+info_display.h;
             }
             else{
-                y=Game_Window::SCREEN_HEIGHT;
+                y=Game_Window::height();
 
                 info_display.y=y;
                 info_input.y=y+info_display.h;
@@ -397,11 +401,11 @@ void Console::tab_complete(){
                                 this_line+=" ";
                             }
 
-                            if(valid_command_display[valid_command_display.size()-1].length()+this_line.length()>info_display.w/Object_Manager::get_font(info_display.font)->spacing_x){
+                            if(valid_command_display.back().length()+this_line.length()>info_display.w/Object_Manager::get_font(info_display.font)->spacing_x){
                                 valid_command_display.push_back("");
                             }
 
-                            valid_command_display[valid_command_display.size()-1]+=this_line;
+                            valid_command_display.back()+=this_line;
                         }
 
                         add_text("");
@@ -459,7 +463,7 @@ bool Console::handle_input_events(){
             case SDL_KEYDOWN:
                 if(Engine_Input::event.key.repeat==0){
                     if((Engine_Input::event.key.keysym.scancode==SDL_SCANCODE_GRAVE && !keystates[SDL_SCANCODE_LSHIFT] && !keystates[SDL_SCANCODE_RSHIFT]) || Engine_Input::event.key.keysym.scancode==SDL_SCANCODE_AC_SEARCH){
-                        if(Engine::gui_mode=="controller"){
+                        if(GUI_Manager::gui_mode=="controller"){
                             GUI_Manager::set_gui_mode("mouse");
                         }
 
@@ -546,13 +550,13 @@ void Console::render(){
     }
     else{
         if(Game_Manager::in_progress){
-            if(y<Game_Window::SCREEN_HEIGHT){
+            if(y<Game_Window::height()){
                 info_display.render(0,0);
                 info_input.render(0,0);
             }
             else{
                 Information info_temp_display=info_display;
-                info_temp_display.y=Game_Window::SCREEN_HEIGHT-info_display.h-info_input.h;
+                info_temp_display.y=Game_Window::height()-info_display.h-info_input.h;
                 info_temp_display.background_type="none";
 
                 int line=0;

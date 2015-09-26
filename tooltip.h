@@ -22,6 +22,9 @@ private:
 
 public:
 
+    static void set_on(bool get_on);
+    static void set_font(std::string get_font);
+
     static void setup(std::string get_message,int mouse_x,int mouse_y);
 
     static void set_dimensions();

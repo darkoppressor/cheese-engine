@@ -3,14 +3,19 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "console.h"
-#include "file_io.h"
-#include "strings.h"
-#include "log.h"
+#include "object_manager.h"
 #include "directories.h"
-#include "sound_manager.h"
+#include "log.h"
 #include "engine.h"
-#include "engine_version.h"
+#include "game_window.h"
 #include "engine_data.h"
+#include "engine_version.h"
+#include "sound_manager.h"
+#include "strings.h"
+#include "network_server.h"
+#include "game_manager.h"
+#include "network_client.h"
+#include "options.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -25,7 +30,7 @@ void Console::setup_commands(){
     commands.push_back("clear");
     commands.push_back("reload");
     commands.push_back("about");
-    commands.push_back("quit");
+    commands.push_back("exit");
     commands.push_back("play");
     commands.push_back("toast");
     commands.push_back("exec");
@@ -101,7 +106,7 @@ vector<string> Console::parse_input(string str_input){
             input_list[0]+=str_input[i];
         }
         else{
-            input_list[input_list.size()-1]+=str_input[i];
+            input_list.back()+=str_input[i];
         }
     }
 
@@ -249,11 +254,11 @@ void Console::run_commands(const vector<string>& command_list){
             }
             else if(command=="about"){
                 string text=Engine_Data::game_title+"\nDeveloped by: "+Engine_Data::developer;
-                text+="\nVersion: "+Engine_Version::get_version()+" (built on "+Engine_Version::get_build_date()+")\nChecksum: "+Engine::CHECKSUM;
-                text+="\nEngine version: "+Engine_Version::get_engine_version()+" (updated on "+Engine_Version::get_engine_date()+")";
+                text+="\nVersion: "+Engine_Version::get_version()+" "+Engine_Version::get_status()+" (built on "+Engine_Version::get_build_date()+")\nChecksum: "+Engine::CHECKSUM;
+                text+="\nEngine version: "+Engine_Version::get_engine_version()+" "+Engine_Version::get_engine_status()+" (updated on "+Engine_Version::get_engine_date()+")";
                 add_text(text);
             }
-            else if(command=="quit"){
+            else if(command=="exit"){
                 add_text("Be seeing you...");
 
                 Engine::quit();
@@ -344,7 +349,7 @@ void Console::run_commands(const vector<string>& command_list){
                 add_text("\""+command+"\" set to \""+Options::get_option_value(command)+"\"");
             }
 
-            else if(handle_game_command(command)){
+            else if(handle_game_command(command,command_input)){
             }
 
             //If the command is a valid one but is not handled above

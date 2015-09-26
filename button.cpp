@@ -3,15 +3,16 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "button.h"
-#include "collision.h"
-#include "strings.h"
-#include "render.h"
-#include "sound_manager.h"
 #include "engine_data.h"
-#include "controller_manager.h"
 #include "font.h"
 #include "object_manager.h"
+#include "strings.h"
 #include "engine.h"
+#include "gui_manager.h"
+#include "sound_manager.h"
+#include "controller_manager.h"
+#include "button_events.h"
+#include "render.h"
 
 using namespace std;
 
@@ -150,10 +151,10 @@ bool Button::is_moused_over(int mouse_x,int mouse_y,int x_offset,int y_offset){
     Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
     Collision_Rect box_b(x_offset+x,y_offset+y,w,h);
 
-    if(Engine::mouse_allowed() && Engine::gui_mode=="mouse" && Collision::check_rect(box_a,box_b)){
+    if(Engine::mouse_allowed() && GUI_Manager::gui_mode=="mouse" && Collision::check_rect(box_a,box_b)){
         return true;
     }
-    else if((Engine::gui_mode=="keyboard" || Engine::gui_mode=="controller") && GUI_Manager::is_gui_object_selected(this)){
+    else if((GUI_Manager::gui_mode=="keyboard" || GUI_Manager::gui_mode=="controller") && GUI_Manager::is_gui_object_selected(this)){
         return true;
     }
 
@@ -192,16 +193,16 @@ bool Button::mouse_button_up(Window* parent_window){
     const uint8_t* keystates=SDL_GetKeyboardState(NULL);
 
     if(clicked){
-        if(((Engine::gui_mode=="mouse" || Engine::gui_mode=="keyboard") && (keystates[SDL_SCANCODE_RCTRL] || keystates[SDL_SCANCODE_LCTRL])) ||
-           (Engine::gui_mode=="controller" && Controller_Manager::controller_state(-1,SDL_CONTROLLER_BUTTON_LEFTSHOULDER))){
+        if(((GUI_Manager::gui_mode=="mouse" || GUI_Manager::gui_mode=="keyboard") && (keystates[SDL_SCANCODE_RCTRL] || keystates[SDL_SCANCODE_LCTRL])) ||
+           (GUI_Manager::gui_mode=="controller" && Controller_Manager::controller_state(-1,SDL_CONTROLLER_BUTTON_LEFTSHOULDER))){
             window_opened_on_top=fire_alt_event1(parent_window);
         }
-        else if(((Engine::gui_mode=="mouse" || Engine::gui_mode=="keyboard") && (keystates[SDL_SCANCODE_RSHIFT] || keystates[SDL_SCANCODE_LSHIFT])) ||
-                (Engine::gui_mode=="controller" && Controller_Manager::controller_state(-1,SDL_CONTROLLER_BUTTON_RIGHTSHOULDER))){
+        else if(((GUI_Manager::gui_mode=="mouse" || GUI_Manager::gui_mode=="keyboard") && (keystates[SDL_SCANCODE_RSHIFT] || keystates[SDL_SCANCODE_LSHIFT])) ||
+                (GUI_Manager::gui_mode=="controller" && Controller_Manager::controller_state(-1,SDL_CONTROLLER_BUTTON_RIGHTSHOULDER))){
             window_opened_on_top=fire_alt_event2(parent_window);
         }
-        else if(((Engine::gui_mode=="mouse" || Engine::gui_mode=="keyboard") && keystates[SDL_SCANCODE_SLASH]) ||
-                (Engine::gui_mode=="controller" && Controller_Manager::controller_state(-1,SDL_CONTROLLER_BUTTON_X))){
+        else if(((GUI_Manager::gui_mode=="mouse" || GUI_Manager::gui_mode=="keyboard") && keystates[SDL_SCANCODE_SLASH]) ||
+                (GUI_Manager::gui_mode=="controller" && Controller_Manager::controller_state(-1,SDL_CONTROLLER_BUTTON_X))){
             window_opened_on_top=fire_alt_event3(parent_window);
         }
         else{

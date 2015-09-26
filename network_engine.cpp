@@ -3,8 +3,19 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "network_engine.h"
-
 #include "engine.h"
+#include "network_client.h"
+#include "network_lan_browser.h"
+#include "network_server.h"
+#include "log.h"
+#include "strings.h"
+#include "button_events.h"
+#include "options.h"
+
+#include "raknet/Source/RakNetVersion.h"
+#include "raknet/Source/BitStream.h"
+
+using namespace std;
 
 string Network_Engine::status="off";
 RakNet::RakPeerInterface* Network_Engine::peer=0;
@@ -55,7 +66,7 @@ void Network_Engine::stop(){
         reset();
 
         if(status=="client"){
-            Engine::set_logic_update_rate(recall_update_rate);
+            Engine::set_logic_update_rate(Network_Client::recall_update_rate);
         }
 
         status="off";
@@ -70,10 +81,10 @@ void Network_Engine::tick(){
                 clients[i].updates_this_second=0;
             }
 
-            send_ping_list();
+            Network_Server::send_ping_list();
         }
         else if(status=="client"){
-            commands_this_second=0;
+            Network_Client::commands_this_second=0;
         }
 
         stat_bytes_received=stat_counter_bytes_received;
@@ -113,7 +124,7 @@ void Network_Engine::receive_packets(){
 
                 case ID_CONNECTION_ATTEMPT_FAILED:
                     if(Network_Engine::status=="client"){
-                        Log::add_log("Could not connect to server: "+server_address+"|"+Strings::num_to_string(server_port));
+                        Log::add_log("Could not connect to server: "+Network_Client::server_address+"|"+Strings::num_to_string(Network_Client::server_port));
 
                         Button_Events::handle_button_event("stop_game");
                         Engine::make_notice("Could not connect to server.");
@@ -245,7 +256,7 @@ void Network_Engine::receive_packets(){
 
                 case ID_UNCONNECTED_PONG:
                     if(Network_Engine::status!="off"){
-                        receive_server_browser_info();
+                        Network_LAN_Browser::receive_server_browser_info();
                     }
                     break;
 
@@ -516,7 +527,7 @@ void Network_Engine::send_chat_message(string message,RakNet::RakNetGUID target_
 
 void Network_Engine::add_command(string command){
     if(status=="client"){
-        command_buffer.push_back(command);
+        Network_Client::command_buffer.push_back(command);
     }
     else if(status=="server"){
         clients[0].command_buffer.push_back(command);

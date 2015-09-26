@@ -27,15 +27,15 @@ public:
     Version(int get_major,int get_minor,int get_micro);
     Version(std::string version_string);
 
-    bool operator==(const Version& version);
-    bool operator<(const Version& version);
-    bool operator>(const Version& version);
-    bool operator<=(const Version& version);
-    bool operator>=(const Version& version);
+    bool operator==(const Version& version) const;
+    bool operator<(const Version& version) const;
+    bool operator>(const Version& version) const;
+    bool operator<=(const Version& version) const;
+    bool operator>=(const Version& version) const;
 
     //Returns this Version's version series, as an index into the passed vector
     //Returns -1 if this Version is not included in any of the passed Version_Series
-    int get_version_series(const std::vector<Version_Series>& version_series);
+    int get_version_series(const std::vector<Version_Series>& version_series) const;
 };
 
 class Engine_Version{
@@ -51,11 +51,11 @@ private:
 
 public:
 
-    static std::string get_status();
-
+    static std::string get_engine_status();
     static std::string get_engine_version();
     static std::string get_engine_date();
 
+    static std::string get_status();
     static std::string get_version();
     static std::string get_build_date();
 

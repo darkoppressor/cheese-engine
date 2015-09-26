@@ -5,11 +5,19 @@
 #include "options.h"
 #include "file_io.h"
 #include "directories.h"
-#include "engine.h"
+#include "data_reader.h"
 #include "strings.h"
+#include "engine.h"
+#include "object_manager.h"
 #include "network_engine.h"
+#include "controller_manager.h"
+#include "game_window.h"
+#include "music_manager.h"
+#include "network_client.h"
 
 #include <sstream>
+
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -75,7 +83,7 @@ bool Options::load_save_location(){
     File_IO_Load load("save_location.cfg");
 
     if(load.is_opened()){
-        vector<string> lines=Data_Reader::read_data(load,"</save_location>");
+        vector<string> lines=Data_Reader::read_data(&load,"</save_location>");
 
         for(size_t i=0;i<lines.size();i++){
             string& line=lines[i];
@@ -500,7 +508,7 @@ bool Options::load_options(){
     File_IO_Load load(Directories::get_save_directory()+"options.cfg");
 
     if(load.is_opened()){
-        vector<string> lines=Data_Reader::read_data(load,"</options>");
+        vector<string> lines=Data_Reader::read_data(&load,"</options>");
 
         for(size_t i=0;i<lines.size();i++){
             string& line=lines[i];
@@ -605,7 +613,7 @@ bool Options::load_game_commands(){
     File_IO_Load load(Directories::get_save_directory()+"game_commands.cfg");
 
     if(load.is_opened()){
-        vector<string> lines=Data_Reader::read_data(load,"</game_commands>");
+        vector<string> lines=Data_Reader::read_data(&load,"</game_commands>");
 
         for(size_t i=0;i<lines.size();i++){
             string& line=lines[i];
@@ -648,7 +656,7 @@ bool Options::load_servers(){
     if(load.is_opened()){
         Network_Client::server_list.clear();
 
-        vector<string> lines=Data_Reader::read_data(load,"</servers>");
+        vector<string> lines=Data_Reader::read_data(&load,"</servers>");
 
         for(size_t i=0;i<lines.size();i++){
             string& line=lines[i];

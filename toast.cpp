@@ -3,12 +3,12 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "toast.h"
-#include "strings.h"
-#include "render.h"
 #include "engine_data.h"
 #include "game_window.h"
 #include "object_manager.h"
+#include "strings.h"
 #include "engine.h"
+#include "render.h"
 
 using namespace std;
 
@@ -22,8 +22,8 @@ Toast::Toast(string get_message,double get_fade_rate){
 
     set_dimensions(font);
 
-    x=(Game_Window::SCREEN_WIDTH-w)/2.0;
-    y=Game_Window::SCREEN_HEIGHT-h-Object_Manager::get_font(font)->spacing_y;
+    x=(Game_Window::width()-w)/2.0;
+    y=Game_Window::height()-h-Object_Manager::get_font(font)->spacing_y;
 }
 
 void Toast::set_dimensions(string font){

@@ -3,12 +3,11 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "render.h"
-#include "color.h"
-#include "pixels.h"
 #include "log.h"
+#include "pixels.h"
+#include "game_window.h"
 #include "object_manager.h"
 #include "image_manager.h"
-#include "game_window.h"
 
 #include <SDL_image.h>
 

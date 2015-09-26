@@ -3,12 +3,14 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "tooltip.h"
-#include "strings.h"
-#include "render.h"
-#include "engine_data.h"
 #include "object_manager.h"
 #include "game_window.h"
+#include "engine_data.h"
+#include "strings.h"
 #include "engine.h"
+#include "render.h"
+
+#include <vector>
 
 using namespace std;
 
@@ -22,12 +24,20 @@ int Tooltip::y=0;
 int Tooltip::w=0;
 int Tooltip::h=0;
 
+void Tooltip::set_on(bool get_on){
+    on=get_on;
+}
+
+void Tooltip::set_font(string get_font){
+    font=get_font;
+}
+
 void Tooltip::setup(string get_message,int mouse_x,int mouse_y){
     message=get_message;
 
     vector<string> lines;
     int spacing_x=Object_Manager::get_font("small")->spacing_x;
-    int window_width=(int)floor((double)Game_Window::SCREEN_WIDTH*0.95);
+    int window_width=(int)floor((double)Game_Window::width()*0.95);
 
     while(message.length()*spacing_x>window_width){
         int i=window_width/spacing_x;
@@ -65,14 +75,14 @@ void Tooltip::setup(string get_message,int mouse_x,int mouse_y){
 
     //If the tooltip would be displayed off the screen, move it
 
-    if(x+w>Game_Window::SCREEN_WIDTH){
+    if(x+w>Game_Window::width()){
         x=mouse_x-w;
     }
     if(x<0){
         x=0;
     }
 
-    if(y+h>Game_Window::SCREEN_HEIGHT){
+    if(y+h>Game_Window::height()){
         y=mouse_y-Object_Manager::get_font(font)->get_letter_height()-h;
     }
     if(y<0){

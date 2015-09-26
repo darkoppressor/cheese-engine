@@ -3,6 +3,20 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "data_manager.h"
+#include "gui_manager.h"
+#include "options.h"
+#include "game_window.h"
+#include "image_manager.h"
+#include "sound_manager.h"
+#include "music_manager.h"
+#include "engine.h"
+#include "rtt_manager.h"
+#include "object_manager.h"
+#include "window_manager.h"
+#include "game_manager.h"
+#include "data_reader.h"
+#include "engine_data.h"
+#include "log.h"
 
 using namespace std;
 
@@ -195,8 +209,8 @@ bool Data_Manager::load_data(string tag){
             File_IO_Load load(file_path);
 
             if(load.is_opened()){
-                while(!load->eof()){
-                    vector<string> lines=Data_Reader::read_data(load,"<"+tag+">");
+                while(!load.eof()){
+                    vector<string> lines=Data_Reader::read_data(&load,"<"+tag+">");
 
                     if(lines.size()>0 && Data_Reader::check_prefix(lines.back(),"<"+tag+">")){
                         if(tag=="engine"){

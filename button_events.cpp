@@ -3,11 +3,20 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "button_events.h"
-#include "strings.h"
-#include "log.h"
-#include "directories.h"
+#include "window_manager.h"
+#include "engine.h"
 #include "object_manager.h"
+#include "data_manager.h"
+#include "options.h"
+#include "directories.h"
 #include "game_window.h"
+#include "game_manager.h"
+#include "strings.h"
+#include "network_server.h"
+#include "network_client.h"
+#include "network_lan_browser.h"
+#include "engine_input.h"
+#include "log.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -45,7 +54,7 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
 
             vector<string> lines;
             int spacing_x=Object_Manager::get_font("small")->spacing_x;
-            int window_width=(int)floor((double)Game_Window::SCREEN_WIDTH*0.8);
+            int window_width=(int)floor((double)Game_Window::width()*0.8);
 
             while(save_path.length()*spacing_x>window_width){
                 int i=window_width/spacing_x;
@@ -393,7 +402,7 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
         else if(boost::algorithm::starts_with(button_event,"configure_commands_")){
             boost::algorithm::erase_first(button_event,"configure_commands_");
 
-            Engine_Input::configure_command=Strings::string_to_long(button_event);
+            Object_Manager::configure_command=Strings::string_to_long(button_event);
             Window_Manager::get_window("configure_command")->toggle_on(true,true);
             window_opened_on_top=true;
         }

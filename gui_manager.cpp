@@ -3,6 +3,14 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "gui_manager.h"
+#include "window_manager.h"
+#include "window.h"
+#include "engine.h"
+#include "log.h"
+#include "engine_data.h"
+#include "sorting.h"
+#include "game_manager.h"
+#include "render.h"
 
 using namespace std;
 

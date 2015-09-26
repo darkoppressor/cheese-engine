@@ -3,12 +3,11 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "sound_manager.h"
-#include "engine_math.h"
-#include "file_io.h"
-#include "log.h"
 #include "options.h"
-#include "engine_data.h"
 #include "music_manager.h"
+#include "engine_data.h"
+#include "engine_math.h"
+#include "log.h"
 
 #include <boost/algorithm/string.hpp>
 

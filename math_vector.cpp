@@ -5,8 +5,6 @@
 #include "math_vector.h"
 #include "engine_math.h"
 
-#include <cmath>
-
 using namespace std;
 
 Vector_Components::Vector_Components(){
@@ -90,16 +88,16 @@ Vector::Vector(Vector_Components vc){
 }
 
 Vector_Components Vector::get_components(){
-    return Vector_Components(magnitude*cos(Math::degrees_to_radians(direction)),magnitude*-sin(Math::degrees_to_radians(direction)));
+    return Vector_Components(magnitude*Math::cos(Math::degrees_to_radians(direction)),magnitude*-Math::sin(Math::degrees_to_radians(direction)));
 }
 
 Vector_Components Vector::get_components_absolute(){
-    return Vector_Components(magnitude*cos(Math::degrees_to_radians(direction)),magnitude*sin(Math::degrees_to_radians(direction)));
+    return Vector_Components(magnitude*Math::cos(Math::degrees_to_radians(direction)),magnitude*Math::sin(Math::degrees_to_radians(direction)));
 }
 
 void Vector::set_polar_form(Vector_Components vc){
-    magnitude=sqrt(vc.a*vc.a+vc.b*vc.b);
-    direction=Math::radians_to_degrees(atan2(vc.b,vc.a));
+    magnitude=Math::sqrt(vc.a*vc.a+vc.b*vc.b);
+    direction=Math::radians_to_degrees(Math::atan2(vc.b,vc.a));
 }
 
 Vector Vector::opposite(){

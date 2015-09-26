@@ -6,7 +6,6 @@
 #include "engine_math.h"
 
 #include <algorithm>
-#include <cmath>
 
 using namespace std;
 
@@ -70,7 +69,7 @@ Collision_Event::Collision_Event(uint32_t get_object1,uint32_t get_object2){
     object2=get_object2;
 }
 
-bool Collision_Event::operator==(Collision_Event collision1){
+bool Collision_Event::operator==(const Collision_Event& collision1) const{
     return object1==collision1.object1 && object2==collision1.object2;
 }
 

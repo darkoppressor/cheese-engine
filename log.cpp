@@ -5,12 +5,63 @@
 #include "log.h"
 #include "file_io.h"
 #include "directories.h"
+#include "data_manager.h"
 #include "engine.h"
 
 using namespace std;
 
+vector<string> Log::world_load_errors;
+vector<string> Log::save_location_load_errors;
+vector<string> Log::world_load_logs;
+
 void Log::clear_error_log(){
     File_IO::remove_file(Directories::get_save_directory()+"error_log.txt");
+}
+
+void Log::add_world_load_error(string message){
+    world_load_errors.push_back(message);
+}
+
+void Log::add_save_location_load_error(string message){
+    save_location_load_errors.push_back(message);
+}
+
+void Log::add_world_load_log(string message){
+    world_load_logs.push_back(message);
+}
+
+void Log::post_world_load_errors(){
+    if(Data_Manager::is_world_loaded()){
+        for(size_t i=0;i<world_load_errors.size();i++){
+            Engine::console.add_text(world_load_errors[i]);
+        }
+
+        world_load_errors.clear();
+    }
+}
+
+void Log::post_save_location_load_errors(){
+    if(Directories::save_location_loaded){
+        for(size_t i=0;i<save_location_load_errors.size();i++){
+            stringstream save("");
+
+            save<<save_location_load_errors[i]<<"\n";
+
+            File_IO::save_atomic(Directories::get_save_directory()+"error_log.txt",save.str(),false,true);
+        }
+
+        save_location_load_errors.clear();
+    }
+}
+
+void Log::post_world_load_logs(){
+    if(Data_Manager::is_world_loaded()){
+        for(size_t i=0;i<world_load_logs.size();i++){
+            Engine::console.add_text(world_load_logs[i]);
+        }
+
+        world_load_logs.clear();
+    }
 }
 
 void Log::add_error(string message,bool allow_save){
@@ -21,13 +72,21 @@ void Log::add_error(string message,bool allow_save){
     if(Data_Manager::is_world_loaded()){
         Engine::console.add_text(message);
     }
+    else{
+        add_world_load_error(message);
+    }
 
-    if(Directories::save_location_loaded && allow_save){
-        stringstream save("");
+    if(allow_save){
+        if(Directories::save_location_loaded){
+            stringstream save("");
 
-        save<<message<<"\n";
+            save<<message<<"\n";
 
-        File_IO::save_atomic(Directories::get_save_directory()+"error_log.txt",save.str(),false,true);
+            File_IO::save_atomic(Directories::get_save_directory()+"error_log.txt",save.str(),false,true);
+        }
+        else{
+            add_save_location_load_error(message);
+        }
     }
 }
 
@@ -38,6 +97,9 @@ void Log::add_log(string message){
 
     if(Data_Manager::is_world_loaded()){
         Engine::console.add_text(message);
+    }
+    else{
+        add_world_load_log(message);
     }
 }
 

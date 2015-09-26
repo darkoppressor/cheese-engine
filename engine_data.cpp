@@ -3,6 +3,14 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "engine_data.h"
+#include "data_reader.h"
+#include "directories.h"
+#include "strings.h"
+#include "engine.h"
+#include "tooltip.h"
+#include "options.h"
+
+#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -146,7 +154,7 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
             touch_controller_xy=Strings::string_to_bool(line);
         }
         else if(Data_Reader::check_prefix(line,"tooltip_font:")){
-            Tooltip::font=line;
+            Tooltip::set_font(line);
         }
         else if(Data_Reader::check_prefix(line,"toast_font:")){
             toast_font=line;

@@ -8,13 +8,13 @@
 #include "file_io.h"
 #include "color.h"
 #include "animation.h"
-#include "controller.h"
 #include "font.h"
 #include "color_theme.h"
 #include "game_command.h"
 #include "game_option.h"
 #include "custom_sound.h"
 #include "cursor.h"
+#include "button.h"
 
 #include <vector>
 #include <string>
@@ -32,6 +32,8 @@ private:
     static std::vector<Cursor> cursors;
 
 public:
+
+    static int configure_command;
 
     static void unload_data();
 
@@ -56,6 +58,8 @@ public:
     static Game_Option* get_game_option(std::string name);
     static Cursor* get_cursor(std::string name);
 
+    static bool handle_input_events_command_set();
+
     static void animate_cursors();
 
     static void save_game_commands(std::stringstream& save);
@@ -78,7 +82,7 @@ public:
     //Returns the axis state as a value from -32768 to 32767
     static int game_command_state(std::string name);
     static void output_command_configuration_info(std::string& text);
-    static void add_game_command_scrolling_button(std::vector<Button>& buttons);
+    static void add_game_command_scrolling_button(const std::string& font,std::vector<Button>& buttons);
 };
 
 #endif

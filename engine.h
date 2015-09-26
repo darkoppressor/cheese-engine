@@ -5,14 +5,14 @@
 #ifndef engine_h
 #define engine_h
 
-#include "color_theme.h"
 #include "toast.h"
 #include "console.h"
+#include "coords.h"
+#include "color_theme.h"
 
 #include <string>
+#include <vector>
 #include <stdint.h>
-
-#include <SDL.h>
 
 class Engine{
 public:

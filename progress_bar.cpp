@@ -3,6 +3,9 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "progress_bar.h"
+#include "log.h"
+#include "strings.h"
+#include "game_manager.h"
 
 using namespace std;
 
@@ -22,7 +25,7 @@ void Progress_Bar::finish(){
 }
 
 Progress_Bar::Progress_Bar(int get_items){
-    items=get_items
+    items=get_items;
 
     if(items<=0){
         items=1;
@@ -45,6 +48,8 @@ void Progress_Bar::progress(string message,int items_completed){
 
         steps.push_back(Progress_Step(get_time_elapsed()-time_of_previous_step,message));
         time_of_previous_step=get_time_elapsed();
+
+        Log::add_log("Done in "+Strings::num_to_string(time_of_previous_step)+" ms\n"+message);
 
         Game_Manager::render_loading_screen(*this,message);
     }

@@ -3,6 +3,13 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "game_option.h"
+#include "strings.h"
+#include "options.h"
+#include "network_client.h"
+#include "network_server.h"
+#include "log.h"
+#include "controller_manager.h"
+#include "game_window.h"
 
 using namespace std;
 

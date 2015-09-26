@@ -8,6 +8,7 @@
 #include "server.h"
 
 #include <vector>
+#include <string>
 
 class Network_LAN_Browser{
 public:

@@ -12,8 +12,6 @@ public:
 
     static SDL_Event event;
 
-    static int configure_command;
-
     static bool poll_event(SDL_Event* event_storage);
 
     static void input_backspace();
@@ -22,7 +20,6 @@ public:
 
     static void prepare_for_input();
 
-    static bool handle_input_events_command_set();
     static bool handle_input_events_drag_and_drop();
     static bool handle_input_events_touch();
     static bool handle_input_events(bool event_ignore_command_set);

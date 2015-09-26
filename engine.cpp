@@ -3,16 +3,24 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "engine.h"
-#include "log.h"
-#include "file_io.h"
-#include "sorting.h"
-#include "object_manager.h"
 #include "engine_data.h"
-#include "strings.h"
+#include "game_manager.h"
+#include "data_manager.h"
 #include "game_window.h"
+#include "gui_manager.h"
+#include "sorting.h"
+#include "log.h"
+#include "strings.h"
+#include "object_manager.h"
+#include "controller_manager.h"
+#include "options.h"
+#include "window_manager.h"
+#include "window.h"
+#include "render.h"
+#include "engine_math.h"
+#include "tooltip.h"
 
-#include <stdint.h>
-
+#include <boost/algorithm/string.hpp>
 #include <boost/crc.hpp>
 
 using namespace std;
@@ -184,7 +192,7 @@ void Engine::set_mutable_info(Information* ptr_info){
         if(allow_screen_keyboard()){
             SDL_StartTextInput();
         }
-        else if(Engine_Data::controller_text_entry_small && gui_mode=="controller"){
+        else if(Engine_Data::controller_text_entry_small && GUI_Manager::gui_mode=="controller"){
             text_entry_small_selector.x=0;
             text_entry_small_selector.y=0;
         }
@@ -413,7 +421,7 @@ void Engine::handle_text_input(string text){
                (ptr_mutable_info->allows_input("space") && (text[i]==' ' || text[i]=='\t'))){
                 //Only allow the console toggle key's grave character to be typed if we are not in the console
                 if(!is_console_selected() ||
-                   !(text[i]=='`' && (gui_mode=="mouse" || gui_mode=="keyboard") && !keystates[SDL_SCANCODE_LSHIFT] && !keystates[SDL_SCANCODE_RSHIFT])){
+                   !(text[i]=='`' && (GUI_Manager::gui_mode=="mouse" || GUI_Manager::gui_mode=="keyboard") && !keystates[SDL_SCANCODE_LSHIFT] && !keystates[SDL_SCANCODE_RSHIFT])){
                     keep_char=true;
                 }
             }
@@ -696,9 +704,9 @@ void Engine::render_toast(){
 }
 
 void Engine::render_small_text_inputter(){
-    Render::render_rectangle(0,0,Game_Window::SCREEN_WIDTH,Game_Window::SCREEN_HEIGHT,0.75,current_color_theme()->window_border);
-    Render::render_rectangle(Engine_Data::window_border_thickness,Engine_Data::window_border_thickness,Game_Window::SCREEN_WIDTH-Engine_Data::window_border_thickness*2.0,
-                     Game_Window::SCREEN_HEIGHT-Engine_Data::window_border_thickness*2.0,0.75,current_color_theme()->window_background);
+    Render::render_rectangle(0,0,Game_Window::width(),Game_Window::height(),0.75,current_color_theme()->window_border);
+    Render::render_rectangle(Engine_Data::window_border_thickness,Engine_Data::window_border_thickness,Game_Window::width()-Engine_Data::window_border_thickness*2.0,
+                     Game_Window::height()-Engine_Data::window_border_thickness*2.0,0.75,current_color_theme()->window_background);
 
     if(mutable_info_selected()){
         Bitmap_Font* font=Object_Manager::get_font("small");
@@ -710,7 +718,7 @@ void Engine::render_small_text_inputter(){
 
     double buttons_start_y=Engine_Data::window_border_thickness+2.0+font->spacing_y*2.0;
 
-    double x_offset=((double)Game_Window::SCREEN_WIDTH-font->get_letter_width()*13.0)/2.0+Engine_Data::window_border_thickness;
+    double x_offset=((double)Game_Window::width()-font->get_letter_width()*13.0)/2.0+Engine_Data::window_border_thickness;
     double offset_y=buttons_start_y;
 
     for(int i=0;i<13;i++){
@@ -748,7 +756,7 @@ void Engine::render_small_text_inputter(){
         font->show(x_offset+(i-26)*font->get_letter_width(),offset_y,characters_symbols[i],current_color_theme()->window_font);
     }
 
-    text_selector.render(x_offset+text_entry_small_selector.x*font->get_letter_width()-(text_selector.get_width()-font->get_letter_width())/2.0,buttons_start_y+text_entry_small_selector.y*font->get_letter_height()-(text_selector.get_height()-font->get_letter_height())/2.0);
+    GUI_Manager::text_selector.render(x_offset+text_entry_small_selector.x*font->get_letter_width()-(GUI_Manager::text_selector.get_width()-font->get_letter_width())/2.0,buttons_start_y+text_entry_small_selector.y*font->get_letter_height()-(GUI_Manager::text_selector.get_height()-font->get_letter_height())/2.0);
 }
 
 void Engine::render_text_inputter(){
@@ -756,7 +764,7 @@ void Engine::render_text_inputter(){
 
     int selected_chunk=get_text_input_selected_chunk();
 
-    double outer_radius=Game_Window::SCREEN_WIDTH/5;
+    double outer_radius=Game_Window::width()/5;
     double outer_center_y=outer_radius+10;
 
     //The topmost instructions' y position.
@@ -779,27 +787,27 @@ void Engine::render_text_inputter(){
             object_pos.h=chat.info_input.h;
         }
         else{
-            object_pos=get_gui_selected_object_pos();
+            object_pos=GUI_Manager::get_gui_selected_object_pos();
         }
 
         if(object_pos.x!=-1){
-            if(object_pos.x<=Game_Window::SCREEN_WIDTH/2){
-                x_adjust=Game_Window::SCREEN_WIDTH/2;
+            if(object_pos.x<=Game_Window::width()/2){
+                x_adjust=Game_Window::width()/2;
             }
 
-            if(object_pos.y<=Game_Window::SCREEN_HEIGHT/2){
-                outer_center_y=Game_Window::SCREEN_HEIGHT-outer_radius-10;
+            if(object_pos.y<=Game_Window::height()/2){
+                outer_center_y=Game_Window::height()-outer_radius-10;
                 words_y=outer_center_y-outer_radius-120;
             }
         }
     }
 
-    double outer_center_x=x_adjust+Game_Window::SCREEN_WIDTH/4;
+    double outer_center_x=x_adjust+Game_Window::width()/4;
 
     Bitmap_Font* font=Object_Manager::get_font("standard");
 
-    Render::render_rectangle(x_adjust,0,Game_Window::SCREEN_WIDTH/2,Game_Window::SCREEN_HEIGHT,0.75,current_color_theme()->window_background);
-    Render::render_rectangle_empty(x_adjust,0,Game_Window::SCREEN_WIDTH/2,Game_Window::SCREEN_HEIGHT,0.75,current_color_theme()->window_border,2.0);
+    Render::render_rectangle(x_adjust,0,Game_Window::width()/2,Game_Window::height(),0.75,current_color_theme()->window_background);
+    Render::render_rectangle_empty(x_adjust,0,Game_Window::width()/2,Game_Window::height(),0.75,current_color_theme()->window_border,2.0);
     Render::render_circle(outer_center_x+4,outer_center_y+4,outer_radius,1.0,"ui_black");
     Render::render_circle(outer_center_x,outer_center_y,outer_radius,1.0,current_color_theme()->window_border);
 
@@ -809,26 +817,26 @@ void Engine::render_text_inputter(){
     string text="";
 
     text="(Press for Return)";
-    font->show(x_adjust+(Game_Window::SCREEN_WIDTH/2-text.length()*font->spacing_x)/2,outer_center_y-8.0+font->spacing_y,text,"ui_white");
+    font->show(x_adjust+(Game_Window::width()/2-text.length()*font->spacing_x)/2,outer_center_y-8.0+font->spacing_y,text,"ui_white");
 
     text="[LB] Backspace";
     font->show(x_adjust+100,words_y,text,current_color_theme()->window_font);
     text="Space [RB]";
-    font->show(x_adjust+Game_Window::SCREEN_WIDTH/2-text.length()*font->spacing_x-100,words_y,text,current_color_theme()->window_font);
+    font->show(x_adjust+Game_Window::width()/2-text.length()*font->spacing_x-100,words_y,text,current_color_theme()->window_font);
 
     text="(LT) Caps";
     font->show(x_adjust+100,words_y+30,text,current_color_theme()->window_font);
     text="Numbers (RT)";
-    font->show(x_adjust+Game_Window::SCREEN_WIDTH/2-text.length()*font->spacing_x-100,words_y+30,text,current_color_theme()->window_font);
+    font->show(x_adjust+Game_Window::width()/2-text.length()*font->spacing_x-100,words_y+30,text,current_color_theme()->window_font);
 
     if(selected_chunk==-1){
         if(is_console_selected()){
             text="(A) Auto-complete";
-            font->show(x_adjust+(Game_Window::SCREEN_WIDTH/2-text.length()*font->spacing_x)/2,words_y+60,text,current_color_theme()->window_font);
+            font->show(x_adjust+(Game_Window::width()/2-text.length()*font->spacing_x)/2,words_y+60,text,current_color_theme()->window_font);
         }
 
         text="(B) Back/Done";
-        font->show(x_adjust+(Game_Window::SCREEN_WIDTH/2-text.length()*font->spacing_x)/2,words_y+90,text,current_color_theme()->window_font);
+        font->show(x_adjust+(Game_Window::width()/2-text.length()*font->spacing_x)/2,words_y+90,text,current_color_theme()->window_font);
     }
 
     int character_chunk=0;
@@ -894,11 +902,11 @@ void Engine::render_text_editing(){
 
         string text=ptr_mutable_info->get_cursor_line();
 
-        Render::render_rectangle(0.0,0.0,Game_Window::SCREEN_WIDTH,font->spacing_y+Engine_Data::window_border_thickness*2.0,0.75,current_color_theme()->window_border);
-        Render::render_rectangle(Engine_Data::window_border_thickness,Engine_Data::window_border_thickness,Game_Window::SCREEN_WIDTH-Engine_Data::window_border_thickness*2.0,
+        Render::render_rectangle(0.0,0.0,Game_Window::width(),font->spacing_y+Engine_Data::window_border_thickness*2.0,0.75,current_color_theme()->window_border);
+        Render::render_rectangle(Engine_Data::window_border_thickness,Engine_Data::window_border_thickness,Game_Window::width()-Engine_Data::window_border_thickness*2.0,
                          font->spacing_y,0.75,current_color_theme()->window_background);
 
-        font->show((Game_Window::SCREEN_WIDTH-(text.length()*font->spacing_x))/2.0,Engine_Data::window_border_thickness,text,current_color_theme()->window_font);
+        font->show((Game_Window::width()-(text.length()*font->spacing_x))/2.0,Engine_Data::window_border_thickness,text,current_color_theme()->window_font);
     }
 }
 

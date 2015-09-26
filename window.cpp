@@ -3,16 +3,19 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "window.h"
-#include "collision.h"
-#include "coords.h"
-#include "strings.h"
 #include "log.h"
-#include "render.h"
+#include "strings.h"
 #include "engine_data.h"
 #include "font.h"
 #include "object_manager.h"
+#include "coords.h"
 #include "game_window.h"
+#include "window_manager.h"
 #include "engine.h"
+#include "gui_manager.h"
+#include "tooltip.h"
+#include "engine_input.h"
+#include "render.h"
 
 using namespace std;
 
@@ -365,11 +368,11 @@ void Window::rebuild_scrolling_buttons(){
 
 void Window::center_in_game_window(){
     if(start_x==-1){
-        x=(Game_Window::SCREEN_WIDTH-w)/2;
+        x=(Game_Window::width()-w)/2;
     }
 
     if(start_y==-1){
-        y=(Game_Window::SCREEN_HEIGHT-h)/2;
+        y=(Game_Window::height()-h)/2;
     }
 }
 
@@ -469,11 +472,11 @@ void Window::handle_input_states(){
                 if(y<0){
                     y=0;
                 }
-                if(x+w>Game_Window::SCREEN_WIDTH){
-                    x=Game_Window::SCREEN_WIDTH-w;
+                if(x+w>Game_Window::width()){
+                    x=Game_Window::width()-w;
                 }
-                if(y+h>Game_Window::SCREEN_HEIGHT){
-                    y=Game_Window::SCREEN_HEIGHT-h;
+                if(y+h>Game_Window::height()){
+                    y=Game_Window::height()-h;
                 }
             }
         }
@@ -515,11 +518,11 @@ void Window::handle_input_states(){
                         int tooltip_x=0;
                         int tooltip_y=0;
 
-                        if(Engine::mouse_allowed() && Engine::gui_mode=="mouse"){
+                        if(Engine::mouse_allowed() && GUI_Manager::gui_mode=="mouse"){
                             tooltip_x=mouse_x;
                             tooltip_y=mouse_y;
                         }
-                        else if(Engine::gui_mode=="keyboard" || Engine::gui_mode=="controller"){
+                        else if(GUI_Manager::gui_mode=="keyboard" || GUI_Manager::gui_mode=="controller"){
                             int real_y=y;
 
                             if(is_button_scrolling(i)){

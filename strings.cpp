@@ -97,7 +97,7 @@ int Strings::length_of_last_line(const string& str_input){
     vector<string> lines;
     boost::algorithm::split(lines,str_input,boost::algorithm::is_any_of("\xA"));
 
-    return lines[lines.size()-1].length();
+    return lines.back().length();
 }
 
 int Strings::length_of_line(const string& str_input,int line){

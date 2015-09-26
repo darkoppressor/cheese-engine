@@ -29,7 +29,7 @@ public:
     Collision_Circ main_b;
     Collision_Circ main_a;
 
-    //It is kind of icky, but main_x_y doubles as "main_a_b" when the X and Y buttons are turned off.
+    //It is kind of icky, but main_x_y doubles as "main_a_b" when the X and Y buttons are turned off
     Collision_Circ main_x_y;
     Collision_Circ main_y_b;
     Collision_Circ main_b_a;

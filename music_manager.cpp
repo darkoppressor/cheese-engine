@@ -3,10 +3,10 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "music_manager.h"
-#include "file_io.h"
-#include "log.h"
 #include "options.h"
+#include "file_io.h"
 #include "sound_manager.h"
+#include "log.h"
 
 #include <boost/algorithm/string.hpp>
 

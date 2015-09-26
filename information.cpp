@@ -3,15 +3,18 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "information.h"
-#include "collision.h"
-#include "strings.h"
-#include "log.h"
-#include "symbols.h"
-#include "render.h"
 #include "engine_data.h"
 #include "font.h"
 #include "object_manager.h"
+#include "strings.h"
+#include "log.h"
+#include "special_info.h"
 #include "engine.h"
+#include "gui_manager.h"
+#include "tooltip.h"
+#include "engine_input.h"
+#include "render.h"
+#include "symbols.h"
 
 using namespace std;
 
@@ -413,10 +416,10 @@ void Information::handle_input_states(int mouse_x,int mouse_y,int x_offset,int y
         Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
         Collision_Rect box_b(x_offset+x,y_offset+y,w,h);
 
-        if(Engine::mouse_allowed() && Engine::gui_mode=="mouse" && Collision::check_rect(box_a,box_b)){
+        if(Engine::mouse_allowed() && GUI_Manager::gui_mode=="mouse" && Collision::check_rect(box_a,box_b)){
             Tooltip::setup(tooltip_text,mouse_x,mouse_y);
         }
-        else if((Engine::gui_mode=="keyboard" || Engine::gui_mode=="controller") && GUI_Manager::is_gui_object_selected(this)){
+        else if((GUI_Manager::gui_mode=="keyboard" || GUI_Manager::gui_mode=="controller") && GUI_Manager::is_gui_object_selected(this)){
             Tooltip::setup(tooltip_text,x_offset+x+w/2,y_offset+y+h/2);
         }
     }

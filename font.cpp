@@ -3,10 +3,10 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "font.h"
-#include "image_manager.h"
-#include "render.h"
-#include "options.h"
 #include "game_window.h"
+#include "options.h"
+#include "render.h"
+#include "image_manager.h"
 
 using namespace std;
 
@@ -93,7 +93,7 @@ void Bitmap_Font::show(double x,double y,string text,string font_color,double op
         short ascii=(unsigned char)text[show];
 
         if(text[show]!='\xA'){
-            if(X+get_letter_width()*scale_x>=0 && X<=Game_Window::SCREEN_WIDTH && Y+get_letter_height()*scale_y>=0 && Y<=Game_Window::SCREEN_HEIGHT){
+            if(X+get_letter_width()*scale_x>=0 && X<=Game_Window::width() && Y+get_letter_height()*scale_y>=0 && Y<=Game_Window::height()){
                 bool allowed_area_present=false;
                 if(allowed_area.x!=-1 || allowed_area.y!=-1 || allowed_area.w!=0 || allowed_area.h!=0){
                     allowed_area_present=true;

@@ -6,6 +6,7 @@
 #include "data_reader.h"
 #include "strings.h"
 #include "game_constants_loader.h"
+#include "sound_manager.h"
 
 #include <boost/algorithm/string.hpp>
 

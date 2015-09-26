@@ -29,19 +29,6 @@ void Timer::stop(){
     paused=false;
 }
 
-uint32_t Timer::get_ticks(){
-    if(started){
-        if(paused){
-            return paused_ticks;
-        }
-        else{
-            return SDL_GetTicks()-start_ticks;
-        }
-    }
-
-    return 0;
-}
-
 void Timer::pause(){
     if(started && !paused){
         paused=true;
@@ -60,10 +47,23 @@ void Timer::unpause(){
     }
 }
 
-bool Timer::is_started(){
+bool Timer::is_started() const{
     return started;
 }
 
-bool Timer::is_paused(){
+bool Timer::is_paused() const{
     return paused;
+}
+
+uint32_t Timer::get_ticks() const{
+    if(started){
+        if(paused){
+            return paused_ticks;
+        }
+        else{
+            return SDL_GetTicks()-start_ticks;
+        }
+    }
+
+    return 0;
 }
