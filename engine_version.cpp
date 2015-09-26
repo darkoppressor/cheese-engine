@@ -11,6 +11,18 @@
 
 using namespace std;
 
+string Engine_Version::get_engine_status(){
+    return "beta";
+}
+
+string Engine_Version::get_engine_version(){
+    return "2.0.0";
+}
+
+string Engine_Version::get_engine_date(){
+    return "2015-09-26";
+}
+
 Version_Series::Version_Series(string get_first_version,string get_last_version){
     first_version=get_first_version;
     last_version=get_last_version;
@@ -83,18 +95,6 @@ int Version::get_version_series(const vector<Version_Series>& version_series) co
     }
 
     return -1;
-}
-
-string Engine_Version::get_engine_status(){
-    return "beta";
-}
-
-string Engine_Version::get_engine_version(){
-    return "1.2.7";
-}
-
-string Engine_Version::get_engine_date(){
-    return "2015-05-28";
 }
 
 string Engine_Version::get_version(){
