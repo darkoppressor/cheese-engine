@@ -17,6 +17,11 @@
 #include "directories.h"
 #include "engine_data.h"
 
+#ifdef GAME_OS_ANDROID
+    #include "android.h"
+    #include "file_io.h"
+#endif
+
 #ifdef GAME_OS_OSX
     #include <CoreFoundation/CoreFoundation.h>
 #endif
