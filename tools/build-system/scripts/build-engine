@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	./build-target $PROJECT_DIRECTORY Release-Linux-x86_64
+
+	./build-target $PROJECT_DIRECTORY Release-Linux-x86
+
+	./build-target $PROJECT_DIRECTORY Cross-Compile-Windows-x86_64
+
+	./build-target $PROJECT_DIRECTORY Release-Windows-x86
+
+	./build-target $PROJECT_DIRECTORY Release-OSX-x86_64
+
+	./build-engine-android $PROJECT_DIRECTORY
+else
+	echo "build-engine - build all targets for the Cheese Engine library located at the passed project directory"
+	echo "Usage: build-engine PROJECT-DIRECTORY"
+fi
