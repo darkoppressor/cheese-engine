@@ -58,9 +58,6 @@ string Directories::get_save_directory(){
 
     if(Options::save_location=="home"){
         string game_name=home_directory;
-        #ifdef GAME_DEMO
-            game_name+="-demo";
-        #endif
 
         ///This creates a string pref_path to the location SDL thinks data should be saved for this platform.
         /**string pref_path="./";
