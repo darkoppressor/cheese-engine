@@ -12,31 +12,7 @@
 #include <vector>
 #include <stdint.h>
 
-#include "raknet/Source/MessageIdentifiers.h"
-
-enum{
-    ID_GAME_VERSION=ID_USER_PACKET_ENUM,
-    ID_GAME_CLIENT_DATA,
-    ID_GAME_INITIAL_GAME_DATA,
-    ID_GAME_CONNECTED,
-    ID_GAME_CLIENT_LIST,
-    ID_GAME_CHAT_MESSAGE,
-    ID_GAME_UPDATE,
-    ID_GAME_INPUT,
-    ID_GAME_PING_LIST,
-    ID_GAME_PAUSED,
-    ID_GAME_SOUND
-};
-
-enum{
-    ORDERING_CHANNEL_UNORDERED,
-    ORDERING_CHANNEL_CONNECTION,
-    ORDERING_CHANNEL_CLIENT_DATA,
-    ORDERING_CHANNEL_CHAT,
-    ORDERING_CHANNEL_INPUT,
-    ORDERING_CHANNEL_PAUSED,
-    ORDERING_CHANNEL_SOUND
-};
+#include "raknet/Source/BitStream.h"
 
 class Network_Engine{
 public:

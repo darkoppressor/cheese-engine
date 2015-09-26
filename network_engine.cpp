@@ -11,9 +11,9 @@
 #include "strings.h"
 #include "button_events.h"
 #include "options.h"
+#include "network_message_identifiers.h"
 
 #include "raknet/Source/RakNetVersion.h"
-#include "raknet/Source/BitStream.h"
 
 using namespace std;
 

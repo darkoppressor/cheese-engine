@@ -15,6 +15,7 @@
 #include "engine_version.h"
 #include "game_manager.h"
 #include "sound_manager.h"
+#include "network_message_identifiers.h"
 
 #include "raknet/Source/BitStream.h"
 #include "raknet/Source/GetTime.h"
