@@ -98,7 +98,7 @@ void Network_Engine::tick(){
 }
 
 void Network_Engine::receive_packets(){
-    if(Network_Engine::status!="off"){
+    if(status!="off"){
         tick();
 
         for(packet=peer->Receive();packet!=0;peer->DeallocatePacket(packet),packet=peer->Receive()){
@@ -115,7 +115,7 @@ void Network_Engine::receive_packets(){
 
             switch(packet_id){
                 case ID_CONNECTION_REQUEST_ACCEPTED:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         server_id=packet->guid;
 
                         Log::add_log("Connected to server: "+string(packet->systemAddress.ToString(true)));
@@ -123,7 +123,7 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_CONNECTION_ATTEMPT_FAILED:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Log::add_log("Could not connect to server: "+Network_Client::server_address+"|"+Strings::num_to_string(Network_Client::server_port));
 
                         Button_Events::handle_button_event("stop_game");
@@ -132,14 +132,14 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_ALREADY_CONNECTED:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Log::add_log("Already connected to server: "+string(packet->systemAddress.ToString(true)));
                     }
                     break;
 
                 case ID_NEW_INCOMING_CONNECTION:
-                    if(Network_Engine::status=="server"){
-                        //If this client is not already connected.
+                    if(status=="server"){
+                        //If this client is not already connected
                         if(get_packet_client()==0){
                             clients.push_back(Client_Data(packet->guid,packet->systemAddress,"",false));
 
@@ -149,7 +149,7 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_NO_FREE_INCOMING_CONNECTIONS:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Log::add_log("Server is full: "+string(packet->systemAddress.ToString(true)));
 
                         Button_Events::handle_button_event("stop_game");
@@ -158,7 +158,7 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_DISCONNECTION_NOTIFICATION:
-                    if(Network_Engine::status=="server"){
+                    if(status=="server"){
                         Client_Data* client=get_packet_client();
 
                         if(client!=0){
@@ -187,7 +187,7 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_CONNECTION_LOST:
-                    if(Network_Engine::status=="server"){
+                    if(status=="server"){
                         Client_Data* client=get_packet_client();
 
                         if(client!=0){
@@ -214,7 +214,7 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_CONNECTION_BANNED:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Log::add_log("Banned from: "+string(packet->systemAddress.ToString(true)));
 
                         Button_Events::handle_button_event("stop_game");
@@ -223,7 +223,7 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_INVALID_PASSWORD:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Log::add_log("Invalid password for server: "+string(packet->systemAddress.ToString(true)));
 
                         Button_Events::handle_button_event("stop_game");
@@ -234,14 +234,14 @@ void Network_Engine::receive_packets(){
                 case ID_INCOMPATIBLE_PROTOCOL_VERSION:
                     Log::add_log("Incompatible protocol version: "+string(packet->systemAddress.ToString(true))+"\nOur protocol: "+Strings::num_to_string((int)RAKNET_PROTOCOL_VERSION)+"\nServer protocol: "+receive_incompatible_protocol());
 
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Button_Events::handle_button_event("stop_game");
                         Engine::make_notice("Network protocol does not match server.");
                     }
                     break;
 
                 case ID_IP_RECENTLY_CONNECTED:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Log::add_log("Connected too recently to server: "+string(packet->systemAddress.ToString(true)));
 
                         Button_Events::handle_button_event("stop_game");
@@ -255,37 +255,37 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_UNCONNECTED_PONG:
-                    if(Network_Engine::status!="off"){
+                    if(status!="off"){
                         Network_LAN_Browser::receive_server_browser_info();
                     }
                     break;
 
                 case ID_GAME_VERSION:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_version();
                     }
                     break;
 
                 case ID_GAME_CLIENT_DATA:
-                    if(Network_Engine::status=="server"){
+                    if(status=="server"){
                         Network_Server::receive_client_data();
                     }
                     break;
 
                 case ID_GAME_INITIAL_GAME_DATA:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_initial_game_data();
                     }
                     break;
 
                 case ID_GAME_CONNECTED:
-                    if(Network_Engine::status=="server"){
+                    if(status=="server"){
                         Network_Server::receive_connected();
                     }
                     break;
 
                 case ID_GAME_CLIENT_LIST:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_client_list();
                     }
                     break;
@@ -295,41 +295,43 @@ void Network_Engine::receive_packets(){
                     break;
 
                 case ID_GAME_UPDATE:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_update();
                     }
                     break;
 
                 case ID_GAME_INPUT:
-                    if(Network_Engine::status=="server"){
+                    if(status=="server"){
                         Network_Server::receive_input();
                     }
                     break;
 
                 case ID_GAME_PING_LIST:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_ping_list();
                     }
                     break;
 
                 case ID_GAME_PAUSED:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_paused();
                     }
                     break;
 
                 case ID_GAME_SOUND:
-                    if(Network_Engine::status=="client"){
+                    if(status=="client"){
                         Network_Client::receive_sound();
                     }
                     break;
 
                 default:
-                    Log::add_log("Received message with unknown identifier: "+Strings::num_to_string((int)packet_id));
+                    if(!receive_game_packet(packet,packet_id)){
+                        Log::add_log("Received message with unknown identifier: "+Strings::num_to_string((int)packet_id));
+                    }
                     break;
             }
 
-            if(Network_Engine::status=="off"){
+            if(status=="off"){
                 break;
             }
         }

@@ -2,6 +2,8 @@ Add text colors to buttons, windows, tooltips, and toasts
 
 Scroll bar for scrolling buttons and text
 
+Add spectator support
+
 -----------------------------------------------
 Mod support
 For at least most objects created from data files, add code for overriding them
@@ -55,8 +57,6 @@ This system might be a little confusing since data files are loaded from lowest 
 overriding previous data stuff, while asset files are looked at from highest -> lowest priority
 I think it would be OK, and confusion aside, would be very easy to use
 -----------------------------------------------
-
-Convert the rest of Engine_Interface's load_*() functions to use the new Data_Reader class functions
 
 Maybe all those engine interface functions that return pointers to various objects
 should each have an "error" object of the corresponding type that they can return
