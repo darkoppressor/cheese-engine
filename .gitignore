@@ -38,5 +38,6 @@ development/android/local.properties
 /*.dll
 /*.depend
 /*.cscope_file_list
+/*.layout
 
 *Thumbs.db
