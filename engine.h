@@ -41,7 +41,7 @@ public:
     static std::vector<std::string> characters_numbers;
     static std::vector<std::string> characters_symbols;
 
-    static Coords text_entry_small_selector;
+    static Coords<int> text_entry_small_selector;
 
     //Mutable text cursor
     //The time to spend on each step of fading animation, in milliseconds

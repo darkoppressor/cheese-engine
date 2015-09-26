@@ -413,8 +413,8 @@ void Information::scroll_to_cursor(){
 
 void Information::handle_input_states(int mouse_x,int mouse_y,int x_offset,int y_offset){
     if(tooltip_text.length()>0){
-        Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-        Collision_Rect box_b(x_offset+x,y_offset+y,w,h);
+        Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+        Collision_Rect<double> box_b(x_offset+x,y_offset+y,w,h);
 
         if(Engine::mouse_allowed() && GUI_Manager::gui_mode=="mouse" && Collision::check_rect(box_a,box_b)){
             Tooltip::setup(tooltip_text,mouse_x,mouse_y);
@@ -426,8 +426,8 @@ void Information::handle_input_states(int mouse_x,int mouse_y,int x_offset,int y
 }
 
 bool Information::handle_input_events(int mouse_x,int mouse_y,int x_offset,int y_offset){
-    Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-    Collision_Rect box_b(x_offset+x,y_offset+y,w,h);
+    Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+    Collision_Rect<double> box_b(x_offset+x,y_offset+y,w,h);
 
     switch(Engine_Input::event.type){
         case SDL_MOUSEBUTTONDOWN:
@@ -446,7 +446,7 @@ bool Information::handle_input_events(int mouse_x,int mouse_y,int x_offset,int y
                                     Bitmap_Font* ptr_font=Object_Manager::get_font(font);
 
                                     for(int j=0;j<line_length;j++){
-                                        Collision_Rect box_character(x_offset+x+ptr_font->spacing_x*j,y_offset+y+ptr_font->spacing_y*line_on_screen,ptr_font->spacing_x,ptr_font->spacing_y);
+                                        Collision_Rect<double> box_character(x_offset+x+ptr_font->spacing_x*j,y_offset+y+ptr_font->spacing_y*line_on_screen,ptr_font->spacing_x,ptr_font->spacing_y);
 
                                         if(Collision::check_rect(box_a,box_character)){
                                             cursor_position=Strings::which_character(text,i,j);

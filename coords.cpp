@@ -6,16 +6,6 @@
 
 using namespace std;
 
-Coords::Coords(){
-    x=-1;
-    y=-1;
-}
-
-Coords::Coords(int get_x,int get_y){
-    x=get_x;
-    y=get_y;
-}
-
 Engine_Rect::Engine_Rect(){
     x=-1;
     y=-1;

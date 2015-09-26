@@ -5,14 +5,22 @@
 #ifndef coords_h
 #define coords_h
 
+template<typename T>
 class Coords{
 public:
 
-    int x;
-    int y;
+    T x;
+    T y;
 
-    Coords();
-    Coords(int get_x,int get_y);
+    Coords(){
+        x=(T)-1;
+        y=(T)-1;
+    }
+
+    Coords(T get_x,T get_y){
+        x=get_x;
+        y=get_y;
+    }
 };
 
 class Engine_Rect{

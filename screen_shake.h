@@ -34,10 +34,10 @@ public:
 
     static void add_shake(double get_magnitude,int get_length);
 
-    static void movement(const Collision_Rect& camera);
+    static void movement(const Collision_Rect<double>& camera);
 
-    static void update_camera_before(Collision_Rect& camera);
-    static void update_camera_after(Collision_Rect& camera);
+    static void update_camera_before(Collision_Rect<double>& camera);
+    static void update_camera_after(Collision_Rect<double>& camera);
 };
 
 #endif

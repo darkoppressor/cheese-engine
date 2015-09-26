@@ -28,7 +28,7 @@ public:
 
     static void render_texture(double x,double y,Image_Data* image_source,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
 
-    static void render_sprite(double x,double y,Image_Data* image_source,Collision_Rect* texture_clip=0,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
+    static void render_sprite(double x,double y,Image_Data* image_source,Collision_Rect<double>* texture_clip=0,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
 
     static void render_rectangle(double x,double y,double w,double h,double opacity,std::string color_name);
 

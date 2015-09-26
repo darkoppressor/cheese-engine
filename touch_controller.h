@@ -14,37 +14,37 @@
 class Touch_Controller{
 public:
 
-    Collision_Circ dpad_left;
-    Collision_Circ dpad_up;
-    Collision_Circ dpad_right;
-    Collision_Circ dpad_down;
+    Collision_Circ<double> dpad_left;
+    Collision_Circ<double> dpad_up;
+    Collision_Circ<double> dpad_right;
+    Collision_Circ<double> dpad_down;
 
-    Collision_Circ dpad_left_up;
-    Collision_Circ dpad_up_right;
-    Collision_Circ dpad_right_down;
-    Collision_Circ dpad_down_left;
+    Collision_Circ<double> dpad_left_up;
+    Collision_Circ<double> dpad_up_right;
+    Collision_Circ<double> dpad_right_down;
+    Collision_Circ<double> dpad_down_left;
 
-    Collision_Circ main_x;
-    Collision_Circ main_y;
-    Collision_Circ main_b;
-    Collision_Circ main_a;
+    Collision_Circ<double> main_x;
+    Collision_Circ<double> main_y;
+    Collision_Circ<double> main_b;
+    Collision_Circ<double> main_a;
 
     //It is kind of icky, but main_x_y doubles as "main_a_b" when the X and Y buttons are turned off
-    Collision_Circ main_x_y;
-    Collision_Circ main_y_b;
-    Collision_Circ main_b_a;
-    Collision_Circ main_a_x;
+    Collision_Circ<double> main_x_y;
+    Collision_Circ<double> main_y_b;
+    Collision_Circ<double> main_b_a;
+    Collision_Circ<double> main_a_x;
 
-    Collision_Circ shoulder_left;
-    Collision_Circ shoulder_right;
+    Collision_Circ<double> shoulder_left;
+    Collision_Circ<double> shoulder_right;
 
-    Collision_Rect back_button;
-    Collision_Rect start;
-    Collision_Rect guide;
+    Collision_Rect<double> back_button;
+    Collision_Rect<double> start;
+    Collision_Rect<double> guide;
 
-    Collision_Circ anchor_dpad;
-    Collision_Circ anchor_main;
-    Collision_Rect anchor_middle;
+    Collision_Circ<double> anchor_dpad;
+    Collision_Circ<double> anchor_main;
+    Collision_Rect<double> anchor_middle;
 
     double scale_anchor_dpad;
     double scale_anchor_main;

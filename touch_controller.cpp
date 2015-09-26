@@ -214,7 +214,7 @@ vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(float 
     double touch_x=x*(float)actual_width;
     double touch_y=y*(float)actual_height;
 
-    Collision_Circ circle_touch(touch_x,touch_y,Engine_Data::touch_finger_size);
+    Collision_Circ<double> circle_touch(touch_x,touch_y,Engine_Data::touch_finger_size);
 
     vector<SDL_GameControllerButton> touch_buttons;
 

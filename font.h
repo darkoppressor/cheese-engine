@@ -19,7 +19,7 @@ private:
     static const SDL_Rect FONT_DEFAULT_ALLOWED_AREA;
 
     //The individual characters in the texture
-    Collision_Rect chars[256];
+    Collision_Rect<double> chars[256];
 
     Sprite sprite;
 

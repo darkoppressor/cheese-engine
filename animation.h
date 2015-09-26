@@ -22,7 +22,7 @@ public:
     //How the animation behaves when reaching the end of its frames.
     std::string end_behavior;
 
-    std::vector<Collision_Rect> sprite_sheet;
+    std::vector<Collision_Rect<double>> sprite_sheet;
 
     Animation();
 

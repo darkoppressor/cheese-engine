@@ -26,7 +26,7 @@ double Game_Manager::camera_zoom=0.0;
 string Game_Manager::current_music="";
 
 vector<string> Game_Manager::command_states;
-Collision_Rect Game_Manager::camera;
+Collision_Rect<double> Game_Manager::camera;
 RNG Game_Manager::rng;
 
 void Game_Manager::reset(){
@@ -141,19 +141,19 @@ void Game_Manager::stop(){
     }
 }
 
-void Game_Manager::center_camera(Collision_Rect box){
+void Game_Manager::center_camera(Collision_Rect<double> box){
     camera.x=box.center_x()*camera_zoom-camera.w/2.0;
     camera.y=box.center_y()*camera_zoom-camera.h/2.0;
 }
 
-void Game_Manager::center_camera(Collision_Circ circle){
+void Game_Manager::center_camera(Collision_Circ<double> circle){
     camera.x=circle.x*camera_zoom-camera.w/2.0;
     camera.y=circle.y*camera_zoom-camera.h/2.0;
 }
 
-void Game_Manager::zoom_camera_in(Collision_Rect box){
+void Game_Manager::zoom_camera_in(Collision_Rect<double> box){
     if(camera_zoom<Engine_Data::ZOOM_MAX){
-        Collision_Rect camera_location=box/camera_zoom;
+        Collision_Rect<double> camera_location=box/camera_zoom;
 
         camera_zoom+=camera_zoom*Engine_Data::ZOOM_RATE;
         if(camera_zoom>Engine_Data::ZOOM_MAX){
@@ -164,9 +164,9 @@ void Game_Manager::zoom_camera_in(Collision_Rect box){
     }
 }
 
-void Game_Manager::zoom_camera_in(Collision_Circ circle){
+void Game_Manager::zoom_camera_in(Collision_Circ<double> circle){
     if(camera_zoom<Engine_Data::ZOOM_MAX){
-        Collision_Circ camera_location=circle/camera_zoom;
+        Collision_Circ<double> camera_location=circle/camera_zoom;
 
         camera_zoom+=camera_zoom*Engine_Data::ZOOM_RATE;
         if(camera_zoom>Engine_Data::ZOOM_MAX){
@@ -177,9 +177,9 @@ void Game_Manager::zoom_camera_in(Collision_Circ circle){
     }
 }
 
-void Game_Manager::zoom_camera_out(Collision_Rect box){
+void Game_Manager::zoom_camera_out(Collision_Rect<double> box){
     if(camera_zoom>Engine_Data::ZOOM_MIN){
-        Collision_Rect camera_location=box/camera_zoom;
+        Collision_Rect<double> camera_location=box/camera_zoom;
 
         camera_zoom-=camera_zoom*Engine_Data::ZOOM_RATE;
         if(camera_zoom<Engine_Data::ZOOM_MIN){
@@ -190,9 +190,9 @@ void Game_Manager::zoom_camera_out(Collision_Rect box){
     }
 }
 
-void Game_Manager::zoom_camera_out(Collision_Circ circle){
+void Game_Manager::zoom_camera_out(Collision_Circ<double> circle){
     if(camera_zoom>Engine_Data::ZOOM_MIN){
-        Collision_Circ camera_location=circle/camera_zoom;
+        Collision_Circ<double> camera_location=circle/camera_zoom;
 
         camera_zoom-=camera_zoom*Engine_Data::ZOOM_RATE;
         if(camera_zoom<Engine_Data::ZOOM_MIN){

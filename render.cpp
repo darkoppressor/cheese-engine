@@ -160,7 +160,7 @@ void Render::render_texture(double x,double y,Image_Data* image_source,double op
     Game_Window::render_copy_ex(image_source->texture,0,&rect_dst,-angle,0,(SDL_RendererFlip)flip);
 }
 
-void Render::render_sprite(double x,double y,Image_Data* image_source,Collision_Rect* texture_clip,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
+void Render::render_sprite(double x,double y,Image_Data* image_source,Collision_Rect<double>* texture_clip,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y){
     SDL_Rect rect_src;
     rect_src.x=texture_clip->x;
     rect_src.y=texture_clip->y;

@@ -36,7 +36,7 @@ public:
     //Holds a string representing each command that is currently in the on state, and is relevant for networking
     //This is updated each frame
     static std::vector<std::string> command_states;
-    static Collision_Rect camera;
+    static Collision_Rect<double> camera;
     static RNG rng;
 
     static void reset();
@@ -56,14 +56,14 @@ public:
     static void start_client();
     static void stop();
 
-    static void center_camera(Collision_Rect box);
-    static void center_camera(Collision_Circ circle);
+    static void center_camera(Collision_Rect<double> box);
+    static void center_camera(Collision_Circ<double> circle);
 
-    static void zoom_camera_in(Collision_Rect box);
-    static void zoom_camera_in(Collision_Circ circle);
+    static void zoom_camera_in(Collision_Rect<double> box);
+    static void zoom_camera_in(Collision_Circ<double> circle);
 
-    static void zoom_camera_out(Collision_Rect box);
-    static void zoom_camera_out(Collision_Circ circle);
+    static void zoom_camera_out(Collision_Rect<double> box);
+    static void zoom_camera_out(Collision_Circ<double> circle);
 
     static void prepare_for_input();
 

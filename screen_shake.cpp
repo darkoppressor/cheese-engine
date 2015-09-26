@@ -48,8 +48,8 @@ void Screen_Shake::change_direction(){
         direction=rng.random_range(0,359);
     }
     else{
-        Collision_Rect box(x,y,2.0,2.0);
-        Collision_Rect box_mid(0.0,0.0,2.0,2.0);
+        Collision_Rect<double> box(x,y,2.0,2.0);
+        Collision_Rect<double> box_mid(0.0,0.0,2.0,2.0);
         direction=Collision::get_angle_to_rect(box,box_mid,box_mid);
     }
 }
@@ -71,7 +71,7 @@ void Screen_Shake::add_shake(double get_magnitude,int get_length){
     }
 }
 
-void Screen_Shake::movement(const Collision_Rect& camera){
+void Screen_Shake::movement(const Collision_Rect<double>& camera){
     if(is_active()){
         Vector velocity((0.65/Math::pow(1.0-magnitude,0.25))*((camera.w+camera.h)/2.0),direction);
 
@@ -132,7 +132,7 @@ void Screen_Shake::movement(const Collision_Rect& camera){
     }
 }
 
-void Screen_Shake::update_camera_before(Collision_Rect& camera){
+void Screen_Shake::update_camera_before(Collision_Rect<double>& camera){
     if(is_active()){
         camera.x-=(int64_t)x;
         camera.y-=(int64_t)y;
@@ -141,7 +141,7 @@ void Screen_Shake::update_camera_before(Collision_Rect& camera){
     }
 }
 
-void Screen_Shake::update_camera_after(Collision_Rect& camera){
+void Screen_Shake::update_camera_after(Collision_Rect<double>& camera){
     if(is_active()){
         camera.x+=(int64_t)x;
         camera.y+=(int64_t)y;

@@ -432,8 +432,8 @@ void Window_Manager::prepare_for_input(){
     Engine::get_mouse_state(&mouse_x,&mouse_y);
 
     for(int i=0;i<window_z_order.size() && window_under_mouse==0;i++){
-        Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-        Collision_Rect box_b(window_z_order[i]->x,window_z_order[i]->y,window_z_order[i]->w,window_z_order[i]->h);
+        Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+        Collision_Rect<double> box_b(window_z_order[i]->x,window_z_order[i]->y,window_z_order[i]->w,window_z_order[i]->h);
 
         if(Collision::check_rect(box_a,box_b)){
             window_under_mouse=window_z_order[i];
@@ -441,8 +441,8 @@ void Window_Manager::prepare_for_input(){
     }
 
     for(int i=0;i<closed_windows.size() && window_under_mouse==0;i++){
-        Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-        Collision_Rect box_b(windows[closed_windows[i]].x,windows[closed_windows[i]].y,windows[closed_windows[i]].w,windows[closed_windows[i]].h);
+        Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+        Collision_Rect<double> box_b(windows[closed_windows[i]].x,windows[closed_windows[i]].y,windows[closed_windows[i]].w,windows[closed_windows[i]].h);
 
         if(Collision::check_rect(box_a,box_b)){
             window_under_mouse=&windows[closed_windows[i]];

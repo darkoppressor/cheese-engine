@@ -589,8 +589,8 @@ bool Window::handle_input_events(){
                             }
                         }
 
-                        Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-                        Collision_Rect box_b(x,y,w,h);
+                        Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+                        Collision_Rect<double> box_b(x,y,w,h);
 
                         //If no buttons were just clicked and the title bar of the window is clicked.
                         if(!button_clicked && Collision::check_rect(box_a,box_b)){
@@ -610,8 +610,8 @@ bool Window::handle_input_events(){
                 case SDL_MOUSEWHEEL:
                     if(!event_consumed && Engine_Input::event.wheel.y<0){
                         if(scrolling_buttons.length()>0){
-                            Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-                            Collision_Rect box_b(x,y+Engine_Data::scrolling_buttons_offset,w,h-Engine_Data::scrolling_buttons_offset-6);
+                            Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+                            Collision_Rect<double> box_b(x,y+Engine_Data::scrolling_buttons_offset,w,h-Engine_Data::scrolling_buttons_offset-6);
 
                             if(Collision::check_rect(box_a,box_b)){
                                 scroll_down();
@@ -622,8 +622,8 @@ bool Window::handle_input_events(){
                     }
                     else if(!event_consumed && Engine_Input::event.wheel.y>0){
                         if(scrolling_buttons.length()>0){
-                            Collision_Rect box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
-                            Collision_Rect box_b(x,y+Engine_Data::scrolling_buttons_offset,w,h-Engine_Data::scrolling_buttons_offset-6);
+                            Collision_Rect<double> box_a(mouse_x,mouse_y,Engine_Data::cursor_width,Engine_Data::cursor_height);
+                            Collision_Rect<double> box_b(x,y+Engine_Data::scrolling_buttons_offset,w,h-Engine_Data::scrolling_buttons_offset-6);
 
                             if(Collision::check_rect(box_a,box_b)){
                                 scroll_up();

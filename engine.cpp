@@ -47,7 +47,7 @@ vector<string> Engine::characters_upper;
 vector<string> Engine::characters_numbers;
 vector<string> Engine::characters_symbols;
 
-Coords Engine::text_entry_small_selector;
+Coords<int> Engine::text_entry_small_selector;
 
 int Engine::counter_cursor=0;
 bool Engine::cursor_fade_direction=false;
@@ -360,10 +360,10 @@ int Engine::get_text_input_selected_chunk(){
     }
 
     if(axis_x!=0 || axis_y!=0){
-        Collision_Rect box_a(0,0,1,1);
-        Collision_Rect box_b(axis_x,axis_y,1,1);
+        Collision_Rect<double> box_a(0,0,1,1);
+        Collision_Rect<double> box_b(axis_x,axis_y,1,1);
 
-        double axis_angle=Collision::get_angle_to_rect(box_a,box_b,Collision_Rect(0.0,0.0,0.0,0.0));
+        double axis_angle=Collision::get_angle_to_rect(box_a,box_b,Collision_Rect<double>(0.0,0.0,0.0,0.0));
 
         if(axis_angle>=74 && axis_angle<118){
             selected_chunk=0;
