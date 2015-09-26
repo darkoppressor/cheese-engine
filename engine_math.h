@@ -5,6 +5,8 @@
 #ifndef engine_math_h
 #define engine_math_h
 
+#include <algorithm>
+
 class Math{
 public:
 
@@ -23,6 +25,11 @@ public:
     static double asin(double x);
     static double atan(double x);
     static double atan2(double y,double x);
+
+    template<typename T>
+    static typename std::enable_if<std::is_unsigned<T>::value,bool>::type abs(const T& a,const T& b){
+        return std::max(a,b)-std::min(a,b);
+    }
 
     static double degrees_to_radians(double degrees);
     static double radians_to_degrees(double radians);
