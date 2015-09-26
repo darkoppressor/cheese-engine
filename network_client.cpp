@@ -231,6 +231,9 @@ void Network_Client::receive_version(){
     bitstream.ReadCompressed(rstring);
     string checksum=rstring.C_String();
 
+    bitstream.ReadCompressed(rstring);
+    string allow_new_connection=rstring.C_String();
+
     string our_game_title=Engine_Data::game_title;
     if(game_title!=our_game_title){
         Log::add_log("Game mismatch: "+string(Network_Engine::packet->systemAddress.ToString(true))+"\nOur game: "+our_game_title+"\nServer game: "+game_title);
@@ -254,9 +257,17 @@ void Network_Client::receive_version(){
                 Engine::make_notice("Checksum mismatch with server.");
             }
             else{
-                Window_Manager::get_window("network_connecting")->toggle_on(true,false);
+                if(allow_new_connection.length()>0){
+                    Log::add_log("Server rejected connection attempt: "+allow_new_connection);
 
-                send_client_data(true);
+                    Button_Events::handle_button_event("stop_game");
+                    Engine::make_notice("Server rejected connection attempt: "+allow_new_connection);
+                }
+                else{
+                    Window_Manager::get_window("network_connecting")->toggle_on(true,false);
+
+                    send_client_data(true);
+                }
             }
         }
     }

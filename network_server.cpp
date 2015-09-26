@@ -164,6 +164,8 @@ void Network_Server::send_version(){
             bitstream.WriteCompressed((RakNet::RakString)"");
         }
 
+        bitstream.WriteCompressed((RakNet::RakString)Network_Engine::allow_new_connection().c_str());
+
         Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
         Network_Engine::peer->Send(&bitstream,MEDIUM_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_CONNECTION,Network_Engine::packet->guid,false);
     }
