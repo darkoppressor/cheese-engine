@@ -6,6 +6,8 @@
 #include "log.h"
 
 #ifdef GAME_OS_ANDROID
+    #include "strings.h"
+
     #include <errno.h>
 
     #include <boost/algorithm/string.hpp>
