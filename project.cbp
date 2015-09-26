@@ -455,6 +455,8 @@
 		<Unit filename="pixels.h" />
 		<Unit filename="progress_bar.cpp" />
 		<Unit filename="progress_bar.h" />
+		<Unit filename="quadtree.cpp" />
+		<Unit filename="quadtree.h" />
 		<Unit filename="render.cpp" />
 		<Unit filename="render.h" />
 		<Unit filename="rng.cpp" />
