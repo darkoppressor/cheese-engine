@@ -261,11 +261,15 @@ string Options::get_option_description(string option){
 void Options::change_option(string option,string new_value){
     if(option=="cl_logic_update_rate"){
         if(Network_Engine::status=="off"){
-            Engine::set_logic_update_rate(Strings::string_to_double(new_value));
+            uint32_t new_update_rate=Strings::string_to_unsigned_long(new_value);
+
+            Network_Client::recall_update_rate=new_update_rate;
+
+            Engine::set_logic_update_rate(new_update_rate);
         }
     }
     else if(option=="cl_frame_rate_max"){
-        Engine::set_render_update_rate(Strings::string_to_double(new_value));
+        Engine::set_render_update_rate(Strings::string_to_unsigned_long(new_value));
     }
 
     else if(option=="cl_screen_width"){

@@ -225,7 +225,7 @@ void Network_Server::send_initial_game_data(){
         RakNet::BitStream bitstream;
         bitstream.Write((RakNet::MessageID)ID_GAME_INITIAL_GAME_DATA);
 
-        bitstream.Write(Engine::UPDATE_RATE);
+        bitstream.WriteCompressed(Engine::UPDATE_RATE);
 
         Network_Engine::write_initial_game_data(&bitstream);
 
@@ -313,7 +313,7 @@ void Network_Server::send_updates(){
                         client_rate_updates=rate_updates_max;
                     }
 
-                    if(Network_Engine::clients[i].updates_this_second<client_rate_updates && ++Network_Engine::clients[i].counter_update>=(uint32_t)ceil(Engine::UPDATE_RATE/(double)client_rate_updates)){
+                    if(Network_Engine::clients[i].updates_this_second<client_rate_updates && ++Network_Engine::clients[i].counter_update>=Engine::UPDATE_RATE/client_rate_updates){
                         Network_Engine::clients[i].counter_update=0;
 
                         send_update(&Network_Engine::clients[i],client_rate_bytes);

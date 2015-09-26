@@ -27,7 +27,7 @@ public:
     static uint32_t counter_commands;
     //When a client connects to a server, its Engine::UPDATE_RATE is set to the server's
     //When the game is stopped, the client reverts to its original Engine::UPDATE_RATE
-    static double recall_update_rate;
+    static uint32_t recall_update_rate;
     static RakNet::Time last_update_time;
     static std::vector<std::string> command_buffer;
 

@@ -30,7 +30,7 @@ uint32_t Network_Client::rate_updates=0;
 uint32_t Network_Client::rate_commands=0;
 uint32_t Network_Client::commands_this_second=0;
 uint32_t Network_Client::counter_commands=0;
-double Network_Client::recall_update_rate=Engine::UPDATE_RATE;
+uint32_t Network_Client::recall_update_rate=Engine::UPDATE_RATE;
 RakNet::Time Network_Client::last_update_time=0;
 vector<string> Network_Client::command_buffer;
 
@@ -288,8 +288,8 @@ void Network_Client::receive_initial_game_data(){
     RakNet::MessageID type_id;
     bitstream.Read(type_id);
 
-    double update_rate=0.0;
-    bitstream.Read(update_rate);
+    uint32_t update_rate=0;
+    bitstream.ReadCompressed(update_rate);
 
     Engine::set_logic_update_rate(update_rate);
 
@@ -362,7 +362,7 @@ void Network_Client::receive_update(){
 void Network_Client::send_input(){
     if(Network_Engine::status=="client"){
         if(Game_Manager::in_progress){
-            if(commands_this_second<rate_commands && ++counter_commands>=(uint32_t)ceil(Engine::UPDATE_RATE/(double)rate_commands)){
+            if(commands_this_second<rate_commands && ++counter_commands>=Engine::UPDATE_RATE/rate_commands){
                 counter_commands=0;
 
                 commands_this_second++;

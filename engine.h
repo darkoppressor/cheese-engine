@@ -17,11 +17,11 @@
 class Engine{
 public:
 
-    static double UPDATE_RATE;
-    static double SKIP_TICKS;
+    static uint32_t UPDATE_RATE;
+    static uint32_t SKIP_TICKS;
 
-    static double UPDATE_RATE_RENDER;
-    static double SKIP_TICKS_RENDER;
+    static uint32_t UPDATE_RATE_RENDER;
+    static uint32_t SKIP_TICKS_RENDER;
 
     static std::string CHECKSUM;
 
@@ -71,8 +71,8 @@ public:
 
     static Color_Theme* current_color_theme();
 
-    static void set_logic_update_rate(double frame_rate);
-    static void set_render_update_rate(double frame_rate);
+    static void set_logic_update_rate(uint32_t frame_rate);
+    static void set_render_update_rate(uint32_t frame_rate);
 
     static std::string get_text_entry_small_character();
     static int get_text_input_selected_chunk();

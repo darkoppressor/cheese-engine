@@ -25,11 +25,11 @@
 
 using namespace std;
 
-double Engine::UPDATE_RATE=60.0;
-double Engine::SKIP_TICKS=1000.0/Engine::UPDATE_RATE;
+uint32_t Engine::UPDATE_RATE=60;
+uint32_t Engine::SKIP_TICKS=1000/Engine::UPDATE_RATE;
 
-double Engine::UPDATE_RATE_RENDER=200.0;
-double Engine::SKIP_TICKS_RENDER=1000.0/Engine::UPDATE_RATE_RENDER;
+uint32_t Engine::UPDATE_RATE_RENDER=200;
+uint32_t Engine::SKIP_TICKS_RENDER=1000/Engine::UPDATE_RATE_RENDER;
 
 string Engine::CHECKSUM="";
 
@@ -289,14 +289,14 @@ Color_Theme* Engine::current_color_theme(){
     return Object_Manager::get_color_theme(Engine_Data::color_theme);
 }
 
-void Engine::set_logic_update_rate(double frame_rate){
+void Engine::set_logic_update_rate(uint32_t frame_rate){
     UPDATE_RATE=frame_rate;
-    SKIP_TICKS=1000.0/UPDATE_RATE;
+    SKIP_TICKS=1000/UPDATE_RATE;
 }
 
-void Engine::set_render_update_rate(double frame_rate){
+void Engine::set_render_update_rate(uint32_t frame_rate){
     UPDATE_RATE_RENDER=frame_rate;
-    SKIP_TICKS_RENDER=1000.0/UPDATE_RATE_RENDER;
+    SKIP_TICKS_RENDER=1000/UPDATE_RATE_RENDER;
 }
 
 string Engine::get_text_entry_small_character(){
@@ -542,7 +542,7 @@ void Engine::make_toast(string message,string length,int custom_length){
         }
 
         //Real length was in terms of seconds. Now we translate it to frames
-        real_length=(int)ceil((double)real_length*UPDATE_RATE);
+        real_length=(int)ceil((double)real_length*(double)UPDATE_RATE);
         if(real_length<1){
             real_length=1;
         }
@@ -674,7 +674,7 @@ void Engine::animate(){
     }
 
     //Update the text cursor
-    if(++counter_cursor>=(int)ceil((48.0/1000.0)*UPDATE_RATE)){
+    if(++counter_cursor>=(int)ceil((48.0/1000.0)*(double)UPDATE_RATE)){
         counter_cursor=0;
 
         if(cursor_opacity==10){

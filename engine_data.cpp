@@ -106,10 +106,14 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
             resolution_mode=line;
         }
         else if(Data_Reader::check_prefix(line,"logic_update_rate:")){
-            Engine::set_logic_update_rate(Strings::string_to_double(line));
+            uint32_t new_update_rate=Strings::string_to_unsigned_long(line);
+
+            Network_Client::recall_update_rate=new_update_rate;
+
+            Engine::set_logic_update_rate(new_update_rate);
         }
         else if(Data_Reader::check_prefix(line,"frame_rate_max:")){
-            Engine::set_render_update_rate(Strings::string_to_double(line));
+            Engine::set_render_update_rate(Strings::string_to_unsigned_long(line));
         }
         else if(Data_Reader::check_prefix(line,"axis_scroll_rate:")){
             axis_scroll_rate=Strings::string_to_long(line);

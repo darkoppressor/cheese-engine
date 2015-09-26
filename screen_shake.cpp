@@ -77,8 +77,8 @@ void Screen_Shake::movement(const Collision_Rect<double>& camera){
 
         Vector_Components vc=velocity.get_components();
 
-        double move_x=vc.a/Engine::UPDATE_RATE;
-        double move_y=vc.b/Engine::UPDATE_RATE;
+        double move_x=vc.a/(double)Engine::UPDATE_RATE;
+        double move_y=vc.b/(double)Engine::UPDATE_RATE;
 
         x+=move_x;
         y+=move_y;
@@ -124,7 +124,7 @@ void Screen_Shake::movement(const Collision_Rect<double>& camera){
             }
         }
 
-        length-=(int)Math::ceil(1000.0/Engine::UPDATE_RATE);
+        length-=(int)Math::ceil(1000.0/(double)Engine::UPDATE_RATE);
 
         if(length<=0){
             reset();

@@ -63,7 +63,7 @@ void Sprite::animate(int animation_speed_override){
             animation_speed=animation_speed_override;
         }
 
-        if(animation_speed!=-1 && ++frame_counter>=(int)ceil(((double)animation_speed/1000.0)*Engine::UPDATE_RATE)){
+        if(animation_speed!=-1 && ++frame_counter>=(int)ceil(((double)animation_speed/1000.0)*(double)Engine::UPDATE_RATE)){
             frame_counter=0;
 
             if(++frame>Object_Manager::get_animation(name)->frame_count-1){

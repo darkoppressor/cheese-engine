@@ -591,7 +591,7 @@ void GUI_Manager::animate_gui_selector_chasers(){
 
     if(object_pos.x!=-1){
         double distance_to_cover=object_pos.w*2+object_pos.h*2;
-        double move_speed=distance_to_cover/(5760.0/Engine::UPDATE_RATE);
+        double move_speed=distance_to_cover/(5760.0/(double)Engine::UPDATE_RATE);
 
         for(int i=0;i<gui_selector_chasers.size();i++){
             if(gui_selector_chasers[i].x>(double)object_pos.x && gui_selector_chasers[i].x<(double)object_pos.x+(double)object_pos.w && gui_selector_chasers[i].y==(double)object_pos.y){

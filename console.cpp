@@ -249,7 +249,7 @@ void Console::movement(){
     if(!chat){
         if(move_speed>0){
             if(on && y<0){
-                y+=(int)ceil((double)move_speed/Engine::UPDATE_RATE);
+                y+=(int)ceil((double)move_speed/(double)Engine::UPDATE_RATE);
 
                 if(y>0){
                     y=0;
@@ -259,7 +259,7 @@ void Console::movement(){
                 info_input.y=y+info_display.h;
             }
             else if(!on && y>-(info_display.h+info_input.h)){
-                y-=(int)ceil((double)move_speed/Engine::UPDATE_RATE);
+                y-=(int)ceil((double)move_speed/(double)Engine::UPDATE_RATE);
 
                 if(y<-(info_display.h+info_input.h)){
                     y=-(info_display.h+info_input.h);
@@ -287,7 +287,7 @@ void Console::movement(){
     else{
         if(move_speed>0){
             if(on && y>Game_Window::height()-info_display.h-info_input.h){
-                y-=(int)ceil((double)move_speed/Engine::UPDATE_RATE);
+                y-=(int)ceil((double)move_speed/(double)Engine::UPDATE_RATE);
 
                 if(y<Game_Window::height()-info_display.h-info_input.h){
                     y=Game_Window::height()-info_display.h-info_input.h;
@@ -297,7 +297,7 @@ void Console::movement(){
                 info_input.y=y+info_display.h;
             }
             else if(!on && y<Game_Window::height()){
-                y+=(int)ceil((double)move_speed/Engine::UPDATE_RATE);
+                y+=(int)ceil((double)move_speed/(double)Engine::UPDATE_RATE);
 
                 if(y>Game_Window::height()){
                     y=Game_Window::height();
