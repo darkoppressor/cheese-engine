@@ -9,6 +9,7 @@
 #include "engine.h"
 #include "tooltip.h"
 #include "options.h"
+#include "network_client.h"
 
 #include <boost/algorithm/string.hpp>
 
