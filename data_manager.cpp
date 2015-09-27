@@ -103,6 +103,9 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     world_loaded=true;
 
+    Log::post_world_load_errors();
+    Log::post_world_load_logs();
+
     return true;
 }
 

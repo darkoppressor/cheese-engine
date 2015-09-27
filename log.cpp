@@ -10,24 +10,18 @@
 
 using namespace std;
 
+bool Log::is_error_log_ready=false;
+
 vector<string> Log::world_load_errors;
-vector<string> Log::save_location_load_errors;
+vector<string> Log::error_log_unready_errors;
 vector<string> Log::world_load_logs;
-
-void Log::clear_error_log(){
-    string error_log_path=Directories::get_save_directory()+"error_log.txt";
-
-    if(File_IO::exists(error_log_path)){
-        File_IO::remove_file(error_log_path);
-    }
-}
 
 void Log::add_world_load_error(string message){
     world_load_errors.push_back(message);
 }
 
-void Log::add_save_location_load_error(string message){
-    save_location_load_errors.push_back(message);
+void Log::add_error_log_unready_error(string message){
+    error_log_unready_errors.push_back(message);
 }
 
 void Log::add_world_load_log(string message){
@@ -44,17 +38,17 @@ void Log::post_world_load_errors(){
     }
 }
 
-void Log::post_save_location_load_errors(){
-    if(Directories::save_location_loaded){
-        for(size_t i=0;i<save_location_load_errors.size();i++){
+void Log::post_error_log_unready_errors(){
+    if(is_error_log_ready){
+        for(size_t i=0;i<error_log_unready_errors.size();i++){
             stringstream save("");
 
-            save<<save_location_load_errors[i]<<"\n";
+            save<<error_log_unready_errors[i]<<"\n";
 
             File_IO::save_atomic(Directories::get_save_directory()+"error_log.txt",save.str(),false,true);
         }
 
-        save_location_load_errors.clear();
+        error_log_unready_errors.clear();
     }
 }
 
@@ -65,6 +59,20 @@ void Log::post_world_load_logs(){
         }
 
         world_load_logs.clear();
+    }
+}
+
+void Log::clear_error_log(){
+    if(!is_error_log_ready){
+        string error_log_path=Directories::get_save_directory()+"error_log.txt";
+
+        if(File_IO::exists(error_log_path)){
+            File_IO::remove_file(error_log_path);
+        }
+
+        is_error_log_ready=true;
+
+        post_error_log_unready_errors();
     }
 }
 
@@ -81,7 +89,7 @@ void Log::add_error(string message,bool allow_save){
     }
 
     if(allow_save){
-        if(Directories::save_location_loaded){
+        if(Directories::save_location_loaded && is_error_log_ready){
             stringstream save("");
 
             save<<message<<"\n";
@@ -89,7 +97,7 @@ void Log::add_error(string message,bool allow_save){
             File_IO::save_atomic(Directories::get_save_directory()+"error_log.txt",save.str(),false,true);
         }
         else{
-            add_save_location_load_error(message);
+            add_error_log_unready_error(message);
         }
     }
 }

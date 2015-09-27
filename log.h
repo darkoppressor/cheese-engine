@@ -11,19 +11,21 @@
 class Log{
 private:
 
+    static bool is_error_log_ready;
+
     //These holds log messages that are posted before certain parts of startup are completed
     static std::vector<std::string> world_load_errors;
-    static std::vector<std::string> save_location_load_errors;
+    static std::vector<std::string> error_log_unready_errors;
     static std::vector<std::string> world_load_logs;
 
     static void add_world_load_error(std::string message);
-    static void add_save_location_load_error(std::string message);
+    static void add_error_log_unready_error(std::string message);
     static void add_world_load_log(std::string message);
 
 public:
 
     static void post_world_load_errors();
-    static void post_save_location_load_errors();
+    static void post_error_log_unready_errors();
     static void post_world_load_logs();
 
     static void clear_error_log();
