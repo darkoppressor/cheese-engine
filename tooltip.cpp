@@ -9,6 +9,7 @@
 #include "strings.h"
 #include "engine.h"
 #include "render.h"
+#include "engine_math.h"
 
 #include <vector>
 
@@ -37,7 +38,7 @@ void Tooltip::setup(string get_message,int mouse_x,int mouse_y){
 
     vector<string> lines;
     int spacing_x=Object_Manager::get_font("small")->spacing_x;
-    int window_width=(int)floor((double)Game_Window::width()*0.95);
+    int window_width=(int)Math::floor((double)Game_Window::width()*0.95);
 
     while(message.length()*spacing_x>window_width){
         int i=window_width/spacing_x;

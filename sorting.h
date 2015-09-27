@@ -5,6 +5,8 @@
 #ifndef sorting_h
 #define sorting_h
 
+#include "engine_math.h"
+
 #include <vector>
 
 class Sorting{
@@ -16,7 +18,7 @@ public:
             return;
         }
 
-        int pivot_index=(int)floor((double)(objects.size()-1)/2.0);
+        int pivot_index=(int)Math::floor((double)(objects.size()-1)/2.0);
 
         std::vector<Object> less_than;
         std::vector<Object> greater_than;

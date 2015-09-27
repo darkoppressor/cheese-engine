@@ -169,7 +169,7 @@ void Sound_Manager::play_sound(string sound_name,double sound_x,double sound_y,d
         volume=128;
     }
     else{
-        volume=(int)floor((falloff/sound_distance)*falloff);
+        volume=(int)Math::floor((falloff/sound_distance)*falloff);
     }
 
     if(volume>128){

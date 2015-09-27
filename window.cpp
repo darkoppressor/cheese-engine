@@ -16,6 +16,7 @@
 #include "tooltip.h"
 #include "engine_input.h"
 #include "render.h"
+#include "engine_math.h"
 
 using namespace std;
 
@@ -442,7 +443,7 @@ void Window::reset_buttons_moused_over(){
 }
 
 void Window::scroll_up(){
-    if(y+buttons[last_normal_button+1].h*scroll_offset<y+h-buttons[last_normal_button+1].h*floor((double)Engine_Data::scrolling_buttons_offset/15.0)){
+    if(y+buttons[last_normal_button+1].h*scroll_offset<y+h-buttons[last_normal_button+1].h*Math::floor((double)Engine_Data::scrolling_buttons_offset/15.0)){
         scroll_offset+=1;
     }
 }
@@ -721,17 +722,17 @@ void Window::render(){
             int background_y=y;
 
             if(w>background.get_width()){
-                background_x=x+abs(w-background.get_width())/2;
+                background_x=x+Math::abs(w-background.get_width())/2;
             }
             if(w<background.get_width()){
-                background_x=x-abs(w-background.get_width())/2;
+                background_x=x-Math::abs(w-background.get_width())/2;
             }
 
             if(h>background.get_height()){
-                background_y=y+abs(h-background.get_height())/2;
+                background_y=y+Math::abs(h-background.get_height())/2;
             }
             if(h<background.get_height()){
-                background_y=y-abs(h-background.get_height())/2;
+                background_y=y-Math::abs(h-background.get_height())/2;
             }
 
             background.render(background_x,background_y);
@@ -764,17 +765,17 @@ void Window::render(){
             int border_y=y;
 
             if(w>border.get_width()){
-                border_x=x+abs(w-border.get_width())/2;
+                border_x=x+Math::abs(w-border.get_width())/2;
             }
             if(w<border.get_width()){
-                border_x=x-abs(w-border.get_width())/2;
+                border_x=x-Math::abs(w-border.get_width())/2;
             }
 
             if(h>border.get_height()){
-                border_y=y+abs(h-border.get_height())/2;
+                border_y=y+Math::abs(h-border.get_height())/2;
             }
             if(h<border.get_height()){
-                border_y=y-abs(h-border.get_height())/2;
+                border_y=y-Math::abs(h-border.get_height())/2;
             }
 
             border.render(border_x,border_y);

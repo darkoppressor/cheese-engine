@@ -465,8 +465,8 @@ void Engine::get_mouse_state(int* mouse_x,int* mouse_y){
     float offset_x=(float)rect.x*scale_x;
     float offset_y=(float)rect.y*scale_y;
 
-    *mouse_x=(int)ceil(((float)*mouse_x-offset_x)/scale_x);
-    *mouse_y=(int)ceil(((float)*mouse_y-offset_y)/scale_y);
+    *mouse_x=(int)Math::ceil(((float)*mouse_x-offset_x)/scale_x);
+    *mouse_y=(int)Math::ceil(((float)*mouse_y-offset_y)/scale_y);
 }
 
 bool Engine::mouse_allowed(){
@@ -542,7 +542,7 @@ void Engine::make_toast(string message,string length,int custom_length){
         }
 
         //Real length was in terms of seconds. Now we translate it to frames
-        real_length=(int)ceil((double)real_length*(double)UPDATE_RATE);
+        real_length=(int)Math::ceil((double)real_length*(double)UPDATE_RATE);
         if(real_length<1){
             real_length=1;
         }
@@ -674,7 +674,7 @@ void Engine::animate(){
     }
 
     //Update the text cursor
-    if(++counter_cursor>=(int)ceil((48.0/1000.0)*(double)UPDATE_RATE)){
+    if(++counter_cursor>=(int)Math::ceil((48.0/1000.0)*(double)UPDATE_RATE)){
         counter_cursor=0;
 
         if(cursor_opacity==10){
@@ -846,8 +846,8 @@ void Engine::render_text_inputter(){
         double mid_radius=outer_radius*0.75;
         double inner_radius=50.0;
 
-        double inner_center_x=outer_center_x+mid_radius*cos(Math::degrees_to_radians(angle));
-        double inner_center_y=outer_center_y+mid_radius*sin(Math::degrees_to_radians(angle));
+        double inner_center_x=outer_center_x+mid_radius*Math::cos(Math::degrees_to_radians(angle));
+        double inner_center_y=outer_center_y+mid_radius*Math::sin(Math::degrees_to_radians(angle));
 
         string outer_circle_color=current_color_theme()->window_background;
         if(character_chunk==selected_chunk){
@@ -874,8 +874,8 @@ void Engine::render_text_inputter(){
                 circle_color="text_input_green";
             }
 
-            double letter_center_x=inner_center_x+letter_circle_radius*cos(Math::degrees_to_radians(letter_angle));
-            double letter_center_y=inner_center_y+letter_circle_radius*sin(Math::degrees_to_radians(letter_angle));
+            double letter_center_x=inner_center_x+letter_circle_radius*Math::cos(Math::degrees_to_radians(letter_angle));
+            double letter_center_y=inner_center_y+letter_circle_radius*Math::sin(Math::degrees_to_radians(letter_angle));
 
             string font_color=current_color_theme()->window_font;
 

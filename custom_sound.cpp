@@ -499,7 +499,7 @@ void Custom_Sound::add_note(string frequency_string,string length_string,string 
         length_string=length;
     }
 
-    for(uint32_t x=0;x<(uint32_t)ceil((double)sample_rate*get_note_length(length_string));x++){
+    for(uint32_t x=0;x<(uint32_t)Math::ceil((double)sample_rate*get_note_length(length_string));x++){
         for(uint32_t i=0;i<channels;i++){
             string waveform=waveforms[i];
             if(waveform_override!="off"){
@@ -534,13 +534,13 @@ void Custom_Sound::add_note(string frequency_string,string length_string,string 
 
                 if(frequency>0.0){
                     if(waveform=="sine"){
-                        amplitude+=sin(basic_function);
+                        amplitude+=Math::sin(basic_function);
                     }
                     else if(waveform=="triangle"){
-                        amplitude+=asin(sin(basic_function))*(2.0/Math::PI);
+                        amplitude+=Math::asin(Math::sin(basic_function))*(2.0/Math::PI);
                     }
                     else if(waveform=="square"){
-                        double addend=sin(basic_function);
+                        double addend=Math::sin(basic_function);
 
                         if(addend<0.0){
                             addend=-1.0;
@@ -552,10 +552,10 @@ void Custom_Sound::add_note(string frequency_string,string length_string,string 
                         amplitude+=addend;
                     }
                     else if(waveform=="sawtooth"){
-                        amplitude+=0.5-atan(tan((Math::PI/2.0)-basic_function));
+                        amplitude+=0.5-Math::atan(Math::tan((Math::PI/2.0)-basic_function));
                     }
                     else if(waveform=="noise"){
-                        amplitude+=sin((((double)rng.random_range(20,20000)*2.0*Math::PI)/(double)sample_rate)*(double)x);
+                        amplitude+=Math::sin((((double)rng.random_range(20,20000)*2.0*Math::PI)/(double)sample_rate)*(double)x);
                     }
                 }
             }
@@ -580,7 +580,7 @@ void Custom_Sound::add_note(string frequency_string,string length_string,string 
                 amplitude=32767.0;
             }
 
-            samples.push_back((int16_t)floor(amplitude));
+            samples.push_back((int16_t)Math::floor(amplitude));
         }
     }
 }

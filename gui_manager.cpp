@@ -11,6 +11,7 @@
 #include "sorting.h"
 #include "game_manager.h"
 #include "render.h"
+#include "engine_math.h"
 
 using namespace std;
 
@@ -149,7 +150,7 @@ int GUI_Manager::get_gui_object_count(){
 
 void GUI_Manager::change_gui_selected_object(string direction){
     int object_count=get_gui_object_count();
-    int fast_nav=(int)ceil((double)object_count*0.1);
+    int fast_nav=(int)Math::ceil((double)object_count*0.1);
 
     if(object_count>0){
         Engine::clear_mutable_info();

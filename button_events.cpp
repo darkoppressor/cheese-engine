@@ -17,6 +17,7 @@
 #include "network_lan_browser.h"
 #include "engine_input.h"
 #include "log.h"
+#include "engine_math.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -54,7 +55,7 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
 
             vector<string> lines;
             int spacing_x=Object_Manager::get_font("small")->spacing_x;
-            int window_width=(int)floor((double)Game_Window::width()*0.8);
+            int window_width=(int)Math::floor((double)Game_Window::width()*0.8);
 
             while(save_path.length()*spacing_x>window_width){
                 int i=window_width/spacing_x;

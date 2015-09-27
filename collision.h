@@ -168,14 +168,14 @@ public:
         double x2=box_b.x+box_b.w/2.0-camera.x;
         double y2=box_b.y+box_b.h/2.0-camera.y;
 
-        double x_component=sqrt((x2-x1)*(x2-x1));
-        double y_component=sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::sqrt((x2-x1)*(x2-x1));
+        double y_component=Math::sqrt((y2-y1)*(y2-y1));
 
         if(x2<x1){
             x_component*=-1.0;
         }
 
-        double angle=Math::radians_to_degrees(atan2(y_component,x_component));
+        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
 
         if(y2>y1){
             angle=360.0-angle;
@@ -191,14 +191,14 @@ public:
         double x2=box.x+box.w/2.0-camera.x;
         double y2=box.y+box.h/2.0-camera.y;
 
-        double x_component=sqrt((x2-x1)*(x2-x1));
-        double y_component=sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::sqrt((x2-x1)*(x2-x1));
+        double y_component=Math::sqrt((y2-y1)*(y2-y1));
 
         if(x2<x1){
             x_component*=-1.0;
         }
 
-        double angle=Math::radians_to_degrees(atan2(y_component,x_component));
+        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
 
         if(y2>y1){
             angle=360.0-angle;
@@ -214,14 +214,14 @@ public:
         double x2=circle_b.x-camera.x;
         double y2=circle_b.y-camera.y;
 
-        double x_component=sqrt((x2-x1)*(x2-x1));
-        double y_component=sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::sqrt((x2-x1)*(x2-x1));
+        double y_component=Math::sqrt((y2-y1)*(y2-y1));
 
         if(x2<x1){
             x_component*=-1.0;
         }
 
-        double angle=Math::radians_to_degrees(atan2(y_component,x_component));
+        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
 
         if(y2>y1){
             angle=360.0-angle;
@@ -237,14 +237,14 @@ public:
         double x2=circle.x-camera.x;
         double y2=circle.y-camera.y;
 
-        double x_component=sqrt((x2-x1)*(x2-x1));
-        double y_component=sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::sqrt((x2-x1)*(x2-x1));
+        double y_component=Math::sqrt((y2-y1)*(y2-y1));
 
         if(x2<x1){
             x_component*=-1.0;
         }
 
-        double angle=Math::radians_to_degrees(atan2(y_component,x_component));
+        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
 
         if(y2>y1){
             angle=360.0-angle;

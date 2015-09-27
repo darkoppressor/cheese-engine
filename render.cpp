@@ -8,6 +8,7 @@
 #include "game_window.h"
 #include "object_manager.h"
 #include "image_manager.h"
+#include "engine_math.h"
 
 #include <SDL_image.h>
 
@@ -18,8 +19,8 @@ SDL_Surface* Render::scale_surface(SDL_Surface* surface,double scale_x,double sc
         return 0;
     }
 
-    int width=ceil((double)surface->w*scale_x);
-    int height=ceil((double)surface->h*scale_y);
+    int width=Math::ceil((double)surface->w*scale_x);
+    int height=Math::ceil((double)surface->h*scale_y);
 
     SDL_Surface* new_surface=SDL_CreateRGBSurface(surface->flags,width,height,surface->format->BitsPerPixel,surface->format->Rmask,surface->format->Gmask,surface->format->Bmask,surface->format->Amask);
 
