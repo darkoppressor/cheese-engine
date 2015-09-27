@@ -52,6 +52,11 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			exit
 		fi
 
+		if ! [ -e "$d/libCheese-Engine.so" ]; then
+			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libCheese-Engine.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+			exit
+		fi
+
 		if ! [ -e "$d/libmain.so" ]; then
 			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libmain.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
