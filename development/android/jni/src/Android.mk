@@ -4,6 +4,8 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := Cheese-Engine
 
+LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+
 SDL_PATH := ../SDL2
 SDL_IMAGE_PATH := ../SDL2_image
 SDL_MIXER_PATH := ../SDL2_mixer
