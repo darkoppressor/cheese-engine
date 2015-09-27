@@ -655,7 +655,7 @@ bool Options::save_servers(){
 }
 
 bool Options::load_servers(){
-    File_IO_Load load(Directories::get_save_directory()+"servers.txt");
+    File_IO_Load load(Directories::get_save_directory()+"servers.txt",false,false,true);
 
     if(load.is_opened()){
         Network_Client::server_list.clear();
