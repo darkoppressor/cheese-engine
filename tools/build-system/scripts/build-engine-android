@@ -22,22 +22,22 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		ANDROID_ABI_RESULTS="$ANDROID_ABI_RESULTS $LIB_NAME"
 
 		if ! [ -e "$d/libRakNet.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libSDL2.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libSDL2_image.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
 		if ! [ -e "$d/libSDL2_mixer.so" ]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
