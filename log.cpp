@@ -15,7 +15,11 @@ vector<string> Log::save_location_load_errors;
 vector<string> Log::world_load_logs;
 
 void Log::clear_error_log(){
-    File_IO::remove_file(Directories::get_save_directory()+"error_log.txt");
+    string error_log_path=Directories::get_save_directory()+"error_log.txt";
+
+    if(File_IO::exists(error_log_path)){
+        File_IO::remove_file(error_log_path);
+    }
 }
 
 void Log::add_world_load_error(string message){
