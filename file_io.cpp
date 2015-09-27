@@ -62,7 +62,7 @@ void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool sup
             Log::add_log("Successfully opened backup file: '"+path+"'");
         }
 
-        unsigned char* data_chunk=(unsigned char*)malloc(100);
+        unsigned char* data_chunk=new unsigned char[100];
 
         for(long length=0;(length=SDL_RWread(rwops,data_chunk,1,100))>0;){
             for(long i=0;i<length;i++){
@@ -70,7 +70,7 @@ void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool sup
             }
         }
 
-        free(data_chunk);
+        delete[] data_chunk;
 
         if(SDL_RWclose(rwops)!=0 && !suppress_errors){
             string msg="Error closing file '"+path+"' after loading: ";

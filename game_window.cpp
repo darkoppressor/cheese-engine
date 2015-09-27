@@ -644,7 +644,7 @@ void Game_Window::screenshot(){
     int actual_height=0;
     SDL_GetRendererOutputSize(renderer,&actual_width,&actual_height);
 
-    unsigned char* pixel_data=(unsigned char*)malloc(4*actual_width*actual_height);
+    unsigned char* pixel_data=new unsigned char[4*actual_width*actual_height];
 
     if(pixel_data!=0){
         if(SDL_RenderReadPixels(renderer,NULL,SDL_PIXELFORMAT_ABGR8888,pixel_data,actual_width*4)!=0){
@@ -673,7 +673,7 @@ void Game_Window::screenshot(){
             SDL_FreeSurface(surface);
         }
 
-        free(pixel_data);
+        delete[] pixel_data;
     }
     else{
         Log::add_error("Error allocating memory for screenshot.");
