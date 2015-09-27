@@ -202,6 +202,7 @@ int main_startup(int game_data_load_item_count){
     Log::clear_error_log();
 
     Progress_Bar bar(Data_Manager::world_load_item_count+game_data_load_item_count);
+    Log::add_log("Loading data");
     Log::add_log("Initializing");
 
     if(!Data_Manager::load_world(bar)){

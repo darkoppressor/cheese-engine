@@ -25,7 +25,7 @@ bool Data_Manager::fonts_loaded=false;
 bool Data_Manager::colors_loaded=false;
 bool Data_Manager::world_loaded=false;
 
-const int Data_Manager::world_load_item_count=24;
+const int Data_Manager::world_load_item_count=25;
 
 bool Data_Manager::are_images_loaded(){
     return images_loaded;
@@ -98,6 +98,8 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     //To be safe, this should be at the very bottom of load_world()
     Image_Manager::set_error_image();
+
+    bar.progress("Done loading data");
 
     world_loaded=true;
 
