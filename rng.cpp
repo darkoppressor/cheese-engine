@@ -4,6 +4,7 @@
 
 #include "rng.h"
 #include "log.h"
+#include "engine_math.h"
 
 #include <ctime>
 #include <vector>
@@ -63,17 +64,16 @@ uint32_t RNG::weighted_random_range(uint32_t lownum,uint32_t highnum,uint32_t ta
         Log::add_error("Error generating weighted random number: weight cannot be 0");
     }
 
-    //We use signed int64's so that we can do abs and subtraction with our unsigned int32's
-    vector<int64_t> numbers;
+    vector<uint32_t> numbers;
 
-    for(int64_t i=0;i<weight;i++){
-        numbers.push_back((int64_t)random_range(lownum,highnum));
+    for(uint32_t i=0;i<weight;i++){
+        numbers.push_back(random_range(lownum,highnum));
     }
 
-    int64_t closest=numbers[0];
+    uint32_t closest=numbers[0];
 
-    for(int64_t i=0;i<numbers.size();i++){
-        if(llabs(numbers[i]-target)<llabs(closest-target)){
+    for(uint32_t i=0;i<numbers.size();i++){
+        if(Math::abs(numbers[i],target)<Math::abs(closest,target)){
             closest=numbers[i];
         }
     }
