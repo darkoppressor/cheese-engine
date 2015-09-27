@@ -448,11 +448,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
-			cd "${PACKAGING}/${PACKAGING_WINDOWS}/docs"
-			todos *
-			cd "${PACKAGING}/${PACKAGING_WINDOWS}/docs/third-party-licenses"
-			todos *
-
 			cd "${PACKAGING}"
 
 			7z a -tzip -mx=9 -mmt=on "${PACKAGING_WINDOWS}.zip" "${PACKAGING_WINDOWS}"
