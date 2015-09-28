@@ -15,35 +15,35 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	ANDROID_ABI_RESULTS=""
 
-	for d in $PROJECT_DIRECTORY/development/android/libs/* ; do
-		PREFIX=$PROJECT_DIRECTORY/development/android/libs/
+	for d in $PROJECT_DIRECTORY/development/android/obj/local/* ; do
+		PREFIX=$PROJECT_DIRECTORY/development/android/obj/local/
 		SUFFIX=/
 		LIB_NAME=${d#$PREFIX}
 		LIB_NAME=${LIB_NAME%$SUFFIX}
 		ANDROID_ABI_RESULTS="$ANDROID_ABI_RESULTS $LIB_NAME"
 
-		if ! [ -e "$d/libRakNet.so" ]; then
-			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+		if ! [ -e "$d/libRakNet.a" ]; then
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
-		if ! [ -e "$d/libSDL2.so" ]; then
-			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+		if ! [ -e "$d/libSDL2.a" ]; then
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
-		if ! [ -e "$d/libSDL2_image.so" ]; then
-			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+		if ! [ -e "$d/libSDL2_image.a" ]; then
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
-		if ! [ -e "$d/libSDL2_mixer.so" ]; then
-			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+		if ! [ -e "$d/libSDL2_mixer.a" ]; then
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 
-		if ! [ -e "$d/libCheese-Engine.so" ]; then
-			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libCheese-Engine.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+		if ! [ -e "$d/libCheese-Engine.a" ]; then
+			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libCheese-Engine.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit
 		fi
 	done

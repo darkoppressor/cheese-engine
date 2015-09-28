@@ -4,7 +4,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := Cheese-Engine
 
-LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+LOCAL_MODULE_FILENAME := libCheese-Engine
 
 SDL_PATH := ../SDL2
 SDL_IMAGE_PATH := ../SDL2_image
@@ -21,8 +21,8 @@ $(LOCAL_PATH)/$(RAKNET_PATH)/..
 # Add your application source files here...
 LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/../../../../*.cpp)
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer RakNet
+LOCAL_STATIC_LIBRARIES := SDL2_static SDL2_image_static SDL2_mixer_static RakNet_static
 
-LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog
+LOCAL_EXPORT_LDLIBS := -lGLESv1_CM -lGLESv2 -llog -lz -landroid
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
