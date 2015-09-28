@@ -8,17 +8,7 @@
 #include "timer.h"
 
 #include <string>
-#include <vector>
 #include <stdint.h>
-
-class Progress_Step{
-public:
-
-    uint32_t time_taken;
-    std::string message;
-
-    Progress_Step(uint32_t get_time_taken,std::string get_message);
-};
 
 class Progress_Bar{
 private:
@@ -30,8 +20,6 @@ private:
     uint32_t time_of_previous_step;
 
     Timer timer;
-
-    std::vector<Progress_Step> steps;
 
     bool is_done() const;
 

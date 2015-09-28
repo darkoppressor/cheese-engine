@@ -10,11 +10,6 @@
 
 using namespace std;
 
-Progress_Step::Progress_Step(uint32_t get_time_taken,string get_message){
-    time_taken=get_time_taken;
-    message=get_message;
-}
-
 bool Progress_Bar::is_done() const{
     return items_done==items;
 }
@@ -47,9 +42,12 @@ void Progress_Bar::progress(string message,int items_completed){
 
         uint32_t time_elapsed_this_step=Math::abs(ticks,time_of_previous_step);
 
-        steps.push_back(Progress_Step(time_elapsed_this_step,message));
+        string time_string="<1";
+        if(time_elapsed_this_step>0){
+            time_string=Strings::num_to_string(time_elapsed_this_step);
+        }
 
-        Log::add_log("Done in "+Strings::num_to_string(time_elapsed_this_step)+" ms\n"+message);
+        Log::add_log("Done in "+time_string+" ms\n"+message);
 
         Game_Manager::render_loading_screen(*this,message);
 
@@ -66,5 +64,10 @@ double Progress_Bar::get_percentage_done() const{
 }
 
 uint32_t Progress_Bar::get_time_elapsed() const{
-    return timer.get_ticks();
+    if(timer.is_started()){
+        return timer.get_ticks();
+    }
+    else{
+        return time_of_previous_step;
+    }
 }
