@@ -27,7 +27,7 @@ public:
     static double atan2(double y,double x);
 
     template<typename T>
-    static typename std::enable_if<std::is_unsigned<T>::value,bool>::type abs(const T& a,const T& b){
+    static T abs(const T& a,const T& b){
         return std::max(a,b)-std::min(a,b);
     }
 
