@@ -43,15 +43,17 @@ void Progress_Bar::progress(string message,int items_completed){
     if(!is_done()){
         items_done+=items_completed;
 
-        uint32_t time_elapsed_this_step=Math::abs(get_time_elapsed(),time_of_previous_step);
+        uint32_t ticks=get_time_elapsed();
 
-        time_of_previous_step=time_elapsed_this_step;
+        uint32_t time_elapsed_this_step=Math::abs(ticks,time_of_previous_step);
 
         steps.push_back(Progress_Step(time_elapsed_this_step,message));
 
-        Log::add_log("Done in "+Strings::num_to_string(time_of_previous_step)+" ms\n"+message);
+        Log::add_log("Done in "+Strings::num_to_string(time_elapsed_this_step)+" ms\n"+message);
 
         Game_Manager::render_loading_screen(*this,message);
+
+        time_of_previous_step=ticks;
 
         if(items_done>=items){
             finish();
