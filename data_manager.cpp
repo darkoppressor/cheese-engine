@@ -84,7 +84,7 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     Engine::chat.setup(true);
 
-    bar.progress("Loading game commands");
+    bar.progress("Loading game commands cfg");
 
     if(!Options::load_game_commands()){
         return false;
