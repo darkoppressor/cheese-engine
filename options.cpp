@@ -14,6 +14,7 @@
 #include "game_window.h"
 #include "music_manager.h"
 #include "network_client.h"
+#include "engine_version.h"
 
 #include <sstream>
 
