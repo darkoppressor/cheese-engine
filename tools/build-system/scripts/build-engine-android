@@ -6,6 +6,7 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
+	../../../development/android/clean-android
 	../../../development/android/android-prep
 
 	android/linux/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
