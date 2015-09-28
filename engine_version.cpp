@@ -109,11 +109,11 @@ string Engine_Version::get_build_date(){
     return year+"-"+month+"-"+day;
 }
 
-bool Engine_Version::is_version_compatible(string options_version){
+bool Engine_Version::is_version_compatible(string options_version_string){
     vector<Version_Series> version_series;
     populate_version_series(version_series);
 
-    Version options_version(options_version);
+    Version options_version(options_version_string);
     Version current_version(get_version());
 
     int options_version_series=options_version.get_version_series(version_series);
@@ -123,7 +123,7 @@ bool Engine_Version::is_version_compatible(string options_version){
         return true;
     }
     else{
-        Log::add_error("Version incompatibility! Save data was created with version: "+options_version+"\n"+"Current version is: "+get_version());
+        Log::add_error("Version incompatibility! Save data was created with version: "+options_version_string+"\n"+"Current version is: "+get_version());
 
         return false;
     }

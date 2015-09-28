@@ -61,7 +61,7 @@ public:
 
     static void populate_version_series(std::vector<Version_Series>& version_series);
     //Returns true if the passed options version is in the same series of compatible releases as the current version
-    static bool is_version_compatible(std::string options_version);
+    static bool is_version_compatible(std::string options_version_string);
 };
 
 #endif
