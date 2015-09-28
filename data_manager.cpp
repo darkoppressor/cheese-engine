@@ -17,6 +17,7 @@
 #include "data_reader.h"
 #include "engine_data.h"
 #include "log.h"
+#include "strings.h"
 
 using namespace std;
 
@@ -100,6 +101,7 @@ bool Data_Manager::load_world(Progress_Bar& bar){
     Image_Manager::set_error_image();
 
     bar.progress("Done loading data");
+    Log::add_log("Data loaded in "+Strings::num_to_string(bar.get_time_elapsed())+" ms");
 
     world_loaded=true;
 
