@@ -29,7 +29,7 @@ public:
 
     Progress_Bar(int get_items);
 
-    void progress(std::string message="",int items_completed=1);
+    void progress(std::string message="");
 
     double get_percentage_done() const;
 

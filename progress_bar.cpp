@@ -34,9 +34,9 @@ Progress_Bar::Progress_Bar(int get_items){
     timer.start();
 }
 
-void Progress_Bar::progress(string message,int items_completed){
+void Progress_Bar::progress(string message){
     if(!is_done()){
-        items_done+=items_completed;
+        items_done++;
 
         uint32_t ticks=get_time_elapsed();
 
