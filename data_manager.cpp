@@ -26,7 +26,7 @@ bool Data_Manager::fonts_loaded=false;
 bool Data_Manager::colors_loaded=false;
 bool Data_Manager::world_loaded=false;
 
-const int Data_Manager::world_load_item_count=25;
+const int Data_Manager::world_load_item_count=20;
 
 bool Data_Manager::are_images_loaded(){
     return images_loaded;
@@ -57,11 +57,15 @@ bool Data_Manager::load_world(Progress_Bar& bar){
         return false;
     }
 
-    bar.progress("Loading images",4);
+    load_data_colors(bar);
+
+    bar.progress("Loading images");
 
     Image_Manager::load_images();
 
     images_loaded=true;
+
+    load_data_fonts(bar);
 
     bar.progress("Loading sounds");
 
@@ -73,7 +77,7 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     load_data_main(bar);
 
-    bar.progress("Preparing render target textures",3);
+    bar.progress("Preparing render target textures");
 
     add_rtts();
 
@@ -142,27 +146,27 @@ void Data_Manager::unload_data(){
     Game_Manager::unload_data_game();
 }
 
-bool Data_Manager::load_data_engine(){
-    bool load_result=load_data("engine");
-
-    Engine::build_text_input_characters();
-
-    return load_result;
-}
-
-void Data_Manager::load_data_main(Progress_Bar& bar){
+void Data_Manager::load_data_colors(Progress_Bar& bar){
     bar.progress("Loading colors");
 
     load_data("color");
 
     colors_loaded=true;
+}
+
+void Data_Manager::load_data_fonts(Progress_Bar& bar){
+    bar.progress("Loading animations");
+
+    load_data("animation");
 
     bar.progress("Loading fonts");
 
     load_data("font");
 
     fonts_loaded=true;
+}
 
+void Data_Manager::load_data_main(Progress_Bar& bar){
     bar.progress("Loading cursors");
 
     load_data("cursor");
@@ -170,10 +174,6 @@ void Data_Manager::load_data_main(Progress_Bar& bar){
     bar.progress("Loading color themes");
 
     load_data("color_theme");
-
-    bar.progress("Loading animations");
-
-    load_data("animation");
 
     bar.progress("Loading windows");
 
@@ -200,6 +200,14 @@ void Data_Manager::load_data_main(Progress_Bar& bar){
     Object_Manager::load_hw_cursors();
 
     GUI_Manager::text_selector.set_name("text_selector");
+}
+
+bool Data_Manager::load_data_engine(){
+    bool load_result=load_data("engine");
+
+    Engine::build_text_input_characters();
+
+    return load_result;
 }
 
 void Data_Manager::load_data_game_options(){

@@ -32,16 +32,18 @@ public:
 
     static void unload_data();
 
-    //Loads only engine data
-    //Returns false if engine data could not be loaded
-    //Returns true otherwise
-    static bool load_data_engine();
-
     //Loads everything but engine data and game options
+    static void load_data_colors(Progress_Bar& bar);
+    static void load_data_fonts(Progress_Bar& bar);
     static void load_data_main(Progress_Bar& bar);
 
     //Loads only game options
     static void load_data_game_options();
+
+    //Loads only engine data
+    //Returns false if engine data could not be loaded
+    //Returns true otherwise
+    static bool load_data_engine();
 
     //Load any data of the passed tag type
     //Returns false if passed tag type's data could not be loaded
