@@ -162,14 +162,14 @@ public:
     }
 
     static double get_angle_to_rect(Collision_Rect<double> box_a,Collision_Rect<double> box_b,Collision_Rect<double> camera){
-        double x1=box_a.x+box_a.w/2.0-camera.x;
-        double y1=box_a.y+box_a.h/2.0-camera.y;
+        double x1=box_a.center_x()-camera.x;
+        double y1=box_a.center_y()-camera.y;
 
-        double x2=box_b.x+box_b.w/2.0-camera.x;
-        double y2=box_b.y+box_b.h/2.0-camera.y;
+        double x2=box_b.center_x()-camera.x;
+        double y2=box_b.center_y()-camera.y;
 
-        double x_component=Math::sqrt((x2-x1)*(x2-x1));
-        double y_component=Math::sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::abs(x2-x1);
+        double y_component=Math::abs(y2-y1);
 
         if(x2<x1){
             x_component*=-1.0;
@@ -188,11 +188,11 @@ public:
         double x1=circle.x-camera.x;
         double y1=circle.y-camera.y;
 
-        double x2=box.x+box.w/2.0-camera.x;
-        double y2=box.y+box.h/2.0-camera.y;
+        double x2=box.center_x()-camera.x;
+        double y2=box.center_y()-camera.y;
 
-        double x_component=Math::sqrt((x2-x1)*(x2-x1));
-        double y_component=Math::sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::abs(x2-x1);
+        double y_component=Math::abs(y2-y1);
 
         if(x2<x1){
             x_component*=-1.0;
@@ -214,8 +214,8 @@ public:
         double x2=circle_b.x-camera.x;
         double y2=circle_b.y-camera.y;
 
-        double x_component=Math::sqrt((x2-x1)*(x2-x1));
-        double y_component=Math::sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::abs(x2-x1);
+        double y_component=Math::abs(y2-y1);
 
         if(x2<x1){
             x_component*=-1.0;
@@ -231,14 +231,14 @@ public:
     }
 
     static double get_angle_to_circ(Collision_Rect<double> box,Collision_Circ<double> circle,Collision_Rect<double> camera){
-        double x1=box.x+box.w/2.0-camera.x;
-        double y1=box.y+box.h/2.0-camera.y;
+        double x1=box.center_x()-camera.x;
+        double y1=box.center_y()-camera.y;
 
         double x2=circle.x-camera.x;
         double y2=circle.y-camera.y;
 
-        double x_component=Math::sqrt((x2-x1)*(x2-x1));
-        double y_component=Math::sqrt((y2-y1)*(y2-y1));
+        double x_component=Math::abs(x2-x1);
+        double y_component=Math::abs(y2-y1);
 
         if(x2<x1){
             x_component*=-1.0;
