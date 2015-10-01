@@ -36,10 +36,18 @@ public:
 
     //Reduce the passed angle so that it is within [0.0,360.0]
     static void reduce_angle(double& angle);
-    //Returns the quadrant that the passed angle is in, or 0 if it is a quadrantal angle.
+    //Returns the quadrant that the passed angle is in, or 0 if it is a quadrantal angle
     static int get_angle_quadrant(double angle);
 
-    static bool signs_same(int a,int b);
+    template<typename T>
+    static bool signs_same(T a,T b){
+        if((a<0 && b<0) || (a>0 && b>0) || (a==0 && b==0)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     static double distance_between_points(double x1,double y1,double x2,double y2);
 };
