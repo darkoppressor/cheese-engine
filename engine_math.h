@@ -34,8 +34,8 @@ public:
     static double degrees_to_radians(double degrees);
     static double radians_to_degrees(double radians);
 
-    //Reduce the passed angle so that it is within [0.0,360.0]
-    static void reduce_angle(double& angle);
+    //Clamp the passed angle to within [0.0,360.0]
+    static void clamp_angle(double& angle);
     //Returns the quadrant that the passed angle is in, or 0 if it is a quadrantal angle
     static int get_angle_quadrant(double angle);
 

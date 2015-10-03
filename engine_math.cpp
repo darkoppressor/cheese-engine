@@ -65,7 +65,7 @@ double Math::radians_to_degrees(double radians){
     return radians*(180.0/PI);
 }
 
-void Math::reduce_angle(double& angle){
+void Math::clamp_angle(double& angle){
     while(angle>360.0){
         angle-=360.0;
     }
@@ -76,7 +76,7 @@ void Math::reduce_angle(double& angle){
 }
 
 int Math::get_angle_quadrant(double angle){
-    reduce_angle(angle);
+    clamp_angle(angle);
 
     if(angle>0.0 && angle<90.0){
         return 1;
