@@ -186,10 +186,10 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
             Engine::console.max_command_length=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_max_log_recall:")){
-            Engine::console.max_log_recall=Strings::string_to_long(line);
+            Engine::console.max_log_recall=Strings::string_to_unsigned_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_max_command_recall:")){
-            Engine::console.max_command_recall=Strings::string_to_long(line);
+            Engine::console.max_command_recall=Strings::string_to_unsigned_long(line);
         }
         else if(Data_Reader::check_prefix(line,"console_font:")){
             Engine::console.font=line;
@@ -207,10 +207,10 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
             Engine::chat.max_command_length=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_max_log_recall:")){
-            Engine::chat.max_log_recall=Strings::string_to_long(line);
+            Engine::chat.max_log_recall=Strings::string_to_unsigned_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_max_command_recall:")){
-            Engine::chat.max_command_recall=Strings::string_to_long(line);
+            Engine::chat.max_command_recall=Strings::string_to_unsigned_long(line);
         }
         else if(Data_Reader::check_prefix(line,"chat_font:")){
             Engine::chat.font=line;

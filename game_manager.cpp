@@ -26,8 +26,8 @@ double Game_Manager::camera_zoom=0.0;
 string Game_Manager::current_music="";
 
 vector<string> Game_Manager::command_states;
+
 Collision_Rect<double> Game_Manager::camera;
-RNG Game_Manager::rng;
 
 void Game_Manager::reset(){
     paused=false;
@@ -55,8 +55,9 @@ void Game_Manager::reset_camera_dimensions(){
     camera.h=Game_Window::height();
 }
 
-string Game_Manager::get_random_direction_cardinal(){
+string Game_Manager::get_random_direction_cardinal(RNG& rng){
     int random=rng.random_range(0,3);
+
     if(random==0){
         return "left";
     }
@@ -66,13 +67,14 @@ string Game_Manager::get_random_direction_cardinal(){
     else if(random==2){
         return "right";
     }
-    else if(random==3){
+    else{
         return "down";
     }
 }
 
-string Game_Manager::get_random_direction_cardinal_ordinal(){
+string Game_Manager::get_random_direction_cardinal_ordinal(RNG& rng){
     int random=rng.random_range(0,7);
+
     if(random==0){
         return "left";
     }
@@ -94,7 +96,7 @@ string Game_Manager::get_random_direction_cardinal_ordinal(){
     else if(random==6){
         return "left_down";
     }
-    else if(random==7){
+    else{
         return "right_down";
     }
 }

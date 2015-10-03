@@ -69,7 +69,7 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
 
             save_path="";
 
-            for(int i=0;i<lines.size();i++){
+            for(size_t i=0;i<lines.size();i++){
                 save_path+=lines[i];
 
                 if(i<lines.size()-1){

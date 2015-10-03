@@ -36,14 +36,14 @@ public:
     //Holds a string representing each command that is currently in the on state, and is relevant for networking
     //This is updated each frame
     static std::vector<std::string> command_states;
+
     static Collision_Rect<double> camera;
-    static RNG rng;
 
     static void reset();
     static void reset_camera_dimensions();
 
-    static std::string get_random_direction_cardinal();
-    static std::string get_random_direction_cardinal_ordinal();
+    static std::string get_random_direction_cardinal(RNG& rng);
+    static std::string get_random_direction_cardinal_ordinal(RNG& rng);
 
     //Returns true if the number of effects does not exceed the effect limit
     static bool effect_allowed();

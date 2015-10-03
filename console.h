@@ -33,10 +33,10 @@ public:
     int max_command_length;
 
     //The maximum lines to recall in the console log
-    int max_log_recall;
+    unsigned int max_log_recall;
 
     //The maximum number of commands to recall
-    int max_command_recall;
+    unsigned int max_command_recall;
 
     //The last command strings entered
     std::vector<std::string> recalled_command_strings;

@@ -22,14 +22,10 @@ bool Object_Manager::handle_input_events_command_set(){
     bool event_consumed=false;
 
     if(configure_command!=-1){
-        const uint8_t* keystates=SDL_GetKeyboardState(NULL);
-
         bool allow_keys_and_buttons=true;
         bool allow_axes=true;
 
         if(configure_command<game_commands.size()){
-            const char* ckey=SDL_GetScancodeName(game_commands[configure_command].key);
-            const char* cbutton=SDL_GameControllerGetStringForButton(game_commands[configure_command].button);
             const char* caxis=SDL_GameControllerGetStringForAxis(game_commands[configure_command].axis);
 
             if(caxis!=0 && game_commands[configure_command].axis!=SDL_CONTROLLER_AXIS_INVALID){
