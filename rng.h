@@ -20,14 +20,14 @@ private:
     static const uint32_t WEIGHT_STRONG;
     static const uint32_t WEIGHT_VERY_STRONG;
 
+    uint32_t get_number();
+
 public:
 
     RNG();
     RNG(uint32_t seed_value);
 
     void seed(uint32_t seed_value);
-
-    uint32_t get_number();
 
     uint32_t random_range(uint32_t lownum,uint32_t highnum);
 

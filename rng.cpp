@@ -16,28 +16,9 @@ const uint32_t RNG::WEIGHT_NORMAL=6;
 const uint32_t RNG::WEIGHT_STRONG=18;
 const uint32_t RNG::WEIGHT_VERY_STRONG=256;
 
-RNG::RNG(){
-    seed((uint32_t)time(0));
-}
-
-RNG::RNG(uint32_t seed_value){
-    seed(seed_value);
-}
-
-void RNG::seed(uint32_t seed_value){
-    uint32_t s=seed_value;
-
-    for(int i=0;i<4096;i++){
-        Q[i]=s=(s*1103515245)+12345;
-    }
-
-    c=((s*1103515245)+12345)%809430660;
-    u=0;
-}
-
 uint32_t RNG::get_number(){
     u=(u+1)&4095;
-    uint64_t t=18782LL*Q[u]+c;
+    uint64_t t=(uint64_t)18782*(uint64_t)Q[u]+(uint64_t)c;
     c=(t>>32);
     uint32_t x=t+c;
 
@@ -49,12 +30,34 @@ uint32_t RNG::get_number(){
     return (uint32_t)(Q[u]=0xfffffffe - x);
 }
 
+RNG::RNG(){
+    seed((uint32_t)time(0));
+}
+
+RNG::RNG(uint32_t seed_value){
+    seed(seed_value);
+}
+
+void RNG::seed(uint32_t seed_value){
+    uint32_t s=seed_value;
+
+    for(uint32_t i=0;i<4096;i++){
+        Q[i]=s=(s*1103515245)+12345;
+    }
+
+    c=((s*1103515245)+12345)%809430660;
+    u=0;
+}
+
 uint32_t RNG::random_range(uint32_t lownum,uint32_t highnum){
 	if(lownum>highnum){
         swap(lownum,highnum);
 	}
 
 	uint32_t range=highnum-lownum+1;
+	if(range==0){
+        range++;
+	}
 
 	return (get_number()%range)+lownum;
 }
