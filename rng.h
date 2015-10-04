@@ -27,6 +27,7 @@ public:
     RNG();
     RNG(uint32_t seed_value);
 
+    void seed();
     void seed(uint32_t seed_value);
 
     uint32_t random_range(uint32_t lownum,uint32_t highnum);
