@@ -39,6 +39,12 @@ void Network_Lockstep::reset(){
     }
 }
 
+void Network_Lockstep::start(){
+    if(Engine_Data::network_lockstep){
+        turn_timer.start();
+    }
+}
+
 bool Network_Lockstep::logic_update_allowed(){
     if(!Engine_Data::network_lockstep || logic_updates_this_turn<TURN_UPDATES){
         return true;

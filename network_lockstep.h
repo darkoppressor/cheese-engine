@@ -38,6 +38,8 @@ public:
 
     static void reset();
 
+    static void start();
+
     static bool logic_update_allowed();
 
     static void do_logic_update();
