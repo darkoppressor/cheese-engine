@@ -31,15 +31,11 @@ uint32_t RNG::get_number(){
 }
 
 RNG::RNG(){
-    seed();
+    seed((uint32_t)time(0));
 }
 
 RNG::RNG(uint32_t seed_value){
     seed(seed_value);
-}
-
-void RNG::seed(){
-    seed((uint32_t)time(0));
 }
 
 void RNG::seed(uint32_t seed_value){
