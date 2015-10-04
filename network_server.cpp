@@ -422,3 +422,32 @@ void Network_Server::send_sound(string sound,RakNet::RakNetGUID target_id,bool b
         Network_Engine::peer->Send(&bitstream,HIGH_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_SOUND,target_id,broadcast);
     }
 }
+
+void Network_Server::send_server_ready(){
+    if(Network_Engine::status=="server"){
+        RakNet::BitStream bitstream;
+        bitstream.Write((RakNet::MessageID)ID_GAME_SERVER_READY);
+
+        Network_Engine::write_server_ready(&bitstream);
+
+        Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
+        Network_Engine::peer->Send(&bitstream,HIGH_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_TURNS,RakNet::UNASSIGNED_RAKNET_GUID,true);
+    }
+}
+
+void Network_Server::receive_client_ready(){
+    RakNet::BitStream bitstream(Network_Engine::packet->data,Network_Engine::packet->length,false);
+    Network_Engine::stat_counter_bytes_received+=bitstream.GetNumberOfBytesUsed();
+
+    RakNet::MessageID type_id;
+    bitstream.Read(type_id);
+
+    uint32_t turn_completed=0;
+    bitstream.ReadCompressed(turn_completed);
+
+    Client_Data* client=Network_Engine::get_packet_client();
+
+    if(client!=0){
+        client->completed_turn=turn_completed;
+    }
+}

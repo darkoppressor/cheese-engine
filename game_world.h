@@ -11,8 +11,8 @@ public:
     static void clear_world();
     static void generate_world();
 
-    static void ai();
     static void tick();
+    static void ai();
     static void movement();
     static void events();
     static void animate();

@@ -8,11 +8,11 @@
 class Update{
 public:
 
-    static void ai();
-
     static void input();
 
     static void tick();
+
+    static void ai();
 
     static void movement();
 

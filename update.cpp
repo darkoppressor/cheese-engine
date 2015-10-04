@@ -13,14 +13,10 @@
 #include "sound_manager.h"
 #include "music_manager.h"
 #include "game_window.h"
+#include "engine_data.h"
+#include "network_lockstep.h"
 
 using namespace std;
-
-void Update::ai(){
-    if(Game_Manager::in_progress && !Game_Manager::paused){
-        Game_World::ai();
-    }
-}
 
 void Update::input(){
     Engine_Input::prepare_for_input();
@@ -90,13 +86,19 @@ void Update::input(){
 }
 
 void Update::tick(){
-    if(Game_Manager::in_progress && !Game_Manager::paused){
+    if(Game_Manager::in_progress && !Game_Manager::paused && Network_Lockstep::logic_update_allowed()){
         Game_World::tick();
     }
 }
 
+void Update::ai(){
+    if(Game_Manager::in_progress && !Game_Manager::paused && Network_Lockstep::logic_update_allowed()){
+        Game_World::ai();
+    }
+}
+
 void Update::movement(){
-    if(Game_Manager::in_progress && !Game_Manager::paused){
+    if(Game_Manager::in_progress && !Game_Manager::paused && Network_Lockstep::logic_update_allowed()){
         Game_World::movement();
     }
 }
@@ -104,7 +106,7 @@ void Update::movement(){
 void Update::events(){
     Game_Manager::manage_music();
 
-    if(Game_Manager::in_progress && !Game_Manager::paused){
+    if(Game_Manager::in_progress && !Game_Manager::paused && Network_Lockstep::logic_update_allowed()){
         Game_World::events();
     }
     else{

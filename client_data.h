@@ -22,6 +22,9 @@ public:
     int ping;
     bool is_us;
 
+    //The most recently completed turn (used in the lockstep networking model)
+    uint32_t completed_turn;
+
     uint32_t rate_bytes;
     uint32_t rate_updates;
 

@@ -324,6 +324,18 @@ void Network_Engine::receive_packets(){
                     }
                     break;
 
+                case ID_GAME_SERVER_READY:
+                    if(status=="client"){
+                        Network_Client::receive_server_ready();
+                    }
+                    break;
+
+                case ID_GAME_CLIENT_READY:
+                    if(status=="server"){
+                        Network_Server::receive_client_ready();
+                    }
+                    break;
+
                 default:
                     if(!receive_game_packet(packet,packet_id)){
                         Log::add_log("Received message with unknown identifier: "+Strings::num_to_string((int)packet_id));

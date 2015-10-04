@@ -23,6 +23,8 @@ public:
     //How the game handles different logical resolutions and resolution options
     static std::string resolution_mode;
 
+    static bool network_lockstep;
+
     static double sound_falloff;
 
     static bool controller_text_entry_small;

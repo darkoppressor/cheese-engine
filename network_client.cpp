@@ -16,6 +16,7 @@
 #include "game_manager.h"
 #include "sound_manager.h"
 #include "network_message_identifiers.h"
+#include "network_lockstep.h"
 
 #include "raknet/Source/BitStream.h"
 #include "raknet/Source/GetTime.h"
@@ -444,4 +445,26 @@ void Network_Client::receive_sound(){
     bitstream.ReadCompressed(rstring);
 
     Sound_Manager::play_sound(rstring.C_String());
+}
+
+void Network_Client::receive_server_ready(){
+    RakNet::BitStream bitstream(Network_Engine::packet->data,Network_Engine::packet->length,false);
+    Network_Engine::stat_counter_bytes_received+=bitstream.GetNumberOfBytesUsed();
+
+    RakNet::MessageID type_id;
+    bitstream.Read(type_id);
+
+    Network_Engine::read_server_ready(&bitstream);
+}
+
+void Network_Client::send_client_ready(){
+    if(Network_Engine::status=="client"){
+        RakNet::BitStream bitstream;
+        bitstream.Write((RakNet::MessageID)ID_GAME_CLIENT_READY);
+
+        bitstream.WriteCompressed(Network_Lockstep::get_turn());
+
+        Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
+        Network_Engine::peer->Send(&bitstream,HIGH_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_TURNS,Network_Engine::server_id,false);
+    }
 }

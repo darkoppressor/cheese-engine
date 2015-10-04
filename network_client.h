@@ -69,6 +69,15 @@ public:
     static void receive_paused();
 
     static void receive_sound();
+
+    //Receive notification from the server that we can start the next turn
+    //This also carries a list of all commands to be executed on this turn
+    //This is used in the lockstep networking model
+    static void receive_server_ready();
+
+    //Notify the server that we are done with this turn
+    //This is used in the lockstep networking model
+    static void send_client_ready();
 };
 
 #endif

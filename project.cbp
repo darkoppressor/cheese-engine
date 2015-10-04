@@ -443,6 +443,8 @@
 		<Unit filename="network_engine.h" />
 		<Unit filename="network_lan_browser.cpp" />
 		<Unit filename="network_lan_browser.h" />
+		<Unit filename="network_lockstep.cpp" />
+		<Unit filename="network_lockstep.h" />
 		<Unit filename="network_message_identifiers.h" />
 		<Unit filename="network_server.cpp" />
 		<Unit filename="network_server.h" />

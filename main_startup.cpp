@@ -16,6 +16,7 @@
 #include "options.h"
 #include "directories.h"
 #include "engine_data.h"
+#include "network_lockstep.h"
 
 #ifdef GAME_OS_ANDROID
     #include "android.h"
@@ -115,14 +116,22 @@ void game_loop(){
 
             Network_Engine::receive_packets();
 
-            Update::ai();
+            if(Engine_Data::network_lockstep){
+                Network_Lockstep::advance_turn_timer();
+            }
 
             Update::input();
 
             Network_Server::send_updates();
             Network_Client::send_input();
 
+            if(Engine_Data::network_lockstep){
+                Network_Lockstep::do_logic_update();
+            }
+
             Update::tick();
+
+            Update::ai();
 
             Update::movement();
 

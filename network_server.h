@@ -58,6 +58,15 @@ public:
     static void send_paused();
 
     static void send_sound(std::string sound,RakNet::RakNetGUID target_id,bool broadcast);
+
+    //Tell all clients to begin the next turn
+    //This also carries a list of all commands to be executed on this turn
+    //This is used in the lockstep networking model
+    static void send_server_ready();
+
+    //Receive notification from a client that it has completed the current turn
+    //This is used in the lockstep networking model
+    static void receive_client_ready();
 };
 
 #endif

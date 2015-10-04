@@ -20,6 +20,8 @@ int Engine_Data::logical_screen_height=0;
 
 string Engine_Data::resolution_mode="";
 
+bool Engine_Data::network_lockstep=false;
+
 double Engine_Data::sound_falloff=0.0;
 
 bool Engine_Data::controller_text_entry_small=false;
@@ -115,6 +117,9 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
         }
         else if(Data_Reader::check_prefix(line,"frame_rate_max:")){
             Engine::set_render_update_rate(Strings::string_to_unsigned_long(line));
+        }
+        else if(Data_Reader::check_prefix(line,"network_lockstep:")){
+            network_lockstep=Strings::string_to_bool(line);
         }
         else if(Data_Reader::check_prefix(line,"axis_scroll_rate:")){
             axis_scroll_rate=Strings::string_to_long(line);
