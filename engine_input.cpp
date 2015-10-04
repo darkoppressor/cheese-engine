@@ -14,7 +14,7 @@
 #include "engine_data.h"
 #include "sound_manager.h"
 #include "options.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "window.h"
 
 #include <boost/algorithm/string.hpp>

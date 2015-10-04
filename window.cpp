@@ -4,7 +4,7 @@
 
 #include "window.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine_data.h"
 #include "font.h"
 #include "object_manager.h"

@@ -3,7 +3,7 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "game_option.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "options.h"
 #include "network_client.h"
 #include "network_server.h"

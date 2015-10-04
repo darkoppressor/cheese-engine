@@ -3,7 +3,7 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "engine_version.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "options.h"
 #include "log.h"
 

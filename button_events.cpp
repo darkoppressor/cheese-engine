@@ -11,7 +11,7 @@
 #include "directories.h"
 #include "game_window.h"
 #include "game_manager.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "network_server.h"
 #include "network_client.h"
 #include "network_lan_browser.h"

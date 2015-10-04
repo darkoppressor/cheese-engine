@@ -4,7 +4,7 @@
 
 #include "object_manager.h"
 #include "data_reader.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "game_constants_loader.h"
 #include "sound_manager.h"
 

@@ -4,7 +4,7 @@
 
 #include "controller_manager.h"
 #include "options.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "log.h"
 #include "android.h"
 

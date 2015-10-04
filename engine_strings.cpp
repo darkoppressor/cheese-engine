@@ -2,7 +2,7 @@
 /* This file is licensed under the MIT License. */
 /* See the file docs/LICENSE.txt for the full license text. */
 
-#include "strings.h"
+#include "engine_strings.h"
 #include "log.h"
 
 #include <vector>

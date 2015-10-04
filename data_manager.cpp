@@ -17,7 +17,7 @@
 #include "data_reader.h"
 #include "engine_data.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 
 using namespace std;
 

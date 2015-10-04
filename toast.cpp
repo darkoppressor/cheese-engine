@@ -6,7 +6,7 @@
 #include "engine_data.h"
 #include "game_window.h"
 #include "object_manager.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine.h"
 #include "render.h"
 

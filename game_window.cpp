@@ -6,7 +6,7 @@
 #include "options.h"
 #include "engine_data.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "game_manager.h"
 #include "controller_manager.h"
 #include "directories.h"

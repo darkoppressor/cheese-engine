@@ -10,7 +10,7 @@
 #include "gui_manager.h"
 #include "sorting.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "object_manager.h"
 #include "controller_manager.h"
 #include "options.h"

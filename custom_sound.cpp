@@ -4,7 +4,7 @@
 
 #include "custom_sound.h"
 #include "rng.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine_math.h"
 
 #include <boost/algorithm/string.hpp>

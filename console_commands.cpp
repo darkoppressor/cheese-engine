@@ -11,7 +11,7 @@
 #include "engine_data.h"
 #include "engine_version.h"
 #include "sound_manager.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "network_server.h"
 #include "game_manager.h"
 #include "network_client.h"

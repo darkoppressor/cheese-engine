@@ -4,7 +4,7 @@
 
 #include "progress_bar.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "game_manager.h"
 #include "engine_math.h"
 

@@ -9,7 +9,7 @@
 #include "network_engine.h"
 #include "network_server.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine_data.h"
 #include "button_events.h"
 #include "engine_version.h"

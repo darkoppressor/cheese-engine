@@ -5,7 +5,7 @@
 #include "engine_data.h"
 #include "data_reader.h"
 #include "directories.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine.h"
 #include "tooltip.h"
 #include "options.h"

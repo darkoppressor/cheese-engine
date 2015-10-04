@@ -8,7 +8,7 @@
 #include "network_lan_browser.h"
 #include "network_server.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "button_events.h"
 #include "options.h"
 #include "network_message_identifiers.h"

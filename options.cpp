@@ -6,7 +6,7 @@
 #include "file_io.h"
 #include "directories.h"
 #include "data_reader.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine.h"
 #include "object_manager.h"
 #include "network_engine.h"

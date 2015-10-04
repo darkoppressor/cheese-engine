@@ -8,7 +8,7 @@
 #include "log.h"
 #include "window_manager.h"
 #include "engine.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine_version.h"
 #include "engine_data.h"
 #include "game_manager.h"

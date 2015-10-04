@@ -402,6 +402,8 @@
 		<Unit filename="engine_input.h" />
 		<Unit filename="engine_math.cpp" />
 		<Unit filename="engine_math.h" />
+		<Unit filename="engine_strings.cpp" />
+		<Unit filename="engine_strings.h" />
 		<Unit filename="engine_version.cpp" />
 		<Unit filename="engine_version.h" />
 		<Unit filename="file_io.cpp" />
@@ -480,8 +482,6 @@
 		<Unit filename="special_info.h" />
 		<Unit filename="sprite.cpp" />
 		<Unit filename="sprite.h" />
-		<Unit filename="strings.cpp" />
-		<Unit filename="strings.h" />
 		<Unit filename="symbols.cpp" />
 		<Unit filename="symbols.h" />
 		<Unit filename="timer.cpp" />

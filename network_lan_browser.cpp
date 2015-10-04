@@ -7,7 +7,7 @@
 #include "window_manager.h"
 #include "network_server.h"
 #include "network_engine.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine_data.h"
 #include "log.h"
 

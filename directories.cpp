@@ -4,7 +4,7 @@
 
 #include "directories.h"
 #include "log.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "options.h"
 #include "file_io.h"
 

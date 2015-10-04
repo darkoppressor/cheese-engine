@@ -6,7 +6,7 @@
 #include "engine_data.h"
 #include "font.h"
 #include "object_manager.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "engine.h"
 #include "gui_manager.h"
 #include "sound_manager.h"

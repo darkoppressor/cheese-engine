@@ -4,7 +4,7 @@
 
 #include "window_manager.h"
 #include "data_reader.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "log.h"
 #include "engine.h"
 #include "collision.h"

@@ -2,8 +2,8 @@
 /* This file is licensed under the MIT License. */
 /* See the file docs/LICENSE.txt for the full license text. */
 
-#ifndef strings_h
-#define strings_h
+#ifndef engine_strings_h
+#define engine_strings_h
 
 #include <string>
 #include <sstream>

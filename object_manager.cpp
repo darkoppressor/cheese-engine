@@ -6,7 +6,7 @@
 #include "engine_input.h"
 #include "options.h"
 #include "window_manager.h"
-#include "strings.h"
+#include "engine_strings.h"
 #include "data_reader.h"
 #include "controller_manager.h"
 
