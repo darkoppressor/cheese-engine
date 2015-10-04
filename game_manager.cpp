@@ -10,6 +10,7 @@
 #include "network_engine.h"
 #include "engine.h"
 #include "engine_data.h"
+#include "network_lockstep.h"
 
 using namespace std;
 
@@ -113,6 +114,8 @@ void Game_Manager::start(){
 
         reset();
 
+        Network_Lockstep::reset();
+
         Game_World::generate_world();
     }
 }
@@ -122,6 +125,8 @@ void Game_Manager::start_client(){
         in_progress=true;
 
         reset();
+
+        Network_Lockstep::reset();
 
         Game_World::clear_world();
     }
@@ -134,6 +139,8 @@ void Game_Manager::stop(){
         in_progress=false;
 
         reset();
+
+        Network_Lockstep::reset();
 
         Game_World::clear_world();
 

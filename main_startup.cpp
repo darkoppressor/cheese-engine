@@ -116,18 +116,14 @@ void game_loop(){
 
             Network_Engine::receive_packets();
 
-            if(Engine_Data::network_lockstep){
-                Network_Lockstep::advance_turn_timer();
-            }
+            Network_Lockstep::advance_turn_timer();
 
             Update::input();
 
             Network_Server::send_updates();
             Network_Client::send_input();
 
-            if(Engine_Data::network_lockstep){
-                Network_Lockstep::do_logic_update();
-            }
+            Network_Lockstep::do_logic_update();
 
             Update::tick();
 
