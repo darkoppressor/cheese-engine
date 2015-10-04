@@ -333,6 +333,22 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
                 Game_Manager::stop();
             }
         }
+        else if(button_event=="start_server_lockstep"){
+            Window_Manager::close_all_windows();
+
+            Window* window=Window_Manager::get_window("start_server");
+
+            Options::change_option("sv_network_name",window->get_info_text(0));
+            Options::change_option("sv_network_password",window->get_info_text(1));
+
+            Game_Manager::stop();
+
+            Game_Manager::start_server_lockstep();
+
+            if(!Network_Server::start_as_server()){
+                Game_Manager::stop();
+            }
+        }
         else if(button_event=="start_server_window"){
             Window* window=Window_Manager::get_window("start_server");
 

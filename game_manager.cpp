@@ -120,6 +120,18 @@ void Game_Manager::start(){
     }
 }
 
+void Game_Manager::start_server_lockstep(){
+    if(!in_progress){
+        in_progress=true;
+
+        reset();
+
+        Network_Lockstep::reset();
+
+        Game_World::clear_world();
+    }
+}
+
 void Game_Manager::start_client(){
     if(!in_progress){
         in_progress=true;

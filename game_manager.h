@@ -53,6 +53,7 @@ public:
     static void toggle_pause();
 
     static void start();
+    static void start_server_lockstep();
     static void start_client();
     static void stop();
 
