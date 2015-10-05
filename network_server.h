@@ -34,6 +34,8 @@ public:
 
     static uint32_t get_client_count();
 
+    static void toggle_client_spectator(uint32_t client_index);
+
     static void prepare_server_input_states();
 
     static void send_version();

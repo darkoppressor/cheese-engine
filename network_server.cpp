@@ -142,6 +142,18 @@ uint32_t Network_Server::get_client_count(){
     return client_count;
 }
 
+void Network_Server::toggle_client_spectator(uint32_t client_index){
+    if(Network_Engine::status=="server"){
+        if(Network_Engine::clients.size()>0 && client_index<Network_Engine::clients.size()){
+            if(!Network_Engine::clients[i].spectator || Network_Engine::get_player_count()<Options::max_players){
+                Network_Engine::clients[i].spectator=!Network_Engine::clients[i].spectator;
+
+                send_client_list();
+            }
+        }
+    }
+}
+
 void Network_Server::prepare_server_input_states(){
     Network_Engine::clients[0].command_states.clear();
 
@@ -283,13 +295,14 @@ void Network_Server::send_client_list(){
                 for(int j=0;j<Network_Engine::clients.size();j++){
                     if(Network_Engine::clients[j].connected){
                         bitstream.WriteCompressed((RakNet::RakString)Network_Engine::clients[j].name.c_str());
+                        bitstream.WriteCompressed(Network_Engine::clients[j].spectator);
                     }
                 }
 
                 bitstream.WriteCompressed(client_index);
 
                 Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
-                Network_Engine::peer->Send(&bitstream,LOW_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_CHAT,client->id,false);
+                Network_Engine::peer->Send(&bitstream,HIGH_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_CLIENT_LIST,client->id,false);
             }
         }
     }

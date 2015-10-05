@@ -21,6 +21,7 @@ public:
     std::string name;
     int ping;
     bool is_us;
+    bool spectator;
 
     //The most recently completed turn (used in the lockstep networking model)
     uint32_t completed_turn;

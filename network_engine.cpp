@@ -457,7 +457,7 @@ vector<Client_Data*> Network_Engine::get_players(){
     for(uint32_t i=0,player_count=0;i<clients.size() && player_count<Options::max_players;i++){
         Client_Data* client=&clients[i];
 
-        if(client->connected){
+        if(client->connected && !client->spectator){
             players.push_back(client);
 
             player_count++;
@@ -475,7 +475,7 @@ int Network_Engine::get_our_player_number(){
     for(uint32_t i=0,player_count=0;i<clients.size() && player_count<Options::max_players;i++){
         Client_Data* client=&clients[i];
 
-        if(client->connected){
+        if(client->connected && !client->spectator){
             if(client->is_us){
                 return player_count;
             }

@@ -340,7 +340,11 @@ void Network_Client::receive_client_list(){
         RakNet::RakString rstring;
         bitstream.ReadCompressed(rstring);
 
+        bool spectator=false;
+        bitstream.ReadCompressed(spectator);
+
         Network_Engine::clients.push_back(Client_Data(RakNet::UNASSIGNED_RAKNET_GUID,RakNet::UNASSIGNED_SYSTEM_ADDRESS,rstring.C_String(),false));
+        Network_Engine::clients.back().spectator=spectator;
         Network_Engine::clients.back().connected=true;
     }
 
