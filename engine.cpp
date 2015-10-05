@@ -569,7 +569,12 @@ void Engine::update_window_caption(int render_rate,double ms_per_frame,int logic
 
         msg+="  LUPS: "+Strings::num_to_string(logic_frame_rate);
 
-        msg+="  MS/Frame: "+Strings::num_to_string(ms_per_frame);
+        if(ms_per_frame>=1.0){
+            msg+="  MS/Frame: "+Strings::num_to_string(ms_per_frame);
+        }
+        else{
+            msg+="  MS/Frame: <1";
+        }
     }
 
     Game_Window::set_title(msg);
