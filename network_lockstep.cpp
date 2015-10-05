@@ -64,6 +64,10 @@ uint32_t Network_Lockstep::get_turn(){
     return turn;
 }
 
+uint32_t Network_Lockstep::get_server_turn_complete(){
+    return server_turn_complete;
+}
+
 void Network_Lockstep::advance_turn_timer(){
     if(Engine_Data::network_lockstep){
         if(Network_Engine::status=="server" && !Game_Manager::paused){

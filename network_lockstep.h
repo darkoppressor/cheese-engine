@@ -46,6 +46,8 @@ public:
 
     static uint32_t get_turn();
 
+    static uint32_t get_server_turn_complete();
+
     static void advance_turn_timer();
 };
 
