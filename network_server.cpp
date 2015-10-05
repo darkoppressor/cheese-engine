@@ -145,8 +145,8 @@ uint32_t Network_Server::get_client_count(){
 void Network_Server::toggle_client_spectator(uint32_t client_index){
     if(Network_Engine::status=="server"){
         if(Network_Engine::clients.size()>0 && client_index<Network_Engine::clients.size()){
-            if(!Network_Engine::clients[i].spectator || Network_Engine::get_player_count()<Options::max_players){
-                Network_Engine::clients[i].spectator=!Network_Engine::clients[i].spectator;
+            if(!Network_Engine::clients[client_index].spectator || Network_Engine::get_player_count()<Options::max_players){
+                Network_Engine::clients[client_index].spectator=!Network_Engine::clients[client_index].spectator;
 
                 send_client_list();
             }
