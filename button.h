@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 //Incomplete declaration of Window
 //We have to do this here, because a pointer to Window objects is used by the event-related functions, but Window relies on Button
@@ -51,7 +51,7 @@ public:
     std::vector<std::string> states;
 
     //If the button has states, this holds the current state
-    uint32_t state_index;
+    std::uint32_t state_index;
 
     //What event function the button will call when it fires its event
     std::string event_function;
@@ -87,7 +87,7 @@ public:
     void set_text(const std::string& get_text);
 
     bool has_states();
-    void set_state_index(uint32_t get_state_index);
+    void set_state_index(std::uint32_t get_state_index);
     std::string get_state();
 
     bool is_moused_over(int mouse_x,int mouse_y,int x_offset,int y_offset);

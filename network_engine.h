@@ -10,7 +10,7 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 #include "raknet/Source/BitStream.h"
 
@@ -25,10 +25,10 @@ public:
     static std::vector<Client_Data> clients;
     //Keeps track of each passing second and resets client update counts (server) or command packet counts (client)
     static Timer timer_tick;
-    static uint64_t stat_bytes_received;
-    static uint64_t stat_counter_bytes_received;
-    static uint64_t stat_bytes_sent;
-    static uint64_t stat_counter_bytes_sent;
+    static std::uint64_t stat_bytes_received;
+    static std::uint64_t stat_counter_bytes_received;
+    static std::uint64_t stat_bytes_sent;
+    static std::uint64_t stat_counter_bytes_sent;
 
     static RakNet::RakNetGUID server_id;
 
@@ -50,7 +50,7 @@ public:
 
     //Returns a list of clients that are currently players
     static std::vector<Client_Data*> get_players();
-    static uint32_t get_player_count();
+    static std::uint32_t get_player_count();
     //Returns our player number, or -1 if we are not a player
     static int get_our_player_number();
 

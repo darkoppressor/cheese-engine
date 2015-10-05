@@ -12,7 +12,7 @@
 
 #ifdef GAME_OS_ANDROID
     #include <vector>
-    #include <stdint.h>
+    #include <cstdint>
     #include <dirent.h>
     #include <sys/stat.h>
 #else
@@ -97,7 +97,7 @@ private:
     #ifdef GAME_OS_ANDROID
         std::string directory;
         std::vector<std::string> asset_list;
-        uint32_t entry;
+        std::uint32_t entry;
     #else
         boost::filesystem::directory_iterator it;
     #endif
@@ -121,8 +121,8 @@ public:
         std::string directory;
         DIR* dir;
         struct dirent* dir_entry;
-        uint32_t entry;
-        uint32_t entries;
+        std::uint32_t entry;
+        std::uint32_t entries;
 
     public:
 

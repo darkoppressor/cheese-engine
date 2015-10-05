@@ -6,7 +6,7 @@
 #define options_h
 
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 class Options{
 public:
@@ -38,12 +38,12 @@ public:
     static bool mute_sound;
     static bool mute_music;
 
-    static uint32_t effect_limit;
+    static std::uint32_t effect_limit;
     static double camera_speed;
     static double camera_zoom;
     static std::string name;
     static bool chat_timestamps;
-    static uint32_t max_players;
+    static std::uint32_t max_players;
     static bool screen_shake;
     static bool rumble;
     static bool screensaver;

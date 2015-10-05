@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 #include "raknet/Source/RakPeerInterface.h"
 
@@ -24,16 +24,16 @@ public:
     bool spectator;
 
     //The most recently completed turn (used in the lockstep networking model)
-    uint32_t completed_turn;
+    std::uint32_t completed_turn;
 
-    uint32_t rate_bytes;
-    uint32_t rate_updates;
+    std::uint32_t rate_bytes;
+    std::uint32_t rate_updates;
 
     //The number of bytes sent to this client over the duration of the current second
-    uint32_t bytes_this_second;
+    std::uint32_t bytes_this_second;
     //The number of updates sent to this client over the duration of the current second
-    uint32_t updates_this_second;
-    uint32_t counter_update;
+    std::uint32_t updates_this_second;
+    std::uint32_t counter_update;
 
     std::vector<std::string> command_buffer;
     std::vector<std::string> command_states;

@@ -8,7 +8,7 @@
 #include "pixels.h"
 #include "options.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 using namespace std;
 

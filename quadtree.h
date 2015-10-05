@@ -8,18 +8,18 @@
 #include "collision.h"
 
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 class Quadtree_Rect{
 public:
 
-    uint32_t x;
-    uint32_t y;
-    uint32_t w;
-    uint32_t h;
+    std::uint32_t x;
+    std::uint32_t y;
+    std::uint32_t w;
+    std::uint32_t h;
 
     Quadtree_Rect();
-    Quadtree_Rect(uint32_t get_x,uint32_t get_y,uint32_t get_w,uint32_t get_h);
+    Quadtree_Rect(std::uint32_t get_x,std::uint32_t get_y,std::uint32_t get_w,std::uint32_t get_h);
 };
 
 template<typename T,typename Object_ID>
@@ -41,10 +41,10 @@ template<typename T,typename Object_ID>
 class Quadtree{
 private:
 
-    uint32_t max_objects;
-    uint32_t max_levels;
+    std::uint32_t max_objects;
+    std::uint32_t max_levels;
 
-    uint32_t level;
+    std::uint32_t level;
 
     std::vector<Quadtree_Object<T,Object_ID>> objects;
 
@@ -61,11 +61,11 @@ public:
         level=0;
     }
 
-    Quadtree(uint32_t get_max_objects,uint32_t get_max_levels,uint32_t get_level,const Quadtree_Rect& get_bounds){
+    Quadtree(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Quadtree_Rect& get_bounds){
         setup(get_max_objects,get_max_levels,get_level,get_bounds);
     }
 
-    void setup(uint32_t get_max_objects,uint32_t get_max_levels,uint32_t get_level,const Quadtree_Rect& get_bounds){
+    void setup(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Quadtree_Rect& get_bounds){
         max_objects=get_max_objects;
         max_levels=get_max_levels;
 
@@ -85,10 +85,10 @@ public:
     }
 
     void split_tree(){
-        uint32_t x=bounds.x;
-        uint32_t y=bounds.y;
-        uint32_t width=bounds.w/2;
-        uint32_t height=bounds.h/2;
+        std::uint32_t x=bounds.x;
+        std::uint32_t y=bounds.y;
+        std::uint32_t width=bounds.w/2;
+        std::uint32_t height=bounds.h/2;
 
         nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x+width,y,width,height));
         nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x,y,width,height));
@@ -96,11 +96,11 @@ public:
         nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x+width,y+height,width,height));
     }
 
-    uint32_t get_node_index(const Collision_Rect<T>& box){
-        uint32_t node_index=4;
+    std::uint32_t get_node_index(const Collision_Rect<T>& box){
+        std::uint32_t node_index=4;
 
-        uint32_t mid_x=bounds.x+(bounds.w/2);
-        uint32_t mid_y=bounds.y+(bounds.h/2);
+        std::uint32_t mid_x=bounds.x+(bounds.w/2);
+        std::uint32_t mid_y=bounds.y+(bounds.h/2);
 
         bool top_half=box.y<mid_y && box.y+box.h<mid_y;
         bool bottom_half=box.y>mid_y;
@@ -127,7 +127,7 @@ public:
 
     void insert_object(const Collision_Rect<T>& box,Object_ID object_id){
         if(nodes.size()>0){
-            uint32_t node_index=get_node_index(box);
+            std::uint32_t node_index=get_node_index(box);
 
             if(node_index<4){
                 nodes[node_index].insert_object(box,object_id);
@@ -144,7 +144,7 @@ public:
             }
 
             for(size_t i=0;i<objects.size();){
-                uint32_t node_index=get_node_index(objects[i].box);
+                std::uint32_t node_index=get_node_index(objects[i].box);
 
                 if(node_index<4){
                     nodes[node_index].insert_object(objects[i].box,objects[i].id);
@@ -169,7 +169,7 @@ public:
 
     void get_objects(std::vector<Object_ID>& return_objects,const Collision_Rect<T>& box,Object_ID object_id){
         if(nodes.size()>0){
-            uint32_t node_index=get_node_index(box);
+            std::uint32_t node_index=get_node_index(box);
 
             if(node_index<4){
                 nodes[node_index].get_objects(return_objects,box,object_id);

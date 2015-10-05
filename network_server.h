@@ -8,7 +8,7 @@
 #include "client_data.h"
 
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 class Network_Server{
 public:
@@ -19,10 +19,10 @@ public:
     static std::string name;
     static bool frequent_connection_protection;
     static bool ignore_checksum;
-    static uint32_t rate_bytes_min;
-    static uint32_t rate_bytes_max;
-    static uint32_t rate_updates_min;
-    static uint32_t rate_updates_max;
+    static std::uint32_t rate_bytes_min;
+    static std::uint32_t rate_bytes_max;
+    static std::uint32_t rate_updates_min;
+    static std::uint32_t rate_updates_max;
 
     //Returns true if startup was successful
     //Returns false if startup failed
@@ -32,9 +32,9 @@ public:
     static void update_server_max_connections(unsigned int new_max,bool force);
     static void update_offline_ping_response();
 
-    static uint32_t get_client_count();
+    static std::uint32_t get_client_count();
 
-    static void toggle_client_spectator(uint32_t client_index);
+    static void toggle_client_spectator(std::uint32_t client_index);
 
     static void prepare_server_input_states();
 
@@ -51,7 +51,7 @@ public:
     static void send_client_list();
 
     static void send_updates();
-    static void send_update(Client_Data* client,uint32_t client_rate_bytes);
+    static void send_update(Client_Data* client,std::uint32_t client_rate_bytes);
 
     static void receive_input();
 

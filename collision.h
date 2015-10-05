@@ -8,7 +8,7 @@
 #include "engine_math.h"
 
 #include <algorithm>
-#include <stdint.h>
+#include <cstdint>
 
 template<typename T>
 class Collision_Rect{
@@ -257,11 +257,11 @@ public:
 class Collision_Event{
 public:
 
-    uint32_t object1;
-    uint32_t object2;
+    std::uint32_t object1;
+    std::uint32_t object2;
 
     Collision_Event();
-    Collision_Event(uint32_t get_object1,uint32_t get_object2);
+    Collision_Event(std::uint32_t get_object1,std::uint32_t get_object2);
 
     bool operator==(const Collision_Event& collision1) const;
 };

@@ -9,7 +9,7 @@
 #include "coords.h"
 
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 #include <SDL.h>
 
@@ -87,7 +87,7 @@ public:
     static void set_window_grab(bool setting);
 
     static SDL_Texture* create_texture_from_surface(SDL_Surface* surface);
-    static SDL_Texture* create_texture(uint32_t format,int access,int width,int height);
+    static SDL_Texture* create_texture(std::uint32_t format,int access,int width,int height);
 
     static int set_render_target(SDL_Texture* texture);
     static void set_render_draw_blend_mode(SDL_BlendMode blend_mode);

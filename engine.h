@@ -12,16 +12,16 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 class Engine{
 public:
 
-    static uint32_t UPDATE_RATE;
-    static uint32_t SKIP_TICKS;
+    static std::uint32_t UPDATE_RATE;
+    static std::uint32_t SKIP_TICKS;
 
-    static uint32_t UPDATE_RATE_RENDER;
-    static uint32_t SKIP_TICKS_RENDER;
+    static std::uint32_t UPDATE_RATE_RENDER;
+    static std::uint32_t SKIP_TICKS_RENDER;
 
     static std::string CHECKSUM;
 
@@ -67,12 +67,12 @@ public:
 
     static void compute_checksum();
 
-    static void get_rgba_masks(uint32_t* rmask,uint32_t* gmask,uint32_t* bmask,uint32_t* amask);
+    static void get_rgba_masks(std::uint32_t* rmask,std::uint32_t* gmask,std::uint32_t* bmask,std::uint32_t* amask);
 
     static Color_Theme* current_color_theme();
 
-    static void set_logic_update_rate(uint32_t frame_rate);
-    static void set_render_update_rate(uint32_t frame_rate);
+    static void set_logic_update_rate(std::uint32_t frame_rate);
+    static void set_render_update_rate(std::uint32_t frame_rate);
 
     static std::string get_text_entry_small_character();
     static int get_text_input_selected_chunk();

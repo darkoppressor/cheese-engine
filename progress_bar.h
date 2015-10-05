@@ -8,7 +8,7 @@
 #include "timer.h"
 
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 class Progress_Bar{
 private:
@@ -17,7 +17,7 @@ private:
     int items_done;
 
     //The time that the previous step was completed
-    uint32_t time_of_previous_step;
+    std::uint32_t time_of_previous_step;
 
     Timer timer;
 
@@ -34,7 +34,7 @@ public:
     double get_percentage_done() const;
 
     //in milliseconds
-    uint32_t get_time_elapsed() const;
+    std::uint32_t get_time_elapsed() const;
 };
 
 #endif

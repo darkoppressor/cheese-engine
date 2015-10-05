@@ -10,7 +10,7 @@
 
 #include <vector>
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 #include <SDL.h>
 
@@ -56,7 +56,7 @@ public:
     //Pass CONTROLLER_ID_TOUCH for controller_number to play the rumble on the touch controller
     //strength is a 0.0-1.0 float
     //length is in milliseconds
-    static void make_rumble(int controller_number,float strength,uint32_t length);
+    static void make_rumble(int controller_number,float strength,std::uint32_t length);
 
     //Stop any/all rumble effects on the passed controller
     //Pass CONTROLLER_ID_ALL for controller_number to stop rumbling on all controllers

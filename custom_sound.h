@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 class Custom_Sound{
 private:
@@ -82,7 +82,7 @@ public:
     std::vector<std::string> waveforms;
     std::vector<std::string> frequencies;
 
-    std::vector<int16_t> samples;
+    std::vector<std::int16_t> samples;
 
     Custom_Sound();
 

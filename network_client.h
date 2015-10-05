@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <string>
-#include <stdint.h>
+#include <cstdint>
 
 #include "raknet/Source/RakPeerInterface.h"
 
@@ -20,14 +20,14 @@ public:
     static std::string server_address;
     static unsigned short server_port;
     static std::string server_password;
-    static uint32_t rate_bytes;
-    static uint32_t rate_updates;
-    static uint32_t rate_commands;
-    static uint32_t commands_this_second;
-    static uint32_t counter_commands;
+    static std::uint32_t rate_bytes;
+    static std::uint32_t rate_updates;
+    static std::uint32_t rate_commands;
+    static std::uint32_t commands_this_second;
+    static std::uint32_t counter_commands;
     //When a client connects to a server, its Engine::UPDATE_RATE is set to the server's
     //When the game is stopped, the client reverts to its original Engine::UPDATE_RATE
-    static uint32_t recall_update_rate;
+    static std::uint32_t recall_update_rate;
     static RakNet::Time last_update_time;
     static std::vector<std::string> command_buffer;
 
@@ -36,10 +36,10 @@ public:
     //Pass 0 for get_password to not touch the password
     //Returns true if the server was added
     //Retursn false if the server was updated
-    static bool add_server(std::string get_name,std::string get_address,unsigned short get_port,const std::string* get_password,bool password_required,uint32_t slots_filled,uint32_t slots_total,std::string version,int ping);
+    static bool add_server(std::string get_name,std::string get_address,unsigned short get_port,const std::string* get_password,bool password_required,std::uint32_t slots_filled,std::uint32_t slots_total,std::string version,int ping);
     //Update the server with the passed address/port, do not add it if it is not in the list
     //This ONLY updates transient data, and it DOES NOT touch the server name
-    static void update_server(std::string get_address,unsigned short get_port,bool password_required,uint32_t slots_filled,uint32_t slots_total,std::string version,int ping);
+    static void update_server(std::string get_address,unsigned short get_port,bool password_required,std::uint32_t slots_filled,std::uint32_t slots_total,std::string version,int ping);
     static void remove_server(int index);
     static void edit_server(int index,std::string get_name,std::string get_address,unsigned short get_port,std::string get_password);
     static Server* get_server(int index);

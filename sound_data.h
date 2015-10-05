@@ -9,14 +9,14 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 #include <SDL_mixer.h>
 
 class Sound_Data{
 public:
 
-    std::vector<uint8_t> custom_buffer;
+    std::vector<std::uint8_t> custom_buffer;
 
     Mix_Chunk* chunk;
 

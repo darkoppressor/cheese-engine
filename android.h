@@ -7,7 +7,7 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <cstdint>
 
 #ifdef GAME_OS_ANDROID
     #include <SDL.h>
@@ -92,7 +92,7 @@ private:
 
     static void set_sensor_enabled(std::string sensor_type,bool enabled);
 
-    static void set_gps_enabled(bool enabled,uint32_t minimum_update_time,float minimum_update_distance);
+    static void set_gps_enabled(bool enabled,std::uint32_t minimum_update_time,float minimum_update_distance);
 
 public:
 
@@ -126,14 +126,14 @@ public:
     static void enable_sensor(std::string sensor_type);
     static void disable_sensor(std::string sensor_type);
 
-    static void vibrate(uint32_t length);
+    static void vibrate(std::uint32_t length);
     static void vibrate_stop();
 
     static bool get_gps_availability();
     static bool get_gps_accessibility();
     static bool get_gps_state();
     static Android_GPS get_gps_readout();
-    static void enable_gps(uint32_t minimum_update_time,float minimum_update_distance);
+    static void enable_gps(std::uint32_t minimum_update_time,float minimum_update_distance);
     static void disable_gps();
 };
 
