@@ -14,7 +14,7 @@ Client_Data::Client_Data(RakNet::RakNetGUID get_id,RakNet::SystemAddress get_add
     name=get_name;
     ping=0;
     is_us=get_is_us;
-    spectator=false;
+    spectator=true;
 
     completed_turn=0;
 

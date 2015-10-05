@@ -63,6 +63,7 @@ bool Network_Server::start_as_server(bool allow_clients){
 
             Network_Engine::clients.push_back(Client_Data(Network_Engine::id,Network_Engine::address,Options::name,true));
             Network_Engine::clients[0].connected=true;
+            Network_Engine::clients[0].spectator=false;
             update_offline_ping_response();
 
             Network_Engine::timer_tick.start();
@@ -260,6 +261,11 @@ void Network_Server::receive_connected(){
 
     if(client!=0){
         client->connected=true;
+
+        if(Network_Engine::get_player_count()<Options::max_players){
+            client->spectator=false;
+        }
+
         update_offline_ping_response();
 
         string msg=client->name+" has connected from "+Network_Engine::packet->systemAddress.ToString(true);
