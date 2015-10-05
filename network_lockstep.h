@@ -25,7 +25,7 @@ private:
     static uint32_t turn;
 
     //The turn most recently completed by the server
-    static uint32_t server_turn_complete;
+    static uint32_t server_completed_turn;
 
     //The number of logic updates done this turn
     static uint32_t logic_updates_this_turn;
@@ -46,7 +46,8 @@ public:
 
     static uint32_t get_turn();
 
-    static uint32_t get_server_turn_complete();
+    static uint32_t get_server_completed_turn();
+    static void set_server_completed_turn(uint32_t new_server_completed_turn);
 
     static void advance_turn_timer();
 };

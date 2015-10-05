@@ -19,7 +19,7 @@ Timer Network_Lockstep::turn_timer;
 
 uint32_t Network_Lockstep::turn=TURN_MIN;
 
-uint32_t Network_Lockstep::server_turn_complete=0;
+uint32_t Network_Lockstep::server_completed_turn=0;
 
 uint32_t Network_Lockstep::logic_updates_this_turn=0;
 
@@ -31,7 +31,7 @@ void Network_Lockstep::reset(){
 
         turn=TURN_MIN;
 
-        server_turn_complete=0;
+        server_completed_turn=0;
 
         logic_updates_this_turn=0;
 
@@ -64,15 +64,19 @@ uint32_t Network_Lockstep::get_turn(){
     return turn;
 }
 
-uint32_t Network_Lockstep::get_server_turn_complete(){
-    return server_turn_complete;
+uint32_t Network_Lockstep::get_server_completed_turn(){
+    return server_completed_turn;
+}
+
+void Network_Lockstep::set_server_completed_turn(uint32_t new_server_completed_turn){
+    server_completed_turn=new_server_completed_turn;
 }
 
 void Network_Lockstep::advance_turn_timer(){
     if(Engine_Data::network_lockstep){
         if(Network_Engine::status=="server" && !Game_Manager::paused){
             //If we have waited long enough for this turn, and all logic updates for this turn are done
-            if(turn_timer.is_started() && turn_timer.get_ticks()>=current_turn_limit && logic_updates_this_turn==TURN_UPDATES && server_turn_complete!=turn){
+            if(turn_timer.is_started() && turn_timer.get_ticks()>=current_turn_limit && logic_updates_this_turn==TURN_UPDATES && server_completed_turn!=turn){
                 turn_timer.stop();
 
                 //Set our own client to ready
@@ -80,7 +84,7 @@ void Network_Lockstep::advance_turn_timer(){
             }
 
             //After stopping the clock above
-            if(!turn_timer.is_started() && server_turn_complete!=turn){
+            if(!turn_timer.is_started() && server_completed_turn!=turn){
                 //The number of clients ready to move on
                 size_t clients_ready=0;
 
@@ -94,7 +98,7 @@ void Network_Lockstep::advance_turn_timer(){
                 //If all clients are ready
                 if(Network_Engine::clients.size()==clients_ready){
                     //This turn is now the most recently completed turn on the server
-                    server_turn_complete=turn;
+                    server_completed_turn=turn;
 
                     //Inform all of the clients that they may proceed to the next turn
                     Network_Server::send_server_ready();
@@ -102,7 +106,7 @@ void Network_Lockstep::advance_turn_timer(){
             }
 
             //If we have completed the current turn, we are ready to begin the next turn
-            if(server_turn_complete==turn){
+            if(server_completed_turn==turn){
                 //Increment the turn counter
                 if(turn<TURN_MAX){
                     turn++;
@@ -120,14 +124,14 @@ void Network_Lockstep::advance_turn_timer(){
         }
         else if(Network_Engine::status=="client"){
             //If we are done processing the current turn, but we haven't received authorization from the server to move on to the next turn
-            if(turn_timer.is_started() && turn_timer.get_ticks()>=current_turn_limit && logic_updates_this_turn==TURN_UPDATES && server_turn_complete!=turn){
+            if(turn_timer.is_started() && turn_timer.get_ticks()>=current_turn_limit && logic_updates_this_turn==TURN_UPDATES && server_completed_turn!=turn){
                 turn_timer.stop();
 
                 Network_Client::send_client_ready();
             }
 
             //If we have completed the server's most recently completed turn, we are ready to begin the next turn
-            if(server_turn_complete==turn){
+            if(server_completed_turn==turn){
                 //Increment the turn counter
                 if(turn<TURN_MAX){
                     turn++;
