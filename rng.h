@@ -31,7 +31,8 @@ public:
 
     std::uint32_t random_range(std::uint32_t lownum,std::uint32_t highnum);
 
-    //weight must be >0. weight must also be greater than 1 or the result will be unweighted.
+    //weight must be > 0
+    //weight must also be greater than 1 or the result will be unweighted
     std::uint32_t weighted_random_range(std::uint32_t lownum,std::uint32_t highnum,std::uint32_t target,std::uint32_t weight);
 
     //Valid values for weight:

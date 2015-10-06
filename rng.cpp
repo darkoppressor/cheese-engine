@@ -55,8 +55,10 @@ uint32_t RNG::random_range(uint32_t lownum,uint32_t highnum){
 	}
 
 	uint32_t range=highnum-lownum+1;
+
+	//If range is 0, the equation above wrapped around
 	if(range==0){
-        range++;
+        range--;
 	}
 
 	return (get_number()%range)+lownum;
