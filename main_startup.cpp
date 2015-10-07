@@ -123,8 +123,6 @@ void game_loop(){
             Network_Server::send_updates();
             Network_Client::send_input();
 
-            Network_Lockstep::do_logic_update();
-
             Update::tick();
 
             Update::ai();
@@ -132,6 +130,8 @@ void game_loop(){
             Update::movement();
 
             Update::events();
+
+            Network_Lockstep::do_logic_update();
 
             Update::animate();
 

@@ -55,7 +55,7 @@ bool Network_Lockstep::logic_update_allowed(){
 }
 
 void Network_Lockstep::do_logic_update(){
-    if(Engine_Data::network_lockstep){
+    if(Engine_Data::network_lockstep && logic_updates_this_turn<TURN_UPDATES){
         logic_updates_this_turn++;
     }
 }
