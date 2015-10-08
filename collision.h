@@ -161,35 +161,12 @@ public:
         }
     }
 
-    static double get_angle_to_rect(Collision_Rect<double> box_a,Collision_Rect<double> box_b,Collision_Rect<double> camera){
-        double x1=box_a.center_x()-camera.x;
-        double y1=box_a.center_y()-camera.y;
+    static double get_angle_to_rect(Collision_Rect<double> box_a,Collision_Rect<double> box_b){
+        double x1=box_a.center_x();
+        double y1=box_a.center_y();
 
-        double x2=box_b.center_x()-camera.x;
-        double y2=box_b.center_y()-camera.y;
-
-        double x_component=Math::abs(x2-x1);
-        double y_component=Math::abs(y2-y1);
-
-        if(x2<x1){
-            x_component*=-1.0;
-        }
-
-        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
-
-        if(y2>y1){
-            angle=360.0-angle;
-        }
-
-        return angle;
-    }
-
-    static double get_angle_to_rect(Collision_Circ<double> circle,Collision_Rect<double> box,Collision_Rect<double> camera){
-        double x1=circle.x-camera.x;
-        double y1=circle.y-camera.y;
-
-        double x2=box.center_x()-camera.x;
-        double y2=box.center_y()-camera.y;
+        double x2=box_b.center_x();
+        double y2=box_b.center_y();
 
         double x_component=Math::abs(x2-x1);
         double y_component=Math::abs(y2-y1);
@@ -207,12 +184,12 @@ public:
         return angle;
     }
 
-    static double get_angle_to_circ(Collision_Circ<double> circle_a,Collision_Circ<double> circle_b,Collision_Rect<double> camera){
-        double x1=circle_a.x-camera.x;
-        double y1=circle_a.y-camera.y;
+    static double get_angle_to_rect(Collision_Circ<double> circle,Collision_Rect<double> box){
+        double x1=circle.x;
+        double y1=circle.y;
 
-        double x2=circle_b.x-camera.x;
-        double y2=circle_b.y-camera.y;
+        double x2=box.center_x();
+        double y2=box.center_y();
 
         double x_component=Math::abs(x2-x1);
         double y_component=Math::abs(y2-y1);
@@ -230,12 +207,35 @@ public:
         return angle;
     }
 
-    static double get_angle_to_circ(Collision_Rect<double> box,Collision_Circ<double> circle,Collision_Rect<double> camera){
-        double x1=box.center_x()-camera.x;
-        double y1=box.center_y()-camera.y;
+    static double get_angle_to_circ(Collision_Circ<double> circle_a,Collision_Circ<double> circle_b){
+        double x1=circle_a.x;
+        double y1=circle_a.y;
 
-        double x2=circle.x-camera.x;
-        double y2=circle.y-camera.y;
+        double x2=circle_b.x;
+        double y2=circle_b.y;
+
+        double x_component=Math::abs(x2-x1);
+        double y_component=Math::abs(y2-y1);
+
+        if(x2<x1){
+            x_component*=-1.0;
+        }
+
+        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
+
+        if(y2>y1){
+            angle=360.0-angle;
+        }
+
+        return angle;
+    }
+
+    static double get_angle_to_circ(Collision_Rect<double> box,Collision_Circ<double> circle){
+        double x1=box.center_x();
+        double y1=box.center_y();
+
+        double x2=circle.x;
+        double y2=circle.y;
 
         double x_component=Math::abs(x2-x1);
         double y_component=Math::abs(y2-y1);
