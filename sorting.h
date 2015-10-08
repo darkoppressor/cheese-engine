@@ -5,26 +5,37 @@
 #ifndef sorting_h
 #define sorting_h
 
-#include "engine_math.h"
+#include "rng.h"
 
 #include <vector>
+#include <cstdint>
+#include <utility>
 
 class Sorting{
 public:
 
-    template<typename Object>
-    static void quick_sort(std::vector<Object>& objects){
+    template<typename T>
+    static void shuffle(RNG& rng,std::vector<T>& objects){
+        for(std::uint32_t i=objects.size()-1;i>=1;i--){
+            std::uint32_t j=rng.random_range(0,i);
+
+            std::swap(objects[i],objects[j]);
+        }
+    }
+
+    template<typename T>
+    static void quick_sort(std::vector<T>& objects){
         if(objects.size()<=1){
             return;
         }
 
-        int pivot_index=(int)Math::floor((double)(objects.size()-1)/2.0);
+        std::uint32_t pivot_index=objects.size()/2;
 
-        std::vector<Object> less_than;
-        std::vector<Object> greater_than;
-        Object pivot=objects[pivot_index];
+        std::vector<T> less_than;
+        std::vector<T> greater_than;
+        T pivot=objects[pivot_index];
 
-        for(int i=0;i<objects.size();i++){
+        for(std::uint32_t i=0;i<objects.size();i++){
             if(i!=pivot_index){
                 if(objects[i]<=pivot){
                     less_than.push_back(objects[i]);
