@@ -58,6 +58,9 @@ public:
     static Game_Option* get_game_option(std::string name);
     static Cursor* get_cursor(std::string name);
 
+    static void add_color(std::string name,const Color& color);
+    static void remove_color(std::string name);
+
     static bool handle_input_events_command_set();
 
     static void animate_cursors();
