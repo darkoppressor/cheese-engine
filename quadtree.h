@@ -30,7 +30,7 @@ public:
 
     Object_ID id;
 
-    Quadtree_Object(const Collision_Rect<T>& get_box, Object_ID get_id){
+    Quadtree_Object(const Collision_Rect<T>& get_box,Object_ID get_id){
         box=get_box;
 
         id=get_id;
