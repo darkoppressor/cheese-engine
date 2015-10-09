@@ -174,11 +174,11 @@ public:
             if(node_index<4){
                 nodes[node_index].get_objects(return_objects,box,object_id);
             }
+        }
 
-            for(size_t i=0;i<objects.size();i++){
-                if(objects[i].id!=object_id){
-                    return_objects.push_back(objects[i].id);
-                }
+        for(size_t i=0;i<objects.size();i++){
+            if(objects[i].id!=object_id){
+                return_objects.push_back(objects[i].id);
             }
         }
     }
