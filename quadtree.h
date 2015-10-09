@@ -96,7 +96,7 @@ public:
         nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x+width,y+height,width,height));
     }
 
-    std::uint32_t get_node_index(const Collision_Rect<T>& box){
+    std::uint32_t get_node_index(const Collision_Rect<T>& box) const{
         std::uint32_t node_index=4;
 
         std::uint32_t mid_x=bounds.x+(bounds.w/2);
@@ -167,7 +167,7 @@ public:
         insert_object(box,object_id);
     }
 
-    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Rect<T>& box,Object_ID object_id){
+    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Rect<T>& box,Object_ID object_id) const{
         if(nodes.size()>0){
             std::uint32_t node_index=get_node_index(box);
 
@@ -176,12 +176,14 @@ public:
             }
 
             for(size_t i=0;i<objects.size();i++){
-                return_objects.push_back(objects[i].id);
+                if(objects[i].id!=object_id){
+                    return_objects.push_back(objects[i].id);
+                }
             }
         }
     }
 
-    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Circ<T>& circle,Object_ID object_id){
+    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Circ<T>& circle,Object_ID object_id) const{
         Collision_Rect<T> box;
         box.x=circle.x-circle.r;
         box.y=circle.y-circle.r;
