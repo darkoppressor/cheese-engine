@@ -54,11 +54,11 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
             string save_path=Directories::get_save_directory_absolute();
 
             vector<string> lines;
-            int spacing_x=Object_Manager::get_font("small")->spacing_x;
-            int window_width=(int)Math::floor((double)Game_Window::width()*0.8);
+            uint32_t spacing_x=Object_Manager::get_font("small")->spacing_x;
+            uint32_t window_width=(uint32_t)Math::floor((double)Game_Window::width()*0.8);
 
             while(save_path.length()*spacing_x>window_width){
-                int i=window_width/spacing_x;
+                uint32_t i=window_width/spacing_x;
                 lines.push_back(string(save_path,0,i));
                 save_path.erase(save_path.begin(),save_path.begin()+i);
             }
