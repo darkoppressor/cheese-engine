@@ -10,6 +10,8 @@
 #include "image_manager.h"
 #include "engine_math.h"
 
+#include <cstdint>
+
 #include <SDL_image.h>
 
 using namespace std;
@@ -127,7 +129,7 @@ void Render::render_rtt(double x,double y,Rtt_Data* rtt_source,double opacity,do
         flip=SDL_FLIP_VERTICAL;
     }
 
-    SDL_SetTextureAlphaMod(rtt_source->texture,(short)(opacity*255.0));
+    SDL_SetTextureAlphaMod(rtt_source->texture,(uint8_t)(opacity*255.0));
 
     Color* color=Object_Manager::get_color(color_name);
     SDL_SetTextureColorMod(rtt_source->texture,(uint8_t)color->get_red(),(uint8_t)color->get_green(),(uint8_t)color->get_blue());
@@ -153,7 +155,7 @@ void Render::render_texture(double x,double y,Image_Data* image_source,double op
         flip=SDL_FLIP_VERTICAL;
     }
 
-    SDL_SetTextureAlphaMod(image_source->texture,(short)(opacity*255.0));
+    SDL_SetTextureAlphaMod(image_source->texture,(uint8_t)(opacity*255.0));
 
     Color* color=Object_Manager::get_color(color_name);
     SDL_SetTextureColorMod(image_source->texture,(uint8_t)color->get_red(),(uint8_t)color->get_green(),(uint8_t)color->get_blue());
@@ -185,7 +187,7 @@ void Render::render_sprite(double x,double y,Image_Data* image_source,Collision_
         flip=SDL_FLIP_VERTICAL;
     }
 
-    SDL_SetTextureAlphaMod(image_source->texture,(short)(opacity*255.0));
+    SDL_SetTextureAlphaMod(image_source->texture,(uint8_t)(opacity*255.0));
 
     Color* color=Object_Manager::get_color(color_name);
     SDL_SetTextureColorMod(image_source->texture,(uint8_t)color->get_red(),(uint8_t)color->get_green(),(uint8_t)color->get_blue());
@@ -197,7 +199,7 @@ void Render::render_rectangle(double x,double y,double w,double h,double opacity
     Game_Window::set_render_draw_blend_mode(SDL_BLENDMODE_BLEND);
 
     Color* color=Object_Manager::get_color(color_name);
-    Game_Window::set_render_draw_color(*color);
+    Game_Window::set_render_draw_color(*color,opacity);
 
     SDL_Rect rect;
     rect.x=x;
@@ -233,7 +235,7 @@ void Render::render_line(double x1,double y1,double x2,double y2,double opacity,
     Game_Window::set_render_draw_blend_mode(SDL_BLENDMODE_BLEND);
 
     Color* color=Object_Manager::get_color(color_name);
-    Game_Window::set_render_draw_color(*color);
+    Game_Window::set_render_draw_color(*color,opacity);
 
     Game_Window::render_draw_line(x1,y1,x2,y2);
 }

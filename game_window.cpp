@@ -733,8 +733,8 @@ void Game_Window::set_render_draw_blend_mode(SDL_BlendMode blend_mode){
     SDL_SetRenderDrawBlendMode(renderer,blend_mode);
 }
 
-void Game_Window::set_render_draw_color(const Color& color){
-    SDL_SetRenderDrawColor(renderer,(uint8_t)color.get_red(),(uint8_t)color.get_green(),(uint8_t)color.get_blue(),(uint8_t)color.get_alpha());
+void Game_Window::set_render_draw_color(const Color& color,double opacity){
+    SDL_SetRenderDrawColor(renderer,(uint8_t)color.get_red(),(uint8_t)color.get_green(),(uint8_t)color.get_blue(),(uint8_t)(opacity*255.0));
 }
 
 void Game_Window::render_copy_ex(SDL_Texture* texture,const SDL_Rect* srcrect,const SDL_Rect* dstrect,const double angle,const SDL_Point* center,const SDL_RendererFlip flip){
@@ -750,7 +750,7 @@ void Game_Window::render_draw_line(int x1,int y1,int x2,int y2){
 }
 
 void Game_Window::clear_renderer(const Color& color){
-    set_render_draw_color(color);
+    set_render_draw_color(color,color.get_alpha_double());
     SDL_RenderClear(renderer);
 }
 

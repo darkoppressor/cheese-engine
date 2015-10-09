@@ -91,7 +91,7 @@ public:
 
     static int set_render_target(SDL_Texture* texture);
     static void set_render_draw_blend_mode(SDL_BlendMode blend_mode);
-    static void set_render_draw_color(const Color& color);
+    static void set_render_draw_color(const Color& color,double opacity);
 
     static void render_copy_ex(SDL_Texture* texture,const SDL_Rect* srcrect,const SDL_Rect* dstrect,const double angle,const SDL_Point* center,const SDL_RendererFlip flip);
     static void render_fill_rect(SDL_Rect* rect);
