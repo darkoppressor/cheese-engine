@@ -21,6 +21,8 @@ int Object_Manager::configure_command=-1;
 void Object_Manager::add_color(string name,const Color& color){
     if(get_color(name)==0){
         colors.push_back(color);
+
+        colors.back().name=name;
     }
 }
 
