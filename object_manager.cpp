@@ -19,11 +19,15 @@ using namespace std;
 int Object_Manager::configure_command=-1;
 
 void Object_Manager::add_color(string name,const Color& color){
-    if(get_color(name)==0){
-        colors.push_back(color);
-
-        colors.back().name=name;
+    for(size_t i=0;i<colors.size();i++){
+        if(colors[i].name==name){
+            return;
+        }
     }
+
+    colors.push_back(color);
+
+    colors.back().name=name;
 }
 
 void Object_Manager::remove_color(string name){
