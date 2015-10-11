@@ -10,18 +10,6 @@
 #include <vector>
 #include <cstdint>
 
-class Quadtree_Rect{
-public:
-
-    std::uint32_t x;
-    std::uint32_t y;
-    std::uint32_t w;
-    std::uint32_t h;
-
-    Quadtree_Rect();
-    Quadtree_Rect(std::uint32_t get_x,std::uint32_t get_y,std::uint32_t get_w,std::uint32_t get_h);
-};
-
 template<typename T,typename Object_ID>
 class Quadtree_Object{
 public:
@@ -48,7 +36,7 @@ private:
 
     std::vector<Quadtree_Object<T,Object_ID>> objects;
 
-    Quadtree_Rect bounds;
+    Collision_Rect<std::uint32_t> bounds;
 
     std::vector<Quadtree<T,Object_ID>> nodes;
 
@@ -61,11 +49,11 @@ public:
         level=0;
     }
 
-    Quadtree(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Quadtree_Rect& get_bounds){
+    Quadtree(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Collision_Rect<std::uint32_t>& get_bounds){
         setup(get_max_objects,get_max_levels,get_level,get_bounds);
     }
 
-    void setup(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Quadtree_Rect& get_bounds){
+    void setup(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Collision_Rect<std::uint32_t>& get_bounds){
         max_objects=get_max_objects;
         max_levels=get_max_levels;
 
@@ -90,34 +78,28 @@ public:
         std::uint32_t width=bounds.w/2;
         std::uint32_t height=bounds.h/2;
 
-        nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x+width,y,width,height));
-        nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x,y,width,height));
-        nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x,y+height,width,height));
-        nodes.emplace_back(max_objects,max_levels,level+1,Quadtree_Rect(x+width,y+height,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x+width,y,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x,y,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x,y+height,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x+width,y+height,width,height));
     }
 
     std::uint32_t get_node_index(const Collision_Rect<T>& box) const{
         std::uint32_t node_index=4;
 
-        std::uint32_t mid_x=bounds.x+(bounds.w/2);
-        std::uint32_t mid_y=bounds.y+(bounds.h/2);
-
-        bool top_half=box.y<mid_y && box.y+box.h<mid_y;
-        bool bottom_half=box.y>mid_y;
-
-        if(box.x<mid_x && box.x+box.w<mid_x){
-            if(top_half){
+        if(box.center_y()<bounds.center_y()){
+            if(box.center_x()<bounds.center_x()){
                 node_index=1;
             }
-            else if(bottom_half){
-                node_index=2;
-            }
-        }
-        else if(box.x>mid_x){
-            if(top_half){
+            else{
                 node_index=0;
             }
-            else if(bottom_half){
+        }
+        else{
+            if(box.center_x()<bounds.center_x()){
+                node_index=2;
+            }
+            else{
                 node_index=3;
             }
         }
