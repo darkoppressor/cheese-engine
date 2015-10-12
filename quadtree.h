@@ -129,30 +129,27 @@ public:
         if(nodes.size()>0){
             std::vector<std::uint32_t> node_indices=get_node_indices(box);
 
-            if(node_indices.size()==1){
-                nodes[node_indices[0]].insert_object(box,object_id);
-
-                return;
+            for(size_t i=0;i<node_indices.size();i++){
+                nodes[node_indices[i]].insert_object(box,object_id);
             }
         }
+        else{
+            objects.push_back(Quadtree_Object<T,Object_ID>(box,object_id));
 
-        objects.push_back(Quadtree_Object<T,Object_ID>(box,object_id));
-
-        if(objects.size()>max_objects && level<max_levels-1){
-            if(nodes.size()==0){
-                split_tree();
-            }
-
-            for(size_t i=0;i<objects.size();){
-                std::vector<std::uint32_t> node_indices=get_node_indices(objects[i].box);
-
-                if(node_indices.size()==1){
-                    nodes[node_indices[0]].insert_object(objects[i].box,objects[i].id);
-                    objects.erase(objects.begin()+i);
+            if(objects.size()>max_objects && level<max_levels-1){
+                if(nodes.size()==0){
+                    split_tree();
                 }
-                else{
-                    i++;
+
+                for(size_t i=0;i<objects.size();i++){
+                    std::vector<std::uint32_t> node_indices=get_node_indices(objects[i].box);
+
+                    for(size_t n=0;n<node_indices.size();n++){
+                        nodes[node_indices[n]].insert_object(objects[i].box,objects[i].id);
+                    }
                 }
+
+                objects.clear();
             }
         }
     }
@@ -175,10 +172,11 @@ public:
                 nodes[node_indices[i]].get_objects(return_objects,box,object_id);
             }
         }
-
-        for(size_t i=0;i<objects.size();i++){
-            if(objects[i].id!=object_id){
-                return_objects.push_back(objects[i].id);
+        else{
+            for(size_t i=0;i<objects.size();i++){
+                if(objects[i].id!=object_id){
+                    return_objects.push_back(objects[i].id);
+                }
             }
         }
     }
