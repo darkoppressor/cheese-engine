@@ -36,7 +36,7 @@ private:
 
     std::vector<Quadtree_Object<T,Object_ID>> objects;
 
-    Collision_Rect<std::uint32_t> bounds;
+    Collision_Rect<T> bounds;
 
     std::vector<Quadtree<T,Object_ID>> nodes;
 
@@ -49,11 +49,11 @@ public:
         level=0;
     }
 
-    Quadtree(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Collision_Rect<std::uint32_t>& get_bounds){
+    Quadtree(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Collision_Rect<T>& get_bounds){
         setup(get_max_objects,get_max_levels,get_level,get_bounds);
     }
 
-    void setup(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Collision_Rect<std::uint32_t>& get_bounds){
+    void setup(std::uint32_t get_max_objects,std::uint32_t get_max_levels,std::uint32_t get_level,const Collision_Rect<T>& get_bounds){
         max_objects=get_max_objects;
         max_levels=get_max_levels;
 
@@ -73,46 +73,64 @@ public:
     }
 
     void split_tree(){
-        std::uint32_t x=bounds.x;
-        std::uint32_t y=bounds.y;
-        std::uint32_t width=bounds.w/2;
-        std::uint32_t height=bounds.h/2;
+        T x=bounds.x;
+        T y=bounds.y;
+        T width=bounds.w/2;
+        T height=bounds.h/2;
 
-        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x+width,y,width,height));
-        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x,y,width,height));
-        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x,y+height,width,height));
-        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<std::uint32_t>(x+width,y+height,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<T>(x+width,y,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<T>(x,y,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<T>(x,y+height,width,height));
+        nodes.emplace_back(max_objects,max_levels,level+1,Collision_Rect<T>(x+width,y+height,width,height));
     }
 
-    std::uint32_t get_node_index(const Collision_Rect<T>& box) const{
-        std::uint32_t node_index=4;
+    std::vector<std::uint32_t> get_node_indices(const Collision_Rect<T>& box) const{
+        std::vector<std::uint32_t> node_indices;
 
-        if(box.center_y()<bounds.center_y()){
-            if(box.center_x()<bounds.center_x()){
-                node_index=1;
-            }
-            else{
-                node_index=0;
-            }
+        T center_x=bounds.center_x();
+        T center_y=bounds.center_y();
+
+        bool left=false;
+        bool right=false;
+        bool top=false;
+        bool bottom=false;
+
+        if(box.x<=center_x){
+            left=true;
         }
-        else{
-            if(box.center_x()<bounds.center_x()){
-                node_index=2;
-            }
-            else{
-                node_index=3;
-            }
+        if(box.x+box.w>=center_x){
+            right=true;
         }
 
-        return node_index;
+        if(box.y<=center_y){
+            top=true;
+        }
+        if(box.y+box.h>=center_y){
+            bottom=true;
+        }
+
+        if(top && right){
+            node_indices.push_back(0);
+        }
+        if(top && left){
+            node_indices.push_back(1);
+        }
+        if(bottom && left){
+            node_indices.push_back(2);
+        }
+        if(bottom && right){
+            node_indices.push_back(3);
+        }
+
+        return node_indices;
     }
 
     void insert_object(const Collision_Rect<T>& box,Object_ID object_id){
         if(nodes.size()>0){
-            std::uint32_t node_index=get_node_index(box);
+            std::vector<std::uint32_t> node_indices=get_node_indices(box);
 
-            if(node_index<4){
-                nodes[node_index].insert_object(box,object_id);
+            if(node_indices.size()==1){
+                nodes[node_indices[0]].insert_object(box,object_id);
 
                 return;
             }
@@ -126,10 +144,10 @@ public:
             }
 
             for(size_t i=0;i<objects.size();){
-                std::uint32_t node_index=get_node_index(objects[i].box);
+                std::vector<std::uint32_t> node_indices=get_node_indices(objects[i].box);
 
-                if(node_index<4){
-                    nodes[node_index].insert_object(objects[i].box,objects[i].id);
+                if(node_indices.size()==1){
+                    nodes[node_indices[0]].insert_object(objects[i].box,objects[i].id);
                     objects.erase(objects.begin()+i);
                 }
                 else{
@@ -151,10 +169,10 @@ public:
 
     void get_objects(std::vector<Object_ID>& return_objects,const Collision_Rect<T>& box,Object_ID object_id) const{
         if(nodes.size()>0){
-            std::uint32_t node_index=get_node_index(box);
+            std::vector<std::uint32_t> node_indices=get_node_indices(box);
 
-            if(node_index<4){
-                nodes[node_index].get_objects(return_objects,box,object_id);
+            for(size_t i=0;i<node_indices.size();i++){
+                nodes[node_indices[i]].get_objects(return_objects,box,object_id);
             }
         }
 
