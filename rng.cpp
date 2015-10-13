@@ -86,19 +86,19 @@ uint32_t RNG::weighted_random_range(uint32_t lownum,uint32_t highnum,uint32_t ta
     return closest;
 }
 
-uint32_t RNG::weighted_random_range(uint32_t lownum,uint32_t highnum,uint32_t target,string weight){
+uint32_t RNG::weighted_random_range(uint32_t lownum,uint32_t highnum,uint32_t target,Weight weight){
     uint32_t weight_num=WEIGHT_NORMAL;
 
-    if(weight=="weak"){
+    if(weight==Weight::WEAK){
         weight_num=WEIGHT_WEAK;
     }
-    else if(weight=="normal"){
+    else if(weight==Weight::NORMAL){
         weight_num=WEIGHT_NORMAL;
     }
-    else if(weight=="strong"){
+    else if(weight==Weight::STRONG){
         weight_num=WEIGHT_STRONG;
     }
-    else if(weight=="very_strong"){
+    else if(weight==Weight::VERY_STRONG){
         weight_num=WEIGHT_VERY_STRONG;
     }
 

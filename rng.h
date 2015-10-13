@@ -5,10 +5,18 @@
 #ifndef rng_h
 #define rng_h
 
-#include <string>
 #include <cstdint>
 
 class RNG{
+public:
+
+    enum class Weight : std::uint8_t{
+        WEAK,
+        NORMAL,
+        STRONG,
+        VERY_STRONG
+    };
+
 private:
 
     std::uint32_t Q[4096];
@@ -35,12 +43,7 @@ public:
     //weight must also be greater than 1 or the result will be unweighted
     std::uint32_t weighted_random_range(std::uint32_t lownum,std::uint32_t highnum,std::uint32_t target,std::uint32_t weight);
 
-    //Valid values for weight:
-    //weak
-    //normal
-    //strong
-    //very_strong
-    std::uint32_t weighted_random_range(std::uint32_t lownum,std::uint32_t highnum,std::uint32_t target,std::string weight="normal");
+    std::uint32_t weighted_random_range(std::uint32_t lownum,std::uint32_t highnum,std::uint32_t target,Weight weight=Weight::NORMAL);
 };
 
 #endif
