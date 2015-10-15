@@ -392,6 +392,8 @@ void Window::reset_scrolling_lists(){
 void Window::toggle_on(bool force,bool force_value){
     bool exclusive_window_open=Window_Manager::is_exclusive_window_open();
 
+    bool old_on=on;
+
     if(!force){
         on=!on;
     }
@@ -421,7 +423,9 @@ void Window::toggle_on(bool force,bool force_value){
     else{
         Window_Manager::close_window(this);
 
-        exec_close_function();
+        if(old_on){
+            exec_close_function();
+        }
 
         moving=false;
 
