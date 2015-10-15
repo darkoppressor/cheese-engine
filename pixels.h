@@ -14,7 +14,7 @@ public:
 
     static Color surface_get_pixel(SDL_Surface* surface,int x,int y);
 
-    static void surface_put_pixel(SDL_Surface* surface,int x,int y,Color color);
+    static void surface_put_pixel(SDL_Surface* surface,int x,int y,const Color& color);
 };
 
 #endif
