@@ -164,31 +164,29 @@ public:
         insert_object(box,object_id);
     }
 
-    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Rect<T>& box,Object_ID object_id) const{
+    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Rect<T>& box) const{
         if(nodes.size()>0){
             std::vector<std::uint32_t> node_indices=get_node_indices(box);
 
             for(size_t i=0;i<node_indices.size();i++){
-                nodes[node_indices[i]].get_objects(return_objects,box,object_id);
+                nodes[node_indices[i]].get_objects(return_objects,box);
             }
         }
         else{
             for(size_t i=0;i<objects.size();i++){
-                if(objects[i].id!=object_id){
-                    return_objects.push_back(objects[i].id);
-                }
+                return_objects.push_back(objects[i].id);
             }
         }
     }
 
-    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Circ<T>& circle,Object_ID object_id) const{
+    void get_objects(std::vector<Object_ID>& return_objects,const Collision_Circ<T>& circle) const{
         Collision_Rect<T> box;
         box.x=circle.x-circle.r;
         box.y=circle.y-circle.r;
         box.w=circle.r*(T)2;
         box.h=circle.r*(T)2;
 
-        get_objects(return_objects,box,object_id);
+        get_objects(return_objects,box);
     }
 };
 
