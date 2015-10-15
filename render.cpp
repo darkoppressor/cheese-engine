@@ -26,20 +26,45 @@ SDL_Surface* Render::scale_surface(SDL_Surface* surface,double scale_x,double sc
 
     SDL_Surface* new_surface=SDL_CreateRGBSurface(surface->flags,width,height,surface->format->BitsPerPixel,surface->format->Rmask,surface->format->Gmask,surface->format->Bmask,surface->format->Amask);
 
-    if(new_surface==0){
-        string msg="Error creating scaled surface: ";
-        msg+=SDL_GetError();
-        Log::add_error(msg);
-    }
+    if(new_surface!=0){
+        if(SDL_MUSTLOCK(surface)){
+            if(SDL_LockSurface(surface)!=0){
+                string msg="Error locking surface to scale surface: ";
+                msg+=SDL_GetError();
+                Log::add_error(msg);
+            }
+        }
 
-    for(int x=0;x<surface->w;x++){
-        for(int y=0;y<surface->h;y++){
-            for(int o_x=0;o_x<scale_x;o_x++){
-                for(int o_y=0;o_y<scale_y;o_y++){
-                    Pixels::surface_put_pixel(new_surface,(int)((scale_x*x)+o_x),(int)((scale_y*y)+o_y),Pixels::surface_get_pixel(surface,x,y));
+        if(SDL_MUSTLOCK(new_surface)){
+            if(SDL_LockSurface(new_surface)!=0){
+                string msg="Error locking surface to scale surface: ";
+                msg+=SDL_GetError();
+                Log::add_error(msg);
+            }
+        }
+
+        for(int x=0;x<surface->w;x++){
+            for(int y=0;y<surface->h;y++){
+                for(int o_x=0;o_x<scale_x;o_x++){
+                    for(int o_y=0;o_y<scale_y;o_y++){
+                        Pixels::surface_put_pixel(new_surface,(int)((scale_x*x)+o_x),(int)((scale_y*y)+o_y),Pixels::surface_get_pixel(surface,x,y));
+                    }
                 }
             }
         }
+
+        if(SDL_MUSTLOCK(surface)){
+            SDL_UnlockSurface(surface);
+        }
+
+        if(SDL_MUSTLOCK(new_surface)){
+            SDL_UnlockSurface(new_surface);
+        }
+    }
+    else{
+        string msg="Error creating scaled surface: ";
+        msg+=SDL_GetError();
+        Log::add_error(msg);
     }
 
     return new_surface;

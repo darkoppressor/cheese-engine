@@ -7,6 +7,7 @@
 #include "engine.h"
 #include "pixels.h"
 #include "options.h"
+#include "log.h"
 
 #include <cstdint>
 
@@ -32,7 +33,11 @@ void Cursor::load_hw_cursor(){
         surface_final=SDL_CreateRGBSurface(0,width,height,32,rmask,gmask,bmask,amask);
 
         if(SDL_MUSTLOCK(surface_final)){
-            SDL_LockSurface(surface_final);
+            if(SDL_LockSurface(surface_final)!=0){
+                string msg="Error locking surface for hardware cursor: ";
+                msg+=SDL_GetError();
+                Log::add_error(msg);
+            }
         }
 
         for(int x=0;x<width;x++){
