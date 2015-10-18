@@ -13,6 +13,7 @@
 #include "engine_data.h"
 #include "game_manager.h"
 #include "network_message_identifiers.h"
+#include "network_lockstep.h"
 
 #include "raknet/Source/BitStream.h"
 #include "raknet/Source/GetTime.h"
@@ -243,7 +244,7 @@ void Network_Server::send_initial_game_data(){
 
         bitstream.WriteCompressed(Engine::UPDATE_RATE);
 
-        Network_Engine::write_initial_game_data(&bitstream);
+        Network_Engine::write_initial_game_data(bitstream);
 
         Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
         Network_Engine::peer->Send(&bitstream,MEDIUM_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_CONNECTION,Network_Engine::packet->guid,false);
@@ -353,7 +354,7 @@ void Network_Server::send_update(Client_Data* client,uint32_t client_rate_bytes)
         bitstream.Write(RakNet::GetTime());
         bitstream.Write((RakNet::MessageID)ID_GAME_UPDATE);
 
-        Network_Engine::write_update(&bitstream);
+        Network_Engine::write_update(bitstream);
 
         uint32_t stream_bytes=bitstream.GetNumberOfBytesUsed();
         if(client->bytes_this_second+stream_bytes<=client_rate_bytes){
@@ -447,7 +448,9 @@ void Network_Server::send_server_ready(){
         RakNet::BitStream bitstream;
         bitstream.Write((RakNet::MessageID)ID_GAME_SERVER_READY);
 
-        Network_Engine::write_server_ready(&bitstream);
+        bitstream.WriteCompressed(Network_Lockstep::get_server_completed_turn());
+
+        Network_Engine::write_server_ready(bitstream);
 
         Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
         Network_Engine::peer->Send(&bitstream,HIGH_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_TURNS,RakNet::UNASSIGNED_RAKNET_GUID,true);
@@ -469,4 +472,6 @@ void Network_Server::receive_client_ready(){
     if(client!=0){
         client->completed_turn=turn_completed;
     }
+
+    Network_Engine::read_client_ready(bitstream);
 }

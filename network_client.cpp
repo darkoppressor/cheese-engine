@@ -308,7 +308,7 @@ void Network_Client::receive_initial_game_data(){
 
     Game_Manager::start_client();
 
-    Network_Engine::read_initial_game_data(&bitstream);
+    Network_Engine::read_initial_game_data(bitstream);
 
     Network_Engine::timer_tick.start();
 
@@ -372,7 +372,7 @@ void Network_Client::receive_update(){
     if(RakNet::LessThan(last_update_time,timestamp)){
         last_update_time=timestamp;
 
-        Network_Engine::read_update(&bitstream);
+        Network_Engine::read_update(bitstream);
     }
 }
 
@@ -458,7 +458,11 @@ void Network_Client::receive_server_ready(){
     RakNet::MessageID type_id;
     bitstream.Read(type_id);
 
-    Network_Engine::read_server_ready(&bitstream);
+    uint32_t server_completed_turn=0;
+    bitstream.ReadCompressed(server_completed_turn);
+    Network_Lockstep::set_server_completed_turn(server_completed_turn);
+
+    Network_Engine::read_server_ready(bitstream);
 }
 
 void Network_Client::send_client_ready(){
@@ -467,6 +471,8 @@ void Network_Client::send_client_ready(){
         bitstream.Write((RakNet::MessageID)ID_GAME_CLIENT_READY);
 
         bitstream.WriteCompressed(Network_Lockstep::get_turn());
+
+        Network_Engine::write_client_ready(bitstream);
 
         Network_Engine::stat_counter_bytes_sent+=bitstream.GetNumberOfBytesUsed();
         Network_Engine::peer->Send(&bitstream,HIGH_PRIORITY,RELIABLE_ORDERED,ORDERING_CHANNEL_TURNS,Network_Engine::server_id,false);

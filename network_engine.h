@@ -67,14 +67,16 @@ public:
 
     static std::string allow_new_connection();
 
-    static void write_initial_game_data(RakNet::BitStream* bitstream);
-    static void read_initial_game_data(RakNet::BitStream* bitstream);
+    static void write_initial_game_data(RakNet::BitStream& bitstream);
+    static void read_initial_game_data(RakNet::BitStream& bitstream);
 
-    static void write_update(RakNet::BitStream* bitstream);
-    static void read_update(RakNet::BitStream* bitstream);
+    static void write_update(RakNet::BitStream& bitstream);
+    static void read_update(RakNet::BitStream& bitstream);
 
-    static void write_server_ready(RakNet::BitStream* bitstream);
-    static void read_server_ready(RakNet::BitStream* bitstream);
+    static void write_server_ready(RakNet::BitStream& bitstream);
+    static void read_server_ready(RakNet::BitStream& bitstream);
+    static void write_client_ready(RakNet::BitStream& bitstream);
+    static void read_client_ready(RakNet::BitStream& bitstream);
 };
 
 #endif
