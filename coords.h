@@ -25,6 +25,10 @@ public:
     bool operator==(const Coords& coords) const{
         return x==coords.x && y==coords.y;
     }
+
+    bool operator!=(const Coords& coords) const{
+        return x!=coords.x || y!=coords.y;
+    }
 };
 
 class Engine_Rect{
