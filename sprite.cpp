@@ -19,7 +19,7 @@ Sprite::Sprite(){
     animating=true;
 }
 
-double Sprite::get_width(){
+double Sprite::get_width() const{
     if(is_animated()){
         return Object_Manager::get_animation(name)->sprite_sheet[frame].w;
     }
@@ -28,7 +28,7 @@ double Sprite::get_width(){
     }
 }
 
-double Sprite::get_height(){
+double Sprite::get_height() const{
     if(is_animated()){
         return Object_Manager::get_animation(name)->sprite_sheet[frame].h;
     }
@@ -37,7 +37,7 @@ double Sprite::get_height(){
     }
 }
 
-bool Sprite::is_animated(){
+bool Sprite::is_animated() const{
     if(Object_Manager::get_animation(name,true)!=0){
         return true;
     }
@@ -78,7 +78,7 @@ void Sprite::animate(int animation_speed_override){
     }
 }
 
-void Sprite::render(double x,double y,double opacity,double scale_x,double scale_y,double angle,string color_name){
+void Sprite::render(double x,double y,double opacity,double scale_x,double scale_y,double angle,string color_name) const{
     if(is_animated()){
         Render::render_sprite(x,y,Image_Manager::get_image(name),&Object_Manager::get_animation(name)->sprite_sheet[frame],opacity,scale_x,scale_y,angle,color_name);
     }
