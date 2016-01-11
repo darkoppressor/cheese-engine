@@ -340,6 +340,7 @@
 					<Add option="-framework AudioUnit" />
 					<Add option="-framework AudioToolbox" />
 					<Add option="-framework OpenGL" />
+					<Add option="-framework CoreVideo" />
 					<Add library="/home/tails/build-server/osx-x86_64/SDL2_image/.libs/libSDL2_image.a" />
 					<Add library="/home/tails/build-server/osx-x86_64/libpng/.libs/libpng.a" />
 					<Add library="/home/tails/build-server/osx-x86_64/zlib/libz.a" />
