@@ -207,6 +207,13 @@ bool Touch_Controller::check_button_state(SDL_GameControllerButton button){
 }
 
 vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(float x,float y){
+    SDL_Rect viewport;
+    Game_Window::get_renderer_viewport(&viewport);
+
+    float scale_x=0.0f;
+    float scale_y=0.0f;
+    Game_Window::get_renderer_scale(&scale_x,&scale_y);
+
     int actual_width=0;
     int actual_height=0;
     Game_Window::get_renderer_output_size(&actual_width,&actual_height);
@@ -214,7 +221,10 @@ vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(float 
     double touch_x=x*(float)actual_width;
     double touch_y=y*(float)actual_height;
 
-    Collision_Circ<double> circle_touch(touch_x,touch_y,Engine_Data::touch_finger_size);
+    float offset_x=(float)viewport.x*scale_x;
+    float offset_y=(float)viewport.y*scale_y;
+
+    Collision_Circ<double> circle_touch(((float)touch_x-offset_x)/scale_x,((float)touch_y-offset_y)/scale_y,Engine_Data::touch_finger_size);
 
     vector<SDL_GameControllerButton> touch_buttons;
 
@@ -305,12 +315,12 @@ vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press(float 
 }
 
 void Touch_Controller::render(){
-    int actual_width=0;
-    int actual_height=0;
-    Game_Window::get_renderer_output_size(&actual_width,&actual_height);
+    int logical_width=0;
+    int logical_height=0;
+    Game_Window::get_renderer_logical_size(&logical_width,&logical_height);
 
-    double scale_x=(double)Game_Window::width()/(double)actual_width;
-    double scale_y=(double)Game_Window::height()/(double)actual_height;
+    double scale_x=(double)Game_Window::width()/(double)logical_width;
+    double scale_y=(double)Game_Window::height()/(double)logical_height;
     double scale_mean=(scale_x+scale_y)/2.0;
 
     Image_Data* image_dpad=Image_Manager::get_image("touch_controller_dpad");
