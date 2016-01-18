@@ -147,10 +147,10 @@ public:
         if(check_rect(box_a,box_b)){
             Collision_Rect<T> box;
 
-            box.x=max(box_a.x,box_b.x);
-            box.y=max(box_a.y,box_b.y);
-            box.w=min(box_a.x+box_a.w,box_b.x+box_b.w)-box.x;
-            box.h=min(box_a.y+box_a.h,box_b.y+box_b.h)-box.y;
+            box.x=std::max<T>(box_a.x,box_b.x);
+            box.y=std::max<T>(box_a.y,box_b.y);
+            box.w=std::min<T>(box_a.x+box_a.w,box_b.x+box_b.w)-box.x;
+            box.h=std::min<T>(box_a.y+box_a.h,box_b.y+box_b.h)-box.y;
 
             return box;
         }
