@@ -5,6 +5,8 @@
 #ifndef engine_math_h
 #define engine_math_h
 
+#include "coords.h"
+
 #include <algorithm>
 
 class Math{
@@ -38,6 +40,8 @@ public:
     static void clamp_angle(double& angle);
     //Returns the quadrant that the passed angle is in, or 0 if it is a quadrantal angle
     static int get_angle_quadrant(double angle);
+
+    static Coords<double> rotate_point(const Coords<double>& point,const Coords<double>& center,double angle);
 
     template<typename T>
     static bool signs_same(T a,T b){

@@ -95,6 +95,26 @@ int Math::get_angle_quadrant(double angle){
     }
 }
 
+static Coords<double> Math::rotate_point(const Coords<double>& point,const Coords<double>& center,double angle){
+    clamp_angle(angle);
+
+    if(angle>180.0){
+        angle-=360.0;
+    }
+
+    angle=degrees_to_radians(angle);
+
+    double sine=sin(angle);
+    double cosine=cos(angle);
+
+    Coords<double> new_point;
+
+    new_point.x=cosine*(point.x-center.x)+sine*(point.y-center.y)+center.x;
+    new_point.y=-sine*(point.x-center.x)+cosine*(point.y-center.y)+center.y;
+
+    return new_point;
+}
+
 double Math::distance_between_points(double x1,double y1,double x2,double y2){
     return sqrt(pow(x2-x1,2.0)+pow(y2-y1,2.0));
 }
