@@ -13,6 +13,9 @@
 #include <vector>
 
 template<typename T>
+class Collision_Circ;
+
+template<typename T>
 class Collision_Rect{
 public:
 
@@ -56,11 +59,11 @@ public:
     }
 
     double get_angle_to_rect(const Collision_Rect<T>& box) const{
-        return Collision::get_angle_to_point(Coords<double>(center_x(),center_y()),Coords<double>(box.center_x(),box.center_y()));
+        return Math::get_angle_to_point(Coords<double>(center_x(),center_y()),Coords<double>(box.center_x(),box.center_y()));
     }
 
     double get_angle_to_circ(const Collision_Circ<T>& circle) const{
-        return Collision::get_angle_to_point(Coords<double>(center_x(),center_y()),Coords<double>(circle.x,circle.y));
+        return Math::get_angle_to_point(Coords<double>(center_x(),center_y()),Coords<double>(circle.x,circle.y));
     }
 
     //Fills a vector with vertex coordinates
@@ -122,11 +125,11 @@ public:
     }
 
     double get_angle_to_rect(const Collision_Rect<T>& box) const{
-        return Collision::get_angle_to_point(Coords<double>(x,y),Coords<double>(box.center_x(),box.center_y()));
+        return Math::get_angle_to_point(Coords<double>(x,y),Coords<double>(box.center_x(),box.center_y()));
     }
 
     double get_angle_to_circ(const Collision_Circ<T>& circle) const{
-        return Collision::get_angle_to_point(Coords<double>(x,y),Coords<double>(circle.x,circle.y));
+        return Math::get_angle_to_point(Coords<double>(x,y),Coords<double>(circle.x,circle.y));
     }
 
     //Fills a vector with vertex coordinates
@@ -304,23 +307,6 @@ public:
 
             return box;
         }
-    }
-
-    static double get_angle_to_point(const Coords<double>& point_a,const Coords<double>& point_b){
-        double x_component=Math::abs(point_b.x-point_a.x);
-        double y_component=Math::abs(point_b.y-point_a.y);
-
-        if(point_b.x<point_a.x){
-            x_component*=-1.0;
-        }
-
-        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
-
-        if(point_b.y>point_a.y){
-            angle=360.0-angle;
-        }
-
-        return angle;
     }
 };
 

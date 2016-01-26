@@ -43,8 +43,10 @@ public:
 
     static Coords<double> rotate_point(const Coords<double>& point,const Coords<double>& center,double angle);
 
+    static double get_angle_to_point(const Coords<double>& point_a,const Coords<double>& point_b);
+
     template<typename T>
-    static bool signs_same(T a,T b){
+    static bool signs_same(const T& a,const T& b){
         if((a<0 && b<0) || (a>0 && b>0) || (a==0 && b==0)){
             return true;
         }
