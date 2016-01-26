@@ -50,7 +50,7 @@ void Screen_Shake::change_direction(){
     else{
         Collision_Rect<double> box(x,y,2.0,2.0);
         Collision_Rect<double> box_mid(0.0,0.0,2.0,2.0);
-        direction=Collision::get_angle_to_rect(box,box_mid);
+        direction=box.get_angle_to_rect(box_mid);
     }
 }
 

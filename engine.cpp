@@ -363,7 +363,7 @@ int Engine::get_text_input_selected_chunk(){
         Collision_Rect<double> box_a(0,0,1,1);
         Collision_Rect<double> box_b(axis_x,axis_y,1,1);
 
-        double axis_angle=Collision::get_angle_to_rect(box_a,box_b);
+        double axis_angle=box_a.get_angle_to_rect(box_b);
 
         if(axis_angle>=74 && axis_angle<118){
             selected_chunk=0;
