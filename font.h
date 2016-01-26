@@ -43,11 +43,11 @@ public:
 
     void build_font();
 
-    double get_letter_width();
-    double get_letter_height();
+    double get_letter_width() const;
+    double get_letter_height() const;
 
-    int get_gui_padding_x();
-    int get_gui_padding_y();
+    int get_gui_padding_x() const;
+    int get_gui_padding_y() const;
 
     void set_sprite(std::string sprite_name);
     void set_gui_padding_x(int x);
@@ -55,7 +55,7 @@ public:
     void set_shadow_distance(int distance);
 
     void show(double x,double y,std::string text,std::string font_color,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,
-              SDL_Rect allowed_area=FONT_DEFAULT_ALLOWED_AREA,const std::vector<std::string>& character_colors=std::vector<std::string>());
+              const SDL_Rect& allowed_area=FONT_DEFAULT_ALLOWED_AREA,const std::vector<std::string>& character_colors=std::vector<std::string>());
 };
 
 #endif

@@ -47,19 +47,19 @@ void Bitmap_Font::build_font(){
     }
 }
 
-double Bitmap_Font::get_letter_width(){
+double Bitmap_Font::get_letter_width() const{
     return sprite.get_width()/256.0;
 }
 
-double Bitmap_Font::get_letter_height(){
+double Bitmap_Font::get_letter_height() const{
     return sprite.get_height();
 }
 
-int Bitmap_Font::get_gui_padding_x(){
+int Bitmap_Font::get_gui_padding_x() const{
     return gui_padding_x;
 }
 
-int Bitmap_Font::get_gui_padding_y(){
+int Bitmap_Font::get_gui_padding_y() const{
     return gui_padding_y;
 }
 
@@ -80,7 +80,7 @@ void Bitmap_Font::set_shadow_distance(int distance){
 }
 
 void Bitmap_Font::show(double x,double y,string text,string font_color,double opacity,double scale_x,double scale_y,double angle,
-                       SDL_Rect allowed_area,const vector<string>& character_colors){
+                       const SDL_Rect& allowed_area,const vector<string>& character_colors){
     //Temporary offsets
     double X=x,Y=y;
 

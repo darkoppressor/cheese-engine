@@ -14,16 +14,16 @@ public:
     Vector_Components();
     Vector_Components(double get_a,double get_b);
 
-    Vector_Components operator+(Vector_Components vc1);
-    void operator+=(Vector_Components vc1);
+    Vector_Components operator+(const Vector_Components& vc1) const;
+    void operator+=(const Vector_Components& vc1);
 
-    Vector_Components operator-(Vector_Components vc1);
-    void operator-=(Vector_Components vc1);
+    Vector_Components operator-(const Vector_Components& vc1) const;
+    void operator-=(const Vector_Components& vc1);
 
-    Vector_Components operator*(double scalar);
+    Vector_Components operator*(double scalar) const;
     void operator*=(double scalar);
 
-    Vector_Components operator/(double scalar);
+    Vector_Components operator/(double scalar) const;
     void operator/=(double scalar);
 };
 
@@ -35,26 +35,26 @@ public:
 
     Vector();
     Vector(double get_magnitude,double get_direction);
-    Vector(Vector_Components vc);
+    Vector(const Vector_Components& vc);
 
-    Vector_Components get_components();
-    Vector_Components get_components_absolute();
-    void set_polar_form(Vector_Components vc);
-    Vector opposite();
+    Vector_Components get_components() const;
+    Vector_Components get_components_absolute() const;
+    void set_polar_form(const Vector_Components& vc);
+    Vector opposite() const;
 
-    Vector operator+(Vector vector1);
-    void operator+=(Vector vector1);
+    Vector operator+(const Vector& vector1) const;
+    void operator+=(const Vector& vector1);
 
-    Vector operator-(Vector vector1);
-    void operator-=(Vector vector1);
+    Vector operator-(const Vector& vector1) const;
+    void operator-=(const Vector& vector1);
 
-    Vector operator*(double scalar);
+    Vector operator*(double scalar) const;
     void operator*=(double scalar);
 
-    Vector operator/(double scalar);
+    Vector operator/(double scalar) const;
     void operator/=(double scalar);
 
-    double dot_product(Vector vector1);
+    double dot_product(const Vector& vector1) const;
 };
 
 #endif
