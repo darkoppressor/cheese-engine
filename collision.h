@@ -55,6 +55,14 @@ public:
         return Coords<T>(center_x(),center_y());
     }
 
+    double get_angle_to_rect(const Collision_Rect<T>& box) const{
+        return Collision::get_angle_to_point(Coords<double>(center_x(),center_y()),Coords<double>(box.center_x(),box.center_y()));
+    }
+
+    double get_angle_to_circ(const Collision_Circ<T>& circle) const{
+        return Collision::get_angle_to_point(Coords<double>(center_x(),center_y()),Coords<double>(circle.x,circle.y));
+    }
+
     //Fills a vector with vertex coordinates
     //The first coordinate is the upper left corner
     //Subsequent vertices proceed in a clockwise direction
@@ -113,6 +121,14 @@ public:
         return Coords<T>(x,y);
     }
 
+    double get_angle_to_rect(const Collision_Rect<T>& box) const{
+        return Collision::get_angle_to_point(Coords<double>(x,y),Coords<double>(box.center_x(),box.center_y()));
+    }
+
+    double get_angle_to_circ(const Collision_Circ<T>& circle) const{
+        return Collision::get_angle_to_point(Coords<double>(x,y),Coords<double>(circle.x,circle.y));
+    }
+
     //Fills a vector with vertex coordinates
     //The first coordinate is the top of the circle
     //Subsequent vertices proceed in a counter-clockwise direction
@@ -138,7 +154,7 @@ class Collision{
 public:
 
     template<typename T>
-    static bool check_rect(Collision_Rect<T> box_a,Collision_Rect<T> box_b){
+    static bool check_rect(const Collision_Rect<T>& box_a,const Collision_Rect<T>& box_b){
         if(box_a.y+box_a.h<box_b.y){
             return false;
         }
@@ -156,7 +172,7 @@ public:
     }
 
     template<typename T>
-    static bool check_circ(Collision_Circ<T> circle_a,Collision_Circ<T> circle_b){
+    static bool check_circ(const Collision_Circ<T>& circle_a,const Collision_Circ<T>& circle_b){
         T a=circle_a.r+circle_b.r;
 
         T dx=circle_a.x-circle_b.x;
@@ -166,7 +182,7 @@ public:
     }
 
     template<typename T>
-    static bool check_circ_rect(Collision_Circ<T> circle,Collision_Rect<T> box){
+    static bool check_circ_rect(const Collision_Circ<T>& circle,const Collision_Rect<T>& box){
         T closest_x=(T)0;
         T closest_y=(T)0;
 
@@ -194,6 +210,11 @@ public:
         T dy=circle.y-closest_y;
 
         return circle.r*circle.r>(dx*dx)+(dy*dy);
+    }
+
+    template<typename T>
+    static bool check_rect_circ(const Collision_Rect<T>& box,const Collision_Circ<T>& circle){
+        return check_circ_rect(circle,box);
     }
 
     //Returns the dot product of the vertex's projection onto the axis and the axis
@@ -267,7 +288,7 @@ public:
 
     //Returns a rectangle containing the collision area of the two passed rectangles
     template<typename T>
-    static Collision_Rect<T> get_collision_area_rect(Collision_Rect<T> box_a,Collision_Rect<T> box_b){
+    static Collision_Rect<T> get_collision_area_rect(const Collision_Rect<T>& box_a,const Collision_Rect<T>& box_b){
         if(check_rect(box_a,box_b)){
             Collision_Rect<T> box;
 
@@ -285,92 +306,17 @@ public:
         }
     }
 
-    static double get_angle_to_rect(Collision_Rect<double> box_a,Collision_Rect<double> box_b){
-        double x1=box_a.center_x();
-        double y1=box_a.center_y();
+    static double get_angle_to_point(const Coords<double>& point_a,const Coords<double>& point_b){
+        double x_component=Math::abs(point_b.x-point_a.x);
+        double y_component=Math::abs(point_b.y-point_a.y);
 
-        double x2=box_b.center_x();
-        double y2=box_b.center_y();
-
-        double x_component=Math::abs(x2-x1);
-        double y_component=Math::abs(y2-y1);
-
-        if(x2<x1){
+        if(point_b.x<point_a.x){
             x_component*=-1.0;
         }
 
         double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
 
-        if(y2>y1){
-            angle=360.0-angle;
-        }
-
-        return angle;
-    }
-
-    static double get_angle_to_rect(Collision_Circ<double> circle,Collision_Rect<double> box){
-        double x1=circle.x;
-        double y1=circle.y;
-
-        double x2=box.center_x();
-        double y2=box.center_y();
-
-        double x_component=Math::abs(x2-x1);
-        double y_component=Math::abs(y2-y1);
-
-        if(x2<x1){
-            x_component*=-1.0;
-        }
-
-        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
-
-        if(y2>y1){
-            angle=360.0-angle;
-        }
-
-        return angle;
-    }
-
-    static double get_angle_to_circ(Collision_Circ<double> circle_a,Collision_Circ<double> circle_b){
-        double x1=circle_a.x;
-        double y1=circle_a.y;
-
-        double x2=circle_b.x;
-        double y2=circle_b.y;
-
-        double x_component=Math::abs(x2-x1);
-        double y_component=Math::abs(y2-y1);
-
-        if(x2<x1){
-            x_component*=-1.0;
-        }
-
-        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
-
-        if(y2>y1){
-            angle=360.0-angle;
-        }
-
-        return angle;
-    }
-
-    static double get_angle_to_circ(Collision_Rect<double> box,Collision_Circ<double> circle){
-        double x1=box.center_x();
-        double y1=box.center_y();
-
-        double x2=circle.x;
-        double y2=circle.y;
-
-        double x_component=Math::abs(x2-x1);
-        double y_component=Math::abs(y2-y1);
-
-        if(x2<x1){
-            x_component*=-1.0;
-        }
-
-        double angle=Math::radians_to_degrees(Math::atan2(y_component,x_component));
-
-        if(y2>y1){
+        if(point_b.y>point_a.y){
             angle=360.0-angle;
         }
 
