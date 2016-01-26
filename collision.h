@@ -6,9 +6,11 @@
 #define collision_h
 
 #include "engine_math.h"
+#include "coords.h"
 
 #include <algorithm>
 #include <cstdint>
+#include <vector>
 
 template<typename T>
 class Collision_Rect{
@@ -48,6 +50,35 @@ public:
     T center_y() const{
         return y+h/(T)2;
     }
+
+    Coords<T> get_center() const{
+        return Coords<T>(center_x(),center_y());
+    }
+
+    //Fills a vector with vertex coordinates
+    //The first coordinate is the upper left corner
+    //Subsequent vertices proceed in a clockwise direction
+    //Note that this function deals with doubles, NOT Ts
+    void get_vertices(std::vector<Coords<double>>& vertices,double angle) const{
+        Coords<double> ul(x,y);
+        Coords<double> ur(x+w,y);
+        Coords<double> ll(x,y+h);
+        Coords<double> lr(x+w,y+h);
+
+        if(angle!=0.0){
+            Coords<double> center(center_x(),center_y());
+
+            ul=Math::rotate_point(ul,center,angle);
+            ur=Math::rotate_point(ur,center,angle);
+            ll=Math::rotate_point(ll,center,angle);
+            lr=Math::rotate_point(lr,center,angle);
+        }
+
+        vertices.push_back(ul);
+        vertices.push_back(ur);
+        vertices.push_back(lr);
+        vertices.push_back(ll);
+    }
 };
 
 template<typename T>
@@ -76,6 +107,30 @@ public:
 
     Collision_Circ<T> operator/(T scalar){
         return Collision_Circ(x/scalar,y/scalar,r/scalar);
+    }
+
+    Coords<T> get_center() const{
+        return Coords<T>(x,y);
+    }
+
+    //Fills a vector with vertex coordinates
+    //The first coordinate is the top of the circle
+    //Subsequent vertices proceed in a counter-clockwise direction
+    //Note that this function deals with doubles, NOT Ts
+    void get_vertices(std::vector<Coords<double>>& vertices,std::uint32_t vertex_count) const{
+        if(vertex_count>0){
+            Coords<double> vertex_0(x,y-r);
+
+            vertices.push_back(vertex_0);
+
+            for(std::uint32_t i=1;i<vertex_count;i++){
+                Coords<double> center(x,y);
+
+                double angle=(360.0/(double)vertex_count)*(double)i;
+
+                vertices.push_back(Math::rotate_point(vertex_0,center,angle));
+            }
+        }
     }
 };
 
