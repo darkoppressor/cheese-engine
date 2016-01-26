@@ -30,8 +30,12 @@ uint32_t RNG::get_number(){
     return (uint32_t)(Q[u]=0xfffffffe - x);
 }
 
+uint32_t RNG::get_time_number() const{
+    return (uint32_t)time(0);
+}
+
 RNG::RNG(){
-    seed((uint32_t)time(0));
+    seed();
 }
 
 RNG::RNG(uint32_t seed_value){
@@ -47,6 +51,10 @@ void RNG::seed(uint32_t seed_value){
 
     c=((s*1103515245)+12345)%809430660;
     u=0;
+}
+
+void RNG::seed(){
+    seed(get_time_number());
 }
 
 uint32_t RNG::random_range(uint32_t lownum,uint32_t highnum){

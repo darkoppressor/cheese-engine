@@ -30,12 +30,15 @@ private:
 
     std::uint32_t get_number();
 
+    std::uint32_t get_time_number() const;
+
 public:
 
     RNG();
     RNG(std::uint32_t seed_value);
 
     void seed(std::uint32_t seed_value);
+    void seed();
 
     std::uint32_t random_range(std::uint32_t lownum,std::uint32_t highnum);
 
