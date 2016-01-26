@@ -196,6 +196,75 @@ public:
         return circle.r*circle.r>(dx*dx)+(dy*dy);
     }
 
+    //Returns the dot product of the vertex's projection onto the axis and the axis
+    static double get_projection_dot_product(const Coords<double>& vertex,const Coords<double>& axis){
+        double quotient=(vertex.x*axis.x+vertex.y*axis.y)/(axis.x*axis.x+axis.y*axis.y);
+
+        Coords<double> proj(quotient*axis.x,quotient*axis.y);
+
+        return proj.x*axis.x+proj.y*axis.y;
+    }
+
+    //Note that while this function takes as input any type T collision objects, it works with doubles internally
+    template<typename T>
+    static bool check_rect_rotated(const Collision_Rect<T>& box_a,const Collision_Rect<T>& box_b,double angle_a,double angle_b){
+        if(angle_a==0.0 && angle_b==0.0){
+            return check_rect(box_a,box_b);
+        }
+
+        std::vector<Coords<double>> vertices_a;
+        box_a.get_vertices(vertices_a,angle_a);
+
+        std::vector<Coords<double>> vertices_b;
+        box_b.get_vertices(vertices_b,angle_b);
+
+        std::vector<Coords<double>> axes;
+        axes.push_back(Coords<double>(vertices_a[1].x-vertices_a[0].x,vertices_a[1].y-vertices_a[0].y));
+        axes.push_back(Coords<double>(vertices_a[1].x-vertices_a[2].x,vertices_a[1].y-vertices_a[2].y));
+        axes.push_back(Coords<double>(vertices_b[0].x-vertices_b[3].x,vertices_b[0].y-vertices_b[3].y));
+        axes.push_back(Coords<double>(vertices_b[0].x-vertices_b[1].x,vertices_b[0].y-vertices_b[1].y));
+
+        for(size_t a=0;a<axes.size();a++){
+            std::vector<double> dot_products_a;
+            for(size_t i=0;i<vertices_a.size();i++){
+                dot_products_a.push_back(get_projection_dot_product(vertices_a[i],axes[a]));
+            }
+
+            std::vector<double> dot_products_b;
+            for(size_t i=0;i<vertices_b.size();i++){
+                dot_products_b.push_back(get_projection_dot_product(vertices_b[i],axes[a]));
+            }
+
+            double min_a=dot_products_a[0];
+            double max_a=min_a;
+            for(size_t i=0;i<dot_products_a.size();i++){
+                if(dot_products_a[i]<min_a){
+                    min_a=dot_products_a[i];
+                }
+                else if(dot_products_a[i]>max_a){
+                    max_a=dot_products_a[i];
+                }
+            }
+
+            double min_b=dot_products_b[0];
+            double max_b=min_b;
+            for(size_t i=0;i<dot_products_b.size();i++){
+                if(dot_products_b[i]<min_b){
+                    min_b=dot_products_b[i];
+                }
+                else if(dot_products_b[i]>max_b){
+                    max_b=dot_products_b[i];
+                }
+            }
+
+            if(!(min_b<=max_a && max_b>=min_a)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     //Returns a rectangle containing the collision area of the two passed rectangles
     template<typename T>
     static Collision_Rect<T> get_collision_area_rect(Collision_Rect<T> box_a,Collision_Rect<T> box_b){
