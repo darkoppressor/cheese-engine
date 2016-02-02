@@ -97,10 +97,10 @@ int Math::get_angle_quadrant(double angle){
 }
 
 double Math::get_distance_between_angles(double angle_a,double angle_b){
-    int32_t a=(int32_t)angle_a;
-    int32_t b=(int32_t)angle_b;
+    std::int32_t a=(std::int32_t)angle_a;
+    std::int32_t b=(std::int32_t)angle_b;
 
-    int32_t difference=Math::abs(a,b)%360;
+    std::int32_t difference=abs(a,b)%360;
     if(difference>180){
         difference=360-difference;
     }
@@ -145,6 +145,6 @@ double Math::get_angle_to_point(const Coords<double>& point_a,const Coords<doubl
     return angle;
 }
 
-double Math::distance_between_points(double x1,double y1,double x2,double y2){
-    return sqrt(pow(x2-x1,2.0)+pow(y2-y1,2.0));
+double Math::get_distance_between_points(const Coords<double>& point_a,const Coords<double>& point_b){
+    return sqrt(pow(point_b.x-point_a.x,2.0)+pow(point_b.y-point_a.y,2.0));
 }

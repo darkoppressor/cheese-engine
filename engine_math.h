@@ -58,7 +58,7 @@ public:
         }
     }
 
-    static double distance_between_points(double x1,double y1,double x2,double y2);
+    static double get_distance_between_points(const Coords<double>& point_a,const Coords<double>& point_b);
 };
 
 #endif

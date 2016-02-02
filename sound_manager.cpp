@@ -8,6 +8,7 @@
 #include "engine_data.h"
 #include "engine_math.h"
 #include "log.h"
+#include "coords.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -160,7 +161,7 @@ void Sound_Manager::play_sound(string sound_name,double sound_x,double sound_y,d
     double sound_position_x=sound_x*listener_zoom;
     double sound_position_y=sound_y*listener_zoom;
 
-    double sound_distance=Math::distance_between_points(sound_center_x,sound_center_y,sound_position_x,sound_position_y);
+    double sound_distance=Math::get_distance_between_points(Coords<double>(sound_center_x,sound_center_y),Coords<double>(sound_position_x,sound_position_y));
     if(sound_distance<1.0){
         sound_distance=0.0;
     }
