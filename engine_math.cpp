@@ -5,6 +5,7 @@
 #include "engine_math.h"
 
 #include <cmath>
+#include <cstdint>
 
 const double Math::PI=3.14159265358979323846;
 const double Math::E=2.71828182845904523536;
@@ -93,6 +94,18 @@ int Math::get_angle_quadrant(double angle){
     else{
         return 0;
     }
+}
+
+double Math::get_distance_between_angles(double angle_a,double angle_b){
+    int32_t a=(int32_t)angle_a;
+    int32_t b=(int32_t)angle_b;
+
+    int32_t difference=Math::abs(a,b)%360;
+    if(difference>180){
+        difference=360-difference;
+    }
+
+    return (double)difference;
 }
 
 Coords<double> Math::rotate_point(const Coords<double>& point,const Coords<double>& center,double angle){

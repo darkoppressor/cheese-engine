@@ -41,6 +41,9 @@ public:
     //Returns the quadrant that the passed angle is in, or 0 if it is a quadrantal angle
     static int get_angle_quadrant(double angle);
 
+    //Returns the distance between the two passed angles as a number within [0,180], casted to a double
+    static double get_distance_between_angles(double angle_a,double angle_b);
+
     static Coords<double> rotate_point(const Coords<double>& point,const Coords<double>& center,double angle);
 
     static double get_angle_to_point(const Coords<double>& point_a,const Coords<double>& point_b);
