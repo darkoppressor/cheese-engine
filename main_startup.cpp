@@ -226,6 +226,8 @@ int main_startup(int game_data_load_item_count){
 
     Engine::console.exec_file("autoexec.cfg");
 
+    Game_Manager::setup_title();
+
     game_loop();
 
     return 0;
