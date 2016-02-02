@@ -431,6 +431,11 @@
 		<Unit filename="image_manager.h" />
 		<Unit filename="information.cpp" />
 		<Unit filename="information.h" />
+		<Unit filename="int_collision.h" />
+		<Unit filename="int_math.cpp" />
+		<Unit filename="int_math.h" />
+		<Unit filename="int_vector.cpp" />
+		<Unit filename="int_vector.h" />
 		<Unit filename="log.cpp" />
 		<Unit filename="log.h" />
 		<Unit filename="main_startup.cpp" />
