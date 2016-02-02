@@ -17,6 +17,7 @@
 #include "directories.h"
 #include "engine_data.h"
 #include "network_lockstep.h"
+#include "game_manager.h"
 
 #ifdef GAME_OS_ANDROID
     #include "android.h"
