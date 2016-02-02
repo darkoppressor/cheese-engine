@@ -38,11 +38,11 @@ public:
         h=get_h;
     }
 
-    Collision_Rect<T> operator*(T scalar){
+    Collision_Rect<T> operator*(T scalar) const{
         return Collision_Rect(x*scalar,y*scalar,w*scalar,h*scalar);
     }
 
-    Collision_Rect<T> operator/(T scalar){
+    Collision_Rect<T> operator/(T scalar) const{
         return Collision_Rect(x/scalar,y/scalar,w/scalar,h/scalar);
     }
 
@@ -112,11 +112,11 @@ public:
         r=get_r;
     }
 
-    Collision_Circ<T> operator*(T scalar){
+    Collision_Circ<T> operator*(T scalar) const{
         return Collision_Circ(x*scalar,y*scalar,r*scalar);
     }
 
-    Collision_Circ<T> operator/(T scalar){
+    Collision_Circ<T> operator/(T scalar) const{
         return Collision_Circ(x/scalar,y/scalar,r/scalar);
     }
 
