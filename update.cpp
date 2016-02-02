@@ -125,7 +125,7 @@ void Update::animate(){
             Game_World::animate();
         }
     }
-    else{
+    else if(Game_Manager::is_title_allowed()){
         Game_Manager::update_title_background();
     }
 }
@@ -152,7 +152,7 @@ void Update::render(int frame_rate,double ms_per_frame,int logic_frame_rate){
 
         Game_Manager::render_scoreboard();
     }
-    else{
+    else if(Game_Manager::is_title_allowed()){
         Game_Manager::render_title_background();
     }
 

@@ -14,6 +14,8 @@
 
 using namespace std;
 
+bool Game_Manager::disallow_title=false;
+
 bool Game_Manager::display_scoreboard=false;
 bool Game_Manager::in_progress=false;
 bool Game_Manager::paused=false;
@@ -108,6 +110,14 @@ void Game_Manager::toggle_pause(){
     Sound_Manager::play_sound("pause");
 }
 
+void Game_Manager::done_with_title(){
+    disallow_title=true;
+}
+
+bool Game_Manager::is_title_allowed(){
+    return !disallow_title;
+}
+
 void Game_Manager::start(){
     if(!in_progress){
         in_progress=true;
@@ -162,7 +172,9 @@ void Game_Manager::stop(){
 
         Game_World::clear_world();
 
-        setup_title();
+        if(is_title_allowed()){
+            setup_title();
+        }
 
         if(Engine::chat.on){
             Engine::chat.toggle_on();

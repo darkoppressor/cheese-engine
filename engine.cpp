@@ -174,6 +174,8 @@ void Engine::build_text_input_characters(){
 }
 
 void Engine::quit(){
+    Game_Manager::clear_title();
+    Game_Manager::done_with_title();
     Game_Manager::stop();
 
     Data_Manager::unload_world();

@@ -14,6 +14,10 @@
 #include <vector>
 
 class Game_Manager{
+private:
+
+    static bool disallow_title;
+
 public:
 
     static bool display_scoreboard;
@@ -52,6 +56,11 @@ public:
 
     static void toggle_pause();
 
+    //Once this is called, title loading/unloading/rendering will stop
+    //This is used when shutting down the engine
+    static void done_with_title();
+    static bool is_title_allowed();
+
     static void start();
     static void start_server_lockstep();
     static void start_client();
@@ -88,8 +97,8 @@ public:
     static void setup_title();
     static void update_title_background();
 
-    static void render_scoreboard();
     static void render_title_background();
+    static void render_scoreboard();
     static void render_pause();
     static void render_fps(int render_rate,double ms_per_frame,int logic_frame_rate);
     static void render_loading_screen(const Progress_Bar& bar,std::string message);
