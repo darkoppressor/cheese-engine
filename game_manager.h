@@ -57,14 +57,14 @@ public:
     static void start_client();
     static void stop();
 
-    static void center_camera(Collision_Rect<double> box);
-    static void center_camera(Collision_Circ<double> circle);
+    static void center_camera(const Collision_Rect<double>& box);
+    static void center_camera(const Collision_Circ<double>& circle);
 
-    static void zoom_camera_in(Collision_Rect<double> box);
-    static void zoom_camera_in(Collision_Circ<double> circle);
+    static void zoom_camera_in(const Collision_Rect<double>& box);
+    static void zoom_camera_in(const Collision_Circ<double>& circle);
 
-    static void zoom_camera_out(Collision_Rect<double> box);
-    static void zoom_camera_out(Collision_Circ<double> circle);
+    static void zoom_camera_out(const Collision_Rect<double>& box);
+    static void zoom_camera_out(const Collision_Circ<double>& circle);
 
     static void prepare_for_input();
 
