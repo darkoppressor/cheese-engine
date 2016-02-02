@@ -116,6 +116,8 @@ void Game_Manager::start(){
 
         Network_Lockstep::reset();
 
+        clear_title();
+
         Game_World::generate_world();
     }
 }
@@ -128,6 +130,8 @@ void Game_Manager::start_server_lockstep(){
 
         Network_Lockstep::reset();
 
+        clear_title();
+
         Game_World::clear_world();
     }
 }
@@ -139,6 +143,8 @@ void Game_Manager::start_client(){
         reset();
 
         Network_Lockstep::reset();
+
+        clear_title();
 
         Game_World::clear_world();
     }
@@ -155,6 +161,8 @@ void Game_Manager::stop(){
         Network_Lockstep::reset();
 
         Game_World::clear_world();
+
+        setup_title();
 
         if(Engine::chat.on){
             Engine::chat.toggle_on();

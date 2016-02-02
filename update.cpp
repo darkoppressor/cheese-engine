@@ -120,8 +120,13 @@ void Update::animate(){
 
     Engine::animate();
 
-    if(Game_Manager::in_progress && !Game_Manager::paused){
-        Game_World::animate();
+    if(Game_Manager::in_progress){
+        if(!Game_Manager::paused){
+            Game_World::animate();
+        }
+    }
+    else{
+        Game_Manager::update_title_background();
     }
 }
 

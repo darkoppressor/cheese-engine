@@ -84,6 +84,10 @@ public:
 
     static std::string get_game_window_caption();
 
+    static void clear_title();
+    static void setup_title();
+    static void update_title_background();
+
     static void render_scoreboard();
     static void render_title_background();
     static void render_pause();
