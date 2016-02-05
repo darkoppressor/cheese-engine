@@ -78,7 +78,7 @@ public:
     static bool exists(std::string path);
     static bool is_directory(std::string path);
     static bool is_regular_file(std::string path);
-    static void create_directory(std::string path);
+    static bool create_directory(std::string path);
     static bool rename_file(std::string old_path,std::string new_path);
     //This does NOT overwrite new_path if it already exists
     static bool copy_file(std::string old_path,std::string new_path);
