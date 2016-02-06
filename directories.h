@@ -16,19 +16,28 @@ public:
 
     static bool save_location_loaded;
 
-    //Returns a string with the (absolute if possible) path to the current working directory.
+    //If save_location is "home", and SDL_GetPrefPath failed,
+    //this is set to true and a fallback save location is used
+    static bool save_location_fallback;
+
+    //Returns a string with the (absolute if possible) path to the current working directory
     static std::string get_cwd();
 
-    //Returns a string with the path to the (absolute if possible) current save location.
+    //Returns a string with the path to the (absolute if possible) current save location
     static std::string get_save_directory_absolute();
 
-    //Returns a string with the path to the current save location.
+    //Returns a string with the path to the current save location
     static std::string get_save_directory();
 
-    //Create the home directory.
+    //Create the home directory
     static void make_home_directory();
-    //Create the entire needed directory structure.
-    static void make_directories();
+
+    //Returns false if there is no valid save location
+    static bool check_save_location();
+
+    //Create the entire needed directory structure
+    //Returns false if the directory structure could not be created
+    static bool make_directories();
 };
 
 #endif

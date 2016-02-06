@@ -189,21 +189,19 @@ int main_startup(int game_data_load_item_count){
 
     #ifdef GAME_OS_ANDROID
         Android::initialize();
-
-        if(!File_IO::external_storage_available()){
-            return 2;
-        }
     #endif
 
     if(!Data_Manager::load_data_engine()){
-        return 3;
+        return 2;
     }
 
     if(!Options::load_save_location()){
-        return 4;
+        return 3;
     }
 
-    Directories::make_directories();
+    if(!Directories::make_directories()){
+        return 4;
+    }
 
     Log::clear_error_log();
 
