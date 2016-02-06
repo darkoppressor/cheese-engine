@@ -158,6 +158,8 @@ string Directories::get_save_directory(){
 
 void Directories::make_home_directory(){
     if(Options::save_location=="home"){
+        string str_home=get_save_directory();
+
         #ifdef GAME_OS_WINDOWS
             if(save_location_fallback){
                 string str_my_games=getenv("USERPROFILE");
@@ -168,8 +170,6 @@ void Directories::make_home_directory(){
                 File_IO::create_directory(str_my_games);
             }
         #endif
-
-        string str_home=get_save_directory();
 
         //Remove the ending slash.
         str_home.erase(str_home.length()-1,1);
