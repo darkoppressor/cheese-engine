@@ -193,7 +193,7 @@ bool Directories::check_save_location(){
             //Fallback to the local save location
             Options::save_location="local";
 
-            Log::add_error("Error using save location '"+Options::save_location+"': Save test failed on directory '"+test+"'",false);
+            Log::add_error("Error using save location 'home': Save test failed on directory '"+test+"'",false);
         }
     }
 
@@ -206,7 +206,7 @@ bool Directories::check_save_location(){
             return true;
         }
         else{
-            Log::add_error("Error using save location '"+Options::save_location+"': Save test failed on directory '"+test+"'",false);
+            Log::add_error("Error using save location 'local': Save test failed on directory '"+test+"'",false);
 
             return false;
         }
