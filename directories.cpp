@@ -120,7 +120,7 @@ string Directories::get_save_directory(){
                 }
             }
 
-            /**if(!using_external_storage){
+            if(!using_external_storage){
                 const char* internal_path=SDL_AndroidGetInternalStoragePath();
 
                 if(internal_path!=0){
@@ -132,7 +132,7 @@ string Directories::get_save_directory(){
                     msg+=SDL_GetError();
                     Log::add_error(msg);
                 }
-            }*/
+            }
         #endif
 
         Strings::slashes_to_slash(&str_home);
