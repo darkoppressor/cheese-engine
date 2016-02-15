@@ -9,6 +9,7 @@
 #include "console.h"
 #include "coords.h"
 #include "color_theme.h"
+#include "cursor.h"
 
 #include <string>
 #include <vector>
@@ -99,6 +100,8 @@ public:
     static std::string get_system_info();
 
     static void animate();
+
+    static Cursor* get_current_cursor();
 
     static void render_toast();
     static void render_small_text_inputter();

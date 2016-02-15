@@ -65,11 +65,19 @@ void Cursor::free_hw_cursor(){
     SDL_FreeCursor(hw_cursor);
 }
 
+double Cursor::get_width() const{
+    return sprite.get_width();
+}
+
+double Cursor::get_height() const{
+    return sprite.get_height();
+}
+
 void Cursor::animate(){
     sprite.animate();
 }
 
-void Cursor::render(int x,int y){
+void Cursor::render(int x,int y) const{
     if(Options::hw_cursor){
         SDL_SetCursor(hw_cursor);
 

@@ -704,6 +704,15 @@ void Engine::animate(){
     GUI_Manager::animate();
 }
 
+Cursor* Engine::get_current_cursor(){
+    if(!mouse_over){
+        return Object_Manager::get_cursor(Engine_Data::cursor);
+    }
+    else{
+        return Object_Manager::get_cursor(Engine_Data::cursor_mouse_over);
+    }
+}
+
 void Engine::render_toast(){
     if(toasts.size()>0){
         toasts[0].render();
@@ -962,12 +971,7 @@ void Engine::render(int render_rate,double ms_per_frame,int logic_frame_rate){
             int mouse_y=0;
             get_mouse_state(&mouse_x,&mouse_y);
 
-            if(!mouse_over){
-                Object_Manager::get_cursor(Engine_Data::cursor)->render(mouse_x,mouse_y);
-            }
-            else{
-                Object_Manager::get_cursor(Engine_Data::cursor_mouse_over)->render(mouse_x,mouse_y);
-            }
+            get_current_cursor()->render(mouse_x,mouse_y);
         }
         else{
             if(Options::hw_cursor){

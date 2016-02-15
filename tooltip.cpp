@@ -37,7 +37,7 @@ void Tooltip::setup(string get_message,int mouse_x,int mouse_y){
     message=get_message;
 
     vector<string> lines;
-    int spacing_x=Object_Manager::get_font("small")->spacing_x;
+    int spacing_x=Object_Manager::get_font(font)->spacing_x;
     int window_width=(int)Math::floor((double)Game_Window::width()*0.95);
 
     while(message.length()*spacing_x>window_width){
@@ -70,7 +70,7 @@ void Tooltip::setup(string get_message,int mouse_x,int mouse_y){
     }
 
     on=true;
-    x=mouse_x;
+    x=mouse_x+Engine::get_current_cursor()->get_width();
     y=mouse_y+Object_Manager::get_font(font)->get_letter_height();
     set_dimensions();
 
