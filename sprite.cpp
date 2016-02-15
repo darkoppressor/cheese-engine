@@ -78,11 +78,11 @@ void Sprite::animate(int animation_speed_override){
     }
 }
 
-void Sprite::render(double x,double y,double opacity,double scale_x,double scale_y,double angle,string color_name) const{
+void Sprite::render(double x,double y,double opacity,double scale_x,double scale_y,double angle,string color_name,bool flip_x,bool flip_y) const{
     if(is_animated()){
-        Render::render_sprite(x,y,Image_Manager::get_image(name),&Object_Manager::get_animation(name)->sprite_sheet[frame],opacity,scale_x,scale_y,angle,color_name);
+        Render::render_sprite(x,y,Image_Manager::get_image(name),&Object_Manager::get_animation(name)->sprite_sheet[frame],opacity,scale_x,scale_y,angle,color_name,flip_x,flip_y);
     }
     else{
-        Render::render_texture(x,y,Image_Manager::get_image(name),opacity,scale_x,scale_y,angle,color_name);
+        Render::render_texture(x,y,Image_Manager::get_image(name),opacity,scale_x,scale_y,angle,color_name,flip_x,flip_y);
     }
 }
