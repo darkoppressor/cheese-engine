@@ -75,6 +75,9 @@ public:
     Sprite sprite_moused;
     Sprite sprite_click;
 
+    //Sprite to be rendered to the left of the button text
+    Sprite text_sprite;
+
     Button();
 
     void set_default_font();

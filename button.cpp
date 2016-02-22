@@ -35,6 +35,7 @@ Button::Button(){
     sprite.name="";
     sprite_moused.name="";
     sprite_click.name="";
+    text_sprite.name="";
 
     moused_over=false;
     clicked=false;
@@ -90,6 +91,11 @@ void Button::set_dimensions_text(){
     Bitmap_Font* ptr_font=Object_Manager::get_font(font);
 
     w=Engine_Data::gui_border_thickness*2.0+Strings::longest_line(text)*ptr_font->spacing_x+ptr_font->get_gui_padding_x();
+
+    if(text_sprite.name.length()>0){
+        w+=text_sprite.get_width();
+    }
+
     h=Engine_Data::gui_border_thickness*2.0+Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height()+ptr_font->get_gui_padding_y();
 }
 
@@ -267,6 +273,10 @@ void Button::animate(){
     if(sprite_click.name.length()>0){
         sprite_click.animate();
     }
+
+    if(text_sprite.name.length()>0){
+        text_sprite.animate();
+    }
 }
 
 void Button::render(int x_offset,int y_offset){
@@ -298,7 +308,14 @@ void Button::render(int x_offset,int y_offset){
 
             //Display the button's text.
             if(font_color_real!="<INVISIBLE>"){
-                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
+                double x_offset_sprite=0.0;
+
+                if(text_sprite.name.length()>0){
+                    x_offset_sprite=text_sprite.get_width();
+                    text_sprite.render(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-text_sprite.get_height()/2.0);
+                }
+
+                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness+x_offset_sprite,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
             }
         }
     }
@@ -321,7 +338,14 @@ void Button::render(int x_offset,int y_offset){
 
             //Display the button's text.
             if(font_color_real!="<INVISIBLE>"){
-                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
+                double x_offset_sprite=0.0;
+
+                if(text_sprite.name.length()>0){
+                    x_offset_sprite=text_sprite.get_width();
+                    text_sprite.render(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-text_sprite.get_height()/2.0);
+                }
+
+                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness+x_offset_sprite,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
             }
         }
     }
@@ -344,7 +368,14 @@ void Button::render(int x_offset,int y_offset){
 
             //Display the button's text.
             if(font_color_real!="<INVISIBLE>"){
-                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
+                double x_offset_sprite=0.0;
+
+                if(text_sprite.name.length()>0){
+                    x_offset_sprite=text_sprite.get_width();
+                    text_sprite.render(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-text_sprite.get_height()/2.0);
+                }
+
+                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness+x_offset_sprite,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
             }
         }
     }

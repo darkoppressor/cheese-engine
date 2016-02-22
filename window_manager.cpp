@@ -249,6 +249,9 @@ size_t Window_Manager::load_button(vector<string>& lines,size_t line_index){
         else if(Data_Reader::check_prefix(line,"sprite_click:")){
             windows.back().buttons.back().sprite_click.name=line;
         }
+        else if(Data_Reader::check_prefix(line,"text_sprite:")){
+            windows.back().buttons.back().text_sprite.name=line;
+        }
         else if(Data_Reader::check_prefix(line,"</button>")){
             windows.back().buttons.back().set_dimensions();
             windows.back().buttons.back().center_in_window(windows.back().w,windows.back().h);

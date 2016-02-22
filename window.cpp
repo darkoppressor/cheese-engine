@@ -273,6 +273,7 @@ void Window::create_close_button(){
         buttons[0].sprite.name="";
         buttons[0].sprite_moused.name="";
         buttons[0].sprite_click.name="";
+        buttons[0].text_sprite.name="";
         buttons[0].set_dimensions();
         buttons[0].center_in_window(w,h);
     }
