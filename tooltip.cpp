@@ -95,7 +95,7 @@ void Tooltip::set_dimensions(){
     Bitmap_Font* ptr_font=Object_Manager::get_font(font);
 
     w=Engine_Data::gui_border_thickness*2.0+Strings::longest_line(message)*ptr_font->spacing_x+ptr_font->get_gui_padding_x();
-    h=Engine_Data::gui_border_thickness*2.0+(Strings::newline_count(message)+1)*ptr_font->spacing_y+ptr_font->get_gui_padding_y();
+    h=Engine_Data::gui_border_thickness*2.0+Strings::newline_count(message)*ptr_font->spacing_y+(Strings::newline_count(message)+1)*ptr_font->get_letter_height()+ptr_font->get_gui_padding_y();
 }
 
 void Tooltip::render(){
@@ -115,7 +115,7 @@ void Tooltip::render(){
 
         //Display the message text
         if(Engine::current_color_theme()->tooltip_font!="<INVISIBLE>"){
-            ptr_font->show(x+Engine_Data::gui_border_thickness,y+Engine_Data::gui_border_thickness,message,Engine::current_color_theme()->tooltip_font);
+            ptr_font->show(x+Engine_Data::gui_border_thickness,y+h/2.0-(Strings::newline_count(message)*ptr_font->spacing_y+(Strings::newline_count(message)+1)*ptr_font->get_letter_height())/2.0,message,Engine::current_color_theme()->tooltip_font);
         }
     }
 }

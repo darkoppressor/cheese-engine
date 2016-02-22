@@ -4,7 +4,7 @@
 	spacing_x:7
 	spacing_y:12
 	gui_padding_x:3
-	gui_padding_y:-2
+	gui_padding_y:0
 	shadow_distance:0
 </font>
 
@@ -14,6 +14,6 @@
 	spacing_x:4
 	spacing_y:6
 	gui_padding_x:-1
-	gui_padding_y:-1
+	gui_padding_y:0
 	shadow_distance:0
 </font>

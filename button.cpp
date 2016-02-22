@@ -90,7 +90,7 @@ void Button::set_dimensions_text(){
     Bitmap_Font* ptr_font=Object_Manager::get_font(font);
 
     w=Engine_Data::gui_border_thickness*2.0+Strings::longest_line(text)*ptr_font->spacing_x+ptr_font->get_gui_padding_x();
-    h=Engine_Data::gui_border_thickness*2.0+(Strings::newline_count(text)+1)*ptr_font->spacing_y+ptr_font->get_gui_padding_y();
+    h=Engine_Data::gui_border_thickness*2.0+Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height()+ptr_font->get_gui_padding_y();
 }
 
 void Button::center_in_window(int window_width,int window_height){
@@ -298,7 +298,7 @@ void Button::render(int x_offset,int y_offset){
 
             //Display the button's text.
             if(font_color_real!="<INVISIBLE>"){
-                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+Engine_Data::gui_border_thickness,text,font_color_real);
+                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
             }
         }
     }
@@ -321,7 +321,7 @@ void Button::render(int x_offset,int y_offset){
 
             //Display the button's text.
             if(font_color_real!="<INVISIBLE>"){
-                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+Engine_Data::gui_border_thickness,text,font_color_real);
+                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
             }
         }
     }
@@ -344,7 +344,7 @@ void Button::render(int x_offset,int y_offset){
 
             //Display the button's text.
             if(font_color_real!="<INVISIBLE>"){
-                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+Engine_Data::gui_border_thickness,text,font_color_real);
+                ptr_font->show(x_offset+x+Engine_Data::gui_border_thickness,y_offset+y+h/2.0-(Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height())/2.0,text,font_color_real);
             }
         }
     }

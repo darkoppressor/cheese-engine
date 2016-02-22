@@ -67,7 +67,7 @@ void Information::set_dimensions(){
         }
         else{
             w=Engine_Data::gui_border_thickness*2.0+Strings::longest_line(text)*ptr_font->spacing_x+ptr_font->get_gui_padding_x();
-            h=Engine_Data::gui_border_thickness*2.0+(Strings::newline_count(text)+1)*ptr_font->spacing_y+ptr_font->get_gui_padding_y();
+            h=Engine_Data::gui_border_thickness*2.0+Strings::newline_count(text)*ptr_font->spacing_y+(Strings::newline_count(text)+1)*ptr_font->get_letter_height()+ptr_font->get_gui_padding_y();
         }
     }
 }
