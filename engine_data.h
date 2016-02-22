@@ -57,6 +57,7 @@ public:
     static int axis_scroll_rate;
 
     static int scrolling_buttons_offset;
+    static int scrolling_buttons_spacing;
 
     static int cursor_width;
     static int cursor_height;

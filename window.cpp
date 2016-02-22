@@ -302,11 +302,11 @@ int Window::get_scrolling_button_offset(int index){
         return -1;
     }
 
-    int scrolling_adjust_y=buttons[index].h*scroll_offset;
+    int scrolling_adjust_y=buttons[index].h*scroll_offset+Engine_Data::scrolling_buttons_spacing*scroll_offset;
 
-    int position_adjust_y=buttons[index].h*(index-1-last_normal_button);
+    int position_adjust_y=buttons[index].h*get_scrolling_button_position(index)+Engine_Data::scrolling_buttons_spacing*get_scrolling_button_position(index);
 
-    return y+Engine_Data::scrolling_buttons_offset+scrolling_adjust_y+6+position_adjust_y;
+    return y+Engine_Data::scrolling_buttons_offset+scrolling_adjust_y+position_adjust_y+6;
 }
 
 int Window::get_scrolling_button_position(int index){
@@ -447,7 +447,7 @@ void Window::reset_buttons_moused_over(){
 }
 
 void Window::scroll_up(){
-    if(y+buttons[last_normal_button+1].h*scroll_offset<y+h-buttons[last_normal_button+1].h*Math::floor((double)Engine_Data::scrolling_buttons_offset/15.0)){
+    if(y+buttons[last_normal_button+1].h*scroll_offset+Engine_Data::scrolling_buttons_spacing*scroll_offset<y+h-buttons[last_normal_button+1].h*Math::floor((double)Engine_Data::scrolling_buttons_offset/15.0)){
         scroll_offset+=1;
     }
 }

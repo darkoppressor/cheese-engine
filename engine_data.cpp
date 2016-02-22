@@ -43,6 +43,7 @@ int Engine_Data::spaces_per_tab=0;
 int Engine_Data::axis_scroll_rate=0;
 
 int Engine_Data::scrolling_buttons_offset=0;
+int Engine_Data::scrolling_buttons_spacing=0;
 
 int Engine_Data::cursor_width=0;
 int Engine_Data::cursor_height=0;
@@ -126,6 +127,9 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
         }
         else if(Data_Reader::check_prefix(line,"scrolling_buttons_offset:")){
             scrolling_buttons_offset=Strings::string_to_long(line);
+        }
+        else if(Data_Reader::check_prefix(line,"scrolling_buttons_spacing:")){
+            scrolling_buttons_spacing=Strings::string_to_long(line);
         }
         else if(Data_Reader::check_prefix(line,"cursor_width:")){
             cursor_width=Strings::string_to_long(line);

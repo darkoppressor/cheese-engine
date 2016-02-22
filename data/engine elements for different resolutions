@@ -3,6 +3,7 @@
 logical_screen_width:256
 logical_screen_height:144
 scrolling_buttons_offset:26
+scrolling_buttons_spacing:6
 console_height:6
 chat_height:6
 console_max_command_length:63
@@ -13,7 +14,8 @@ controller_text_entry_small:true
 
 logical_screen_width:1280
 logical_screen_height:720
-scrolling_buttons_offset:44
+scrolling_buttons_offset:58
+scrolling_buttons_spacing:12
 console_height:16
 chat_height:16
 console_max_command_length:181
