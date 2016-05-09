@@ -59,7 +59,10 @@ void Sound_Manager::load_sounds(){
 
             boost::algorithm::trim(file_name);
 
-            sound_names.push_back(file_name);
+            //Ignore the .gitkeep file
+            if(file_name!=".gitkeep"){
+                sound_names.push_back(file_name);
+            }
         }
     }
 

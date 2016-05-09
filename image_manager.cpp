@@ -51,7 +51,10 @@ void Image_Manager::load_images(){
 
             boost::algorithm::trim(file_name);
 
-            image_names.push_back(file_name);
+            //Ignore the .gitkeep file
+            if(file_name!=".gitkeep"){
+                image_names.push_back(file_name);
+            }
         }
     }
 
