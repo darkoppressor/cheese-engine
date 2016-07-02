@@ -6,8 +6,66 @@ Enable joining a game in progress
 
 IPv6
 
+Change to using dynamic linking instead of static
+
 -----------------------------------------------
 Mod support
+UPDATE:
+Phase 1: Use a virtual file system for all data file loading, with pak file support
+Duplicate files are replaced in the virtual file system as it is setting up
+4 places to look for files:
+Base data directory, pak files
+Base data directory, loose files
+Home data directory, pak files
+Home data directory, loose files
+Files are looked at within each place in alphabetical order (use same sorting as checksum thing)
+Rebuild VFS each time it is needed? Or build it once at program start? Or rebuild at certain times?
+Does checksum system need to be updated at all? Probably just need to add to runtime check so it includes the home data dir
+Phase 2 (maybe?): add concept of base game + current mod
+The base game is the actual game
+The "current mod" is the currently selected mod, if any
+The 4 places above would all be checked for the base game and then for the current game
+The checksum system would need to be updated to include these changes
+This would allow for mods to be distributed in self-contained directories
+Entire mods could exist in the base or home directory as separate mods
+Probably structured like this:
+base game --> base/data
+current mod choices --> base/mods/<mod name>
+base game --> home/data
+current mod choices --> home/mods/<mod name>
+A simple string can be a runtime-only option that determines the current mod
+An empty string is no mod, otherwise it is the name of the mod currently selected
+Menu in-game should show base game + all available mods, and allow for selection of base game or a mod
+Selecting one of these changes the runtime mod option, and reloads EVERYTHING
+
+Might want to move autoexec.cfg into the data dir, so it is tied to either the base game or a mod
+
+When changing mods, pretty much the entire game needs to be completely restarted
+
+A command line option should be added for starting up with a specific mod
+
+Might need to consider save location when building vfs
+If it is local, ignore home stuff
+
+Two types of vfs uses:
+1. Looking for a specific file
+In this case simply look for file in each possible location, starting with the highest priority
+When (if) found, immediately return this file (the actual file itself, I.e. load it)
+2. Listing what files exist in a directory
+Look through each location, starting with the lowest priority
+Build a list of all files
+If a duplicate file is found, replace its entry in the list
+When done looking in each location, return the list (of virtual files)
+
+No list or whatever needs to be maintained
+The vfs actually loads files and gives pointers to them in memory
+It needs a function for closing an opened file
+The user of the vfs is responsible for the pointers received from the vfs
+For a text data file, the engine would request the file from the vfs, the vfs would load the file and return a pointer to it, the engine would read the file (which is now in memory) and use it for whatever, the engine would tell the vfs to close the file.
+The engine could get a list of all text data files to load by requesting a file list from the root data directory from the vfs
+
+The remainder of this section about modding is mostly/entirely wrong now:
+
 For at least most objects created from data files, add code for overriding them
 I.e., if a data file has created a font with a certain name, and later a data file tries to create
 a font with the same name, it doesn't actually create a new font.

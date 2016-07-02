@@ -498,6 +498,8 @@
 		<Unit filename="touch_controller.h" />
 		<Unit filename="update.cpp" />
 		<Unit filename="update.h" />
+		<Unit filename="vfs.cpp" />
+		<Unit filename="vfs.h" />
 		<Unit filename="window.cpp" />
 		<Unit filename="window.h" />
 		<Unit filename="window_manager.cpp" />
