@@ -1,10 +1,15 @@
 Add text colors to buttons, windows, tooltips, and toasts
 
+With mutable text:
+Clicking somewhere
+Clicking beyond the end of a line should move the cursor to the end of that line
+Clicking below the last line should move the cursor to the last line
+
+Scrolling text in the console, you can scroll up so that the top line of text goes 1 line below the bottom of the text box
+Similarly, scrolling buttons can scroll so that it goes 2 lines below
+Is it always exactly this wrong?
+
 Scroll bar for scrolling buttons and text
-
-Enable joining a game in progress
-
-IPv6
 
 Change to using dynamic linking instead of static
 
@@ -140,15 +145,15 @@ When retrieving a string, retrieve the string from the currently set language
 With this all setup, this might enable my other idea for making error messages a data file thing
 I would also need to extend my stuff to use unicode or whatever instead of just ascii
 
-With mutable text:
-Clicking beyond the end of a line should move the cursor to the end of that line
-Clicking below the last line should move the cursor to the last line
-
 Unit testing for the engine
 
 Other platforms for the Cheese Engine:
 BSDs
 iOS
+
+Enable joining a game in progress
+
+IPv6
 
 Dedicated server mode
 
