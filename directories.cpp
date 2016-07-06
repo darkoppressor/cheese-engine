@@ -167,7 +167,9 @@ void Directories::make_home_directory(){
 
                 Strings::slashes_to_slash(&str_my_games);
 
-                File_IO::create_directory(str_my_games);
+                if(!File_IO::exists(str_my_games)){
+                    File_IO::create_directory(str_my_games);
+                }
             }
         #endif
 
@@ -176,7 +178,9 @@ void Directories::make_home_directory(){
 
         Strings::slashes_to_slash(&str_home);
 
-        File_IO::create_directory(str_home);
+        if(!File_IO::exists(str_home)){
+            File_IO::create_directory(str_home);
+        }
     }
 }
 
@@ -225,7 +229,12 @@ bool Directories::make_directories(){
         return false;
     }
 
-    File_IO::create_directory(get_save_directory()+"screenshots");
+    string directory="";
+
+    directory=get_save_directory()+"screenshots";
+    if(!File_IO::exists(directory)){
+        File_IO::create_directory(directory);
+    }
 
     return true;
 }
