@@ -35,6 +35,15 @@ File_IO_Load::File_IO_Load(string path,bool path_is_backup,bool get_binary,bool 
     open(path,path_is_backup,get_binary,suppress_errors);
 }
 
+File_IO_Load::File_IO_Load(SDL_RWops* rwops,bool get_binary){
+    load_success=false;
+    loaded_backup=false;
+    data="";
+    data_stream.str("");
+
+    open(rwops,get_binary);
+}
+
 void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool suppress_errors){
     binary=get_binary;
 
@@ -93,6 +102,30 @@ void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool sup
     }
 
     if(!binary && succeeded){
+        data_stream.str(data.c_str());
+    }
+}
+
+void File_IO_Load::open(SDL_RWops* rwops,bool get_binary){
+    binary=get_binary;
+
+    if(rwops!=0){
+        load_success=true;
+
+        unsigned char* data_chunk=new unsigned char[100];
+
+        for(long length=0;(length=SDL_RWread(rwops,data_chunk,1,100))>0;){
+            for(long i=0;i<length;i++){
+                data+=data_chunk[i];
+            }
+        }
+
+        delete[] data_chunk;
+
+        SDL_RWclose(rwops);
+    }
+
+    if(!binary){
         data_stream.str(data.c_str());
     }
 }

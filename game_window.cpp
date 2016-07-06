@@ -11,6 +11,7 @@
 #include "controller_manager.h"
 #include "directories.h"
 #include "engine.h"
+#include "vfs.h"
 
 #include <SDL_mixer.h>
 #include <SDL_image.h>
@@ -485,8 +486,7 @@ bool Game_Window::initialize(){
         set_sdl_hints();
 
         //Set the window icon.
-        msg="data/images/icons/standard.bmp";
-        icon=SDL_LoadBMP(msg.c_str());
+        icon=SDL_LoadBMP_RW(VFS::get_rwops("images/icons/standard.bmp",true),1);
 
         if(icon==0){
             msg="Unable to load icon: ";
@@ -540,7 +540,7 @@ bool Game_Window::initialize(){
             return false;
         }
 
-        if(SDL_GameControllerAddMappingsFromFile("data/game_controller_db")==-1){
+        if(SDL_GameControllerAddMappingsFromRW(VFS::get_rwops("game_controller_db"),1)==-1){
             msg="Error loading game controller database: ";
             msg+=SDL_GetError();
             Log::add_error(msg);

@@ -9,6 +9,7 @@
 #include "object_manager.h"
 #include "image_manager.h"
 #include "engine_math.h"
+#include "vfs.h"
 
 #include <cstdint>
 
@@ -100,25 +101,25 @@ SDL_Surface* Render::optimize_surface(SDL_Surface* surface){
     return conv;
 }
 
-SDL_Surface* Render::load_image(string filename){
+SDL_Surface* Render::load_image(string path){
     SDL_Surface* loaded_image=0;
     SDL_Surface* optimized_image=0;
 
-    loaded_image=IMG_Load(filename.c_str());
+    loaded_image=IMG_Load_RW(VFS::get_rwops(path,true),1);
 
     if(loaded_image!=0){
         optimized_image=optimize_surface(loaded_image);
         SDL_FreeSurface(loaded_image);
     }
     else{
-        Log::add_error("Error loading image '"+filename+"': "+IMG_GetError());
+        Log::add_error("Error loading image '"+path+"': "+IMG_GetError());
     }
 
     return optimized_image;
 }
 
-SDL_Texture* Render::load_texture(string filename,Image_Data* id){
-    SDL_Surface* surface=load_image(filename.c_str());
+SDL_Texture* Render::load_texture(string path,Image_Data* id){
+    SDL_Surface* surface=load_image(path);
 
     id->w=surface->w;
     id->h=surface->h;

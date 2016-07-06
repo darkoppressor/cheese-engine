@@ -20,7 +20,7 @@ Cursor::Cursor(){
 }
 
 void Cursor::load_hw_cursor(){
-    SDL_Surface* surface=Render::load_image("data/images/"+sprite.name+".png");
+    SDL_Surface* surface=Render::load_image("images/"+sprite.name+".png");
     SDL_Surface* surface_final=0;
 
     if(sprite.is_animated()){

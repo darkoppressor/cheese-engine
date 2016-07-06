@@ -7,6 +7,7 @@
 #include "file_io.h"
 #include "sound_manager.h"
 #include "log.h"
+#include "vfs.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -131,14 +132,14 @@ void Music_Manager::restart_track(string track_name){
 void Music_Manager::prepare_tracks(){
     track_names.clear();
 
-    //Look through all of the files in the directory
-    for(File_IO_Directory_Iterator it("data/music");it.evaluate();it.iterate()){
-        //If the file is not a directory
-        if(it.is_regular_file()){
-            string file_name=it.get_file_name();
+    vector<string> file_list=VFS::get_file_list("music");
+    for(const auto& file : file_list){
+        string file_name=file;
 
-            boost::algorithm::trim(file_name);
+        boost::algorithm::erase_first(file_name,"music/");
 
+        //Ignore the .gitkeep file
+        if(file_name!=".gitkeep"){
             track_names.push_back(file_name);
         }
     }
@@ -153,7 +154,7 @@ void Music_Manager::prepare_tracks(){
     }
 
     for(int i=0;i<track_names.size();i++){
-        load_track("data/music/"+track_names[i],track_names[i]);
+        load_track("music/"+track_names[i],track_names[i]);
 
         track_names[i].erase(track_names[i].end()-4,track_names[i].end());
     }
@@ -166,7 +167,7 @@ void Music_Manager::load_track(string track_path,string track_name){
         unload_track(track_ident);
 
         //Load the new song
-        tracks[track_ident].track=Mix_LoadWAV(track_path.c_str());
+        tracks[track_ident].track=Mix_LoadWAV_RW(VFS::get_rwops(track_path,true),1);
         tracks[track_ident].playing=false;
         tracks[track_ident].volume=0.0;
         tracks[track_ident].fade_speed=0.01;

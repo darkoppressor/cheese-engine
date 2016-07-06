@@ -5,6 +5,7 @@
 #include "image_manager.h"
 #include "file_io.h"
 #include "log.h"
+#include "vfs.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -43,25 +44,22 @@ void Image_Manager::remove_image(string name){
 void Image_Manager::load_images(){
     error_image=0;
 
-    //Look through all of the files in the directory
-    for(File_IO_Directory_Iterator it("data/images");it.evaluate();it.iterate()){
-        //If the file is not a directory
-        if(it.is_regular_file()){
-            string file_name=it.get_file_name();
+    vector<string> file_list=VFS::get_file_list("images");
+    for(const auto& file : file_list){
+        string file_name=file;
 
-            boost::algorithm::trim(file_name);
+        boost::algorithm::erase_first(file_name,"images/");
 
-            //Ignore the .gitkeep file
-            if(file_name!=".gitkeep"){
-                image_names.push_back(file_name);
-            }
+        //Ignore the .gitkeep file
+        if(file_name!=".gitkeep"){
+            image_names.push_back(file_name);
         }
     }
 
     for(int i=0;i<image_names.size();i++){
         images.push_back(Image_Data());
 
-        images.back().load_image("data/images/"+image_names[i]);
+        images.back().load_image("images/"+image_names[i]);
 
         image_names[i].erase(image_names[i].end()-4,image_names[i].end());
     }

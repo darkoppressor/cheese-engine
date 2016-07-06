@@ -19,6 +19,7 @@
 #include "render.h"
 #include "engine_math.h"
 #include "tooltip.h"
+#include "vfs.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/crc.hpp>
@@ -235,29 +236,27 @@ bool Engine::mutable_info_this(Information* ptr_info){
 }
 
 void Engine::compute_checksum(){
-    vector<string> file_list;
+    vector<string> files;
 
-    for(File_IO_Directory_Iterator it("data");it.evaluate();it.iterate()){
-        //If the file is not a directory.
-        if(it.is_regular_file()){
-            string file_path=it.get_full_path();
+    vector<string> file_list=VFS::get_file_list("");
+    for(const auto& file : file_list){
+        string file_name=file;
 
-            file_list.push_back(file_path);
-        }
+        files.push_back(file_name);
     }
 
-    Sorting::quick_sort(file_list);
+    Sorting::quick_sort(files);
 
     string checksum_data="";
 
-    for(size_t i=0;i<file_list.size();i++){
-        File_IO_Load load(file_list[i]);
+    for(size_t i=0;i<files.size();i++){
+        File_IO_Load load(VFS::get_rwops(files[i]));
 
         if(load.is_opened()){
             checksum_data+=load.get_data();
         }
         else{
-            Log::add_error("Error loading file for checksum calculation: '"+file_list[i]+"'");
+            Log::add_error("Error loading file for checksum calculation: '"+files[i]+"'");
         }
     }
 

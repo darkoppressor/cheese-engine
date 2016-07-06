@@ -18,6 +18,7 @@
 #include "engine_data.h"
 #include "log.h"
 #include "engine_strings.h"
+#include "vfs.h"
 
 using namespace std;
 
@@ -215,63 +216,58 @@ void Data_Manager::load_data_game_options(){
 }
 
 bool Data_Manager::load_data(string tag){
-    //Look through all of the files in the directory
-    for(File_IO_Directory_Iterator it("data");it.evaluate();it.iterate()){
-        //If the file is not a directory
-        if(it.is_regular_file()){
-            string file_path=it.get_full_path();
+    vector<string> file_list=VFS::get_file_list("");
+    for(const auto& file : file_list){
+        File_IO_Load load(VFS::get_rwops(file));
 
-            File_IO_Load load(file_path);
+        if(load.is_opened()){
+            while(!load.eof()){
+                vector<string> lines=Data_Reader::read_data(&load,"<"+tag+">");
 
-            if(load.is_opened()){
-                while(!load.eof()){
-                    vector<string> lines=Data_Reader::read_data(&load,"<"+tag+">");
-
-                    if(lines.size()>0 && Data_Reader::check_prefix(lines.back(),"<"+tag+">")){
-                        if(tag=="engine"){
-                            Engine_Data::load_engine_data(&load);
-                        }
-                        else if(tag=="font"){
-                            Object_Manager::load_font(&load);
-                        }
-                        else if(tag=="cursor"){
-                            Object_Manager::load_cursor(&load);
-                        }
-                        else if(tag=="color"){
-                            Object_Manager::load_color(&load);
-                        }
-                        else if(tag=="color_theme"){
-                            Object_Manager::load_color_theme(&load);
-                        }
-                        else if(tag=="animation"){
-                            Object_Manager::load_animation(&load);
-                        }
-                        else if(tag=="window"){
-                            Window_Manager::load_window(&load);
-                        }
-                        else if(tag=="game_command"){
-                            Object_Manager::load_game_command(&load);
-                        }
-                        else if(tag=="game_option"){
-                            Object_Manager::load_game_option(&load);
-                        }
-                        else if(tag=="game_constant"){
-                            Object_Manager::load_game_constant(&load);
-                        }
-                        else if(tag=="custom_sound"){
-                            Object_Manager::load_custom_sound(&load);
-                        }
-                        else{
-                            Game_Manager::load_data_tag_game(tag,&load);
-                        }
+                if(lines.size()>0 && Data_Reader::check_prefix(lines.back(),"<"+tag+">")){
+                    if(tag=="engine"){
+                        Engine_Data::load_engine_data(&load);
+                    }
+                    else if(tag=="font"){
+                        Object_Manager::load_font(&load);
+                    }
+                    else if(tag=="cursor"){
+                        Object_Manager::load_cursor(&load);
+                    }
+                    else if(tag=="color"){
+                        Object_Manager::load_color(&load);
+                    }
+                    else if(tag=="color_theme"){
+                        Object_Manager::load_color_theme(&load);
+                    }
+                    else if(tag=="animation"){
+                        Object_Manager::load_animation(&load);
+                    }
+                    else if(tag=="window"){
+                        Window_Manager::load_window(&load);
+                    }
+                    else if(tag=="game_command"){
+                        Object_Manager::load_game_command(&load);
+                    }
+                    else if(tag=="game_option"){
+                        Object_Manager::load_game_option(&load);
+                    }
+                    else if(tag=="game_constant"){
+                        Object_Manager::load_game_constant(&load);
+                    }
+                    else if(tag=="custom_sound"){
+                        Object_Manager::load_custom_sound(&load);
+                    }
+                    else{
+                        Game_Manager::load_data_tag_game(tag,&load);
                     }
                 }
             }
-            else{
-                Log::add_error("Error loading tag data: '"+tag+"'");
+        }
+        else{
+            Log::add_error("Error loading tag data: '"+tag+"'");
 
-                return false;
-            }
+            return false;
         }
     }
 

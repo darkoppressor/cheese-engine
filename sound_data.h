@@ -22,7 +22,7 @@ public:
 
     Sound_Data();
 
-    void load_sound(std::string filename);
+    void load_sound(std::string path);
 	void load_sound(Mix_Chunk* ptr_chunk);
     //This function is still somewhat experimental
     //Each element in sound's buffer is a (single channel, I think) of a signed 16-bit sample

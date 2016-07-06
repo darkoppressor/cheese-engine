@@ -20,9 +20,9 @@ public:
 
     static SDL_Surface* optimize_surface(SDL_Surface* surface);
 
-    static SDL_Surface* load_image(std::string filename);
+    static SDL_Surface* load_image(std::string path);
 
-    static SDL_Texture* load_texture(std::string filename,Image_Data* id);
+    static SDL_Texture* load_texture(std::string path,Image_Data* id);
 
     static void render_rtt(double x,double y,Rtt_Data* rtt_source,double opacity=1.0,double scale_x=1.0,double scale_y=1.0,double angle=0.0,std::string color_name="white",bool flip_x=false,bool flip_y=false);
 

@@ -9,6 +9,7 @@
 #include "engine_math.h"
 #include "log.h"
 #include "coords.h"
+#include "vfs.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -51,25 +52,22 @@ void Sound_Manager::remove_sound(string name){
 }
 
 void Sound_Manager::load_sounds(){
-    //Look through all of the files in the directory
-    for(File_IO_Directory_Iterator it("data/sounds");it.evaluate();it.iterate()){
-        //If the file is not a directory
-        if(it.is_regular_file()){
-            string file_name=it.get_file_name();
+    vector<string> file_list=VFS::get_file_list("sounds");
+    for(const auto& file : file_list){
+        string file_name=file;
 
-            boost::algorithm::trim(file_name);
+        boost::algorithm::erase_first(file_name,"sounds/");
 
-            //Ignore the .gitkeep file
-            if(file_name!=".gitkeep"){
-                sound_names.push_back(file_name);
-            }
+        //Ignore the .gitkeep file
+        if(file_name!=".gitkeep"){
+            sound_names.push_back(file_name);
         }
     }
 
     for(int i=0;i<sound_names.size();i++){
         sounds.push_back(Sound_Data());
 
-        sounds.back().load_sound("data/sounds/"+sound_names[i]);
+        sounds.back().load_sound("sounds/"+sound_names[i]);
 
         sound_names[i].erase(sound_names[i].end()-4,sound_names[i].end());
     }

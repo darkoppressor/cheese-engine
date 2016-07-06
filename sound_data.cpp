@@ -4,6 +4,7 @@
 
 #include "sound_data.h"
 #include "log.h"
+#include "vfs.h"
 
 using namespace std;
 
@@ -11,11 +12,11 @@ Sound_Data::Sound_Data(){
     chunk=0;
 }
 
-void Sound_Data::load_sound(string filename){
-    chunk=Mix_LoadWAV(filename.c_str());
+void Sound_Data::load_sound(string path){
+    chunk=Mix_LoadWAV_RW(VFS::get_rwops(path,true),1);
 
     if(chunk==0){
-        string msg="Error loading sound '"+filename+"': ";
+        string msg="Error loading sound '"+path+"': ";
         msg+=Mix_GetError();
         Log::add_error(msg);
     }

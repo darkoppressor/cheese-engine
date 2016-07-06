@@ -14,8 +14,8 @@ Image_Data::Image_Data(){
     h=0.0;
 }
 
-void Image_Data::load_image(string filename){
-    texture=Render::load_texture(filename,this);
+void Image_Data::load_image(string path){
+    texture=Render::load_texture(path,this);
 
     SDL_SetTextureBlendMode(texture,SDL_BLENDMODE_BLEND);
 }
