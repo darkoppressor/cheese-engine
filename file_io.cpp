@@ -15,8 +15,8 @@
 
 using namespace std;
 
-const std::string File_IO::SAVE_SUFFIX_TEMPORARY="_TEMPORARY";
-const std::string File_IO::SAVE_SUFFIX_BACKUP="_BACKUP";
+const string File_IO::SAVE_SUFFIX_TEMPORARY="_TEMPORARY";
+const string File_IO::SAVE_SUFFIX_BACKUP="_BACKUP";
 
 File_IO_Load::File_IO_Load(){
     binary=false;
