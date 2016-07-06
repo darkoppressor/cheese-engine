@@ -18,6 +18,8 @@
 #include "engine_data.h"
 #include "network_lockstep.h"
 #include "game_manager.h"
+#include "engine_version.h"
+#include "vfs.h"
 
 #ifdef GAME_OS_ANDROID
     #include "android.h"
@@ -204,6 +206,21 @@ int main_startup(int game_data_load_item_count){
     }
 
     Log::clear_error_log();
+
+    string startup=Engine_Data::game_title;
+    startup+="\nDeveloped by: "+Engine_Data::developer;
+    startup+="\nVersion: "+Engine_Version::get_version()+" "+Engine_Version::get_status();
+    startup+="\nBuilt on "+Engine_Version::get_build_date();
+    startup+="\nChecksum: "+Engine::CHECKSUM;
+    startup+="\n\n--- Virtual File System ---";
+    startup+="\nCurrent search paths:\n";
+
+    vector<string> search_paths=VFS::get_search_paths();
+    for(const auto& search_path : search_paths){
+        startup+=search_path+"\n";
+    }
+
+    Log::add_log(startup);
 
     Progress_Bar bar(Data_Manager::world_load_item_count+game_data_load_item_count);
     Log::add_log("Loading data");
