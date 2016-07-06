@@ -164,26 +164,38 @@ void Console::add_text(string text){
         text=Log::get_timestamp(false)+" "+text;
     }
 
+    //The number of characters to search back in a line for a space when inserting a newline
+    int space_search_distance=6;
+
     //If the text extends beyond the text box, wrap it around
-    for(int i=0,j=0;i<text.size();i++,j++){
+    for(int i=0,j=0;i<text.length();i++){
         if(text[i]=='\n'){
             j=0;
         }
-        else if(j>info_display.scroll_width){
+        else if(j>=info_display.scroll_width){
             j=0;
 
             for(int k=i;k>=0;k--){
                 if(text[k]==' '){
+                    text.erase(text.begin()+k);
+
                     text.insert(k,"\n");
-                    text.erase(text.begin()+k+1);
+
+                    i=k;
+
                     break;
                 }
-                else if(k==0){
+                else if(k==0 || text[k]=='\n' || k<i-space_search_distance){
                     text.insert(i,"\n");
+
                     i--;
+
                     break;
                 }
             }
+        }
+        else{
+            j++;
         }
     }
 
