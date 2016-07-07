@@ -36,6 +36,10 @@ void Console::setup_commands(){
     commands.push_back("exec");
     commands.push_back("connect");
 
+    commands.push_back("mod");
+    commands.push_back("nomod");
+    commands.push_back("currentmod");
+
     commands.push_back("sv_network_password");
 
     commands.push_back("cl_logic_update_rate");
@@ -340,6 +344,26 @@ void Console::run_commands(const vector<string>& command_list){
                 }
                 else{
                     add_text(command+"\n - connect to a game server\nUsage:\n"+command+" SERVER.IP|PORT PASSWORD\n - if PORT is not specified, uses the default\n - PASSWORD is optional");
+                }
+            }
+
+            else if(command=="mod"){
+                if(command_input[1].length()>0){
+                    Engine::change_mod(command_input[1]);
+                }
+                else{
+                    add_text(command+"\n - change the active mod\nUsage:\n"+command+" MODNAME");
+                }
+            }
+            else if(command=="nomod"){
+                Engine::change_mod("");
+            }
+            else if(command=="currentmod"){
+                if(Engine::current_mod.length()>0){
+                    add_text("Active mod: '"+Engine::current_mod+"'");
+                }
+                else{
+                    add_text("No active mod");
                 }
             }
 

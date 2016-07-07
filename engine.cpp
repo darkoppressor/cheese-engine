@@ -20,6 +20,7 @@
 #include "engine_math.h"
 #include "tooltip.h"
 #include "vfs.h"
+#include "directories.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/crc.hpp>
@@ -33,6 +34,10 @@ uint32_t Engine::UPDATE_RATE_RENDER=200;
 uint32_t Engine::SKIP_TICKS_RENDER=1000/Engine::UPDATE_RATE_RENDER;
 
 string Engine::CHECKSUM="";
+
+string Engine::current_mod="";
+bool Engine::mod_is_changing=false;
+string Engine::new_mod="";
 
 vector<Toast> Engine::toasts;
 
@@ -174,7 +179,7 @@ void Engine::build_text_input_characters(){
     }
 }
 
-void Engine::quit(){
+void Engine::unload(){
     Game_Manager::clear_title();
     Game_Manager::done_with_title();
     Game_Manager::stop();
@@ -182,6 +187,10 @@ void Engine::quit(){
     Data_Manager::unload_world();
 
     Game_Window::deinitialize();
+}
+
+void Engine::quit(){
+    unload();
 
     exit(EXIT_SUCCESS);
 }
@@ -268,6 +277,79 @@ void Engine::compute_checksum(){
     }
     else{
         CHECKSUM="";
+    }
+}
+
+set<string> Engine::get_modlist(){
+    set<string> mods;
+
+    for(File_IO_Directory_Iterator it(Directories::get_save_directory()+"mods");it.evaluate();it.iterate()){
+        if(it.is_directory()){
+            string file_name=it.get_file_name();
+
+            boost::algorithm::trim(file_name);
+
+            mods.insert(file_name);
+        }
+    }
+
+    return mods;
+}
+
+bool Engine::mod_exists(const string& mod){
+    if(mod.length()==0){
+        return true;
+    }
+
+    set<string> mods=get_modlist();
+
+    return mods.count(mod);
+}
+
+void Engine::change_mod(const string& mod){
+    if(mod==current_mod){
+        if(mod.length()>0){
+            console.add_text("'"+mod+"' is already the active mod");
+        }
+        else{
+            console.add_text("No mod is currently active");
+        }
+    }
+    else{
+        if(mod_exists(mod)){
+            if(mod.length()>0){
+                console.add_text("Loading mod '"+mod+"'");
+            }
+            else{
+                console.add_text("Unloading active mod '"+current_mod+"'");
+            }
+
+            mod_is_changing=true;
+            new_mod=mod;
+        }
+        else{
+            console.add_text("'"+mod+"' is not a valid mod");
+        }
+    }
+}
+
+bool Engine::mod_reload_check(){
+    return mod_is_changing;
+}
+
+void Engine::swap_mods(){
+    if(mod_is_changing){
+        mod_is_changing=false;
+
+        current_mod=new_mod;
+
+        new_mod="";
+    }
+}
+
+void Engine::set_initial_mod(const string& mod){
+    if(mod_exists(mod)){
+        current_mod=mod;
     }
 }
 

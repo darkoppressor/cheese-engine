@@ -24,6 +24,12 @@ bool Directories::save_location_loaded=false;
 
 bool Directories::save_location_fallback=false;
 
+void Directories::make_directory(const string& directory){
+    if(!File_IO::exists(directory)){
+        File_IO::create_directory(directory);
+    }
+}
+
 string Directories::get_cwd(){
     string cwd="./";
 
@@ -229,12 +235,8 @@ bool Directories::make_directories(){
         return false;
     }
 
-    string directory="";
-
-    directory=get_save_directory()+"screenshots";
-    if(!File_IO::exists(directory)){
-        File_IO::create_directory(directory);
-    }
+    make_directory(get_save_directory()+"screenshots");
+    make_directory(get_save_directory()+"mods");
 
     return true;
 }

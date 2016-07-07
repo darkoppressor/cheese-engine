@@ -114,6 +114,10 @@ void Game_Manager::done_with_title(){
     disallow_title=true;
 }
 
+void Game_Manager::need_title_again(){
+    disallow_title=false;
+}
+
 bool Game_Manager::is_title_allowed(){
     return !disallow_title;
 }

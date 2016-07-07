@@ -22,6 +22,8 @@
 #include "vfs.h"
 #include "engine_strings.h"
 
+#include <boost/algorithm/string.hpp>
+
 #ifdef GAME_OS_ANDROID
     #include "android.h"
     #include "file_io.h"
@@ -32,6 +34,10 @@
 #endif
 
 using namespace std;
+
+Command_Line_Arguments::Command_Line_Arguments(){
+    initial_mod="";
+}
 
 void game_loop(){
     //The maximum number of frames to be skipped
@@ -114,6 +120,10 @@ void game_loop(){
 
             //Now we update the game logic
 
+            if(Engine::mod_reload_check()){
+                return;
+            }
+
             Game_Window::reload_check();
 
             Window_Manager::rebuild_window_data();
@@ -176,16 +186,7 @@ int handle_app_events(void* userdata,SDL_Event* event){
     }
 }
 
-int main_startup(int game_data_load_item_count){
-    #ifdef GAME_OS_OSX
-        //Set the working directory to the Resources directory of our bundle
-        char path[PATH_MAX];
-        CFURLRef url=CFBundleCopyResourcesDirectoryURL(CFBundleGetMainBundle());
-        CFURLGetFileSystemRepresentation(url,true,(uint8_t*)path,PATH_MAX);
-        CFRelease(url);
-        chdir(path);
-    #endif
-
+int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_data_load_item_count){
     if(!Game_Window::pre_initialize()){
         return 1;
     }
@@ -198,6 +199,10 @@ int main_startup(int game_data_load_item_count){
         return 2;
     }
 
+    if(first_init && arguments.initial_mod.length()>0){
+        Engine::set_initial_mod(arguments.initial_mod);
+    }
+
     Engine::compute_checksum();
 
     if(!Data_Manager::load_data_engine()){
@@ -208,7 +213,9 @@ int main_startup(int game_data_load_item_count){
         return 4;
     }
 
-    Log::clear_error_log();
+    if(first_init){
+        Log::clear_error_log();
+    }
 
     string startup=Engine_Data::game_title;
     startup+="\nDeveloped by: "+Engine_Data::developer;
@@ -255,7 +262,55 @@ int main_startup(int game_data_load_item_count){
 
     Game_Manager::setup_title();
 
-    game_loop();
+    return 0;
+}
+
+void process_arguments(int argc,char* args[],Command_Line_Arguments& arguments){
+    for(size_t i=1;i<argc;i++){
+        string argument=args[i];
+
+        if(boost::algorithm::starts_with(argument,"--mod=")){
+            boost::algorithm::erase_first(argument,"--mod=");
+
+            arguments.initial_mod=argument;
+        }
+    }
+}
+
+int main_startup(int argc,char* args[],int game_data_load_item_count){
+    #ifdef GAME_OS_OSX
+        //Set the working directory to the Resources directory of our bundle
+        char path[PATH_MAX];
+        CFURLRef url=CFBundleCopyResourcesDirectoryURL(CFBundleGetMainBundle());
+        CFURLGetFileSystemRepresentation(url,true,(uint8_t*)path,PATH_MAX);
+        CFRelease(url);
+        chdir(path);
+    #endif
+
+    Command_Line_Arguments arguments;
+
+    process_arguments(argc,args,arguments);
+
+    while(true){
+        static size_t init_count=0;
+
+        int init_status=main_initialize(init_count==0,arguments,game_data_load_item_count);
+
+        init_count++;
+
+        if(init_status!=0){
+            return init_status;
+        }
+
+        game_loop();
+
+        //If we reach this point, we have broken out of game_loop to change mods
+
+        Engine::unload();
+        Game_Manager::need_title_again();
+
+        Engine::swap_mods();
+    }
 
     return 0;
 }

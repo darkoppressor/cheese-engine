@@ -57,8 +57,13 @@ public:
     static void toggle_pause();
 
     //Once this is called, title loading/unloading/rendering will stop
-    //This is used when shutting down the engine
+    //This is used when unloading the engine
     static void done_with_title();
+    //Undoes the effect of done_with_title()
+    //done_with_title() is really needed for when the engine is shutting down
+    //However, it is used when unloading the engine, which also happens when changing mods
+    //Thus, we have this function to reactivate the title system
+    static void need_title_again();
     static bool is_title_allowed();
 
     static void start();

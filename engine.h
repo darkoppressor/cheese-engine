@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <set>
 
 class Engine{
 public:
@@ -25,6 +26,14 @@ public:
     static std::uint32_t SKIP_TICKS_RENDER;
 
     static std::string CHECKSUM;
+
+    //An empty string represents no mod
+    //Any other string represents the current mod
+    static std::string current_mod;
+    //If true, the mod is currently being changed
+    static bool mod_is_changing;
+    //When changing mods, this is the new mod
+    static std::string new_mod;
 
     static std::vector<Toast> toasts;
 
@@ -54,6 +63,7 @@ public:
 
     static void build_text_input_characters();
 
+    static void unload();
     static void quit();
 
     //Sets the passed info to be the currently selected mutable
@@ -67,6 +77,15 @@ public:
     static bool mutable_info_this(Information* ptr_info);
 
     static void compute_checksum();
+
+    static std::set<std::string> get_modlist();
+    static bool mod_exists(const std::string& mod);
+    static void change_mod(const std::string& mod);
+    static bool mod_reload_check();
+    //This should only be called by main_startup()
+    static void swap_mods();
+    //This should only be called by process_arguments()
+    static void set_initial_mod(const std::string& mod);
 
     static void get_rgba_masks(std::uint32_t* rmask,std::uint32_t* gmask,std::uint32_t* bmask,std::uint32_t* amask);
 

@@ -36,6 +36,7 @@ base game --> base/data
 current mod choices --> base/mods/<mod name>
 base game --> home/data
 current mod choices --> home/mods/<mod name>
+***
 A simple string can be a runtime-only option that determines the current mod
 An empty string is no mod, otherwise it is the name of the mod currently selected
 Menu in-game should show base game + all available mods, and allow for selection of base game or a mod
@@ -46,9 +47,6 @@ Might want to move autoexec.cfg into the data dir, so it is tied to either the b
 When changing mods, pretty much the entire game needs to be completely restarted
 
 A command line option should be added for starting up with a specific mod
-
-Might need to consider save location when building vfs
-If it is local, ignore home stuff
 
 Two types of vfs uses:
 1. Looking for a specific file
@@ -66,6 +64,8 @@ It needs a function for closing an opened file
 The user of the vfs is responsible for the pointers received from the vfs
 For a text data file, the engine would request the file from the vfs, the vfs would load the file and return a pointer to it, the engine would read the file (which is now in memory) and use it for whatever, the engine would tell the vfs to close the file.
 The engine could get a list of all text data files to load by requesting a file list from the root data directory from the vfs
+
+Need to look at checksum again
 
 The remainder of this section about modding is mostly/entirely wrong now:
 

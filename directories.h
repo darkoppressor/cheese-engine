@@ -8,6 +8,10 @@
 #include <string>
 
 class Directories{
+private:
+
+    static void make_directory(const std::string& directory);
+
 public:
 
     static std::string CURRENT_WORKING_DIRECTORY;

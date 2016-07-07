@@ -9,6 +9,7 @@
 #include "engine_strings.h"
 #include "log.h"
 #include "sorting.h"
+#include "engine.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -261,6 +262,14 @@ vector<VFS_Search_Path> VFS::get_search_paths(){
     #endif
 
     vector<VFS_Search_Path> search_paths;
+
+    if(Engine::current_mod.length()>0){
+        //Mod data directory loose files
+        search_paths.push_back(VFS_Search_Path(Directories::get_save_directory()+"mods/"+Engine::current_mod+"/"));
+
+        //Mod data directory pak files
+        add_pak_files_to_search_paths(Directories::get_save_directory()+"mods/"+Engine::current_mod,search_paths);
+    }
 
     if(Options::save_location=="home"){
         //Home data directory loose files
