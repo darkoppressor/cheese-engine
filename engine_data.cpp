@@ -255,7 +255,9 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
             cursor_mouse_over=line;
         }
         else if(Data_Reader::check_prefix(line,"default_save_location:")){
-            Options::save_location=line;
+            if(!Directories::save_location_loaded){
+                Options::save_location=line;
+            }
         }
         else if(Data_Reader::check_prefix(line,"default_screen_width:")){
             Options::screen_width=Strings::string_to_long(line);
