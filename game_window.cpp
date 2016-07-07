@@ -468,7 +468,6 @@ bool Game_Window::pre_initialize(){
         }
 
         Directories::CURRENT_WORKING_DIRECTORY=Directories::get_cwd();
-        Engine::compute_checksum();
 
         pre_initialized=true;
 
@@ -486,7 +485,9 @@ bool Game_Window::initialize(){
         set_sdl_hints();
 
         //Set the window icon.
-        icon=SDL_LoadBMP_RW(VFS::get_rwops("images/icons/standard.bmp",true),1);
+        VFS_RWops rwops=VFS::get_rwops("images/icons/standard.bmp",true);
+        icon=SDL_LoadBMP_RW(rwops.rwops,1);
+        rwops.close_buffer();
 
         if(icon==0){
             msg="Unable to load icon: ";
@@ -540,11 +541,13 @@ bool Game_Window::initialize(){
             return false;
         }
 
-        if(SDL_GameControllerAddMappingsFromRW(VFS::get_rwops("game_controller_db"),1)==-1){
+        VFS_RWops rwops_controller=VFS::get_rwops("game_controller_db");
+        if(SDL_GameControllerAddMappingsFromRW(rwops_controller.rwops,1)==-1){
             msg="Error loading game controller database: ";
             msg+=SDL_GetError();
             Log::add_error(msg);
         }
+        rwops_controller.close_buffer();
 
         Controller_Manager::initialize();
 

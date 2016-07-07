@@ -20,6 +20,7 @@
 #include "game_manager.h"
 #include "engine_version.h"
 #include "vfs.h"
+#include "engine_strings.h"
 
 #ifdef GAME_OS_ANDROID
     #include "android.h"
@@ -193,11 +194,13 @@ int main_startup(int game_data_load_item_count){
         Android::initialize();
     #endif
 
-    if(!Data_Manager::load_data_engine()){
+    if(!Options::load_save_location()){
         return 2;
     }
 
-    if(!Options::load_save_location()){
+    Engine::compute_checksum();
+
+    if(!Data_Manager::load_data_engine()){
         return 3;
     }
 
@@ -215,9 +218,17 @@ int main_startup(int game_data_load_item_count){
     startup+="\n\n--- Virtual File System ---";
     startup+="\nCurrent search paths:\n";
 
-    vector<string> search_paths=VFS::get_search_paths();
+    vector<VFS_Search_Path> search_paths=VFS::get_search_paths();
     for(const auto& search_path : search_paths){
-        startup+=search_path+"\n";
+        string pak_file_string="";
+
+        if(search_path.pak_file){
+            Pak_File_Info pak_file_info=VFS::get_pak_file_info(search_path.path);
+
+            pak_file_string+=" ("+Strings::num_to_string(pak_file_info.file_count)+" files)";
+        }
+
+        startup+=search_path.path+pak_file_string+"\n";
     }
 
     Log::add_log(startup);

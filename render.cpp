@@ -105,7 +105,9 @@ SDL_Surface* Render::load_image(string path){
     SDL_Surface* loaded_image=0;
     SDL_Surface* optimized_image=0;
 
-    loaded_image=IMG_Load_RW(VFS::get_rwops(path,true),1);
+    VFS_RWops rwops=VFS::get_rwops(path,true);
+    loaded_image=IMG_Load_RW(rwops.rwops,1);
+    rwops.close_buffer();
 
     if(loaded_image!=0){
         optimized_image=optimize_surface(loaded_image);

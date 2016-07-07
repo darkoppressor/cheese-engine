@@ -13,7 +13,9 @@ Sound_Data::Sound_Data(){
 }
 
 void Sound_Data::load_sound(string path){
-    chunk=Mix_LoadWAV_RW(VFS::get_rwops(path,true),1);
+    VFS_RWops rwops=VFS::get_rwops(path,true);
+    chunk=Mix_LoadWAV_RW(rwops.rwops,1);
+    rwops.close_buffer();
 
     if(chunk==0){
         string msg="Error loading sound '"+path+"': ";

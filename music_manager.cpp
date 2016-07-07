@@ -167,7 +167,9 @@ void Music_Manager::load_track(string track_path,string track_name){
         unload_track(track_ident);
 
         //Load the new song
-        tracks[track_ident].track=Mix_LoadWAV_RW(VFS::get_rwops(track_path,true),1);
+        VFS_RWops rwops=VFS::get_rwops(track_path,true);
+        tracks[track_ident].track=Mix_LoadWAV_RW(rwops.rwops,1);
+        rwops.close_buffer();
         tracks[track_ident].playing=false;
         tracks[track_ident].volume=0.0;
         tracks[track_ident].fade_speed=0.01;
