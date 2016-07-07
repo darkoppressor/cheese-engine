@@ -79,6 +79,10 @@ public:
     //First saves to a temporary file, then renames that file to the final filename
     static bool save_atomic(std::string path,std::string data,bool backup=false,bool append=false,bool binary=false);
 
+    #ifdef GAME_OS_ANDROID
+        static bool is_in_directory_list(std::string path);
+    #endif
+
     static bool exists(std::string path);
     static bool is_directory(std::string path);
     static bool is_regular_file(std::string path);

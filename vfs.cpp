@@ -12,12 +12,13 @@
 
 #include <boost/algorithm/string.hpp>
 
-#include <contrib/minizip/unzip.h>
+#ifndef GAME_OS_ANDROID
+    #include <contrib/minizip/unzip.h>
+#endif
 
 using namespace std;
 
 const string VFS::PAK_FILE_EXTENSION=".pak";
-const size_t VFS::ZIP_BUFFER_SIZE=8192;
 const size_t VFS::ZIP_MAX_FILENAME_LENGTH=512;
 const char VFS::ZIP_DIRECTORY_DELIMITER='/';
 
@@ -103,58 +104,60 @@ void VFS::add_files_to_list(const VFS_Search_Path& prefix,const string& director
             }
         }
         else if(prefix.pak_file && File_IO::is_regular_file(prefix.path)){
-            unzFile file=unzOpen(prefix.path.c_str());
+            #ifndef GAME_OS_ANDROID
+                unzFile file=unzOpen(prefix.path.c_str());
 
-            if(file!=0){
-                unz_global_info global_info;
+                if(file!=0){
+                    unz_global_info global_info;
 
-                if(unzGetGlobalInfo(file,&global_info)==UNZ_OK){
-                    for(size_t i=0;i<global_info.number_entry;i++){
-                        unz_file_info file_info;
+                    if(unzGetGlobalInfo(file,&global_info)==UNZ_OK){
+                        for(size_t i=0;i<global_info.number_entry;i++){
+                            unz_file_info file_info;
 
-                        char filename[ZIP_MAX_FILENAME_LENGTH];
+                            char filename[ZIP_MAX_FILENAME_LENGTH];
 
-                        if(unzGetCurrentFileInfo(file,&file_info,filename,ZIP_MAX_FILENAME_LENGTH,0,0,0,0)==UNZ_OK){
-                            const size_t filename_length=strlen(filename);
+                            if(unzGetCurrentFileInfo(file,&file_info,filename,ZIP_MAX_FILENAME_LENGTH,0,0,0,0)==UNZ_OK){
+                                const size_t filename_length=strlen(filename);
 
-                            //If the file is a regular file
-                            if(filename[filename_length-1]!=ZIP_DIRECTORY_DELIMITER){
-                                string file_name=filename;
+                                //If the file is a regular file
+                                if(filename[filename_length-1]!=ZIP_DIRECTORY_DELIMITER){
+                                    string file_name=filename;
 
-                                if(!boost::algorithm::ends_with(file_name,PAK_FILE_EXTENSION)){
-                                    clean_path(file_name);
+                                    if(!boost::algorithm::ends_with(file_name,PAK_FILE_EXTENSION)){
+                                        clean_path(file_name);
 
-                                    if((directory.length()==0 && !boost::algorithm::contains(file_name,"/")) ||
-                                       (directory.length()>0 && boost::algorithm::starts_with(file_name,directory+"/"))){
-                                        file_list.insert(file_name);
+                                        if((directory.length()==0 && !boost::algorithm::contains(file_name,"/")) ||
+                                           (directory.length()>0 && boost::algorithm::starts_with(file_name,directory+"/"))){
+                                            file_list.insert(file_name);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else{
-                            Log::add_error("Error reading file info in pak file: '"+prefix.path+"' for adding files to list");
-
-                            break;
-                        }
-
-                        if(i+1<global_info.number_entry){
-                            if(unzGoToNextFile(file)!=UNZ_OK){
-                                Log::add_error("Error reading next file in pak file: '"+prefix.path+"' for adding files to list");
+                            else{
+                                Log::add_error("Error reading file info in pak file: '"+prefix.path+"' for adding files to list");
 
                                 break;
                             }
+
+                            if(i+1<global_info.number_entry){
+                                if(unzGoToNextFile(file)!=UNZ_OK){
+                                    Log::add_error("Error reading next file in pak file: '"+prefix.path+"' for adding files to list");
+
+                                    break;
+                                }
+                            }
                         }
                     }
+                    else{
+                        Log::add_error("Error reading global info in pak file: '"+prefix.path+"' for adding files to list");
+                    }
+
+                    unzClose(file);
                 }
                 else{
-                    Log::add_error("Error reading global info in pak file: '"+prefix.path+"' for adding files to list");
+                    Log::add_error("Error opening pak file: '"+prefix.path+"' for adding files to list");
                 }
-
-                unzClose(file);
-            }
-            else{
-                Log::add_error("Error opening pak file: '"+prefix.path+"' for adding files to list");
-            }
+            #endif
         }
     }
 }
@@ -202,20 +205,22 @@ VFS_Full_Path VFS::get_full_path(const string& path){
             }
         }
         else{
-            unzFile file=unzOpen(search_path.path.c_str());
+            #ifndef GAME_OS_ANDROID
+                unzFile file=unzOpen(search_path.path.c_str());
 
-            if(file!=0){
-                if(unzLocateFile(file,path.c_str(),1)==UNZ_OK){
+                if(file!=0){
+                    if(unzLocateFile(file,path.c_str(),1)==UNZ_OK){
+                        unzClose(file);
+
+                        return VFS_Full_Path(search_path.path,path);
+                    }
+
                     unzClose(file);
-
-                    return VFS_Full_Path(search_path.path,path);
                 }
-
-                unzClose(file);
-            }
-            else{
-                Log::add_error("Error opening pak file: '"+search_path.path+"' for retrieving file path");
-            }
+                else{
+                    Log::add_error("Error opening pak file: '"+search_path.path+"' for retrieving file path");
+                }
+            #endif
         }
     }
 
@@ -225,28 +230,36 @@ VFS_Full_Path VFS::get_full_path(const string& path){
 Pak_File_Info VFS::get_pak_file_info(const string& path){
     Pak_File_Info pak_file_info;
 
-    unzFile file=unzOpen(path.c_str());
+    #ifndef GAME_OS_ANDROID
+        unzFile file=unzOpen(path.c_str());
 
-    if(file!=0){
-        unz_global_info global_info;
+        if(file!=0){
+            unz_global_info global_info;
 
-        if(unzGetGlobalInfo(file,&global_info)==UNZ_OK){
-            pak_file_info.file_count=global_info.number_entry;
+            if(unzGetGlobalInfo(file,&global_info)==UNZ_OK){
+                pak_file_info.file_count=global_info.number_entry;
+            }
+            else{
+                Log::add_error("Error reading global info in pak file: '"+path+"' for info");
+            }
+
+            unzClose(file);
         }
         else{
-            Log::add_error("Error reading global info in pak file: '"+path+"' for info");
+            Log::add_error("Error opening pak file: '"+path+"' for info");
         }
-
-        unzClose(file);
-    }
-    else{
-        Log::add_error("Error opening pak file: '"+path+"' for info");
-    }
+    #endif
 
     return pak_file_info;
 }
 
 vector<VFS_Search_Path> VFS::get_search_paths(){
+    #ifdef GAME_OS_ANDROID
+        vector<VFS_Search_Path> android_paths;
+        android_paths.push_back(VFS_Search_Path("data/"));
+        return android_paths;
+    #endif
+
     vector<VFS_Search_Path> search_paths;
 
     if(Options::save_location=="home"){
@@ -312,42 +325,44 @@ VFS_RWops VFS::get_rwops(string path,bool binary){
             }
         }
         else{
-            unzFile file=unzOpen(full_path.pak_path.c_str());
+            #ifndef GAME_OS_ANDROID
+                unzFile file=unzOpen(full_path.pak_path.c_str());
 
-            if(file!=0){
-                if(unzLocateFile(file,full_path.path.c_str(),1)==UNZ_OK){
-                    unz_file_info file_info;
+                if(file!=0){
+                    if(unzLocateFile(file,full_path.path.c_str(),1)==UNZ_OK){
+                        unz_file_info file_info;
 
-                    char filename[ZIP_MAX_FILENAME_LENGTH];
+                        char filename[ZIP_MAX_FILENAME_LENGTH];
 
-                    if(unzGetCurrentFileInfo(file,&file_info,filename,ZIP_MAX_FILENAME_LENGTH,0,0,0,0)==UNZ_OK){
-                        if(unzOpenCurrentFile(file)==UNZ_OK){
-                            buffer=new uint8_t[file_info.uncompressed_size];
+                        if(unzGetCurrentFileInfo(file,&file_info,filename,ZIP_MAX_FILENAME_LENGTH,0,0,0,0)==UNZ_OK){
+                            if(unzOpenCurrentFile(file)==UNZ_OK){
+                                buffer=new uint8_t[file_info.uncompressed_size];
 
-                            if(unzReadCurrentFile(file,buffer,file_info.uncompressed_size)==file_info.uncompressed_size){
-                                rwops=SDL_RWFromConstMem(buffer,file_info.uncompressed_size);
+                                if(unzReadCurrentFile(file,buffer,file_info.uncompressed_size)==file_info.uncompressed_size){
+                                    rwops=SDL_RWFromConstMem(buffer,file_info.uncompressed_size);
+                                }
+                                else{
+                                    Log::add_error("Error reading file in pak file: '"+full_path.pak_path+"'");
+                                }
                             }
                             else{
-                                Log::add_error("Error reading file in pak file: '"+full_path.pak_path+"'");
+                                Log::add_error("Error opening file in pak file: '"+full_path.pak_path+"'");
                             }
                         }
                         else{
-                            Log::add_error("Error opening file in pak file: '"+full_path.pak_path+"'");
+                            Log::add_error("Error reading file info in pak file: '"+full_path.pak_path+"' for loading file");
                         }
                     }
                     else{
-                        Log::add_error("Error reading file info in pak file: '"+full_path.pak_path+"' for loading file");
+                        Log::add_error("Error locating file in pak file: '"+full_path.pak_path+"'");
                     }
+
+                    unzClose(file);
                 }
                 else{
-                    Log::add_error("Error locating file in pak file: '"+full_path.pak_path+"'");
+                    Log::add_error("Error opening pak file: '"+full_path.pak_path+"' for loading file");
                 }
-
-                unzClose(file);
-            }
-            else{
-                Log::add_error("Error opening pak file: '"+full_path.pak_path+"' for loading file");
-            }
+            #endif
         }
     }
 

@@ -13,8 +13,6 @@ Add text colors to buttons, windows, tooltips, and toasts
 
 -----------------------------------------------
 Mod support
-Need to disable this whole system on Android
-
 UPDATE:
 Phase 1: Use a virtual file system for all data file loading, with pak file support
 Duplicate files are replaced in the virtual file system as it is setting up

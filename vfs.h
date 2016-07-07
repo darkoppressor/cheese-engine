@@ -75,7 +75,6 @@ private:
 public:
 
     static const std::string PAK_FILE_EXTENSION;
-    static const size_t ZIP_BUFFER_SIZE;
     static const size_t ZIP_MAX_FILENAME_LENGTH;
     static const char ZIP_DIRECTORY_DELIMITER;
 

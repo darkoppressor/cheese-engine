@@ -309,7 +309,36 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
 }
 
 #ifdef GAME_OS_ANDROID
+    bool File_IO::is_in_directory_list(string path){
+        //Remove any ending slash
+        if(boost::algorithm::ends_with(path,"/")){
+            boost::algorithm::erase_last(path,"/");
+        }
+
+        File_IO_Load load("directory_list");
+
+        if(load.is_opened()){
+            string line="";
+
+            while(!load.eof()){
+                load.getline(&line);
+
+                if(line==path){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     bool File_IO::exists(string path){
+        //Check the directory_list
+        if(is_in_directory_list(path)){
+            return true;
+        }
+
+        //Check the filesystem for a directory
         DIR* dir=0;
 
         if((dir=opendir(path.c_str()))!=0){
@@ -318,17 +347,19 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
             return true;
         }
 
+        //Check for a file
         File_IO_Load load(path);
 
-        if(load.is_opened()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return load.is_opened();
     }
 
     bool File_IO::is_directory(string path){
+        //Check the directory_list
+        if(is_in_directory_list(path)){
+            return true;
+        }
+
+        //Check the filesystem
         struct stat file_info;
         string file_name_compare=get_file_name(path);
 
@@ -345,18 +376,14 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
     }
 
     bool File_IO::is_regular_file(string path){
-        struct stat file_info;
+        if(!is_directory(path)){
+            File_IO_Load load(path);
 
-        if(stat(path.c_str(),&file_info)==0){
-            if(S_ISREG(file_info.st_mode)){
-                return true;
-            }
+            return load.is_opened();
         }
         else{
-            Log::add_error("Error getting file information for file '"+path+"': "+Strings::num_to_string(errno),false);
+            return false;
         }
-
-        return false;
     }
 
     bool File_IO::create_directory(string path){
