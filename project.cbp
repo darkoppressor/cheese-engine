@@ -238,8 +238,8 @@
 					<Add option="-m64" />
 					<Add option="-Wl,--stack=67108864" />
 					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
 					<Add library="/usr/x86_64-w64-mingw32/lib/libmingw32.a" />
-					<Add library="/usr/lib/gcc/x86_64-w64-mingw32/4.8/libstdc++.a" />
 					<Add library="/home/tails/build-server/windows-x86_64/zlib/contrib/minizip/.libs/libminizip.a" />
 					<Add library="/home/tails/build-server/windows-x86_64/SDL2_image/.libs/libSDL2_image.a" />
 					<Add library="/home/tails/build-server/windows-x86_64/libpng/.libs/libpng.a" />
@@ -253,9 +253,9 @@
 					<Add library="/home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_system.a" />
 					<Add library="/home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_filesystem.a" />
 					<Add library="/home/tails/build-server/windows-x86_64/raknet/raknet/Lib/DLL/Lib/libRakNet.a" />
+					<Add option="-static -lpthread" />
 					<Add library="/usr/x86_64-w64-mingw32/lib/libws2_32.a" />
 					<Add library="/usr/x86_64-w64-mingw32/lib/libwinmm.a" />
-					<Add library="/usr/x86_64-w64-mingw32/lib/libwinpthread.a" />
 					<Add library="/usr/x86_64-w64-mingw32/lib/libole32.a" />
 					<Add library="/usr/x86_64-w64-mingw32/lib/libimm32.a" />
 					<Add library="/usr/x86_64-w64-mingw32/lib/libgdi32.a" />
@@ -290,8 +290,8 @@
 					<Add option="-m32" />
 					<Add option="-Wl,--stack=67108864" />
 					<Add option="-static-libgcc" />
+					<Add option="-static-libstdc++" />
 					<Add library="/usr/i686-w64-mingw32/lib/libmingw32.a" />
-					<Add library="/usr/lib/gcc/i686-w64-mingw32/4.8/libstdc++.a" />
 					<Add library="/home/tails/build-server/windows-x86/zlib/contrib/minizip/.libs/libminizip.a" />
 					<Add library="/home/tails/build-server/windows-x86/SDL2_image/.libs/libSDL2_image.a" />
 					<Add library="/home/tails/build-server/windows-x86/libpng/.libs/libpng.a" />
@@ -305,9 +305,9 @@
 					<Add library="/home/tails/build-server/windows-x86/boost/stage/lib/libboost_system.a" />
 					<Add library="/home/tails/build-server/windows-x86/boost/stage/lib/libboost_filesystem.a" />
 					<Add library="/home/tails/build-server/windows-x86/raknet/raknet/Lib/DLL/Lib/libRakNet.a" />
+					<Add option="-static -lpthread" />
 					<Add library="/usr/i686-w64-mingw32/lib/libws2_32.a" />
 					<Add library="/usr/i686-w64-mingw32/lib/libwinmm.a" />
-					<Add library="/usr/i686-w64-mingw32/lib/libwinpthread.a" />
 					<Add library="/usr/i686-w64-mingw32/lib/libole32.a" />
 					<Add library="/usr/i686-w64-mingw32/lib/libimm32.a" />
 					<Add library="/usr/i686-w64-mingw32/lib/libgdi32.a" />
