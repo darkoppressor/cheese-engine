@@ -292,11 +292,11 @@ int main_startup(int argc,char* args[],int game_data_load_item_count){
     process_arguments(argc,args,arguments);
 
     while(true){
-        static size_t init_count=0;
+        static bool first_init=true;
 
-        int init_status=main_initialize(init_count==0,arguments,game_data_load_item_count);
+        int init_status=main_initialize(first_init,arguments,game_data_load_item_count);
 
-        init_count++;
+        first_init=false;
 
         if(init_status!=0){
             return init_status;
