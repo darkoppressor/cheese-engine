@@ -33,10 +33,10 @@ private:
 public:
 
     File_IO_Load();
-    File_IO_Load(std::string path,bool path_is_backup=false,bool get_binary=false,bool suppress_errors=false);
+    File_IO_Load(std::string path,bool path_is_backup=false,bool get_binary=false,bool suppress_errors=false,bool no_backup=false);
     File_IO_Load(VFS_RWops rwops,bool get_binary=false);
 
-    void open(std::string path,bool path_is_backup,bool get_binary,bool suppress_errors);
+    void open(std::string path,bool path_is_backup,bool get_binary,bool suppress_errors,bool no_backup);
     void open(VFS_RWops rwops,bool get_binary);
     void close();
 
@@ -84,7 +84,8 @@ public:
     #endif
 
     static bool exists(std::string path);
-    static bool is_directory(std::string path);
+    //suppress_errors is only used by the Android version of this function
+    static bool is_directory(std::string path,bool suppress_errors=false);
     static bool is_regular_file(std::string path);
     static bool create_directory(std::string path);
     static bool rename_file(std::string old_path,std::string new_path);

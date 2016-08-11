@@ -26,13 +26,13 @@ File_IO_Load::File_IO_Load(){
     data_stream.str("");
 }
 
-File_IO_Load::File_IO_Load(string path,bool path_is_backup,bool get_binary,bool suppress_errors){
+File_IO_Load::File_IO_Load(string path,bool path_is_backup,bool get_binary,bool suppress_errors,bool no_backup){
     load_success=false;
     loaded_backup=false;
     data="";
     data_stream.str("");
 
-    open(path,path_is_backup,get_binary,suppress_errors);
+    open(path,path_is_backup,get_binary,suppress_errors,no_backup);
 }
 
 File_IO_Load::File_IO_Load(VFS_RWops rwops,bool get_binary){
@@ -44,7 +44,7 @@ File_IO_Load::File_IO_Load(VFS_RWops rwops,bool get_binary){
     open(rwops,get_binary);
 }
 
-void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool suppress_errors){
+void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool suppress_errors,bool no_backup){
     binary=get_binary;
 
     //Did this function call succeed?
@@ -96,8 +96,8 @@ void File_IO_Load::open(string path,bool path_is_backup,bool get_binary,bool sup
 
         string path_backup=path+File_IO::SAVE_SUFFIX_BACKUP;
 
-        if(!path_is_backup && File_IO::is_regular_file(path_backup)){
-            open(path_backup,true,binary,suppress_errors);
+        if(!no_backup && !path_is_backup && File_IO::is_regular_file(path_backup)){
+            open(path_backup,true,binary,suppress_errors,no_backup);
         }
     }
 
@@ -348,12 +348,12 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
         }
 
         //Check for a file
-        File_IO_Load load(path);
+        File_IO_Load load(path,false,false,true,true);
 
         return load.is_opened();
     }
 
-    bool File_IO::is_directory(string path){
+    bool File_IO::is_directory(string path,bool suppress_errors){
         //Check the directory_list
         if(is_in_directory_list(path)){
             return true;
@@ -368,7 +368,7 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
                 return true;
             }
         }
-        else{
+        else if(!suppress_errors){
             Log::add_error("Error getting file information for file '"+path+"': "+Strings::num_to_string(errno),false);
         }
 
@@ -376,8 +376,8 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
     }
 
     bool File_IO::is_regular_file(string path){
-        if(!is_directory(path)){
-            File_IO_Load load(path);
+        if(!is_directory(path,true)){
+            File_IO_Load load(path,false,false,true,true);
 
             return load.is_opened();
         }
@@ -691,7 +691,7 @@ bool File_IO::save_atomic(string path,string data,bool backup,bool append,bool b
         }
     }
 
-    bool File_IO::is_directory(string path){
+    bool File_IO::is_directory(string path,bool suppress_errors){
         try{
             return boost::filesystem::is_directory(path);
         }
