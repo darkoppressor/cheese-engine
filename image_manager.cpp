@@ -50,8 +50,8 @@ void Image_Manager::load_images(){
 
         boost::algorithm::erase_first(file_name,"images/");
 
-        //Ignore the .gitkeep file
-        if(file_name!=".gitkeep"){
+        //Only load .png image files
+        if(boost::algorithm::ends_with(file_name,".png")){
             image_names.push_back(file_name);
         }
     }

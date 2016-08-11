@@ -58,8 +58,8 @@ void Sound_Manager::load_sounds(){
 
         boost::algorithm::erase_first(file_name,"sounds/");
 
-        //Ignore the .gitkeep file
-        if(file_name!=".gitkeep"){
+        //Only load .ogg audio files
+        if(boost::algorithm::ends_with(file_name,".ogg")){
             sound_names.push_back(file_name);
         }
     }

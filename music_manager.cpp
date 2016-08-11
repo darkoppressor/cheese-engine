@@ -138,8 +138,8 @@ void Music_Manager::prepare_tracks(){
 
         boost::algorithm::erase_first(file_name,"music/");
 
-        //Ignore the .gitkeep file
-        if(file_name!=".gitkeep"){
+        //Only load .ogg audio files
+        if(boost::algorithm::ends_with(file_name,".ogg")){
             track_names.push_back(file_name);
         }
     }
