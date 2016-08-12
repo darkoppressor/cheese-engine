@@ -16,6 +16,6 @@ Build System
 ------------------------------------------------------
 Windows						tdm64-gcc 4.8.1
 Windows (Cross-Compiled)	gcc 4.8.2
-Linux						gcc Ubuntu 4.8.2-19ubuntu1, Ubuntu EGLIBC 2.19-0ubuntu6.3
+Linux						gcc Ubuntu 4.8.4-2ubuntu1~14.04.1, Ubuntu EGLIBC 2.19-0ubuntu6.7
 OS X						Ubuntu clang version 3.6.0-2ubuntu1~trusty1, Xcode 6.4
 Android						NDK r10e-rc4, gcc 4.9, SDK Tools 24.3.4, SDK Platform Tools 23.0.1
