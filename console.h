@@ -90,6 +90,7 @@ public:
     void render();
 
     void setup_commands();
+    void setup_game_commands();
 
     std::vector<std::string> parse_input(std::string str_input);
 

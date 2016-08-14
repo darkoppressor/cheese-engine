@@ -69,6 +69,8 @@ void Console::setup_commands(){
     commands.push_back("cl_mute_sound");
     commands.push_back("cl_mute_music");
 
+    setup_game_commands();
+
     Object_Manager::add_game_options_to_commands(commands);
 }
 
