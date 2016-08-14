@@ -374,7 +374,7 @@ void Information::begin_editing(){
 
 void Information::scroll_up(int y_offset){
     if(scrolling){
-        if(y_offset+y+Object_Manager::get_font(font)->spacing_y*scroll_offset<y_offset+y+h-Object_Manager::get_font(font)->spacing_y*2){
+        if(y_offset+y+Object_Manager::get_font(font)->spacing_y*scroll_offset<y_offset+y+h-Object_Manager::get_font(font)->spacing_y*3){
             scroll_offset+=1;
         }
     }

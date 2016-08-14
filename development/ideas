@@ -3,10 +3,6 @@ Clicking somewhere
 Clicking beyond the end of a line should move the cursor to the end of that line
 Clicking below the last line should move the cursor to the last line
 
-Scrolling text in the console, you can scroll up so that the top line of text goes 1 line below the bottom of the text box
-Similarly, scrolling buttons can scroll so that it goes 2 lines below
-Is it always exactly this wrong?
-
 Scroll bar for scrolling buttons and text
 
 Add text colors to buttons, windows, tooltips, and toasts

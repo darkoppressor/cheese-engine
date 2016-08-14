@@ -448,7 +448,7 @@ void Window::reset_buttons_moused_over(){
 }
 
 void Window::scroll_up(){
-    if(y+buttons[last_normal_button+1].h*scroll_offset+Engine_Data::scrolling_buttons_spacing*scroll_offset<y+h-buttons[last_normal_button+1].h*Math::floor((double)Engine_Data::scrolling_buttons_offset/15.0)){
+    if(y+buttons[last_normal_button+1].h*scroll_offset+Engine_Data::scrolling_buttons_spacing*scroll_offset<y+h-buttons[last_normal_button+1].h*3-Engine_Data::scrolling_buttons_spacing*3){
         scroll_offset+=1;
     }
 }
