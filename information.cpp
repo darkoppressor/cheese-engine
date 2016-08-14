@@ -434,26 +434,56 @@ bool Information::handle_input_events(int mouse_x,int mouse_y,int x_offset,int y
             if(Engine_Input::event.button.button==SDL_BUTTON_LEFT){
                 if(text_mutable){
                     if(Collision::check_rect(box_a,box_b)){
-                        if(scrolling && text.length()>0){
-                            int lines=Strings::newline_count(text)+1;
-                            int top_line=-scroll_offset;
+                        if(text.length()>0){
+                            int lines=1;
+                            int top_line=0;
+                            int bottom=1;
+                            int line_width=max_text_length+1;
                             bool character_clicked=false;
 
-                            for(int i=top_line,line_on_screen=0;!character_clicked && i<top_line+scroll_height;i++,line_on_screen++){
-                                if(i>=0 && i<lines){
-                                    int line_length=Strings::length_of_line(text,i);
+                            if(scrolling){
+                                lines=Strings::newline_count(text)+1;
+                                top_line=-scroll_offset;
+                                bottom=top_line+scroll_height;
+                                line_width=scroll_width+1;
+                            }
 
-                                    Bitmap_Font* ptr_font=Object_Manager::get_font(font);
+                            Bitmap_Font* ptr_font=Object_Manager::get_font(font);
 
-                                    for(int j=0;j<line_length;j++){
-                                        Collision_Rect<double> box_character(x_offset+x+ptr_font->spacing_x*j,y_offset+y+ptr_font->spacing_y*line_on_screen,ptr_font->spacing_x,ptr_font->spacing_y);
+                            for(int i=top_line,line_on_screen=0;!character_clicked && i<bottom;i++,line_on_screen++){
+                                Collision_Rect<double> box_line(x_offset+x,y_offset+y+ptr_font->spacing_y*line_on_screen,ptr_font->spacing_x*line_width,ptr_font->spacing_y);
 
-                                        if(Collision::check_rect(box_a,box_character)){
-                                            cursor_position=Strings::which_character(text,i,j);
+                                if(Collision::check_rect(box_a,box_line)){
+                                    if(i<0){
+                                        //Place the cursor at the beginning of the text
+                                        cursor_position=-1;
+                                    }
+                                    else if(i>=lines){
+                                        //Place the cursor at the end of the text
+                                        cursor_position=(int)text.length()-1;
+                                    }
+                                    else{
+                                        int line_length=Strings::length_of_line(text,i);
 
-                                            character_clicked=true;
+                                        if(box_a.x>x_offset+x+ptr_font->spacing_x*line_length){
+                                            //Place the cursor at the end of the line
+                                            cursor_position=Strings::which_character(text,i,line_length-1);
 
                                             break;
+                                        }
+                                        else{
+                                            for(int j=0;j<line_length;j++){
+                                                Collision_Rect<double> box_character(x_offset+x+ptr_font->spacing_x*j,y_offset+y+ptr_font->spacing_y*line_on_screen,ptr_font->spacing_x,ptr_font->spacing_y);
+
+                                                if(Collision::check_rect(box_a,box_character)){
+                                                    //Place the cursor before the clicked character
+                                                    cursor_position=Strings::which_character(text,i,j)-1;
+
+                                                    character_clicked=true;
+
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
