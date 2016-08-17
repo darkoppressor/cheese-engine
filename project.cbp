@@ -370,6 +370,33 @@
 					<Add directory="/home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/lib/" />
 				</Linker>
 			</Target>
+			<Target title="Android-NoBuild">
+				<Option output="Template-Android.a" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output=".objs/android" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-fexpensive-optimizations" />
+					<Add option="-O2" />
+					<Add option="-std=c++11" />
+					<Add option="-w" />
+					<Add option="-m64" />
+					<Add option="-DGAME_OS_ANDROID" />
+					<Add directory="/usr/include/" />
+					<Add directory="/usr/include/x86_64-linux-gnu/" />
+					<Add directory="/home/tails/build-server/android/gpg-cpp-sdk/android/include" />
+					<Add directory="/home/tails/build-server/android/SDL2/include/" />
+					<Add directory="/home/tails/build-server/android/SDL2_image/" />
+					<Add directory="/home/tails/build-server/android/SDL2_mixer/" />
+					<Add directory="/home/tails/build-server/linux-x86_64/boost/" />
+					<Add directory="/home/tails/build-server/android/raknet/" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m64" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
