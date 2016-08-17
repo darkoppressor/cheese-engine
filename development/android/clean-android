@@ -12,6 +12,7 @@ rm -rf "gen/"
 rm -rf "libs/"
 rm -rf "obj/"
 
+rm -f "jni/gpg"
 rm -f "jni/SDL2"
 rm -f "jni/SDL2_image"
 rm -f "jni/SDL2_mixer"
