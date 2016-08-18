@@ -21,6 +21,7 @@
 #include "tooltip.h"
 #include "vfs.h"
 #include "directories.h"
+#include "android.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/crc.hpp>
@@ -191,6 +192,10 @@ void Engine::unload(){
 
 void Engine::quit(){
     unload();
+
+    #ifdef GAME_OS_ANDROID
+        Android::deinitialize();
+    #endif
 
     exit(EXIT_SUCCESS);
 }

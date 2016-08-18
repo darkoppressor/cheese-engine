@@ -14,6 +14,8 @@
 
     #include <SDL.h>
     #include <jni.h>
+
+    #include <gpg/gpg.h>
 #endif
 
 //This value should equal the highest numbered sensor type from the Android SENSOR_TYPE constants (which come from Android's Sensor class)
@@ -50,6 +52,7 @@ public:
     Android_Sensor();
 
     void setup(int get_value_count,std::string get_units,const std::vector<std::string>& get_value_labels);
+    void reset();
 };
 
 class Android_GPS{
@@ -72,12 +75,53 @@ public:
     Android_GPS();
 };
 
+#ifdef GAME_OS_ANDROID
+    class Android_Google_Play_Games{
+    private:
+
+        bool initialized;
+
+        bool auth_in_progress;
+        std::unique_ptr<gpg::GameServices> game_services;
+
+        bool silent_sign_in_attempt_complete;
+        bool signed_in;
+
+    public:
+
+        Android_Google_Play_Games();
+
+        void reset();
+
+        void initialize(gpg::PlatformConfiguration const& pc,gpg::GameServices::Builder::OnAuthActionStartedCallback started_callback,gpg::GameServices::Builder::OnAuthActionFinishedCallback finished_callback);
+        void deinitialize();
+
+        bool is_auth_in_progress();
+
+        bool is_silent_sign_in_attempt_complete() const;
+        bool is_signed_in() const;
+
+        gpg::GameServices* get_game_services();
+        void sign_in();
+        void sign_out();
+        ///void unlock_achievement(const char* achievement_id);
+        void submit_highscore(const char* leaderboard_id,uint64_t score);
+        ///void show_achievements();
+        void show_leaderboard(const char* leaderboard_id);
+        void show_all_leaderboards();
+    };
+#endif
+
 class Android{
 private:
 
     static bool initialized;
 
     static Android_Sensor sensors[SENSOR_TYPE_COUNT];
+
+    #ifdef GAME_OS_ANDROID
+        static Android_Google_Play_Games google_play_games;
+    #endif
 
     template<typename... Args>
     static void call_android_method(std::string method_name,std::string signature,Args... args){
@@ -129,6 +173,7 @@ public:
     static const int SENSOR_TYPE_STEP_DETECTOR;
 
     static void initialize();
+    static void deinitialize();
 
     static bool get_sensor_availability(std::string sensor_type);
     static bool get_sensor_state(std::string sensor_type);
@@ -149,6 +194,14 @@ public:
     static Android_GPS get_gps_readout();
     static void enable_gps(std::uint32_t minimum_update_time,float minimum_update_distance);
     static void disable_gps();
+
+    static void gpg_sign_in();
+    static void gpg_sign_out();
+    ///static void gpg_unlock_achievement(const char* achievement_id);
+    static void gpg_submit_highscore(const char* leaderboard_id,uint64_t score);
+    ///static void gpg_show_achievements();
+    static void gpg_show_leaderboard(const char* leaderboard_id);
+    static void gpg_show_all_leaderboards();
 };
 
 #endif

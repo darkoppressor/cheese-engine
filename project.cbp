@@ -403,6 +403,7 @@
 		</Compiler>
 		<Unit filename="android.cpp" />
 		<Unit filename="android.h" />
+		<Unit filename="android_native_functions.cpp" />
 		<Unit filename="animation.cpp" />
 		<Unit filename="animation.h" />
 		<Unit filename="button.cpp" />
