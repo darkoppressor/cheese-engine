@@ -776,6 +776,22 @@ void Android::disable_gps(){
     set_gps_enabled(false,0,0.0f);
 }
 
+bool Android::gpg_is_silent_sign_in_attempt_complete(){
+    #ifdef GAME_OS_ANDROID
+        return google_play_games.is_silent_sign_in_attempt_complete();
+    #endif
+
+    return false;
+}
+
+bool Android::gpg_is_signed_in(){
+    #ifdef GAME_OS_ANDROID
+        return google_play_games.is_signed_in();
+    #endif
+
+    return false;
+}
+
 void Android::gpg_sign_in(){
     #ifdef GAME_OS_ANDROID
         google_play_games.sign_in();

@@ -195,6 +195,8 @@ public:
     static void enable_gps(std::uint32_t minimum_update_time,float minimum_update_distance);
     static void disable_gps();
 
+    static bool gpg_is_silent_sign_in_attempt_complete();
+    static bool gpg_is_signed_in();
     static void gpg_sign_in();
     static void gpg_sign_out();
     ///static void gpg_unlock_achievement(const char* achievement_id);
