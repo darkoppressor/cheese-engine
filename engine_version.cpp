@@ -16,7 +16,7 @@ string Engine_Version::get_engine_status(){
 }
 
 string Engine_Version::get_engine_version(){
-    return "2.2.0";
+    return "2.2.1";
 }
 
 string Engine_Version::get_engine_date(){

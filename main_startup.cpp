@@ -191,10 +191,6 @@ int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_d
         return 1;
     }
 
-    #ifdef GAME_OS_ANDROID
-        Android::initialize();
-    #endif
-
     if(!Options::load_save_location()){
         return 2;
     }
@@ -216,6 +212,10 @@ int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_d
     if(first_init){
         Log::clear_error_log();
     }
+
+    #ifdef GAME_OS_ANDROID
+        Android::initialize();
+    #endif
 
     string startup=Engine_Data::game_title;
     startup+="\nDeveloped by: "+Engine_Data::developer;

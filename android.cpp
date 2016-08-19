@@ -5,6 +5,7 @@
 #include "android.h"
 #include "symbols.h"
 #include "engine_strings.h"
+#include "engine_data.h"
 
 using namespace std;
 
@@ -346,11 +347,11 @@ Android_GPS::Android_GPS(){
     }
 
     bool Android_Google_Play_Games::is_silent_sign_in_attempt_complete() const{
-        return silent_sign_in_attempt_complete;
+        return initialized && silent_sign_in_attempt_complete;
     }
 
     bool Android_Google_Play_Games::is_signed_in() const{
-        return signed_in;
+        return initialized && signed_in;
     }
 
     gpg::GameServices* Android_Google_Play_Games::get_game_services(){
@@ -551,59 +552,61 @@ void Android::initialize(){
         #ifdef GAME_OS_ANDROID
             jni_initialize();
 
-            JNIEnv* env=(JNIEnv*)SDL_AndroidGetJNIEnv();
+            if(Engine_Data::android_gpg){
+                JNIEnv* env=(JNIEnv*)SDL_AndroidGetJNIEnv();
 
-            if(env!=0){
-                JavaVM* jvm=0;
-                int jvm_status=env->GetJavaVM(&jvm);
+                if(env!=0){
+                    JavaVM* jvm=0;
+                    int jvm_status=env->GetJavaVM(&jvm);
 
-                if(jvm!=0 && jvm_status==0){
-                    gpg::AndroidInitialization::JNI_OnLoad(jvm);
+                    if(jvm!=0 && jvm_status==0){
+                        gpg::AndroidInitialization::JNI_OnLoad(jvm);
 
-                    jobject activity=(jobject)SDL_AndroidGetActivity();
+                        jobject activity=(jobject)SDL_AndroidGetActivity();
 
-                    if(activity!=NULL){
-                        gpg::AndroidPlatformConfiguration platform_configuration;
-                        platform_configuration.SetActivity(activity);
+                        if(activity!=NULL){
+                            gpg::AndroidPlatformConfiguration platform_configuration;
+                            platform_configuration.SetActivity(activity);
 
-                        auto OnAuthActionStarted=[&](gpg::AuthOperation op){
-                            Log::add_log("Google Play Games: OnAuthActionStarted");
+                            auto OnAuthActionStarted=[&](gpg::AuthOperation op){
+                                Log::add_log("Google Play Games: OnAuthActionStarted");
 
-                            switch(op){
-                                case gpg::AuthOperation::SIGN_IN:
-                                    Log::add_log("Google Play Games: Signing in");
-                                    break;
-                                case gpg::AuthOperation::SIGN_OUT:
-                                    Log::add_log("Google Play Games: Signing out");
-                                    break;
-                            }
-                        };
+                                switch(op){
+                                    case gpg::AuthOperation::SIGN_IN:
+                                        Log::add_log("Google Play Games: Signing in");
+                                        break;
+                                    case gpg::AuthOperation::SIGN_OUT:
+                                        Log::add_log("Google Play Games: Signing out");
+                                        break;
+                                }
+                            };
 
-                        auto OnAuthActionFinished=[&](gpg::AuthOperation op,gpg::AuthStatus status){
-                            Log::add_log("Google Play Games: OnAuthActionFinished");
+                            auto OnAuthActionFinished=[&](gpg::AuthOperation op,gpg::AuthStatus status){
+                                Log::add_log("Google Play Games: OnAuthActionFinished");
 
-                            if(gpg::IsSuccess(status)){
-                                Log::add_log("Google Play Games: You are logged in");
-                            }
-                            else{
-                                Log::add_log("Google Play Games: You are not logged in");
-                            }
-                        };
+                                if(gpg::IsSuccess(status)){
+                                    Log::add_log("Google Play Games: You are logged in");
+                                }
+                                else{
+                                    Log::add_log("Google Play Games: You are not logged in");
+                                }
+                            };
 
-                        google_play_games.initialize(platform_configuration,OnAuthActionStarted,OnAuthActionFinished);
+                            google_play_games.initialize(platform_configuration,OnAuthActionStarted,OnAuthActionFinished);
 
-                        env->DeleteLocalRef(activity);
+                            env->DeleteLocalRef(activity);
+                        }
+                        else{
+                            Log::add_error("Error getting Android platform configuration: SDL_AndroidGetActivity returned NULL");
+                        }
                     }
                     else{
-                        Log::add_error("Error getting Android platform configuration: SDL_AndroidGetActivity returned NULL");
+                        Log::add_error("Error getting Android platform configuration: JavaVM status is "+Strings::num_to_string(jvm_status));
                     }
                 }
                 else{
-                    Log::add_error("Error getting Android platform configuration: JavaVM status is "+Strings::num_to_string(jvm_status));
+                    Log::add_error("Error getting Android platform configuration: SDL_AndroidGetJNIEnv returned 0");
                 }
-            }
-            else{
-                Log::add_error("Error getting Android platform configuration: SDL_AndroidGetJNIEnv returned 0");
             }
         #endif
 
