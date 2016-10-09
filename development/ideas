@@ -1,3 +1,18 @@
+Implement speed of sound
+A constant should give meters per pixel, to relate equations to the game world
+Another constant should give the actual speed of sound in meters/second
+"Played" sounds would thus need to be added to a queue and only actually played when the player should hear them, with the delay being calculated based on the distance between the sound and the player using the speed of sound
+Only problem here is that this would only work if all materials in the game have the same speed of sound
+I think it is fine to just leave this for now
+I can expand further if I ever make a game where this distinction in important
+
+Can the sound volume falloff be based on some actual physics thing and made more realistic?
+
+Implement the Doppler Effect
+I think this would require something more than SDL2_Mixer for sounds, so I could change the pitch of them to implement this effect
+
+Add feature for making game-specific directories
+
 Scroll bar for scrolling buttons and text
 
 Add text colors to buttons, windows, tooltips, and toasts
