@@ -16,6 +16,7 @@
 #include "game_manager.h"
 #include "network_client.h"
 #include "options.h"
+#include "internet.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -39,6 +40,8 @@ void Console::setup_commands(){
     commands.push_back("mod");
     commands.push_back("nomod");
     commands.push_back("currentmod");
+
+    commands.push_back("open");
 
     commands.push_back("sv_network_password");
 
@@ -366,6 +369,15 @@ void Console::run_commands(const vector<string>& command_list){
                 }
                 else{
                     add_text("No active mod");
+                }
+            }
+
+            else if(command=="open"){
+                if(command_input[1].length()>0){
+                    Internet::open_url(command_input[1]);
+                }
+                else{
+                    add_text(command+"\n - open a URL\nUsage:\n"+command+" URL");
                 }
             }
 

@@ -188,6 +188,8 @@ public:
     static void vibrate(std::uint32_t length);
     static void vibrate_stop();
 
+    static void open_url(std::string url);
+
     static bool get_gps_availability();
     static bool get_gps_accessibility();
     static bool get_gps_state();

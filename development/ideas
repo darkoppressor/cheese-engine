@@ -15,8 +15,6 @@ Can the sound volume falloff be based on some actual physics thing and made more
 Implement the Doppler Effect
 I think this would require something more than SDL2_Mixer for sounds, so I could change the pitch of them to implement this effect
 
-Add feature for making game-specific directories
-
 Scroll bar for scrolling buttons and text
 
 Add text colors to buttons, windows, tooltips, and toasts

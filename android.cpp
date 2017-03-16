@@ -728,6 +728,21 @@ void Android::vibrate_stop(){
     call_android_method("vibrateStop","()V");
 }
 
+void Android::open_url(string url){
+    #ifdef GAME_OS_ANDROID
+        JNIEnv* env=(JNIEnv*)SDL_AndroidGetJNIEnv();
+
+        if(env!=0){
+            jstring jstr=env->NewStringUTF(url.c_str());
+
+            call_android_method("openUrl","(Ljava/lang/String;)V",jstr);
+        }
+        else {
+            Log::add_error("Error opening URL '"+url+"': SDL_AndroidGetJNIEnv returned 0");
+        }
+    #endif
+}
+
 bool Android::get_gps_availability(){
     #ifdef GAME_OS_ANDROID
         return jni_get_gps_available();
