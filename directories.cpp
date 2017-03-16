@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 
-#ifdef GAME_OS_OSX
+#ifdef GAME_OS_MACOS
     #include <CoreServices/CoreServices.h>
 #endif
 
@@ -108,7 +108,7 @@ string Directories::get_save_directory(){
                 str_home+="/";
             #endif
 
-            #ifdef GAME_OS_OSX
+            #ifdef GAME_OS_MACOS
                 FSRef fsref;
                 OSType folder_type=kApplicationSupportFolderType;
                 char path[PATH_MAX];

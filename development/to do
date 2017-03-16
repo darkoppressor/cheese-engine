@@ -1,2 +1,9 @@
+Move source files into a sub directory
+Int math clamp angle can use mod instead of while loops
+Update to SDL 2.0.5
+Dedicated server mode can be implemented as a headless mode (controlled by a command line argument)
+Take care of that idea to allow making game-specific dirs
+Function for opening a web link
+
 In Desktop mode, fullscreen, 1280x720, the small font looks terrible
 This seems to be true in other modes as well

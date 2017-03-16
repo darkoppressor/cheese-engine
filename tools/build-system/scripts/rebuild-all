@@ -14,7 +14,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./rebuild-target $PROJECT_DIRECTORY Release-Windows-x86
 
-	./rebuild-target $PROJECT_DIRECTORY Release-OSX-x86_64
+	./rebuild-target $PROJECT_DIRECTORY Release-macOS-x86_64
 
 	./rebuild-android $PROJECT_DIRECTORY
 else

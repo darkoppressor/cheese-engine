@@ -25,7 +25,7 @@ All Platforms
 -------------
 Update the information in version.cpp
 
-OS X
+macOS
 ----
 Update CFBundleVersion and CFBundleShortVersionString in development/*.app/Contents/Info.plist
 
@@ -67,7 +67,7 @@ Linux
 -----
 Open the Code::Blocks project, select the desired build target, and press build
 
-OS X
+macOS
 ----
 Open the Code::Blocks project, select the desired build target, and press build
 
@@ -137,7 +137,7 @@ save_location.cfg
 
 Create a .tar.gz archive of this directory
 
-OS X
+macOS
 ----
 Place the binary in development/*.app/Contents/MacOS/ and rename it to 'game'
 

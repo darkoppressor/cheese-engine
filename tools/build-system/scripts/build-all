@@ -14,7 +14,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./build-target $PROJECT_DIRECTORY Release-Windows-x86
 
-	./build-target $PROJECT_DIRECTORY Release-OSX-x86_64
+	./build-target $PROJECT_DIRECTORY Release-macOS-x86_64
 
 	./build-android $PROJECT_DIRECTORY
 else

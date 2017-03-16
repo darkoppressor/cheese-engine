@@ -315,11 +315,11 @@
 					<Add library="/usr/i686-w64-mingw32/lib/libversion.a" />
 				</Linker>
 			</Target>
-			<Target title="Release-OSX-x86_64">
+			<Target title="Release-macOS-x86_64">
 				<Option platforms="Unix;" />
-				<Option output="libCheese-Engine-OSX-x86_64.a" prefix_auto="1" extension_auto="0" />
+				<Option output="libCheese-Engine-macOS-x86_64.a" prefix_auto="1" extension_auto="0" />
 				<Option working_dir="" />
-				<Option object_output=".objs/osx-x86_64" />
+				<Option object_output=".objs/macos-x86_64" />
 				<Option type="2" />
 				<Option compiler="osxcross_clang_compiler" />
 				<Compiler>
@@ -329,7 +329,7 @@
 					<Add option="-w" />
 					<Add option="-m64" />
 					<Add option="-stdlib=libc++" />
-					<Add option="-DGAME_OS_OSX" />
+					<Add option="-DGAME_OS_MACOS" />
 					<Add directory="/home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/include/" />
 					<Add directory="/home/tails/build-server/osx-x86_64/SDL2/include/" />
 					<Add directory="/home/tails/build-server/osx-x86_64/SDL2_image/" />

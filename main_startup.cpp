@@ -29,7 +29,7 @@
     #include "file_io.h"
 #endif
 
-#ifdef GAME_OS_OSX
+#ifdef GAME_OS_MACOS
     #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -278,7 +278,7 @@ void process_arguments(int argc,char* args[],Command_Line_Arguments& arguments){
 }
 
 int main_startup(int argc,char* args[],int game_data_load_item_count){
-    #ifdef GAME_OS_OSX
+    #ifdef GAME_OS_MACOS
         //Set the working directory to the Resources directory of our bundle
         char path[PATH_MAX];
         CFURLRef url=CFBundleCopyResourcesDirectoryURL(CFBundleGetMainBundle());

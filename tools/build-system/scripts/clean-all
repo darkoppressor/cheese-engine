@@ -14,7 +14,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./clean-target $PROJECT_DIRECTORY Release-Windows-x86
 
-	./clean-target $PROJECT_DIRECTORY Release-OSX-x86_64
+	./clean-target $PROJECT_DIRECTORY Release-macOS-x86_64
 
 	./clean-android $PROJECT_DIRECTORY
 else

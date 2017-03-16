@@ -32,7 +32,7 @@ Do this step after all other steps (including the steps below for specific platf
 Delete the .git/ directory
 Do git init in the game directory
 
-OS X
+macOS
 ----
 Rename the development/*.app directory (capitalized, spaced)
 

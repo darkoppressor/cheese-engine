@@ -1,5 +1,5 @@
 # cheese-engine
-2D game engine for Windows, OS X, Linux, and Android
+2D game engine for Windows, macOS, Linux, and Android
 http://cheeseandbacon.org/
 
 The Cheese Engine is the engine running Cheese and Bacon Games', uh, games.

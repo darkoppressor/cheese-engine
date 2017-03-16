@@ -111,7 +111,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		BUILD_LINUX_32="false"
 		BUILD_WINDOWS_64="false"
 		BUILD_WINDOWS_32="false"
-		BUILD_OSX_64="false"
+		BUILD_macOS_64="false"
 		BUILD_ANDROID="false"
 		ANDROID_ABI_TARGETS=""
 
@@ -130,8 +130,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				if [ "$line" == "Release-Windows-x86" ]; then
 					BUILD_WINDOWS_32="true"
 				fi
-				if [ "$line" == "Release-OSX-x86_64" ]; then
-					BUILD_OSX_64="true"
+				if [ "$line" == "Release-macOS-x86_64" ]; then
+					BUILD_macOS_64="true"
 				fi
 				if [[ $line == Android* ]]; then
 					BUILD_ANDROID="true"
@@ -147,7 +147,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			exit
 		fi
 
-		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_LINUX_32" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_WINDOWS_32" == "false" ] && [ "$BUILD_OSX_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
+		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_LINUX_32" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_WINDOWS_32" == "false" ] && [ "$BUILD_macOS_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
 			echo "No targets specified for building in '${PROJECT_PATH}/development/build-system-targets'" | tee -a ${LOG_FILE}
 
 			exit
@@ -173,8 +173,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
-		if [ "$BUILD_OSX_64" == "true" ]; then
-			log="Build target Release-OSX-x86_64 requested"
+		if [ "$BUILD_macOS_64" == "true" ]; then
+			log="Build target Release-macOS-x86_64 requested"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
@@ -212,12 +212,12 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86
 		fi
-		if [ "$BUILD_OSX_64" == "true" ]; then
-			log="Attempting build of Release-OSX-x86_64"
+		if [ "$BUILD_macOS_64" == "true" ]; then
+			log="Attempting build of Release-macOS-x86_64"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-OSX-x86_64
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-macOS-x86_64
 		fi
 		if [ "$BUILD_ANDROID" == "true" ]; then
 			log="Attempting build of Release-Android targeting ABIs: $ANDROID_ABI_TARGETS"
@@ -240,26 +240,26 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		PACKAGING_LINUX="${PROJECT_NAME}-linux-${PROJECT_VERSION}"
 		PACKAGING_WINDOWS="${PROJECT_NAME}-windows-${PROJECT_VERSION}"
 		cd "$HOME/build-server/projects/${PROJECT_NAME}/development"
-		PACKAGING_OSX="$(find -maxdepth 1 -type d -name '*.app'| head -n1)"
+		PACKAGING_macOS="$(find -maxdepth 1 -type d -name '*.app'| head -n1)"
 		cd $DIR
-		OSX_PREFIX="./"
-		PACKAGING_OSX="${PACKAGING_OSX##$OSX_PREFIX}"
+		macOS_PREFIX="./"
+		PACKAGING_macOS="${PACKAGING_macOS##$macOS_PREFIX}"
 		PACKAGING_ANDROID="${PROJECT_NAME}-android-${PROJECT_VERSION}"
 		BUILDS="$HOME/build-server/builds"
 
 		mkdir "${PACKAGING}"
 		mkdir "${PACKAGING}/${PACKAGING_LINUX}"
 		mkdir "${PACKAGING}/${PACKAGING_WINDOWS}"
-		mv "$HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_OSX}" "${PACKAGING}"
-		mkdir -p "$PACKAGING/$PACKAGING_OSX/Contents/MacOS"
-		mkdir -p "$PACKAGING/$PACKAGING_OSX/Contents/Resources"
+		mv "$HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_macOS}" "${PACKAGING}"
+		mkdir -p "$PACKAGING/$PACKAGING_macOS/Contents/MacOS"
+		mkdir -p "$PACKAGING/$PACKAGING_macOS/Contents/Resources"
 		mkdir -p "${BUILDS}"
 
 		PACKAGE_LINUX_64="true"
 		PACKAGE_LINUX_32="true"
 		PACKAGE_WINDOWS_64="true"
 		PACKAGE_WINDOWS_32="true"
-		PACKAGE_OSX="true"
+		PACKAGE_macOS="true"
 
 		if [ "$BUILD_LINUX_64" == "true" ]; then
 			PLATFORM="Linux-x86_64"
@@ -371,12 +371,12 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_WINDOWS_32="false"
 		fi
 
-		if [ "$BUILD_OSX_64" == "true" ]; then
-			PLATFORM="OSX-x86_64"
+		if [ "$BUILD_macOS_64" == "true" ]; then
+			PLATFORM="macOS-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_OSX}/Contents/MacOS/game"
+				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
@@ -384,7 +384,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			else
 				BUILDS_ALL_WORKED="false"
 
-				PACKAGE_OSX="false"
+				PACKAGE_macOS="false"
 
 				error="Build failed for ${TARGET}:\n"
 				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
@@ -395,7 +395,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				RESULT="${RESULT}${error}"
 			fi
 		else
-			PACKAGE_OSX="false"
+			PACKAGE_macOS="false"
 		fi
 
 		if [ "$BUILD_ANDROID" == "true" ]; then
@@ -457,22 +457,22 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cd $DIR
 		fi
 
-		if [ "$PACKAGE_OSX" == "true" ]; then
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
-			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources"
+		if [ "$PACKAGE_macOS" == "true" ]; then
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
+			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
+			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
 
 			xcf2png "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.xcf" -o "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
-			png2icns "${PACKAGING}/${PACKAGING_OSX}/Contents/Resources/icon.icns" "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
+			png2icns "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/icon.icns" "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
 			cd "${PACKAGING}"
 
-			7z a -tzip -mx=9 -mmt=on "${PACKAGING_OSX}.zip" "${PACKAGING_OSX}"
+			7z a -tzip -mx=9 -mmt=on "${PACKAGING_macOS}.zip" "${PACKAGING_macOS}"
 
-			mv "${PACKAGING_OSX}.zip" "${BUILDS}/${PROJECT_NAME}-osx-${PROJECT_VERSION}.zip"
+			mv "${PACKAGING_macOS}.zip" "${BUILDS}/${PROJECT_NAME}-macos-${PROJECT_VERSION}.zip"
 
-			#DMG="${PROJECT_NAME}-osx-${PROJECT_VERSION}.dmg"
+			#DMG="${PROJECT_NAME}-macos-${PROJECT_VERSION}.dmg"
 
 			# When writing this, I didn't figure out what size to make this
 			# My guess is that I would need to determine the total size of the .app directory and make
@@ -488,7 +488,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			#sudo mount -t hfs -o loop "${DMG}" mount_dmg
 
-			#sudo cp -r "${PACKAGING}/${PACKAGING_OSX}" "mount_dmg"
+			#sudo cp -r "${PACKAGING}/${PACKAGING_macOS}" "mount_dmg"
 
 			#sudo umount mount_dmg
 
