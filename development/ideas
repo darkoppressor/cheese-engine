@@ -1,3 +1,7 @@
+Update to SDL 2.0.5
+
+Move source files into a sub directory
+
 Implement speed of sound
 A constant should give meters per pixel, to relate equations to the game world
 Another constant should give the actual speed of sound in meters/second
@@ -34,7 +38,7 @@ eliminating the need for X11 when building on the server directly
 
 Enable joining a game in progress
 
-Dedicated server mode
+Dedicated server mode (can be implemented as a headless mode, controlled by a command line argument)
 
 IPv6
 

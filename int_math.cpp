@@ -100,11 +100,9 @@ const int32_t Int_Math::atan_values[601]={0,954,1909,2864,3819,4774,5729,6684,76
 const int32_t Int_Math::trig_adjust=10000;
 
 void Int_Math::clamp_angle(int32_t& angle){
-    while(angle>359){
-        angle-=360;
-    }
+    angle%=360;
 
-    while(angle<0){
+    if(angle<0){
         angle+=360;
     }
 }
