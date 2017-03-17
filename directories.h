@@ -6,6 +6,7 @@
 #define directories_h
 
 #include <string>
+#include <vector>
 
 class Directories{
 private:
@@ -24,6 +25,8 @@ public:
     //this is set to true and a fallback save location is used
     static bool save_location_fallback;
 
+    static std::vector<std::string> directories;
+
     //Returns a string with the (absolute if possible) path to the current working directory
     static std::string get_cwd();
 
@@ -38,6 +41,9 @@ public:
 
     //Returns false if there is no valid save location
     static bool check_save_location();
+
+    static void create_directories_list();
+    static void add_game_directories_to_list();
 
     //Create the entire needed directory structure
     //Returns false if the directory structure could not be created

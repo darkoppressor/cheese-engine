@@ -24,6 +24,8 @@ bool Directories::save_location_loaded=false;
 
 bool Directories::save_location_fallback=false;
 
+vector<string> Directories::directories;
+
 void Directories::make_directory(const string& directory){
     if(!File_IO::exists(directory)){
         File_IO::create_directory(directory);
@@ -228,6 +230,15 @@ bool Directories::check_save_location(){
     }
 }
 
+void Directories::create_directories_list(){
+    directories.clear();
+
+    directories.push_back("screenshots");
+    directories.push_back("mods");
+
+    add_game_directories_to_list();
+}
+
 bool Directories::make_directories(){
     make_home_directory();
 
@@ -235,8 +246,13 @@ bool Directories::make_directories(){
         return false;
     }
 
-    make_directory(get_save_directory()+"screenshots");
-    make_directory(get_save_directory()+"mods");
+    create_directories_list();
+
+    string save_directory=get_save_directory();
+
+    for(string directory : directories){
+        make_directory(save_directory+directory);
+    }
 
     return true;
 }
