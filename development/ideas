@@ -2,6 +2,33 @@ Update to SDL 2.0.5
 
 Move source files into a sub directory
 
+***
+Multithreading:
+The game startup process could be partially multithreaded
+The game normally sequentially loads all assets while displaying a load screen (as soon as it can)
+When done, you are on the menu and input is working
+What if I added a special class of assets, whose names are defined in a script
+(or maybe placed in one or more subdirectories)
+Any listed asset will be skipped over during initial loading
+At this point, the game should have a list of all special assets, but they won't be loaded yet
+Once initial loading is complete, the main menu is shown per normal
+At this point, the game begins loading the special assets MT in the background
+The engine would have a boolean that represents whether this secondary loading is done yet or not
+Anything that requires any special assets would need to be unavailable until loading is done
+When trying to access an asset, if it doesn't exist but is on the special list,
+the engine should return a special error explaining this
+This would make it easier to catch crashes caused by misusing this feature
+What would this ultimately gain? It would be up to the game
+My first thought is that you would make your big music files special,
+and this would just allow navigating the menus much more quickly rather than waiting on loading
+In fact, with music, it would be possible to allow gameplay to begin and just start playing music as soon as it is done loading
+Worst case, you couldn't do anything beyond the main menu and its submenus
+(except for starting the game), but this still seems like a small gain
+It would mainly be useful for something more like the music example above though
+Perhaps this could be made more sophisticated, and make each special asset available as soon as it is loaded,
+not requiring the entire special asset loading to complete before using some of them
+***
+
 Implement speed of sound
 A constant should give meters per pixel, to relate equations to the game world
 Another constant should give the actual speed of sound in meters/second
