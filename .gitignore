@@ -1,4 +1,5 @@
 .objs/**
+mods/**
 screenshots/**
 
 tools/*.exe
@@ -41,3 +42,4 @@ development/android/local.properties
 /*.layout
 
 *Thumbs.db
+*.DS_Store
