@@ -41,16 +41,15 @@ PROJECT_NAME="$(basename ${PROJECT_PATH})"
 
 NAME="${PROJECT_NAME}"
 
-VERSION="3"
+VERSION="4"
 
 RESULT=""
 
-chmod +x $HOME/build-server/cheese-engine/tools/*-x86_64
+chmod +x $HOME/build-server/cheese-engine/tools/*
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/*
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86
-chmod -x -f $HOME/build-server/cheese-engine/tools/build-system/scripts/clean-android.bat
-chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/linux/*
+chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/*
 
 mkdir -p $HOME/build-server/projects
 
@@ -124,7 +123,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				if [ "$line" == "Release-Linux-x86" ]; then
 					BUILD_LINUX_32="true"
 				fi
-				if [ "$line" == "Cross-Compile-Windows-x86_64" ]; then
+				if [ "$line" == "Release-Windows-x86_64" ]; then
 					BUILD_WINDOWS_64="true"
 				fi
 				if [ "$line" == "Release-Windows-x86" ]; then
@@ -164,7 +163,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			RESULT="$RESULT$log\n\n"
 		fi
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
-			log="Build target Cross-Compile-Windows-x86_64 requested"
+			log="Build target Release-Windows-x86_64 requested"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
@@ -199,11 +198,11 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86
 		fi
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
-			log="Attempting build of Cross-Compile-Windows-x86_64"
+			log="Attempting build of Release-Windows-x86_64"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Cross-Compile-Windows-x86_64
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86_64
 		fi
 		if [ "$BUILD_WINDOWS_32" == "true" ]; then
 			log="Attempting build of Release-Windows-x86"
@@ -320,7 +319,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			PLATFORM="Windows-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
-			TARGET="Cross-Compile-${PLATFORM}"
+			TARGET="Release-${PLATFORM}"
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
 

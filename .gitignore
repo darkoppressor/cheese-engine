@@ -1,3 +1,4 @@
+CMakeFiles/**
 .objs/**
 mods/**
 screenshots/**
@@ -35,6 +36,11 @@ development/android/local.properties
 
 /*_TEMPORARY
 /*_BACKUP
+
+/*CMakeCache.txt
+/*Makefile
+/*cmake_install.cmake
+/*compile_commands.json
 
 /*.dll
 /*.depend

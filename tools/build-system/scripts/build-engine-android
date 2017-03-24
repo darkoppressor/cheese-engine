@@ -12,7 +12,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	$PROJECT_DIRECTORY/development/android/clean-android
 	$PROJECT_DIRECTORY/development/android/android-prep
 
-	android/linux/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	android/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	ANDROID_ABI_TARGETS="armeabi armeabi-v7a x86"
 

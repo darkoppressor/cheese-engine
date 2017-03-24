@@ -1,0 +1,27 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	VERSION_FILE="$PROJECT_DIRECTORY/version.cpp"
+
+	if [ -n "$VERSION_FILE" ]; then
+		echo "Refreshing the build date for the project in directory $PROJECT_DIRECTORY"
+
+		YEAR=$(date +%Y)
+		MONTH=$(date +%m)
+		DAY=$(date +%d)
+
+		sed -i -e "s/^.*\/\/YEAR$/    return \"$YEAR\"; \/\/YEAR/" "$VERSION_FILE"
+		sed -i -e "s/^.*\/\/MONTH$/    return \"$MONTH\"; \/\/MONTH/" "$VERSION_FILE"
+		sed -i -e "s/^.*\/\/DAY$/    return \"$DAY\"; \/\/DAY/" "$VERSION_FILE"
+	else
+		echo "No such version file: $VERSION_FILE"
+	fi
+else
+	echo "build-date - refresh the build date for a Cheese Engine project"
+	echo "Usage: build-date PROJECT-DIRECTORY"
+fi

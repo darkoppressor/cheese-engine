@@ -1,4 +1,4 @@
-This file contains instructions for building/packaging on each supported platform.
+This file contains instructions for building/packaging.
 
 This whole process (except the caveats listed below in each step's automation instructions)
 can be automated on the build server
@@ -15,9 +15,8 @@ Don't forget to check all of the caveats listed in the steps below
 Step 1 - Update Version
 ***********************
 
-Everything in this step can be automated on Linux/Windows. Do:
-'cheese-engine/tools/Version-Windows-x86_64.exe PROJECT-DIRECTORY VERSION-COMPONENT STATUS' OR
-'cheese-engine/tools/Version-Linux-x86_64 PROJECT-DIRECTORY VERSION-COMPONENT STATUS'
+Everything in this step can be automated. Do:
+'cheese-engine/tools/version PROJECT-DIRECTORY VERSION-COMPONENT STATUS'
 VERSION-COMPONENT must be one of: 'major' 'minor' 'micro'
 STATUS is optional, can be any string, and will change the release status to whatever string you pass it
 
@@ -36,7 +35,7 @@ Update the version information in development/android/AndroidManifest.xml
 Step 2 - Build
 **************
 
-Everything in this step except choosing the Android build options can be automated on Linux
+Everything in this step except choosing the Android build options can be automated
 You need to set those build options first (if you want to change them)
 So, before running the build script(s):
 Choose one of the APP_ABI lines as instructed in the Android section below
@@ -51,13 +50,11 @@ There are also corresponding clean and rebuild scripts for everything
 After running the build script(s):
 Run the Android clean script as instructed in the Android section below,
 just to be safe (those symlinks make me nervous)
-Note that there is a Windows version of this script, too
 
 All Platforms
 -------------
 Refresh the build date by running:
-'cheese-engine/tools/Build-Date-Windows-x86_64.exe PROJECT-DIRECTORY' OR
-'cheese-engine/tools/Build-Date-Linux-x86_64 PROJECT-DIRECTORY'
+'cheese-engine/tools/build-date PROJECT-DIRECTORY'
 
 Windows
 -------
@@ -81,24 +78,20 @@ Choose either release or debug options in development/android/jni/Application.mk
 is commented out
 
 Prepare everything (assets, etc.) by running:
-'cheese-engine/tools/Android-Prep-Windows-x86_64.exe PROJECT-DIRECTORY' OR
-'cheese-engine/tools/Android-Prep-Linux-x86_64 PROJECT-DIRECTORY'
+'cheese-engine/tools/android-prep PROJECT-DIRECTORY KEY-PASSWORDS-LOCATION'
 Note that if you want to edit save_location.cfg as detailed in the Package step below,
 you need to do that before running the android prep script
 
 Build the C/C++ source code for the libraries and the game by running:
-'cheese-engine/tools/build-system/scripts/android/windows/build.bat PROJECT-DIRECTORY' OR
-'cheese-engine/tools/build-system/scripts/android/linux/build PROJECT-DIRECTORY'
+'cheese-engine/tools/build-system/scripts/android/build PROJECT-DIRECTORY'
 
 Create the .apk by running:
-'cheese-engine/tools/build-system/scripts/android/windows/ant.bat PROJECT-DIRECTORY release' OR
-'cheese-engine/tools/build-system/scripts/android/linux/ant PROJECT-DIRECTORY release'
+'cheese-engine/tools/build-system/scripts/android/ant PROJECT-DIRECTORY release'
 Alternatively, substitute 'debug' for 'release' in the above script to build the debug version
 Also, you can add ' install' after 'release' in the above script to build and then send to the default device
 
 Clean up (by removing all build-related files such as binaries, object files,
 the stuff created by the prep program, etc.) by running:
-'cheese-engine/tools/build-system/scripts/clean-android.bat PROJECT-DIRECTORY' OR
 'cheese-engine/tools/build-system/scripts/clean-android PROJECT-DIRECTORY'
 DO NOT forget to run this, as it removes the symlinks that the prep program creates in development/android/jni/include/
 

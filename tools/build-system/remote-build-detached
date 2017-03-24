@@ -6,8 +6,6 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-    export DISPLAY=:0.0
-
     echo "Initiating Cheesy Build System in detached mode"
 
     NAME=build

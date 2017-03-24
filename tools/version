@@ -1,0 +1,97 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+VERSION_COMPONENT=$2
+STATUS=$3
+
+print_usage () {
+	echo "version - increment a component of a Cheese Engine project's version number"
+	echo "Usage: version PROJECT-DIRECTORY VERSION-COMPONENT STATUS"
+	echo "VERSION-COMPONENT must be one of: 'major' 'minor' 'micro'"
+	echo "STATUS is optional and can be any string"
+}
+
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
+	if [ "$VERSION_COMPONENT" == "major" ] || [ "$VERSION_COMPONENT" == "minor" ] || [ "$VERSION_COMPONENT" == "micro" ]; then
+		VERSION_FILE="$PROJECT_DIRECTORY/version.cpp"
+
+		if [ -n "$VERSION_FILE" ]; then
+			echo "Reading current version number for the project in $PROJECT_DIRECTORY"
+
+			OLD_MAJOR=$(sed -ne "/^.*\/\/MAJOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+			OLD_MINOR=$(sed -ne "/^.*\/\/MINOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+			OLD_MICRO=$(sed -ne "/^.*\/\/MICRO$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+
+			NEW_MAJOR=$OLD_MAJOR
+			NEW_MINOR=$OLD_MINOR
+			NEW_MICRO=$OLD_MICRO
+
+			if [ "$VERSION_COMPONENT" == "major" ]; then
+				NEW_MAJOR=$((NEW_MAJOR + 1))
+				NEW_MINOR=0
+				NEW_MICRO=0
+			elif [ "$VERSION_COMPONENT" == "minor" ]; then
+				NEW_MINOR=$((NEW_MINOR + 1))
+				NEW_MICRO=0
+			elif [ "$VERSION_COMPONENT" == "micro" ]; then
+				NEW_MICRO=$((NEW_MICRO + 1))
+			fi
+
+			echo "Incrementing the version.cpp version number for the project in $PROJECT_DIRECTORY"
+
+			sed -i -e "s/^.*\/\/MAJOR$/    return $NEW_MAJOR; \/\/MAJOR/" "$VERSION_FILE"
+			sed -i -e "s/^.*\/\/MINOR$/    return $NEW_MINOR; \/\/MINOR/" "$VERSION_FILE"
+			sed -i -e "s/^.*\/\/MICRO$/    return $NEW_MICRO; \/\/MICRO/" "$VERSION_FILE"
+
+			if [ -n "$STATUS" ]; then
+				sed -i -e "s/^.*\/\/STATUS$/    return \"$STATUS\"; \/\/STATUS/" "$VERSION_FILE"
+			fi
+
+			DEVELOPMENT_DIRECTORY="$PROJECT_DIRECTORY/development"
+			APP_DIRECTORY=""
+
+			for d in $DEVELOPMENT_DIRECTORY/*/ ; do
+				if [ -d "$d" ]; then
+					prefix=$DEVELOPMENT_DIRECTORY/
+					suffix=/
+					dir_name=${d#$prefix}
+					dir_name=${dir_name%$suffix}
+
+					if [[ $dir_name =~ \.app$ ]]; then
+						APP_DIRECTORY="$dir_name"
+						break
+					fi
+				fi
+			done
+
+			if [ -n "$APP_DIRECTORY" ]; then
+				echo "Incrementing the Info.plist version number for the project in $PROJECT_DIRECTORY"
+
+				PLIST="$PROJECT_DIRECTORY/development/$APP_DIRECTORY/Contents/Info.plist"
+
+				sed -i -e "s/$OLD_MAJOR\.$OLD_MINOR\.$OLD_MICRO/$NEW_MAJOR\.$NEW_MINOR\.$NEW_MICRO/" "$PLIST"
+			else
+				echo "Failed to locate .app directory"
+			fi
+
+			echo "Incrementing the AndroidManifest.xml version number for the project in $PROJECT_DIRECTORY"
+
+			MANIFEST="$PROJECT_DIRECTORY/development/android/AndroidManifest.xml"
+
+			sed -i -e "s/$OLD_MAJOR\.$OLD_MINOR\.$OLD_MICRO/$NEW_MAJOR\.$NEW_MINOR\.$NEW_MICRO/" "$MANIFEST"
+
+			VERSION_CODE=$(sed -ne "/^.*android:versionCode.*$/p" "$MANIFEST" | sed -e "s/[^0-9]//g")
+			VERSION_CODE=$((VERSION_CODE + 1))
+			sed -i -e "s/^.*android:versionCode.*$/      android:versionCode=\"$VERSION_CODE\"/" "$MANIFEST"
+		else
+			echo "No such version file: $VERSION_FILE"
+		fi
+	else
+		print_usage
+	fi
+else
+	print_usage
+fi

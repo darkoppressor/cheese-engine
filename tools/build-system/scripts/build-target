@@ -7,9 +7,28 @@ PROJECT_DIRECTORY=$1
 TARGET=$2
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
-	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-$TARGET"
+	../../build-date $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-$TARGET"
 
-	codeblocks --build --target="$TARGET" "$PROJECT_DIRECTORY/project.cbp" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	rm -rf "$PROJECT_DIRECTORY/CMakeFiles/"
+	rm -f "$PROJECT_DIRECTORY/CMakeCache.txt"
+	rm -f "$PROJECT_DIRECTORY/Makefile"
+	rm -f "$PROJECT_DIRECTORY/cmake_install.cmake"
+
+	cd $PROJECT_DIRECTORY
+
+	if [ "$TARGET" == "Release-Linux-x86_64" ] || [ "$TARGET" == "Release-Linux-x86" ]; then
+		cmake "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	elif [ "$TARGET" == "Release-Windows-x86_64" ]; then
+		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-windows-x86_64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	elif [ "$TARGET" == "Release-Windows-x86" ]; then
+		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-windows-x86.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	elif [ "$TARGET" == "Release-macOS-x86_64" ]; then
+		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-macos-x86_64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	fi
+
+	cd $DIR
+
+	make -C "$PROJECT_DIRECTORY" "$TARGET" >> "$PROJECT_DIRECTORY/log-$TARGET"
 else
 	echo "build-target - build the passed target for the passed project"
 	echo "Usage: build-target PROJECT-DIRECTORY TARGET"

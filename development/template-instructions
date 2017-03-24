@@ -3,9 +3,8 @@ This file contains instructions for starting a new game project from the templat
 Automated
 *********
 
-Most of this can be automated on Linux/Windows. Do:
-'cheese-engine/tools/Rename-Template-Windows-x86_64.exe PROJECT-DIRECTORY PROJECT-NAME' OR
-'cheese-engine/tools/Rename-Template-Linux-x86_64 PROJECT-DIRECTORY PROJECT-NAME'
+Most of this can be automated. Do:
+'cheese-engine/tools/rename-template PROJECT-DIRECTORY PROJECT-NAME'
 
 After running the renaming program:
 Enable any relevant permissions/features for Android as instructed in the Android section below
@@ -27,6 +26,10 @@ In Code::Blocks, change Project->Properties->Title (all lower case, dashed)
 
 In Code::Blocks, change Project->Properties->Build targets tab->Build target output filenames
 (capitalized, dashed)
+
+In CMakeLists.txt, change the project name (all lower case, dashed)
+
+In CMakeLists.txt, change the 'Template' portion of the OUTPUT_NAME for each target (capitalized, dashed)
 
 Do this step after all other steps (including the steps below for specific platforms):
 Delete the .git/ directory

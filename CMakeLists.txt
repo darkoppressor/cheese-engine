@@ -1,0 +1,391 @@
+cmake_minimum_required(VERSION 3.2.2)
+project(cheese-engine)
+
+set(SOURCE_FILES
+android.cpp
+animation.cpp
+button.cpp
+button_events.cpp
+client_data.cpp
+collision.cpp
+color.cpp
+color_theme.cpp
+console.cpp
+console_commands.cpp
+controller.cpp
+controller_manager.cpp
+coords.cpp
+cursor.cpp
+custom_sound.cpp
+data_manager.cpp
+data_reader.cpp
+directories.cpp
+engine.cpp
+engine_data.cpp
+engine_input.cpp
+engine_math.cpp
+engine_strings.cpp
+engine_version.cpp
+file_io.cpp
+font.cpp
+game_command.cpp
+game_manager.cpp
+game_option.cpp
+game_window.cpp
+gui_manager.cpp
+gui_object.cpp
+image_data.cpp
+image_manager.cpp
+information.cpp
+int_math.cpp
+int_vector.cpp
+internet.cpp
+log.cpp
+main_startup.cpp
+math_vector.cpp
+music_manager.cpp
+network_client.cpp
+network_engine.cpp
+network_lan_browser.cpp
+network_lockstep.cpp
+network_server.cpp
+object_manager.cpp
+object_manager_getting.cpp
+object_manager_loading.cpp
+options.cpp
+pixels.cpp
+progress_bar.cpp
+render.cpp
+rng.cpp
+rtt_data.cpp
+rtt_manager.cpp
+screen_shake.cpp
+server.cpp
+sound_data.cpp
+sound_manager.cpp
+sprite.cpp
+symbols.cpp
+timer.cpp
+toast.cpp
+tooltip.cpp
+touch_controller.cpp
+update.cpp
+vfs.cpp
+window.cpp
+window_manager.cpp
+)
+
+########################################################################################################################
+# Release-Linux-x86_64
+########################################################################################################################
+
+add_library(Release-Linux-x86_64 STATIC ${SOURCE_FILES})
+
+set_target_properties(Release-Linux-x86_64 PROPERTIES
+OUTPUT_NAME Cheese-Engine-Linux-x86_64
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -DGAME_OS_LINUX"
+)
+
+target_include_directories(Release-Linux-x86_64 PRIVATE
+/usr/include/
+/usr/include/x86_64-linux-gnu/
+/home/tails/build-server/linux-x86_64/SDL2/include/
+/home/tails/build-server/linux-x86_64/SDL2_image/
+/home/tails/build-server/linux-x86_64/SDL2_mixer/
+/home/tails/build-server/linux-x86_64/boost/
+/home/tails/build-server/linux-x86_64/raknet/
+/home/tails/build-server/linux-x86_64/zlib/
+)
+
+target_link_libraries(Release-Linux-x86_64
+/home/tails/build-server/linux-x86_64/zlib/contrib/minizip/.libs/libminizip.a
+/home/tails/build-server/linux-x86_64/SDL2_image/.libs/libSDL2_image.a
+/home/tails/build-server/linux-x86_64/libpng/.libs/libpng.a
+/home/tails/build-server/linux-x86_64/zlib/libz.a
+/home/tails/build-server/linux-x86_64/SDL2_mixer/build/.libs/libSDL2_mixer.a
+/home/tails/build-server/linux-x86_64/libvorbis/lib/.libs/libvorbisfile.a
+/home/tails/build-server/linux-x86_64/libvorbis/lib/.libs/libvorbis.a
+/home/tails/build-server/linux-x86_64/libogg/src/.libs/libogg.a
+/home/tails/build-server/linux-x86_64/SDL2/build/.libs/libSDL2.a
+/usr/lib/x86_64-linux-gnu/libGL.so
+/usr/lib/x86_64-linux-gnu/libGLU.so
+/usr/lib/x86_64-linux-gnu/libpthread.so
+/usr/lib/x86_64-linux-gnu/libdl.so
+/home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_system.a
+/home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_filesystem.a
+/home/tails/build-server/linux-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+"-s -m64"
+)
+
+########################################################################################################################
+# Debug-Linux-x86_64
+########################################################################################################################
+
+add_library(Debug-Linux-x86_64 STATIC ${SOURCE_FILES})
+
+set_target_properties(Debug-Linux-x86_64 PROPERTIES
+OUTPUT_NAME Cheese-Engine-Linux-Debug-x86_64
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-std=c++11 -Wall -Wextra -g -m64 -DGAME_OS_LINUX"
+)
+
+target_include_directories(Debug-Linux-x86_64 PRIVATE
+/usr/include/
+/usr/include/x86_64-linux-gnu/
+/home/tails/build-server/linux-x86_64/SDL2/include/
+/home/tails/build-server/linux-x86_64/SDL2_image/
+/home/tails/build-server/linux-x86_64/SDL2_mixer/
+/home/tails/build-server/linux-x86_64/boost/
+/home/tails/build-server/linux-x86_64/raknet/
+/home/tails/build-server/linux-x86_64/zlib/
+)
+
+target_link_libraries(Debug-Linux-x86_64
+/home/tails/build-server/linux-x86_64/zlib/contrib/minizip/.libs/libminizip.a
+/home/tails/build-server/linux-x86_64/SDL2_image/.libs/libSDL2_image.a
+/home/tails/build-server/linux-x86_64/libpng/.libs/libpng.a
+/home/tails/build-server/linux-x86_64/zlib/libz.a
+/home/tails/build-server/linux-x86_64/SDL2_mixer/build/.libs/libSDL2_mixer.a
+/home/tails/build-server/linux-x86_64/libvorbis/lib/.libs/libvorbisfile.a
+/home/tails/build-server/linux-x86_64/libvorbis/lib/.libs/libvorbis.a
+/home/tails/build-server/linux-x86_64/libogg/src/.libs/libogg.a
+/home/tails/build-server/linux-x86_64/SDL2/build/.libs/libSDL2.a
+/usr/lib/x86_64-linux-gnu/libGL.so
+/usr/lib/x86_64-linux-gnu/libGLU.so
+/usr/lib/x86_64-linux-gnu/libpthread.so
+/usr/lib/x86_64-linux-gnu/libdl.so
+/home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_system.a
+/home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_filesystem.a
+/home/tails/build-server/linux-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+"-m64"
+)
+
+########################################################################################################################
+# Release-Linux-x86
+########################################################################################################################
+
+if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
+
+add_library(Release-Linux-x86 STATIC ${SOURCE_FILES})
+
+set_target_properties(Release-Linux-x86 PROPERTIES
+OUTPUT_NAME Cheese-Engine-Linux-x86
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m32 -DGAME_OS_LINUX"
+)
+
+target_include_directories(Release-Linux-x86 PRIVATE
+/usr/include/
+/home/tails/build-server/linux-x86/SDL2/include/
+/home/tails/build-server/linux-x86/SDL2_image/
+/home/tails/build-server/linux-x86/SDL2_mixer/
+/home/tails/build-server/linux-x86/boost/
+/home/tails/build-server/linux-x86/raknet/
+/home/tails/build-server/linux-x86/zlib/
+)
+
+target_link_libraries(Release-Linux-x86
+/home/tails/build-server/linux-x86/zlib/contrib/minizip/.libs/libminizip.a
+/home/tails/build-server/linux-x86/SDL2_image/.libs/libSDL2_image.a
+/home/tails/build-server/linux-x86/libpng/.libs/libpng.a
+/home/tails/build-server/linux-x86/zlib/libz.a
+/home/tails/build-server/linux-x86/SDL2_mixer/build/.libs/libSDL2_mixer.a
+/home/tails/build-server/linux-x86/libvorbis/lib/.libs/libvorbisfile.a
+/home/tails/build-server/linux-x86/libvorbis/lib/.libs/libvorbis.a
+/home/tails/build-server/linux-x86/libogg/src/.libs/libogg.a
+/home/tails/build-server/linux-x86/SDL2/build/.libs/libSDL2.a
+/usr/lib/i386-linux-gnu/mesa/libGL.so.1.2.0
+/usr/lib/i386-linux-gnu/libGLU.so.1.3.1
+/usr/lib32/libpthread.so
+/usr/lib32/libdl.so
+/home/tails/build-server/linux-x86/boost/stage/lib/libboost_system.a
+/home/tails/build-server/linux-x86/boost/stage/lib/libboost_filesystem.a
+/home/tails/build-server/linux-x86/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+"-s -m32"
+)
+
+endif()
+
+########################################################################################################################
+# Release-Windows-x86_64
+########################################################################################################################
+
+if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
+
+add_library(Release-Windows-x86_64 STATIC ${SOURCE_FILES})
+
+set_target_properties(Release-Windows-x86_64 PROPERTIES
+OUTPUT_NAME Cheese-Engine-Windows-x86_64
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -DGAME_OS_WINDOWS"
+)
+
+target_include_directories(Release-Windows-x86_64 PRIVATE
+/usr/x86_64-w64-mingw32/include
+/home/tails/build-server/windows-x86_64/SDL2/include/
+/home/tails/build-server/windows-x86_64/SDL2_image/
+/home/tails/build-server/windows-x86_64/SDL2_mixer/
+/home/tails/build-server/windows-x86_64/boost/
+/home/tails/build-server/windows-x86_64/raknet/
+/home/tails/build-server/windows-x86_64/zlib/
+)
+
+target_link_libraries(Release-Windows-x86_64
+/usr/x86_64-w64-mingw32/lib/libmingw32.a
+/home/tails/build-server/windows-x86_64/zlib/contrib/minizip/.libs/libminizip.a
+/home/tails/build-server/windows-x86_64/SDL2_image/.libs/libSDL2_image.a
+/home/tails/build-server/windows-x86_64/libpng/.libs/libpng.a
+/home/tails/build-server/windows-x86_64/zlib/libz.a
+/home/tails/build-server/windows-x86_64/SDL2_mixer/build/.libs/libSDL2_mixer.a
+/home/tails/build-server/windows-x86_64/libvorbis/lib/.libs/libvorbisfile.a
+/home/tails/build-server/windows-x86_64/libvorbis/lib/.libs/libvorbis.a
+/home/tails/build-server/windows-x86_64/libogg/src/.libs/libogg.a
+/home/tails/build-server/windows-x86_64/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/windows-x86_64/SDL2/build/libSDL2main.a
+/home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_system.a
+/home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_filesystem.a
+/home/tails/build-server/windows-x86_64/raknet/raknet/Lib/DLL/Lib/libRakNet.a
+/usr/x86_64-w64-mingw32/lib/libws2_32.a
+/usr/x86_64-w64-mingw32/lib/libwinmm.a
+/usr/x86_64-w64-mingw32/lib/libole32.a
+/usr/x86_64-w64-mingw32/lib/libimm32.a
+/usr/x86_64-w64-mingw32/lib/libgdi32.a
+/usr/x86_64-w64-mingw32/lib/liboleaut32.a
+/usr/x86_64-w64-mingw32/lib/libversion.a
+"-s -m64 -Wl,--stack=67108864 -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic"
+)
+
+endif()
+
+########################################################################################################################
+# Release-Windows-x86
+########################################################################################################################
+
+if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
+
+add_library(Release-Windows-x86 STATIC ${SOURCE_FILES})
+
+set_target_properties(Release-Windows-x86 PROPERTIES
+OUTPUT_NAME Cheese-Engine-Windows-x86
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m32 -DGAME_OS_WINDOWS"
+)
+
+target_include_directories(Release-Windows-x86 PRIVATE
+/usr/i686-w64-mingw32/include
+/home/tails/build-server/windows-x86/SDL2/include/
+/home/tails/build-server/windows-x86/SDL2_image/
+/home/tails/build-server/windows-x86/SDL2_mixer/
+/home/tails/build-server/windows-x86/boost/
+/home/tails/build-server/windows-x86/raknet/
+/home/tails/build-server/windows-x86/zlib/
+)
+
+target_link_libraries(Release-Windows-x86
+/usr/i686-w64-mingw32/lib/libmingw32.a
+/home/tails/build-server/windows-x86/zlib/contrib/minizip/.libs/libminizip.a
+/home/tails/build-server/windows-x86/SDL2_image/.libs/libSDL2_image.a
+/home/tails/build-server/windows-x86/libpng/.libs/libpng.a
+/home/tails/build-server/windows-x86/zlib/libz.a
+/home/tails/build-server/windows-x86/SDL2_mixer/build/.libs/libSDL2_mixer.a
+/home/tails/build-server/windows-x86/libvorbis/lib/.libs/libvorbisfile.a
+/home/tails/build-server/windows-x86/libvorbis/lib/.libs/libvorbis.a
+/home/tails/build-server/windows-x86/libogg/src/.libs/libogg.a
+/home/tails/build-server/windows-x86/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/windows-x86/SDL2/build/libSDL2main.a
+/home/tails/build-server/windows-x86/boost/stage/lib/libboost_system.a
+/home/tails/build-server/windows-x86/boost/stage/lib/libboost_filesystem.a
+/home/tails/build-server/windows-x86/raknet/raknet/Lib/DLL/Lib/libRakNet.a
+/usr/i686-w64-mingw32/lib/libws2_32.a
+/usr/i686-w64-mingw32/lib/libwinmm.a
+/usr/i686-w64-mingw32/lib/libole32.a
+/usr/i686-w64-mingw32/lib/libimm32.a
+/usr/i686-w64-mingw32/lib/libgdi32.a
+/usr/i686-w64-mingw32/lib/liboleaut32.a
+/usr/i686-w64-mingw32/lib/libversion.a
+"-s -m32 -Wl,--stack=67108864 -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic"
+)
+
+endif()
+
+########################################################################################################################
+# Release-macOS-x86_64
+########################################################################################################################
+
+if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
+
+add_library(Release-macOS-x86_64 STATIC ${SOURCE_FILES})
+
+set_target_properties(Release-macOS-x86_64 PROPERTIES
+OUTPUT_NAME Cheese-Engine-macOS-x86_64
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -stdlib=libc++ -DGAME_OS_MACOS"
+)
+
+target_include_directories(Release-macOS-x86_64 PRIVATE
+/home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/include/
+/home/tails/build-server/osx-x86_64/SDL2/include/
+/home/tails/build-server/osx-x86_64/SDL2_image/
+/home/tails/build-server/osx-x86_64/SDL2_mixer/
+/home/tails/build-server/osx-x86_64/boost/
+/home/tails/build-server/osx-x86_64/raknet/
+/home/tails/build-server/osx-x86_64/zlib/
+)
+
+target_link_libraries(Release-macOS-x86_64
+/home/tails/build-server/osx-x86_64/zlib/contrib/minizip/.libs/libminizip.a
+/home/tails/build-server/osx-x86_64/SDL2_image/.libs/libSDL2_image.a
+/home/tails/build-server/osx-x86_64/libpng/.libs/libpng.a
+/home/tails/build-server/osx-x86_64/zlib/libz.a
+/home/tails/build-server/osx-x86_64/SDL2_mixer/build/.libs/libSDL2_mixer.a
+/home/tails/build-server/osx-x86_64/libvorbis/lib/.libs/libvorbis.a
+/home/tails/build-server/osx-x86_64/libvorbis/lib/.libs/libvorbisfile.a
+/home/tails/build-server/osx-x86_64/libogg/src/.libs/libogg.a
+/home/tails/build-server/osx-x86_64/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_system.a
+/home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_filesystem.a
+/home/tails/build-server/osx-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+/home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/lib/libiconv.dylib
+"-m64 -arch x86_64 -mmacosx-version-min=10.7 -stdlib=libc++ -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo"
+)
+
+endif()
+
+########################################################################################################################
+# Android-NoBuild
+########################################################################################################################
+
+if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
+
+add_library(Android-NoBuild STATIC ${SOURCE_FILES})
+
+set_target_properties(Android-NoBuild PROPERTIES
+OUTPUT_NAME Cheese-Engine-Android
+PREFIX lib
+SUFFIX .a
+COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -DGAME_OS_ANDROID"
+)
+
+target_include_directories(Android-NoBuild PRIVATE
+/usr/include/
+/usr/include/x86_64-linux-gnu/
+/home/tails/build-server/android/gpg-cpp-sdk/android/include
+/home/tails/build-server/android/SDL2/include/
+/home/tails/build-server/android/SDL2_image/
+/home/tails/build-server/android/SDL2_mixer/
+/home/tails/build-server/linux-x86_64/boost/
+/home/tails/build-server/android/raknet/
+)
+
+target_link_libraries(Android-NoBuild
+"-s -m64"
+)
+
+endif()

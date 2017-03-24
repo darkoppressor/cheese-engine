@@ -1,0 +1,185 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+KEY_PASSWORDS_LOCATION=$2
+
+DIRECTORY_LIST=""
+DIRECTORY_PREFIX=""
+check_directories () {
+	local directory=$1
+
+	echo "Checking directory $directory"
+
+	for d in $directory/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=$directory/
+			suffix=/
+			dir_name=${d#$prefix}
+			dir_name=${dir_name%$suffix}
+
+			final_name="$directory/$dir_name"
+			final_name=${final_name#$DIRECTORY_PREFIX}
+
+			DIRECTORY_LIST="$DIRECTORY_LIST$final_name\n"
+
+			check_directories "$directory/$dir_name"
+		fi
+	done
+}
+
+create_directory_list () {
+	local directory=$1
+
+	DIRECTORY_LIST=""
+	DIRECTORY_PREFIX="$directory/"
+	check_directories "$directory"
+
+	echo -e "$DIRECTORY_LIST" >> "$directory/directory_list"
+}
+
+create_asset_list () {
+	local directory=$1
+
+	local assets=""
+
+	for file in $directory/* ; do
+		if [ -f "$file" ]; then
+			prefix=$directory/
+			file_name=${file#$prefix}
+
+			assets="$assets$file_name\n"
+		fi
+	done
+
+	echo -e "$assets" >> "$directory/asset_list"
+}
+
+create_asset_lists () {
+	local directory=$1
+
+	create_asset_list "$directory"
+
+	for d in $directory/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=$directory/
+			suffix=/
+			dir_name=${d#$prefix}
+			dir_name=${dir_name%$suffix}
+
+			create_asset_lists "$directory/$dir_name"
+		fi
+	done
+}
+
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
+	ANDROID_DIRECTORY="$PROJECT_DIRECTORY/development/android"
+
+	KEY_STORE_PASSWORD=$(sed -n '1{p;q;}' $KEY_PASSWORDS_LOCATION)
+	ALIAS_PASSWORD=$(sed -n '2{p;q;}' $KEY_PASSWORDS_LOCATION)
+
+	echo "Populating assets/ directory"
+
+	rm -rf "$ANDROID_DIRECTORY/assets/"
+	mkdir -p "$ANDROID_DIRECTORY/assets"
+	cp "$PROJECT_DIRECTORY/save_location.cfg" "$ANDROID_DIRECTORY/assets/save_location.cfg"
+
+	# Android always needs the save location to be set to home, so we will make sure it is set to that here
+	sed -i -e 's/local/home/g' "$ANDROID_DIRECTORY/assets/save_location.cfg"
+
+	cp -r "$PROJECT_DIRECTORY/data" "$ANDROID_DIRECTORY/assets"
+
+	echo "Creating directory list"
+
+	create_directory_list "$ANDROID_DIRECTORY/assets"
+
+	echo "Creating asset lists"
+
+	create_asset_lists "$ANDROID_DIRECTORY/assets/data"
+
+	echo "Copying prebuilt libraries"
+
+	LIBRARY_LOCATION="/home/tails/build-server"
+	declare -a abis=("armeabi" "armeabi-v7a" "x86")
+	for i in "${abis[@]}" ; do
+		abi="$i"
+
+		rm -rf "$ANDROID_DIRECTORY/jni/$abi/"
+		mkdir -p "$ANDROID_DIRECTORY/jni/$abi"
+
+		cp "$LIBRARY_LOCATION/android/gpg-cpp-sdk/android/lib/gnustl/$abi/libgpg.a" "$ANDROID_DIRECTORY/jni/$abi/libgpg.a"
+		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libSDL2.a" "$ANDROID_DIRECTORY/jni/$abi/libSDL2.a"
+		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libSDL2_image.a" "$ANDROID_DIRECTORY/jni/$abi/libSDL2_image.a"
+		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libSDL2_mixer.a" "$ANDROID_DIRECTORY/jni/$abi/libSDL2_mixer.a"
+		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libRakNet.a" "$ANDROID_DIRECTORY/jni/$abi/libRakNet.a"
+		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libCheese-Engine.a" "$ANDROID_DIRECTORY/jni/$abi/libCheese-Engine.a"
+	done
+
+	echo "Copying Google Play services libraries"
+
+	rm -rf "$ANDROID_DIRECTORY/play-services-base/"
+	rm -rf "$ANDROID_DIRECTORY/play-services-basement/"
+	rm -rf "$ANDROID_DIRECTORY/play-services-drive/"
+	rm -rf "$ANDROID_DIRECTORY/play-services-games/"
+	rm -rf "$ANDROID_DIRECTORY/play-services-nearby/"
+	rm -rf "$ANDROID_DIRECTORY/play-services-tasks/"
+	rm -rf "$ANDROID_DIRECTORY/support-compat/"
+	rm -rf "$ANDROID_DIRECTORY/support-core-ui/"
+	rm -rf "$ANDROID_DIRECTORY/support-core-utils/"
+	rm -rf "$ANDROID_DIRECTORY/support-fragment/"
+	rm -rf "$ANDROID_DIRECTORY/support-media-compat/"
+	rm -rf "$ANDROID_DIRECTORY/support-v4/"
+
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-base" "$ANDROID_DIRECTORY/play-services-base"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-basement" "$ANDROID_DIRECTORY/play-services-basement"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-drive" "$ANDROID_DIRECTORY/play-services-drive"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-games" "$ANDROID_DIRECTORY/play-services-games"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-nearby" "$ANDROID_DIRECTORY/play-services-nearby"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-tasks" "$ANDROID_DIRECTORY/play-services-tasks"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-compat" "$ANDROID_DIRECTORY/support-compat"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-core-ui" "$ANDROID_DIRECTORY/support-core-ui"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-core-utils" "$ANDROID_DIRECTORY/support-core-utils"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-fragment" "$ANDROID_DIRECTORY/support-fragment"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-media-compat" "$ANDROID_DIRECTORY/support-media-compat"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-v4" "$ANDROID_DIRECTORY/support-v4"
+
+	mkdir -p "$ANDROID_DIRECTORY/libs"
+	cp "$LIBRARY_LOCATION/android/google-play-services/support-annotations.jar" "$ANDROID_DIRECTORY/libs/support-annotations.jar"
+
+	echo "Creating symlinks to development libraries"
+
+	rm -f "$ANDROID_DIRECTORY/jni/include/gpg"
+	rm -f "$ANDROID_DIRECTORY/jni/include/SDL2"
+	rm -f "$ANDROID_DIRECTORY/jni/include/SDL2_image"
+	rm -f "$ANDROID_DIRECTORY/jni/include/SDL2_mixer"
+	rm -f "$ANDROID_DIRECTORY/jni/include/RakNet"
+	rm -f "$ANDROID_DIRECTORY/jni/include/boost"
+	rm -f "$ANDROID_DIRECTORY/jni/include/cheese-engine"
+
+	rm -rf "$ANDROID_DIRECTORY/jni/include/"
+	mkdir -p "$ANDROID_DIRECTORY/jni/include"
+
+	ln -s "/home/tails/build-server/android/gpg-cpp-sdk/android/include" "$ANDROID_DIRECTORY/jni/include/gpg"
+	ln -s "/home/tails/build-server/android/SDL2" "$ANDROID_DIRECTORY/jni/include/SDL2"
+	ln -s "/home/tails/build-server/android/SDL2_image" "$ANDROID_DIRECTORY/jni/include/SDL2_image"
+	ln -s "/home/tails/build-server/android/SDL2_mixer" "$ANDROID_DIRECTORY/jni/include/SDL2_mixer"
+	ln -s "/home/tails/build-server/android/raknet/raknet" "$ANDROID_DIRECTORY/jni/include/RakNet"
+	ln -s "/home/tails/build-server/linux-x86_64/boost" "$ANDROID_DIRECTORY/jni/include/boost"
+	ln -s "/home/tails/build-server/cheese-engine" "$ANDROID_DIRECTORY/jni/include/cheese-engine"
+
+	echo "Preparing .properties files"
+
+	rm -f "$ANDROID_DIRECTORY/ant.properties"
+	rm -f "$ANDROID_DIRECTORY/local.properties"
+
+	cp "$ANDROID_DIRECTORY/properties/ant.properties" "$ANDROID_DIRECTORY/ant.properties"
+	cp "$ANDROID_DIRECTORY/properties/local.properties" "$ANDROID_DIRECTORY/local.properties"
+
+	sed -i -e "s/STORE_PASSWORD/$KEY_STORE_PASSWORD/g" "$ANDROID_DIRECTORY/ant.properties"
+	sed -i -e "s/ALIAS_PASSWORD/$ALIAS_PASSWORD/g" "$ANDROID_DIRECTORY/ant.properties"
+else
+	echo "android-prep - prepare the android/ directory of a Cheese Engine project for building"
+	echo "Usage: android-prep PROJECT-DIRECTORY KEY-PASSWORDS-LOCATION"
+fi

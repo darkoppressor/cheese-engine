@@ -6,8 +6,6 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-    export DISPLAY=:0.0
-
     ./build "$@"
 else
     echo "remote-build - build a Cheese Engine project remotely"

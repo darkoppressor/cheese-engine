@@ -1,0 +1,94 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+PROJECT_NAME=$2
+
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$PROJECT_NAME" ]; then
+	suffix=/
+	PROJECT_DIRECTORY=${PROJECT_DIRECTORY%$suffix}
+
+	# Clamp the project name to 255 characters
+	PROJECT_NAME=${PROJECT_NAME:0:255}
+
+	# Remove any dashes beyond the first one
+	PROJECT_NAME=$(echo $PROJECT_NAME | sed -e "s/-//2g")
+
+	# Remove any disallowed characters
+	PROJECT_NAME=$(echo $PROJECT_NAME | sed -e "s/[^A-Za-z0-9-]//g")
+
+	NAME_PART_1=""
+	NAME_PART_2=""
+
+	IFS='-' read -ra NAME_PARTS <<< "$PROJECT_NAME"
+
+	if [ ${#NAME_PARTS[@]} -eq 1 ]; then
+		NAME_PART_1="${NAME_PARTS[0]}"
+	else
+		NAME_PART_1="${NAME_PARTS[0]}"
+		NAME_PART_2="${NAME_PARTS[1]}"
+	fi
+
+	NAME_LOWER_CASE_DASHED="${NAME_PART_1,,}"
+	NAME_LOWER_CASE="$NAME_LOWER_CASE_DASHED"
+	NAME_CAPS_DASHED="${NAME_PART_1,,}"
+	NAME_CAPS_DASHED="${NAME_CAPS_DASHED^}"
+	NAME_CAPS_SPACED="$NAME_CAPS_DASHED"
+
+	if [ -n "$NAME_PART_2" ]; then
+		NAME_LOWER_CASE_DASHED="$NAME_LOWER_CASE_DASHED-${NAME_PART_2,,}"
+		NAME_LOWER_CASE="$NAME_LOWER_CASE${NAME_PART_2,,}"
+		second_part_lower="${NAME_PART_2,,}"
+		NAME_CAPS_DASHED="$NAME_CAPS_DASHED-${second_part_lower^}"
+		NAME_CAPS_SPACED="$NAME_CAPS_SPACED ${second_part_lower^}"
+	fi
+
+	if [ -d "$PROJECT_DIRECTORY" ]; then
+		if [[ $PROJECT_DIRECTORY =~ template$ ]]; then
+			echo "Removing $PROJECT_DIRECTORY/.git"
+
+			rm -rf "$PROJECT_DIRECTORY/.git/"
+
+			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/Template"
+			mv "$PROJECT_DIRECTORY/Template" "$PROJECT_DIRECTORY/$NAME_CAPS_DASHED"
+
+			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/project.cbp"
+			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/project.cbp"
+
+			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/CMakeLists.txt"
+			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/CMakeLists.txt"
+
+			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/data/engine"
+
+			sed -i -e "s/Template/$NAME_CAPS_SPACED/g" "$PROJECT_DIRECTORY/development/Template.app/Contents/Info.plist"
+			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/development/Template.app/Contents/Info.plist"
+			mv "$PROJECT_DIRECTORY/development/Template.app" "$PROJECT_DIRECTORY/development/$NAME_CAPS_SPACED.app"
+
+			sed -i -e "s/template/$NAME_LOWER_CASE/g" "$PROJECT_DIRECTORY/development/android/src/org/cheeseandbacon/template/Game.java"
+			mv "$PROJECT_DIRECTORY/development/android/src/org/cheeseandbacon/template" "$PROJECT_DIRECTORY/development/android/src/org/cheeseandbacon/$NAME_LOWER_CASE_DASHED"
+
+			sed -i -e "s/template/$NAME_LOWER_CASE/g" "$PROJECT_DIRECTORY/development/android/AndroidManifest.xml"
+
+			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/development/android/build.xml"
+
+			sed -i -e "s/Template/$NAME_CAPS_SPACED/g" "$PROJECT_DIRECTORY/development/android/res/values/strings.xml"
+
+			git init "$PROJECT_DIRECTORY/"
+
+			RENAMED_PROJECT_DIRECTORY=$(echo $PROJECT_DIRECTORY | sed -e "s/template$/$NAME_LOWER_CASE_DASHED/")
+			mv "$PROJECT_DIRECTORY" "$RENAMED_PROJECT_DIRECTORY"
+		else
+			echo "Error: Project directory '$PROJECT_DIRECTORY' is not named 'template'"
+		fi
+	else
+		echo "Error: No such directory: $PROJECT_DIRECTORY"
+	fi
+else
+	echo "rename-template - convert a Cheese Engine template directory into a new project"
+	echo "Usage: rename-template PROJECT-DIRECTORY PROJECT-NAME"
+	echo "PROJECT-NAME should be 1 or 2 words, all lower case, dashed"
+	echo "PROJECT-NAME should consist only of letters, numbers, and optionally a '-'"
+	echo "PROJECT-NAME must not exceed 255 characters"
+fi

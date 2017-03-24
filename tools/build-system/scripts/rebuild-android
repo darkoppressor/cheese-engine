@@ -5,14 +5,16 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
+KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key"
+
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	../../Build-Date-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	../../build-date $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	cd ../../
-	./Android-Prep-Linux-x86_64 $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	./android-prep $PROJECT_DIRECTORY $KEY_PASSWORDS_LOCATION >> "$PROJECT_DIRECTORY/log-Release-Android"
 	cd $DIR
 
-	android/linux/rebuild $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	android/rebuild $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	ANDROID_ABI_TARGETS=""
 
@@ -66,7 +68,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		fi
 	done
 
-	android/linux/ant $PROJECT_DIRECTORY release rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
+	android/ant $PROJECT_DIRECTORY release rebuild >> "$PROJECT_DIRECTORY/log-Release-Android"
 else
 	echo "rebuild-android - rebuild the android target for the passed project"
 	echo "Usage: rebuild-android PROJECT-DIRECTORY"

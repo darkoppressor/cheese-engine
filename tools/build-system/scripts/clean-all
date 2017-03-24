@@ -10,7 +10,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./clean-target $PROJECT_DIRECTORY Release-Linux-x86
 
-	./clean-target $PROJECT_DIRECTORY Cross-Compile-Windows-x86_64
+	./clean-target $PROJECT_DIRECTORY Release-Windows-x86_64
 
 	./clean-target $PROJECT_DIRECTORY Release-Windows-x86
 
