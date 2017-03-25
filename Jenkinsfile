@@ -4,9 +4,6 @@ pipeline {
     stages {
         stage('build') {
             post {
-                always {
-                    emailext subject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!", body: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:<br><br>Check console output at $BUILD_URL to view the results.", attachLog: 'true'
-                }
                 success {
                     slackSend color: 'good', message: "Build SUCCEEDED - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
                 }
