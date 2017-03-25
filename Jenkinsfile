@@ -3,7 +3,24 @@ pipeline {
 
     stages {
         stage('build') {
+            post {
+                always {
+                    emailext attachLog: 'true'
+                }
+                success {
+                    slackSend color: 'good', message: "Build SUCCEEDED - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                }
+                failure {
+                    slackSend color: 'danger', message: "Build FAILED - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                }
+                unstable {
+                    slackSend color: 'warning', message: "Build was UNSTABLE - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                }
+            }
+
             steps {
+                slackSend message: "Build started - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+
                 sh 'chmod +x tools/*'
                 sh 'chmod +x tools/build-system/*'
                 sh 'chmod +x tools/build-system/scripts/*'
