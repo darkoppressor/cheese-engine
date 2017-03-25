@@ -7,6 +7,13 @@ PROJECT_DIRECTORY=$1
 
 KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key"
 
+check_status () {
+	local status=$?
+	if [ $status -ne 0 ]; then
+		exit $status
+	fi
+}
+
 if [ -n "$PROJECT_DIRECTORY" ]; then
 	../../build-date $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
@@ -17,6 +24,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	cd $DIR
 
 	android/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+
+	check_status
 
 	ANDROID_ABI_TARGETS=""
 
@@ -41,7 +50,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 			if ! [ -e "$d/libmain.so" ]; then
 				echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libmain.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-				exit
+				exit 64
 			fi
 		fi
 	done
@@ -50,7 +59,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	for i in "${ARRAY[@]}" ; do
 		if ! [[ $ANDROID_ABI_RESULTS == *"$i"* ]]; then
 			echo "build-android failed for $PROJECT_DIRECTORY: missing ABI '$i'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 65
 		fi
 	done
 

@@ -11,14 +11,14 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 	if [ "$TARGET" != "release" ] && [ "$TARGET" != "debug" ]; then
 		echo "TARGET must be either 'release' or 'debug'"
 
-		exit
+		exit 64
 	fi
 
 	if [ -n "$ACTION" ]; then
 		if [ "$ACTION" != "clean" ] && [ "$ACTION" != "rebuild" ] && [ "$ACTION" != "install" ]; then
 			echo "ACTION must be either '', 'clean', 'rebuild', or 'install'"
 
-			exit
+			exit 65
 		fi
 	fi
 

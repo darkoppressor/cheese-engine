@@ -5,6 +5,13 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
+check_status () {
+	local status=$?
+	if [ $status -ne 0 ]; then
+		exit $status
+	fi
+}
+
 if [ -n "$PROJECT_DIRECTORY" ]; then
 	chmod +x $PROJECT_DIRECTORY/development/android/clean-android
 	chmod +x $PROJECT_DIRECTORY/development/android/android-prep
@@ -13,6 +20,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	$PROJECT_DIRECTORY/development/android/android-prep
 
 	android/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+
+	check_status
 
 	ANDROID_ABI_TARGETS="armeabi armeabi-v7a x86"
 
@@ -27,27 +36,27 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 		if ! [ -e "$d/libRakNet.a" ]; then
 			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libRakNet.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 64
 		fi
 
 		if ! [ -e "$d/libSDL2.a" ]; then
 			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 65
 		fi
 
 		if ! [ -e "$d/libSDL2_image.a" ]; then
 			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_image.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 66
 		fi
 
 		if ! [ -e "$d/libSDL2_mixer.a" ]; then
 			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2_mixer.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 67
 		fi
 
 		if ! [ -e "$d/libCheese-Engine.a" ]; then
 			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing library '$d/libCheese-Engine.a'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 68
 		fi
 	done
 
@@ -55,7 +64,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	for i in "${ARRAY[@]}" ; do
 		if ! [[ $ANDROID_ABI_RESULTS == *"$i"* ]]; then
 			echo "build-engine-android failed for $PROJECT_DIRECTORY: missing ABI '$i'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit
+			exit 69
 		fi
 	done
 else
