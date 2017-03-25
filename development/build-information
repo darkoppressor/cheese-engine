@@ -15,8 +15,7 @@ libgpg      N/A         N/A         N/A         2.1
 
 Build System
 ------------------------------------------------------
-Windows						tdm64-gcc 4.8.1
-Windows (Cross-Compiled)	gcc 4.8.2
-Linux						gcc Ubuntu 4.8.4-2ubuntu1~14.04.1, Ubuntu EGLIBC 2.19-0ubuntu6.7
+Linux						gcc Ubuntu 4.8.4-2ubuntu1~14.04.3, Ubuntu EGLIBC 2.19-0ubuntu6.11
+Windows                 	gcc 4.8.2
 macOS						Ubuntu clang version 3.6.0-2ubuntu1~trusty1, Xcode 6.4
 Android						OpenJDK 8, NDK r12b, gcc 4.9, SDK Tools 25.1.7, SDK Platform Tools 24.0.1, SDK Build Tools 24.0.1, Google Play Services 9.4.0, Android Support v4 24.2.0
