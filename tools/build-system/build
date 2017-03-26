@@ -71,7 +71,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 	if [ "$compatible" == "true" ]; then
 		rm -rf "$HOME/build-server/projects/${PROJECT_NAME}"
 
-		cp -r "${PROJECT_PATH}" "$HOME/build-server/projects/"
+		cp -r "${PROJECT_PATH}" "$HOME/build-server/projects/$PROJECT_NAME"
 
 		LOG_FILE="$HOME/build-server/projects/${PROJECT_NAME}/log-build-system"
 
@@ -119,7 +119,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		BUILD_ANDROID="false"
 		ANDROID_ABI_TARGETS=""
 
-		if [ -f "${PROJECT_PATH}/development/build-system-targets" ]; then
+		if [ -f "$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets" ]; then
 			while read line
 			do
 				if [ "$line" == "Release-Linux-x86_64" ]; then
@@ -144,15 +144,15 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/jni/Application.mk"
 				fi
-			done <"${PROJECT_PATH}/development/build-system-targets"
+			done <"$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets"
 		else
-			echo "'${PROJECT_PATH}/development/build-system-targets' does not exist" | tee -a ${LOG_FILE}
+			echo "'$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets' does not exist" | tee -a ${LOG_FILE}
 
 			exit 65
 		fi
 
 		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_LINUX_32" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_WINDOWS_32" == "false" ] && [ "$BUILD_macOS_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
-			echo "No targets specified for building in '${PROJECT_PATH}/development/build-system-targets'" | tee -a ${LOG_FILE}
+			echo "No targets specified for building in '$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets'" | tee -a ${LOG_FILE}
 
 			exit 66
 		fi
