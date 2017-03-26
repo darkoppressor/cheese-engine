@@ -39,6 +39,10 @@ SUCCESS="false"
 
 PROJECT_NAME="$(basename ${PROJECT_PATH})"
 
+if [ -f "$PROJECT_PATH/CMakeLists.txt" ]; then
+	PROJECT_NAME=$(sed -ne "/^.*project[(].*[)].*$/p" "$PROJECT_PATH/CMakeLists.txt" | sed -e "s/^.*project[(]//" | sed -e "s/[)].*$//")
+fi
+
 NAME="${PROJECT_NAME}"
 
 VERSION="4"
