@@ -9,7 +9,7 @@ STATUS=$3
 
 print_usage () {
 	echo "version - increment a component of a Cheese Engine project's version number"
-	echo "Usage: version PROJECT-DIRECTORY VERSION-COMPONENT STATUS"
+	echo "Usage: version PROJECT-DIRECTORY VERSION-COMPONENT [STATUS]"
 	echo "VERSION-COMPONENT must be one of: 'major' 'minor' 'micro'"
 	echo "STATUS is optional and can be any string"
 }

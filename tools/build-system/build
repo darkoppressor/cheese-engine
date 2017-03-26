@@ -4,6 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 PROJECT_PATH=$1
+SUPPRESS_EMAIL=$2
 
 CHECKSUM=""
 
@@ -12,8 +13,9 @@ LOG_FILE_FALLBACK="./log-build-system"
 
 if [ -z "$PROJECT_PATH" ]; then
 	echo "build - build a Cheese Engine project" | tee -a ${LOG_FILE_FALLBACK}
-	echo "Usage: build PROJECT-DIRECTORY" | tee -a ${LOG_FILE_FALLBACK}
+	echo "Usage: build PROJECT-DIRECTORY [SUPPRESS-EMAIL]" | tee -a ${LOG_FILE_FALLBACK}
 	echo "PROJECT-DIRECTORY may be located anywhere except under '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
+	echo "SUPPRESS-EMAIL is optional and can be true or false (defaults to false)" | tee -a ${LOG_FILE_FALLBACK}
 	echo "Do 'build clean' to empty the projects directory" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
@@ -576,7 +578,13 @@ log="$(date '+%H:%M:%S') $(date '+%Z (%z)')"
 echo "${log}" | tee -a ${LOG_FINAL}
 RESULT="${RESULT}${log}\n"
 
-$HOME/server/sendmail "${SUBJECT}" "${RESULT}"
+if [ -n "$SUPPRESS_EMAIL" ] && [ "$SUPPRESS_EMAIL" == "true" ]; then
+	log="Skipping results email"
+	echo "${log}" | tee -a ${LOG_FINAL}
+	RESULT="${RESULT}${log}\n"
+else
+	$HOME/server/sendmail "${SUBJECT}" "${RESULT}"
+fi
 
 if [ "${SUCCESS}" == "false" ]; then
 	exit 67
