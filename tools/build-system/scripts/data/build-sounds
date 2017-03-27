@@ -54,7 +54,7 @@ build_project_sounds () {
 
 					/home/tails/build-server/sfxr-hacked/sfxr "$file" "$SOUND_DIRECTORY/$wav_file"
 
-					oggenc -q 10 "$SOUND_DIRECTORY/$wav_file" -o "$SOUND_DIRECTORY/$file_name"
+					oggenc -q 5 "$SOUND_DIRECTORY/$wav_file" -o "$SOUND_DIRECTORY/$file_name"
 					rm -f "$SOUND_DIRECTORY/$wav_file"
 				fi
 			fi
