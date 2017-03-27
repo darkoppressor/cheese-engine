@@ -1,0 +1,125 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+SOURCE_PROJECT=""
+IMAGES_DIRECTORY=""
+build_project_images () {
+	local directory=$1
+
+	for file in $directory/* ; do
+		if [ -f "$file" ]; then
+			if [[ $file =~ \.xcf$ ]]; then
+				if ! [[ $file =~ colors\.xcf$ ]]; then
+					prefix=$SOURCE_PROJECT/
+					suffix=.xcf
+					file_name=${file#$prefix}
+					file_name=${file_name%$suffix}
+					file_name="$file_name.png"
+
+					prefix=$directory/
+					plain_file_name=${file#$prefix}
+
+					prefix=$SOURCE_PROJECT/
+					image_dir=${file#$prefix}
+					image_dir=${image_dir%$plain_file_name}
+
+					# If the image does not already exist at the destination
+					if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
+						mkdir -p "$IMAGES_DIRECTORY/$image_dir"
+
+						xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
+					fi
+				fi
+			fi
+		fi
+	done
+
+	for d in $directory/*/ ; do
+		if [ -d "$d" ]; then
+			build_project_images "$d"
+		fi
+	done
+}
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	SOURCE_ENGINE="../../../../development/images"
+	SOURCE_PROJECT="$PROJECT_DIRECTORY/development/images"
+	IMAGES_DIRECTORY="$PROJECT_DIRECTORY/data/images"
+
+	# Build all images in engine source directory
+
+	for file in $SOURCE_ENGINE/* ; do
+		if [ -f "$file" ]; then
+			if [[ $file =~ \.xcf$ ]]; then
+				prefix=$SOURCE_ENGINE/
+				suffix=.xcf
+				file_name=${file#$prefix}
+				file_name=${file_name%$suffix}
+				file_name="$file_name.png"
+
+				# If the image does not already exist at the destination
+				if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
+					xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
+				fi
+			fi
+		fi
+	done
+
+	# Determine the correct font images to build
+
+	FONT_DIR="1280x720"
+	SCREEN_WIDTH=$(sed -ne "/^.*logical_screen_width:/p" "$PROJECT_DIRECTORY/data/engine" | sed -e "s/^.*logical_screen_width://")
+	SCREEN_HEIGHT=$(sed -ne "/^.*logical_screen_height:/p" "$PROJECT_DIRECTORY/data/engine" | sed -e "s/^.*logical_screen_height://")
+
+	for d in $SOURCE_ENGINE/fonts/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=$SOURCE_ENGINE/fonts/
+			suffix=/
+			dir_name=${d#$prefix}
+			dir_name=${dir_name%$suffix}
+
+			if [ "${SCREEN_WIDTH}x$SCREEN_HEIGHT" == "$dir_name" ]; then
+				FONT_DIR="$dir_name"
+				break
+			fi
+		fi
+	done
+
+	# Build all font images
+
+	for file in $SOURCE_ENGINE/fonts/$FONT_DIR/* ; do
+		if [ -f "$file" ]; then
+			if [[ $file =~ \.xcf$ ]]; then
+				prefix=$SOURCE_ENGINE/fonts/$FONT_DIR/
+				suffix=.xcf
+				file_name=${file#$prefix}
+				file_name=${file_name%$suffix}
+				file_name="$file_name.png"
+
+				# If the image does not already exist at the destination
+				if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
+					xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
+				fi
+			fi
+		fi
+	done
+
+	# Build all images in project source directory recursively
+
+	build_project_images "$SOURCE_PROJECT"
+
+	# Build the icon
+
+	if [ ! -e "$PROJECT_DIRECTORY/standard.ico" ]; then
+		xcf2png "$SOURCE_PROJECT/icons/standard.xcf" -o "$PROJECT_DIRECTORY/standard.png"
+		icotool -c -o "$PROJECT_DIRECTORY/standard.ico" "$PROJECT_DIRECTORY/standard.png"
+		rm -f "$PROJECT_DIRECTORY/standard.png"
+	fi
+else
+	echo "build-images - build all image data files for the passed project"
+	echo "Usage: build-images PROJECT-DIRECTORY"
+fi

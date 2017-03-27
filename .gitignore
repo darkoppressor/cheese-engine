@@ -37,12 +37,15 @@ development/android/local.properties
 /*_TEMPORARY
 /*_BACKUP
 
+docs/build-information
+
 /*CMakeCache.txt
 /*Makefile
 /*cmake_install.cmake
 /*compile_commands.json
 
 /*.dll
+/*.ico
 /*.depend
 /*.cscope_file_list
 /*.layout

@@ -12,6 +12,7 @@
 #include "directories.h"
 #include "engine.h"
 #include "vfs.h"
+#include "render.h"
 
 #include <SDL_mixer.h>
 #include <SDL_image.h>
@@ -27,9 +28,6 @@ SDL_Renderer* Game_Window::renderer=0;
 
 int Game_Window::SCREEN_WIDTH=0;
 int Game_Window::SCREEN_HEIGHT=0;
-
-SDL_Surface* Game_Window::icon=0;
-Uint32 Game_Window::icon_colorkey=0;
 
 bool Game_Window::need_to_reload=false;
 
@@ -484,25 +482,24 @@ bool Game_Window::initialize(){
 
         set_sdl_hints();
 
-        //Set the window icon.
-        VFS_RWops rwops=VFS::get_rwops("images/icons/standard.bmp",true);
-        icon=SDL_LoadBMP_RW(rwops.rwops,1);
+        //Set the window icon
+        SDL_Surface* loaded_image=0;
+        SDL_Surface* icon=0;
+        VFS_RWops rwops=VFS::get_rwops("images/icons/standard.png",true);
+        loaded_image=IMG_Load_RW(rwops.rwops,1);
         rwops.close_buffer();
 
-        if(icon==0){
+        if(loaded_image!=0){
+            icon=Render::optimize_surface(loaded_image);
+            SDL_FreeSurface(loaded_image);
+            SDL_SetWindowIcon(screen,icon);
+            SDL_FreeSurface(icon);
+        }
+        else{
             msg="Unable to load icon: ";
-            msg+=SDL_GetError();
+            msg+=IMG_GetError();
             Log::add_error(msg);
         }
-
-        icon_colorkey=SDL_MapRGB(icon->format,0,0,0);
-        if(SDL_SetColorKey(icon,SDL_TRUE,icon_colorkey)!=0){
-            msg="Unable to set icon color key: ";
-            msg+=SDL_GetError();
-            Log::add_error(msg);
-        }
-
-        SDL_SetWindowIcon(screen,icon);
 
         if(!initialize_video()){
             return false;

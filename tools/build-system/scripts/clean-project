@@ -4,16 +4,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 PROJECT_DIRECTORY=$1
-TARGET=$2
 
-if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
-	make -C "$PROJECT_DIRECTORY" "clean"
-
+if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$PROJECT_DIRECTORY/CMakeFiles/"
 	rm -f "$PROJECT_DIRECTORY/CMakeCache.txt"
 	rm -f "$PROJECT_DIRECTORY/Makefile"
 	rm -f "$PROJECT_DIRECTORY/cmake_install.cmake"
 else
-	echo "clean-target - clean the passed target for the passed project"
-	echo "Usage: clean-target PROJECT-DIRECTORY TARGET"
+	echo "clean-project - clean the passed project"
+	echo "Usage: clean-project PROJECT-DIRECTORY"
 fi

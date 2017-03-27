@@ -1,0 +1,56 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+SOURCE_PROJECT=""
+MUSIC_DIRECTORY=""
+build_project_music () {
+	local directory=$1
+
+	for file in $directory/* ; do
+		if [ -f "$file" ]; then
+			if [[ $file =~ \.mmpz$ ]]; then
+				prefix=$SOURCE_PROJECT/
+				suffix=.mmpz
+				file_name=${file#$prefix}
+				file_name=${file_name%$suffix}
+				file_name="$file_name.ogg"
+
+				prefix=$directory/
+				plain_file_name=${file#$prefix}
+
+				prefix=$SOURCE_PROJECT/
+				music_dir=${file#$prefix}
+				music_dir=${music_dir%$plain_file_name}
+
+				# If the music does not already exist at the destination
+				if [ ! -e "$MUSIC_DIRECTORY/$file_name" ]; then
+					mkdir -p "$MUSIC_DIRECTORY/$music_dir"
+
+					lmms --render "$file" --output "$MUSIC_DIRECTORY/$file_name" --format 'ogg' --samplerate 44100 --bitrate 160 --interpolation 'sincfastest' --oversampling 1 --loop
+				fi
+			fi
+		fi
+	done
+
+	for d in $directory/*/ ; do
+		if [ -d "$d" ]; then
+			build_project_music "$d"
+		fi
+	done
+}
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	SOURCE_PROJECT="$PROJECT_DIRECTORY/development/music"
+	MUSIC_DIRECTORY="$PROJECT_DIRECTORY/data/music"
+
+	# Build all music in project source directory recursively
+
+	build_project_music "$SOURCE_PROJECT"
+else
+	echo "build-music - build all music data files for the passed project"
+	echo "Usage: build-music PROJECT-DIRECTORY"
+fi

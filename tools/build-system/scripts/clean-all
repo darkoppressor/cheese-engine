@@ -6,15 +6,7 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	./clean-target $PROJECT_DIRECTORY Release-Linux-x86_64
-
-	./clean-target $PROJECT_DIRECTORY Release-Linux-x86
-
-	./clean-target $PROJECT_DIRECTORY Release-Windows-x86_64
-
-	./clean-target $PROJECT_DIRECTORY Release-Windows-x86
-
-	./clean-target $PROJECT_DIRECTORY Release-macOS-x86_64
+	./clean-project $PROJECT_DIRECTORY
 
 	./clean-android $PROJECT_DIRECTORY
 else

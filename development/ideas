@@ -2,13 +2,6 @@ Update to SDL 2.0.5
 
 Move source files into a sub directory
 
-Automatically generate a build-information file (probably in the project directory) when building,
-and don't maintain one in the development directory anymore
-
-Create scripts automating the process of converting all data files (images, music, and sounds)
-into their final forms (e.g., .xcf -> .png)
-Remove final data files from version control, and add the building of data files to the build process
-
 ***
 Multithreading:
 The game startup process could be partially multithreaded

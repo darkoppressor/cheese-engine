@@ -28,7 +28,9 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 
 	cd $DIR
 
-	make -C "$PROJECT_DIRECTORY" "$TARGET" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	CPU_COUNT=$(nproc --all)
+
+	make -j $CPU_COUNT -C "$PROJECT_DIRECTORY" "$TARGET" >> "$PROJECT_DIRECTORY/log-$TARGET"
 else
 	echo "build-target - build the passed target for the passed project"
 	echo "Usage: build-target PROJECT-DIRECTORY TARGET"

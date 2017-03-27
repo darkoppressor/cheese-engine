@@ -47,7 +47,7 @@ fi
 
 NAME="${PROJECT_NAME}"
 
-VERSION="4"
+VERSION="5"
 
 RESULT=""
 
@@ -57,6 +57,7 @@ chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*.cmake
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/*
+chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/data/*
 
 mkdir -p $HOME/build-server/projects
 
@@ -427,6 +428,17 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				RESULT="${RESULT}${error}"
 			fi
 		fi
+
+		$HOME/build-server/cheese-engine/tools/build-information "$HOME/build-server/projects/$PROJECT_NAME"
+
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-images "$HOME/build-server/projects/$PROJECT_NAME"
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-images "$HOME/build-server/projects/$PROJECT_NAME"
+
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-music "$HOME/build-server/projects/$PROJECT_NAME"
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-music "$HOME/build-server/projects/$PROJECT_NAME"
+
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-sounds "$HOME/build-server/projects/$PROJECT_NAME"
+		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-sounds "$HOME/build-server/projects/$PROJECT_NAME"
 
 		CHECKSUM_DIR="$HOME/build-server/projects/${PROJECT_NAME}/data"
 		CHECKSUM="$($HOME/build-server/cheese-engine/tools/Checksum-Linux-x86_64 ${CHECKSUM_DIR} 1)"

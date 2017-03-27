@@ -27,9 +27,6 @@ private:
     static int SCREEN_WIDTH;
     static int SCREEN_HEIGHT;
 
-    static SDL_Surface* icon;
-    static Uint32 icon_colorkey;
-
     static bool need_to_reload;
 
     static bool initialize_video();

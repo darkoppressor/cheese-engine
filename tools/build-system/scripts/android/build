@@ -8,7 +8,9 @@ PROJECT_DIRECTORY=$1
 if [ -n "$PROJECT_DIRECTORY" ]; then
 	export NDK_PROJECT_PATH="$PROJECT_DIRECTORY/development/android"
 
-	/home/tails/build-server/android/android-ndk/ndk-build
+	CPU_COUNT=$(nproc --all)
+
+	/home/tails/build-server/android/android-ndk/ndk-build -j $CPU_COUNT
 else
 	echo "build - run ndk-build on the passed project"
 	echo "Usage: build PROJECT-DIRECTORY"

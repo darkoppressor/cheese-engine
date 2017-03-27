@@ -1,0 +1,282 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+OUTPUT=""
+
+add_boost_version () {
+	local file="/home/tails/build-server/$1/boost/boost/version.hpp"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^#define BOOST_LIB_VERSION \".*\"$/p" "$file" | sed -e "s/^#define BOOST_LIB_VERSION \"//" | sed -e "s/\"$//" | sed -e "s/_/\./")"
+}
+
+add_raknet_version () {
+	local file="/home/tails/build-server/$1/raknet/raknet/readme.txt"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^RakNet/p" "$file" | sed -e "s/^RakNet\s*//" | sed -e "s/\s*$//")"
+}
+
+add_sdl2_version () {
+	local file="/home/tails/build-server/$1/SDL2/include/SDL_version.h"
+
+	local major=$(sed -ne "/^#define\s*SDL_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MAJOR_VERSION\s*//")
+	local minor=$(sed -ne "/^#define\s*SDL_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MINOR_VERSION\s*//")
+	local micro=$(sed -ne "/^#define\s*SDL_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_PATCHLEVEL\s*//")
+
+	OUTPUT="$OUTPUT$major.$minor.$micro"
+}
+
+add_sdl2_image_version () {
+	local file="/home/tails/build-server/$1/SDL2_image/SDL_image.h"
+
+	local major=$(sed -ne "/^#define\s*SDL_IMAGE_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MAJOR_VERSION\s*//")
+	local minor=$(sed -ne "/^#define\s*SDL_IMAGE_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MINOR_VERSION\s*//")
+	local micro=$(sed -ne "/^#define\s*SDL_IMAGE_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_PATCHLEVEL\s*//")
+
+	OUTPUT="$OUTPUT$major.$minor.$micro"
+}
+
+add_sdl2_mixer_version () {
+	local file="/home/tails/build-server/$1/SDL2_mixer/SDL_mixer.h"
+
+	local major=$(sed -ne "/^#define\s*SDL_MIXER_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MAJOR_VERSION\s*//")
+	local minor=$(sed -ne "/^#define\s*SDL_MIXER_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MINOR_VERSION\s*//")
+	local micro=$(sed -ne "/^#define\s*SDL_MIXER_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_PATCHLEVEL\s*//")
+
+	OUTPUT="$OUTPUT$major.$minor.$micro"
+}
+
+add_libogg_version () {
+	local file="$1/config.h"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
+}
+
+add_libvorbis_version () {
+	local file="/home/tails/build-server/$1/libvorbis/config.h"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
+}
+
+add_zlib_version () {
+	local file="/home/tails/build-server/$1/zlib/zlib.h"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*ZLIB_VERSION/p" "$file" | sed -e "s/^#define\s*ZLIB_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
+}
+
+add_minizip_version () {
+	local file="/home/tails/build-server/$1/zlib/contrib/minizip/minizip.c"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^\s*Version/p" "$file" | sed -e "s/^\s*Version\s*//" | sed -e "s/,.*$//")"
+}
+
+add_libpng_version () {
+	local file="/home/tails/build-server/$1/libpng/config.h"
+
+	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
+}
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	OUTPUT="Library\t\tLinux\t\tWindows\t\tmacOS\t\tAndroid\n"
+	OUTPUT="$OUTPUT---------------------------------------------------------\n"
+
+	OUTPUT="${OUTPUT}boost\t\t"
+	add_boost_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_boost_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_boost_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_boost_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}raknet\t\t"
+	add_raknet_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_raknet_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_raknet_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_raknet_version "android"
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}SDL2\t\t"
+	add_sdl2_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_version "android"
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}SDL2_image\t"
+	add_sdl2_image_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_image_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_image_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_image_version "android"
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}SDL2_mixer\t"
+	add_sdl2_mixer_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_mixer_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_mixer_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_sdl2_mixer_version "android"
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}libogg\t\t"
+	add_libogg_version "/home/tails/build-server/linux-x86_64/libogg"
+	OUTPUT="${OUTPUT}\t\t"
+	add_libogg_version "/home/tails/build-server/windows-x86_64/libogg"
+	OUTPUT="${OUTPUT}\t\t"
+	add_libogg_version "/home/tails/build-server/osx-x86_64/libogg"
+	OUTPUT="${OUTPUT}\t\t"
+	for d in /home/tails/build-server/android/SDL2_mixer/external/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=/home/tails/build-server/android/SDL2_mixer/external/
+			dir_name=${d#$prefix}
+
+			if [[ $dir_name =~ ^libogg ]]; then
+				dir_name=$(echo "$dir_name" | sed -e "s/^libogg-//")
+				suffix=/
+				dir_name=${dir_name%$suffix}
+
+				OUTPUT="$OUTPUT$dir_name"
+
+				break
+			fi
+		fi
+	done
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}libvorbis\t"
+	add_libvorbis_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_libvorbis_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_libvorbis_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\tN/A\n"
+
+	OUTPUT="${OUTPUT}libtremor\tN/A\t\t\tN/A\t\t\tN/A\t\t\t"
+	for d in /home/tails/build-server/android/SDL2_mixer/external/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=/home/tails/build-server/android/SDL2_mixer/external/
+			dir_name=${d#$prefix}
+
+			if [[ $dir_name =~ ^libvorbisidec ]]; then
+				dir_name=$(echo "$dir_name" | sed -e "s/^libvorbisidec-//")
+				suffix=/
+				dir_name=${dir_name%$suffix}
+
+				OUTPUT="$OUTPUT$dir_name"
+
+				break
+			fi
+		fi
+	done
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}zlib\t\t"
+	add_zlib_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_zlib_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_zlib_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	for d in /home/tails/build-server/android/SDL2_image/external/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=/home/tails/build-server/android/SDL2_image/external/
+			dir_name=${d#$prefix}
+
+			if [[ $dir_name =~ ^zlib ]]; then
+				dir_name=$(echo "$dir_name" | sed -e "s/^zlib-//")
+				suffix=/
+				dir_name=${dir_name%$suffix}
+
+				OUTPUT="$OUTPUT$dir_name"
+
+				break
+			fi
+		fi
+	done
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}minizip\t\t"
+	add_minizip_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t\t"
+	add_minizip_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t\t"
+	add_minizip_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t\tN/A\n"
+
+	OUTPUT="${OUTPUT}libpng\t\t"
+	add_libpng_version "linux-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_libpng_version "windows-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	add_libpng_version "osx-x86_64"
+	OUTPUT="${OUTPUT}\t\t"
+	for d in /home/tails/build-server/android/SDL2_image/external/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=/home/tails/build-server/android/SDL2_image/external/
+			dir_name=${d#$prefix}
+
+			if [[ $dir_name =~ ^libpng ]]; then
+				dir_name=$(echo "$dir_name" | sed -e "s/^libpng-//")
+				suffix=/
+				dir_name=${dir_name%$suffix}
+
+				OUTPUT="$OUTPUT$dir_name"
+
+				break
+			fi
+		fi
+	done
+	OUTPUT="${OUTPUT}\n"
+
+	OUTPUT="${OUTPUT}libgpg\t\tN/A\t\t\tN/A\t\t\tN/A\t\t\t"
+	file="/home/tails/build-server/android/gpg-cpp-sdk/README.md"
+	OUTPUT="$OUTPUT$(sed -ne "/^#Google/p" "$file" | sed -e "s/^[^0-9]*//" | sed -e "s/\s*#$//")"
+	OUTPUT="${OUTPUT}\n\n"
+
+	OUTPUT="${OUTPUT}Build System\n"
+	OUTPUT="$OUTPUT------------------------------------------------------\n"
+
+	OUTPUT="${OUTPUT}Linux\t\t$(gcc --version | sed -n 1p), $(ldd --version | sed -n 1p)\n"
+	OUTPUT="${OUTPUT}Windows\t\t$(x86_64-w64-mingw32-gcc --version | sed -n 1p)\n"
+	OUTPUT="${OUTPUT}macOS\t\t$(o64-clang --version | sed -n 1p), Xcode 6.4\n"
+	file="/home/tails/build-server/android/android-ndk/CHANGELOG.md"
+	android_compiler=$(/home/tails/build-server/android/android-ndk/ndk-which gcc)
+	sdk_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/tools/source.properties" | sed -e "s/^Pkg.Revision=//")
+	sdk_platform_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/platform-tools/source.properties" | sed -e "s/^Pkg.Revision=//")
+	sdk_build_tools=""
+	for d in /home/tails/build-server/android/android-sdk/build-tools/*/ ; do
+		if [ -d "$d" ]; then
+			prefix=/home/tails/build-server/android/android-sdk/build-tools/
+			suffix=/
+			dir_name=${d#$prefix}
+			dir_name=${dir_name%$suffix}
+
+			sdk_build_tools=$dir_name
+
+			break
+		fi
+	done
+	google_play_services="$(sed -ne "/^VERSION=/p" "/home/tails/build-server/android/prepare-google-play-services" | sed -e "s/^VERSION=\"//" | sed -e "s/\"$//")"
+	android_support="$(sed -ne "/^SUPPORT_VERSION=/p" "/home/tails/build-server/android/prepare-google-play-services" | sed -e "s/^SUPPORT_VERSION=\"//" | sed -e "s/\"$//")"
+	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $(sed -ne "/^r/p" "$file"), $($android_compiler --version | sed -n 1p), SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools, Google Play Services $google_play_services, Android Support v4 $android_support"
+
+	echo -e "$OUTPUT" > "$PROJECT_DIRECTORY/docs/build-information"
+else
+	echo "build-information - write the build information for a Cheese Engine project based on the current environment"
+	echo "Usage: build-information PROJECT-DIRECTORY"
+fi

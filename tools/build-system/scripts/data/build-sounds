@@ -1,0 +1,81 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+SOURCE_PROJECT=""
+SOUND_DIRECTORY=""
+build_project_sounds () {
+	local directory=$1
+
+	for file in $directory/* ; do
+		if [ -f "$file" ]; then
+			if [[ $file =~ \.mmpz$ ]]; then
+				prefix=$SOURCE_PROJECT/
+				suffix=.mmpz
+				file_name=${file#$prefix}
+				file_name=${file_name%$suffix}
+				file_name="$file_name.ogg"
+
+				prefix=$directory/
+				plain_file_name=${file#$prefix}
+
+				prefix=$SOURCE_PROJECT/
+				sound_dir=${file#$prefix}
+				sound_dir=${sound_dir%$plain_file_name}
+
+				# If the sound does not already exist at the destination
+				if [ ! -e "$SOUND_DIRECTORY/$file_name" ]; then
+					mkdir -p "$SOUND_DIRECTORY/$sound_dir"
+
+					lmms --render "$file" --output "$SOUND_DIRECTORY/$file_name" --format 'ogg' --samplerate 44100 --bitrate 160 --interpolation 'sincfastest' --oversampling 1 --loop
+				fi
+			elif [[ $file =~ \.sfxr$ ]]; then
+				prefix=$SOURCE_PROJECT/
+				suffix=.sfxr
+				file_name=${file#$prefix}
+				file_name=${file_name%$suffix}
+				file_name="$file_name.ogg"
+
+				prefix=$directory/
+				plain_file_name=${file#$prefix}
+
+				prefix=$SOURCE_PROJECT/
+				sound_dir=${file#$prefix}
+				sound_dir=${sound_dir%$plain_file_name}
+
+				# If the sound does not already exist at the destination
+				if [ ! -e "$SOUND_DIRECTORY/$file_name" ]; then
+					mkdir -p "$SOUND_DIRECTORY/$sound_dir"
+
+					wav_file=$(echo "$file_name" | sed -e "s/.ogg$/.wav/")
+
+					/home/tails/build-server/sfxr-hacked/sfxr "$file" "$SOUND_DIRECTORY/$wav_file"
+
+					oggenc -q 10 "$SOUND_DIRECTORY/$wav_file" -o "$SOUND_DIRECTORY/$file_name"
+					rm -f "$SOUND_DIRECTORY/$wav_file"
+				fi
+			fi
+		fi
+	done
+
+	for d in $directory/*/ ; do
+		if [ -d "$d" ]; then
+			build_project_sounds "$d"
+		fi
+	done
+}
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	SOURCE_PROJECT="$PROJECT_DIRECTORY/development/sounds"
+	SOUND_DIRECTORY="$PROJECT_DIRECTORY/data/sounds"
+
+	# Build all sounds in project source directory recursively
+
+	build_project_sounds "$SOURCE_PROJECT"
+else
+	echo "build-sounds - build all sound data files for the passed project"
+	echo "Usage: build-sounds PROJECT-DIRECTORY"
+fi

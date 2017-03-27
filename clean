@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+rm -rf "CMakeFiles/"
+rm -rf ".objs/"
+
+rm -f *Windows-x86_64.a
+rm -f *Windows-Debug-x86_64.a
+rm -f *Linux-x86_64.a
+rm -f *Linux-Debug-x86_64.a
+rm -f *Linux-x86.a
+rm -f *Windows-x86.a
+rm -f *OSX-x86_64.a
+
+rm -f "docs/build-information"
+
+rm -f "CMakeCache.txt"
+rm -f "Makefile"
+rm -f "cmake_install.cmake"
+rm -f "compile_commands.json"
+
+rm -f *.dll
+rm -f *.depend
+rm -f *.cscope_file_list
+
+rm -f "Thumbs.db"
+rm -f ".DS_Store"

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	SOUND_DIRECTORY="$PROJECT_DIRECTORY/data/sounds"
+
+	# Remove all files and directories except for .gitkeep
+	rm -rf $SOUND_DIRECTORY/*
+else
+	echo "clean-sounds - clean up all sound data files for the passed project"
+	echo "Usage: clean-sounds PROJECT-DIRECTORY"
+fi

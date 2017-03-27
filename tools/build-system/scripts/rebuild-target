@@ -7,7 +7,7 @@ PROJECT_DIRECTORY=$1
 TARGET=$2
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
-	./clean-target $PROJECT_DIRECTORY $TARGET
+	./clean-project $PROJECT_DIRECTORY
 
 	./build-target $PROJECT_DIRECTORY $TARGET
 else
