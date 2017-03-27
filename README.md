@@ -1,4 +1,6 @@
 # cheese-engine
+[![Build Status](http://wells-family.xyz:8080/buildStatus/icon?job=cheese-engine/master)](http://wells-family.xyz:8080/job/cheese-engine/job/master/)
+
 2D game engine for Windows, macOS, Linux, and Android
 http://cheeseandbacon.org/
 
