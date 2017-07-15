@@ -1,3 +1,10 @@
+New script tool that reads the game constants data file(s) and uses them to automatically generate the associated source files
+The type of value could be determined from the value as typed, and an override could be added to data file items to force them to be read as a certain type
+
+Enable joining a game in progress
+
+IPv6
+
 Update to SDL 2.0.5
 
 Move source files into a sub directory
@@ -52,11 +59,7 @@ Write documentation for using the engine, from a non-code standpoint
 
 Move some/all of the ideas and to dos into GitHub issues?
 
-Enable joining a game in progress
-
 Dedicated server mode (can be implemented as a headless mode, controlled by a command line argument)
-
-IPv6
 
 String data/datafiles
 These can be referenced in my other data files in some special way

@@ -11,6 +11,16 @@ CHECKSUM=""
 LOG_FILE=""
 LOG_FILE_FALLBACK="./log-build-system"
 
+read_option () {
+	IFS='=' read -ra LINE_PARTS <<< "$1"
+
+	if [ ${#LINE_PARTS[@]} -ge 2 ]; then
+		echo "${LINE_PARTS[1]}"
+	else
+		echo ""
+	fi
+}
+
 if [ -z "$PROJECT_PATH" ]; then
 	echo "build - build a Cheese Engine project" | tee -a ${LOG_FILE_FALLBACK}
 	echo "Usage: build PROJECT-DIRECTORY [SUPPRESS-EMAIL]" | tee -a ${LOG_FILE_FALLBACK}
@@ -107,6 +117,47 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		echo "${log}" | tee -a ${LOG_FILE}
 		echo "" | tee -a ${LOG_FILE}
 		RESULT="${RESULT}${log}\n\n"
+
+		log="Loading build system options for ${PROJECT_NAME}"
+		echo "${log}" | tee -a ${LOG_FILE}
+		echo "" | tee -a ${LOG_FILE}
+		RESULT="${RESULT}${log}\n\n"
+
+		OPTION_REBUILD_IMAGES="true"
+		OPTION_REBUILD_MUSIC="true"
+		OPTION_REBUILD_SOUNDS="true"
+
+		if [ -f "${PROJECT_PATH}/development/build-system-options" ]; then
+			while read line
+			do
+				if ! [[ $line =~ ^\# ]]; then
+					if [[ $line =~ ^rebuild_images ]]; then
+						result=$(read_option "$line")
+
+						if [ -n "$result" ]; then
+							OPTION_REBUILD_IMAGES="$result"
+						fi
+					fi
+
+					if [[ $line =~ ^rebuild_music ]]; then
+						result=$(read_option "$line")
+
+						if [ -n "$result" ]; then
+							OPTION_REBUILD_MUSIC="$result"
+						fi
+					fi
+
+					if [[ $line =~ ^rebuild_sounds ]]; then
+						result=$(read_option "$line")
+
+						if [ -n "$result" ]; then
+							OPTION_REBUILD_SOUNDS="$result"
+						fi
+					fi
+				fi
+			done <"${PROJECT_PATH}/development/build-system-options"
+		fi
+
 		log="Building ${PROJECT_NAME}"
 		echo "${log}" | tee -a ${LOG_FILE}
 		echo "" | tee -a ${LOG_FILE}
@@ -114,14 +165,20 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 		$HOME/build-server/cheese-engine/tools/build-information "$HOME/build-server/projects/$PROJECT_NAME"
 
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-images "$HOME/build-server/projects/$PROJECT_NAME"
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-images "$HOME/build-server/projects/$PROJECT_NAME"
+		if [ "$OPTION_REBUILD_IMAGES" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-images "$HOME/build-server/projects/$PROJECT_NAME"
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-images "$HOME/build-server/projects/$PROJECT_NAME"
+		fi
 
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-music "$HOME/build-server/projects/$PROJECT_NAME"
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-music "$HOME/build-server/projects/$PROJECT_NAME"
+		if [ "$OPTION_REBUILD_MUSIC" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-music "$HOME/build-server/projects/$PROJECT_NAME"
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-music "$HOME/build-server/projects/$PROJECT_NAME"
+		fi
 
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-sounds "$HOME/build-server/projects/$PROJECT_NAME"
-		$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-sounds "$HOME/build-server/projects/$PROJECT_NAME"
+		if [ "$OPTION_REBUILD_SOUNDS" == "true" ]; then
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-sounds "$HOME/build-server/projects/$PROJECT_NAME"
+			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-sounds "$HOME/build-server/projects/$PROJECT_NAME"
+		fi
 
 		sed -i 's/local/home/g' "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
 
