@@ -1,4 +1,4 @@
-LMMS sounds are scratchy
+LMMS sounds exported in Linux are scratchy
 It seems to only affect the FreeBoy plugin's sounds, and only on Linux
 For now, I've kept the original sound data files generated in Windows LMMS and set the build system to not
 rebuild sound files

@@ -57,8 +57,6 @@ Write up guidelines for contributors
 
 Write documentation for using the engine, from a non-code standpoint
 
-Move some/all of the ideas and to dos into GitHub issues?
-
 Dedicated server mode (can be implemented as a headless mode, controlled by a command line argument)
 
 String data/datafiles
