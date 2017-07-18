@@ -1,6 +1,3 @@
-New script tool that reads the game constants data file(s) and uses them to automatically generate the associated source files
-The type of value could be determined from the value as typed, and an override could be added to data file items to force them to be read as a certain type
-
 Enable joining a game in progress
 
 IPv6

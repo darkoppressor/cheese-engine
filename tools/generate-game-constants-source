@@ -1,0 +1,299 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+constant_names=()
+constant_values=()
+constant_types=()
+constant_script_no_declares=()
+
+get_type () {
+	local type="$1"
+	local value="$2"
+
+	if [ -n "$type" ]; then
+		echo "$type"
+	else
+		if [[ "$value" == "false" || "$value" == "true" ]]; then
+			echo "bool"
+		elif [[ "$value" =~ [^\d\-\.]+ ]]; then
+			echo "string"
+		# If there is exactly one '.' in between other digits
+		elif [[ "$value" =~ ^[^\.]+\.[^\.]+$ ]]; then
+			echo "double"
+		# If there is exactly one '-' before other digits
+		elif [[ "$value" =~ ^-[^-]+$ ]]; then
+			echo "int32_t"
+		else
+			echo "uint32_t"
+		fi
+	fi
+}
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	DATA_DIR="$PROJECT_DIRECTORY/data"
+
+	for filename in $DATA_DIR/* ; do
+		if [ -f "$filename" ]; then
+			file=$(<"$filename")
+
+			# Remove comments
+			file=$(echo "$file" | perl -pe 'BEGIN{undef $/;} s/\/\*.*?\*\///smg')
+			file=$(echo "$file" | sed -e 's/^\s*\/\/.*$//')
+
+			readarray -t file_lines < <(echo "$file")
+
+			file_lines_length=${#file_lines[@]}
+			for (( index=0; index<${file_lines_length}; )); do
+				lines=()
+
+				while [ "$index" -ne "$file_lines_length" ]; do
+					line=${file_lines[$index]}
+					((index++))
+
+					# Trim the line
+					line=$(echo "$line" | sed -e 's/^\s*//;s/\s*$//')
+
+					lines+=("$line")
+
+					if [[ "$line" =~ ^\<game_constant\> ]]; then
+						break
+					fi
+				done
+
+				if [ "${#lines[@]}" -gt 0 ]; then
+					if [[ "${lines[-1]}" =~ ^\<game_constant\> ]]; then
+						lines[-1]=$(echo "${lines[-1]}" | sed -e 's/^<game_constant>//')
+
+						constant_lines=()
+
+						while [ "$index" -ne "$file_lines_length" ]; do
+							line=${file_lines[$index]}
+							((index++))
+
+							# Trim the line
+							line=$(echo "$line" | sed -e 's/^\s*//;s/\s*$//')
+
+							constant_lines+=("$line")
+
+							if [[ "$line" =~ ^\<\/game_constant\> ]]; then
+								break
+							fi
+						done
+
+						constant_name=""
+						constant_value=""
+						constant_type=""
+						constant_script_ignore="false"
+						constant_script_no_declare="false"
+
+						for constant_line in "${constant_lines[@]}"; do
+							if [[ "$constant_line" =~ ^name: ]]; then
+								constant_line=$(echo "$constant_line" | sed -e 's/^name://')
+
+								constant_name="$constant_line"
+							elif [[ "$constant_line" =~ ^value: ]]; then
+								constant_line=$(echo "$constant_line" | sed -e 's/^value://')
+
+								constant_value="$constant_line"
+							elif [[ "$constant_line" =~ ^type: ]]; then
+								constant_line=$(echo "$constant_line" | sed -e 's/^type://')
+
+								constant_type="$constant_line"
+							elif [[ "$constant_line" =~ ^\<script_ignore\> ]]; then
+								constant_script_ignore="true"
+							elif [[ "$constant_line" =~ ^\<script_no_declare\> ]]; then
+								constant_script_no_declare="true"
+							fi
+						done
+
+						if [[ "$constant_script_ignore" == "false" && -n "$constant_name" && -n "$constant_value" ]]; then
+							constant_names+=("$constant_name")
+							constant_values+=("$constant_value")
+							constant_types+=("$constant_type")
+							constant_script_no_declares+=("$constant_script_no_declare")
+						fi
+					fi
+				fi
+			done
+		fi
+	done
+
+	filename_header="$PROJECT_DIRECTORY/game_constants.h"
+
+	if [ -f "$filename_header" ]; then
+		file_header=$(<"$filename_header")
+
+		file_header=$(echo "$file_header" | perl -pe 'BEGIN{undef $/;} s/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS.*?\/\/\/ END SCRIPT-GENERATED CONSTANT DECLARATIONS/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS    \/\/\/ END SCRIPT-GENERATED CONSTANT DECLARATIONS/sm')
+
+		content=""
+
+		for (( index=0; index<${#constant_names[@]}; index++ )); do
+			if [ ${constant_script_no_declares[$index]} == "false" ]; then
+				constant_type=$(get_type "${constant_types[$index]}" "${constant_values[$index]}")
+
+				content+="    static "
+
+				if [ "$constant_type" == "double" ]; then
+					content+="double"
+				elif [ "$constant_type" == "float" ]; then
+					content+="float"
+				elif [ "$constant_type" == "bool" ]; then
+					content+="bool"
+				elif [ "$constant_type" == "string" ]; then
+					content+="std::string"
+				elif [ "$constant_type" == "int64_t" ]; then
+					content+="std::int64_t"
+				elif [ "$constant_type" == "int32_t" ]; then
+					content+="std::int32_t"
+				elif [ "$constant_type" == "int16_t" ]; then
+					content+="std::int16_t"
+				elif [ "$constant_type" == "int8_t" ]; then
+					content+="std::int8_t"
+				elif [ "$constant_type" == "uint64_t" ]; then
+					content+="std::uint64_t"
+				elif [ "$constant_type" == "uint32_t" ]; then
+					content+="std::uint32_t"
+				elif [ "$constant_type" == "uint16_t" ]; then
+					content+="std::uint16_t"
+				elif [ "$constant_type" == "uint8_t" ]; then
+					content+="std::uint8_t"
+				else
+					content+="std::string"
+				fi
+
+				content+=" ${constant_names[$index]^^};\n"
+			fi
+		done
+
+		echo "$file_header" | sed -e "s/^\s*\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS/    \/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS\n$content/" > "$filename_header"
+	fi
+
+	filename_source="$PROJECT_DIRECTORY/game_constants.cpp"
+
+	if [ -f "$filename_source" ]; then
+		file_source=$(<"$filename_source")
+
+		file_source=$(echo "$file_source" | perl -pe 'BEGIN{undef $/;} s/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS.*?\/\/\/ END SCRIPT-GENERATED CONSTANT INITIALIZATIONS/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS\/\/\/ END SCRIPT-GENERATED CONSTANT INITIALIZATIONS/sm')
+
+		content=""
+
+		for (( index=0; index<${#constant_names[@]}; index++ )); do
+			if [ ${constant_script_no_declares[$index]} == "false" ]; then
+				constant_type=$(get_type "${constant_types[$index]}" "${constant_values[$index]}")
+
+				if [ "$constant_type" == "double" ]; then
+					content+="double"
+				elif [ "$constant_type" == "float" ]; then
+					content+="float"
+				elif [ "$constant_type" == "bool" ]; then
+					content+="bool"
+				elif [ "$constant_type" == "string" ]; then
+					content+="string"
+				elif [ "$constant_type" == "int64_t" ]; then
+					content+="int64_t"
+				elif [ "$constant_type" == "int32_t" ]; then
+					content+="int32_t"
+				elif [ "$constant_type" == "int16_t" ]; then
+					content+="int16_t"
+				elif [ "$constant_type" == "int8_t" ]; then
+					content+="int8_t"
+				elif [ "$constant_type" == "uint64_t" ]; then
+					content+="uint64_t"
+				elif [ "$constant_type" == "uint32_t" ]; then
+					content+="uint32_t"
+				elif [ "$constant_type" == "uint16_t" ]; then
+					content+="uint16_t"
+				elif [ "$constant_type" == "uint8_t" ]; then
+					content+="uint8_t"
+				else
+					content+="string"
+				fi
+
+				content+=" Game_Constants::${constant_names[$index]^^}="
+
+				if [ "$constant_type" == "double" ]; then
+					content+="0.0"
+				elif [ "$constant_type" == "float" ]; then
+					content+="0.0f"
+				elif [ "$constant_type" == "bool" ]; then
+					content+="false"
+				elif [ "$constant_type" == "string" ]; then
+					content+="\"\""
+				elif [ "$constant_type" == "int64_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "int32_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "int16_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "int8_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "uint64_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "uint32_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "uint16_t" ]; then
+					content+="0"
+				elif [ "$constant_type" == "uint8_t" ]; then
+					content+="0"
+				else
+					content+="\"\""
+				fi
+
+				content+=";\n"
+			fi
+		done
+
+		file_source=$(echo "$file_source" | sed -e "s/^\s*\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS\n$content/")
+
+		file_source=$(echo "$file_source" | perl -pe 'BEGIN{undef $/;} s/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP.*?\/\/\/ END SCRIPT-GENERATED CONSTANT SETUP/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP    \/\/\/ END SCRIPT-GENERATED CONSTANT SETUP/sm')
+
+		content=""
+
+		for (( index=0; index<${#constant_names[@]}; index++ )); do
+			constant_type=$(get_type "${constant_types[$index]}" "${constant_values[$index]}")
+
+			content+="    else if(name==\"${constant_names[$index]}\"){\n"
+
+			content+="        Game_Constants::${constant_names[$index]^^}="
+
+			if [ "$constant_type" == "double" ]; then
+				content+="Strings::string_to_double(value)"
+			elif [ "$constant_type" == "float" ]; then
+				content+="Strings::string_to_double(value)"
+			elif [ "$constant_type" == "bool" ]; then
+				content+="Strings::string_to_bool(value)"
+			elif [ "$constant_type" == "string" ]; then
+				content+="value"
+			elif [ "$constant_type" == "int64_t" ]; then
+				content+="Strings::string_to_long(value)"
+			elif [ "$constant_type" == "int32_t" ]; then
+				content+="Strings::string_to_long(value)"
+			elif [ "$constant_type" == "int16_t" ]; then
+				content+="Strings::string_to_long(value)"
+			elif [ "$constant_type" == "int8_t" ]; then
+				content+="Strings::string_to_long(value)"
+			elif [ "$constant_type" == "uint64_t" ]; then
+				content+="Strings::string_to_unsigned_long(value)"
+			elif [ "$constant_type" == "uint32_t" ]; then
+				content+="Strings::string_to_unsigned_long(value)"
+			elif [ "$constant_type" == "uint16_t" ]; then
+				content+="Strings::string_to_unsigned_long(value)"
+			elif [ "$constant_type" == "uint8_t" ]; then
+				content+="Strings::string_to_unsigned_long(value)"
+			else
+				content+="value"
+			fi
+
+			content+=";\n    }\n"
+		done
+
+		echo "$file_source" | sed -e "s/^\s*\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP/    \/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP\n$content/" > "$filename_source"
+	fi
+else
+    echo "generate-game-constants-source - generate source code for game constants read from data files"
+	echo "Usage: generate-game-constants-source PROJECT-DIRECTORY"
+fi
