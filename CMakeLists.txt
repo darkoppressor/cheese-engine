@@ -109,6 +109,7 @@ target_link_libraries(Release-Linux-x86_64
 /home/tails/build-server/linux-x86_64/libvorbis/lib/.libs/libvorbis.a
 /home/tails/build-server/linux-x86_64/libogg/src/.libs/libogg.a
 /home/tails/build-server/linux-x86_64/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/linux-x86_64/SDL2/build/.libs/libSDL2main.a
 /usr/lib/x86_64-linux-gnu/libGL.so
 /usr/lib/x86_64-linux-gnu/libGLU.so
 /usr/lib/x86_64-linux-gnu/libpthread.so
@@ -153,6 +154,7 @@ target_link_libraries(Debug-Linux-x86_64
 /home/tails/build-server/linux-x86_64/libvorbis/lib/.libs/libvorbis.a
 /home/tails/build-server/linux-x86_64/libogg/src/.libs/libogg.a
 /home/tails/build-server/linux-x86_64/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/linux-x86_64/SDL2/build/.libs/libSDL2main.a
 /usr/lib/x86_64-linux-gnu/libGL.so
 /usr/lib/x86_64-linux-gnu/libGLU.so
 /usr/lib/x86_64-linux-gnu/libpthread.so
@@ -198,6 +200,7 @@ target_link_libraries(Release-Linux-x86
 /home/tails/build-server/linux-x86/libvorbis/lib/.libs/libvorbis.a
 /home/tails/build-server/linux-x86/libogg/src/.libs/libogg.a
 /home/tails/build-server/linux-x86/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/linux-x86/SDL2/build/.libs/libSDL2main.a
 /usr/lib/i386-linux-gnu/mesa/libGL.so.1.2.0
 /usr/lib/i386-linux-gnu/libGLU.so.1.3.1
 /usr/lib32/libpthread.so
@@ -246,7 +249,7 @@ target_link_libraries(Release-Windows-x86_64
 /home/tails/build-server/windows-x86_64/libvorbis/lib/.libs/libvorbis.a
 /home/tails/build-server/windows-x86_64/libogg/src/.libs/libogg.a
 /home/tails/build-server/windows-x86_64/SDL2/build/.libs/libSDL2.a
-/home/tails/build-server/windows-x86_64/SDL2/build/libSDL2main.a
+/home/tails/build-server/windows-x86_64/SDL2/build/.libs/libSDL2main.a
 /home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/windows-x86_64/raknet/raknet/Lib/DLL/Lib/libRakNet.a
@@ -298,7 +301,7 @@ target_link_libraries(Release-Windows-x86
 /home/tails/build-server/windows-x86/libvorbis/lib/.libs/libvorbis.a
 /home/tails/build-server/windows-x86/libogg/src/.libs/libogg.a
 /home/tails/build-server/windows-x86/SDL2/build/.libs/libSDL2.a
-/home/tails/build-server/windows-x86/SDL2/build/libSDL2main.a
+/home/tails/build-server/windows-x86/SDL2/build/.libs/libSDL2main.a
 /home/tails/build-server/windows-x86/boost/stage/lib/libboost_system.a
 /home/tails/build-server/windows-x86/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/windows-x86/raknet/raknet/Lib/DLL/Lib/libRakNet.a
@@ -349,6 +352,7 @@ target_link_libraries(Release-macOS-x86_64
 /home/tails/build-server/osx-x86_64/libvorbis/lib/.libs/libvorbisfile.a
 /home/tails/build-server/osx-x86_64/libogg/src/.libs/libogg.a
 /home/tails/build-server/osx-x86_64/SDL2/build/.libs/libSDL2.a
+/home/tails/build-server/osx-x86_64/SDL2/build/.libs/libSDL2main.a
 /home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/osx-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
