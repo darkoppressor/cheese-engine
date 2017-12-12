@@ -37,6 +37,7 @@ public:
     static bool mute_global;
     static bool mute_sound;
     static bool mute_music;
+    static std::string audio_playback_device;
 
     static std::uint32_t effect_limit;
     static double camera_speed;

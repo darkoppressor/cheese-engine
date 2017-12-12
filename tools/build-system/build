@@ -57,7 +57,7 @@ fi
 
 NAME="${PROJECT_NAME}"
 
-VERSION="5"
+VERSION="6"
 
 RESULT=""
 

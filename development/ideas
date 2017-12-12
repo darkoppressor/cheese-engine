@@ -2,8 +2,6 @@ Enable joining a game in progress
 
 IPv6
 
-Update to SDL 2.0.5
-
 Move source files into a sub directory
 
 ***
@@ -87,6 +85,8 @@ Integration testing
 Other platforms for the Cheese Engine:
 BSDs
 iOS
+
+Add SDL2 audio capture support
 
 Add android mic recording support
 Add audio comparison code

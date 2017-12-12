@@ -79,7 +79,7 @@ void Log::clear_error_log(){
 void Log::add_error(string message,bool allow_save){
     message=get_timestamp()+" "+message;
 
-    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_ERROR,message.c_str());
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_ERROR,"%s",message.c_str());
 
     if(Data_Manager::is_world_loaded()){
         Engine::console.add_text(message);
@@ -105,7 +105,7 @@ void Log::add_error(string message,bool allow_save){
 void Log::add_log(string message){
     message=get_timestamp()+" "+message;
 
-    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_INFO,message.c_str());
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION,SDL_LOG_PRIORITY_INFO,"%s",message.c_str());
 
     if(Data_Manager::is_world_loaded()){
         Engine::console.add_text(message);

@@ -112,6 +112,9 @@ using namespace std;
             else if(strcmp(sensor_name,"gyroscope_uncalibrated")==0){
                 return Android::SENSOR_TYPE_GYROSCOPE_UNCALIBRATED;
             }
+            else if(strcmp(sensor_name,"heart_rate")==0){
+                return Android::SENSOR_TYPE_HEART_RATE;
+            }
             else if(strcmp(sensor_name,"light")==0){
                 return Android::SENSOR_TYPE_LIGHT;
             }
@@ -135,6 +138,9 @@ using namespace std;
             }
             else if(strcmp(sensor_name,"rotation_vector")==0){
                 return Android::SENSOR_TYPE_ROTATION_VECTOR;
+            }
+            else if(strcmp(sensor_name,"significant_motion")==0){
+                return Android::SENSOR_TYPE_SIGNIFICANT_MOTION;
             }
             else if(strcmp(sensor_name,"step_counter")==0){
                 return Android::SENSOR_TYPE_STEP_COUNTER;
@@ -249,7 +255,8 @@ Android_GPS::Android_GPS(){
 }
 
 #ifdef GAME_OS_ANDROID
-    Android_Google_Play_Games::Android_Google_Play_Games(){
+    // Uncomment to enable the Google Play Games SDK
+    /*Android_Google_Play_Games::Android_Google_Play_Games(){
         initialized=false;
 
         reset();
@@ -387,13 +394,14 @@ Android_GPS::Android_GPS(){
         }
     }*/
 
-    void Android_Google_Play_Games::submit_highscore(const char* leaderboard_id,uint64_t score){
+    // Uncomment to enable the Google Play Games SDK
+    /*void Android_Google_Play_Games::submit_highscore(const char* leaderboard_id,uint64_t score){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
             Log::add_log("Google Play Games: High score submitted");
 
             game_services->Leaderboards().SubmitScore(leaderboard_id,score);
         }
-    }
+    }*/
 
     /**void Android_Google_Play_Games::show_achievements(){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
@@ -403,7 +411,8 @@ Android_GPS::Android_GPS(){
         }
     }*/
 
-    void Android_Google_Play_Games::show_leaderboard(const char* leaderboard_id){
+    // Uncomment to enable the Google Play Games SDK
+    /*void Android_Google_Play_Games::show_leaderboard(const char* leaderboard_id){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
             Log::add_log("Google Play Games: Showing leaderboard");
 
@@ -417,7 +426,7 @@ Android_GPS::Android_GPS(){
 
             game_services->Leaderboards().ShowAllUI();
         }
-    }
+    }*/
 #endif
 
 const int Android::SENSOR_TYPE_ACCELEROMETER=1;
@@ -427,6 +436,7 @@ const int Android::SENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR=20;
 const int Android::SENSOR_TYPE_GRAVITY=9;
 const int Android::SENSOR_TYPE_GYROSCOPE=4;
 const int Android::SENSOR_TYPE_GYROSCOPE_UNCALIBRATED=16;
+const int Android::SENSOR_TYPE_HEART_RATE=21;
 const int Android::SENSOR_TYPE_LIGHT=5;
 const int Android::SENSOR_TYPE_LINEAR_ACCELERATION=10;
 const int Android::SENSOR_TYPE_MAGNETIC_FIELD=2;
@@ -435,6 +445,7 @@ const int Android::SENSOR_TYPE_PRESSURE=6;
 const int Android::SENSOR_TYPE_PROXIMITY=8;
 const int Android::SENSOR_TYPE_RELATIVE_HUMIDITY=12;
 const int Android::SENSOR_TYPE_ROTATION_VECTOR=11;
+const int Android::SENSOR_TYPE_SIGNIFICANT_MOTION=17;
 const int Android::SENSOR_TYPE_STEP_COUNTER=19;
 const int Android::SENSOR_TYPE_STEP_DETECTOR=18;
 
@@ -443,7 +454,8 @@ bool Android::initialized=false;
 Android_Sensor Android::sensors[SENSOR_TYPE_COUNT];
 
 #ifdef GAME_OS_ANDROID
-    Android_Google_Play_Games Android::google_play_games;
+    // Uncomment to enable the Google Play Games SDK
+    //Android_Google_Play_Games Android::google_play_games;
 #endif
 
 void Android::initialize(){
@@ -497,6 +509,10 @@ void Android::initialize(){
         sensors[SENSOR_TYPE_GYROSCOPE_UNCALIBRATED-1].setup(6,"rad/s",value_labels);
 
         value_labels.clear();
+        value_labels.push_back("Heart rate");
+        sensors[SENSOR_TYPE_HEART_RATE-1].setup(1,"bpm",value_labels);
+
+        value_labels.clear();
         value_labels.push_back("Ambient light level");
         sensors[SENSOR_TYPE_LIGHT-1].setup(1,"lx",value_labels);
 
@@ -546,6 +562,9 @@ void Android::initialize(){
         sensors[SENSOR_TYPE_STEP_COUNTER-1].setup(1,"",value_labels);
 
         value_labels.clear();
+        sensors[SENSOR_TYPE_SIGNIFICANT_MOTION-1].setup(0,"",value_labels);
+
+        value_labels.clear();
         value_labels.push_back("");
         sensors[SENSOR_TYPE_STEP_DETECTOR-1].setup(1,"",value_labels);
 
@@ -553,7 +572,8 @@ void Android::initialize(){
             jni_initialize();
 
             if(Engine_Data::android_gpg){
-                JNIEnv* env=(JNIEnv*)SDL_AndroidGetJNIEnv();
+                // Uncomment to enable the Google Play Games SDK
+                /*JNIEnv* env=(JNIEnv*)SDL_AndroidGetJNIEnv();
 
                 if(env!=0){
                     JavaVM* jvm=0;
@@ -606,7 +626,7 @@ void Android::initialize(){
                 }
                 else{
                     Log::add_error("Error getting Android platform configuration: SDL_AndroidGetJNIEnv returned 0");
-                }
+                }*/
             }
         #endif
 
@@ -619,7 +639,8 @@ void Android::deinitialize(){
         initialized=false;
 
         #ifdef GAME_OS_ANDROID
-            google_play_games.deinitialize();
+            // Uncomment to enable the Google Play Games SDK
+            //google_play_games.deinitialize();
 
             jni_initialize();
         #endif
@@ -796,7 +817,8 @@ void Android::disable_gps(){
 
 bool Android::gpg_is_silent_sign_in_attempt_complete(){
     #ifdef GAME_OS_ANDROID
-        return google_play_games.is_silent_sign_in_attempt_complete();
+        // Uncomment to enable the Google Play Games SDK
+        //return google_play_games.is_silent_sign_in_attempt_complete();
     #endif
 
     return false;
@@ -804,7 +826,8 @@ bool Android::gpg_is_silent_sign_in_attempt_complete(){
 
 bool Android::gpg_is_signed_in(){
     #ifdef GAME_OS_ANDROID
-        return google_play_games.is_signed_in();
+        // Uncomment to enable the Google Play Games SDK
+        //return google_play_games.is_signed_in();
     #endif
 
     return false;
@@ -812,13 +835,15 @@ bool Android::gpg_is_signed_in(){
 
 void Android::gpg_sign_in(){
     #ifdef GAME_OS_ANDROID
-        google_play_games.sign_in();
+        // Uncomment to enable the Google Play Games SDK
+        //google_play_games.sign_in();
     #endif
 }
 
 void Android::gpg_sign_out(){
     #ifdef GAME_OS_ANDROID
-        google_play_games.sign_out();
+        // Uncomment to enable the Google Play Games SDK
+        //google_play_games.sign_out();
     #endif
 }
 
@@ -830,7 +855,8 @@ void Android::gpg_sign_out(){
 
 void Android::gpg_submit_highscore(const char* leaderboard_id,uint64_t score){
     #ifdef GAME_OS_ANDROID
-        google_play_games.submit_highscore(leaderboard_id,score);
+        // Uncomment to enable the Google Play Games SDK
+        //google_play_games.submit_highscore(leaderboard_id,score);
     #endif
 }
 
@@ -842,12 +868,14 @@ void Android::gpg_submit_highscore(const char* leaderboard_id,uint64_t score){
 
 void Android::gpg_show_leaderboard(const char* leaderboard_id){
     #ifdef GAME_OS_ANDROID
-        google_play_games.show_leaderboard(leaderboard_id);
+        // Uncomment to enable the Google Play Games SDK
+        //google_play_games.show_leaderboard(leaderboard_id);
     #endif
 }
 
 void Android::gpg_show_all_leaderboards(){
     #ifdef GAME_OS_ANDROID
-        google_play_games.show_all_leaderboards();
+        // Uncomment to enable the Google Play Games SDK
+        //google_play_games.show_all_leaderboards();
     #endif
 }

@@ -47,6 +47,10 @@ private:
 
     static void reload();
 
+    static void log_audio_playback_devices();
+
+    static bool is_audio_playback_device_present(std::string audio_device_name);
+
 public:
 
     static bool pre_initialize();

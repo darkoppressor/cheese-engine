@@ -84,6 +84,28 @@ bool Engine_Input::handle_input_events_drag_and_drop(){
             event_consumed=true;
         }
         break;
+
+    case SDL_DROPTEXT:
+        if(!event_consumed){
+            string file=event.drop.file;
+            SDL_free(event.drop.file);
+
+            if(Engine::mutable_info_selected()){
+                vector<string> lines;
+                boost::algorithm::split(lines,file,boost::algorithm::is_any_of("\n"));
+
+                for(int i=0;i<lines.size();i++){
+                    Engine::handle_text_input(lines[i]);
+
+                    if(i<lines.size()-1 && Engine::ptr_mutable_info->allows_input("newline") && Engine::ptr_mutable_info->text.length()<Engine::ptr_mutable_info->max_text_length){
+                        input_newline();
+                    }
+                }
+            }
+
+            event_consumed=true;
+        }
+        break;
     }
 
     return event_consumed;
@@ -427,13 +449,6 @@ bool Engine_Input::handle_input_events(bool event_ignore_command_set){
                         event_consumed=true;
                     }
 
-                    //Quit game
-                    if(!event_consumed && (keystates[SDL_SCANCODE_LALT] || keystates[SDL_SCANCODE_RALT]) && event.key.keysym.scancode==SDL_SCANCODE_F4){
-                        Engine::quit();
-
-                        event_consumed=true;
-                    }
-
                     //Toggle GUI display
                     if(!event_consumed && (keystates[SDL_SCANCODE_LALT] || keystates[SDL_SCANCODE_RALT]) && event.key.keysym.scancode==SDL_SCANCODE_Z){
                         GUI_Manager::hide_gui=!GUI_Manager::hide_gui;
@@ -505,7 +520,7 @@ bool Engine_Input::handle_input_events(bool event_ignore_command_set){
 
                 //Paste
                 if(!event_consumed && (keystates[SDL_SCANCODE_LCTRL] || keystates[SDL_SCANCODE_RCTRL]) && event.key.keysym.scancode==SDL_SCANCODE_V){
-					if(SDL_HasClipboardText() && Engine::mutable_info_selected()){
+                    if(SDL_HasClipboardText() && Engine::mutable_info_selected()){
                         char* text=SDL_GetClipboardText();
                         string str_text=text;
                         SDL_free(text);
@@ -538,6 +553,11 @@ bool Engine_Input::handle_input_events(bool event_ignore_command_set){
             if(!event_consumed){
                 if(event.window.event==SDL_WINDOWEVENT_MOVED){
                     Game_Window::update_display_number();
+
+                    event_consumed=true;
+                }
+                else if(event.window.event==SDL_WINDOWEVENT_CLOSE){
+                    Engine::quit();
 
                     event_consumed=true;
                 }

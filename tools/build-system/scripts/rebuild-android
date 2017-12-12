@@ -39,6 +39,11 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			exit
 		fi
 
+		if ! [ -e "$d/libSDL2main.so" ]; then
+			echo "rebuild-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2main.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+			exit
+		fi
+
 		if ! [ -e "$d/libSDL2.so" ]; then
 			echo "rebuild-android failed for $PROJECT_DIRECTORY: missing library '$d/libSDL2.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
 			exit

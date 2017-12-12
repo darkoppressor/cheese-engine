@@ -48,6 +48,7 @@ double Options::volume_music=1.0;
 bool Options::mute_global=false;
 bool Options::mute_sound=false;
 bool Options::mute_music=false;
+string Options::audio_playback_device="";
 
 uint32_t Options::effect_limit=0;
 double Options::camera_speed=0.0;
@@ -176,6 +177,9 @@ string Options::get_option_value(string option){
     else if(option=="cl_mute_music"){
         return Strings::bool_to_string(mute_music);
     }
+    else if(option=="cl_audio_playback_device"){
+        return audio_playback_device;
+    }
 
     return Object_Manager::get_game_option_value(option);
 }
@@ -252,6 +256,9 @@ string Options::get_option_description(string option){
     }
     else if(option=="cl_mute_music"){
         return "mute music";
+    }
+    else if(option=="cl_audio_playback_device"){
+        return "the audio playback device that the game should use\n - changes to this option are only applied when the game is restarted";
     }
 
     return Object_Manager::get_game_option_description(option);
@@ -358,6 +365,9 @@ void Options::change_option(string option,string new_value){
         mute_music=Strings::string_to_bool(new_value);
 
         Music_Manager::set_track_volumes();
+    }
+    else if(option=="cl_audio_playback_device"){
+        audio_playback_device=new_value;
     }
 
     else{
@@ -492,6 +502,7 @@ bool Options::save_options(){
     save<<"\tmute_global:"<<Strings::bool_to_string(mute_global)<<"\n";
     save<<"\tmute_sound:"<<Strings::bool_to_string(mute_sound)<<"\n";
     save<<"\tmute_music:"<<Strings::bool_to_string(mute_music)<<"\n";
+    save<<"\taudio_playback_device:"<<audio_playback_device<<"\n";
 
     save<<"\n";
 
@@ -585,6 +596,9 @@ bool Options::load_options(){
             }
             else if(Data_Reader::check_prefix(line,"mute_music:")){
                 mute_music=Strings::string_to_bool(line);
+            }
+            else if(Data_Reader::check_prefix(line,"audio_playback_device:")){
+                audio_playback_device=line;
             }
             else{
                 Object_Manager::load_game_options(line);

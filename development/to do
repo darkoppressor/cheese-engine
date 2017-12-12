@@ -3,5 +3,10 @@ It seems to only affect the FreeBoy plugin's sounds, and only on Linux
 For now, I've kept the original sound data files generated in Windows LMMS and set the build system to not
 rebuild sound files
 
+The Google Play Games SDK is currently only supported on Android NDK r10e
+The engine is now being built with a newer NDK, so I've disabled Google Play Games SDK support for the time being
+If and when Google gets around to making the Google Play Games SDK compatible with newer NDK versions, re-enable
+Google Play Games SDK support
+
 In Desktop mode, fullscreen, 1280x720, the small font looks terrible
 This seems to be true in other modes as well

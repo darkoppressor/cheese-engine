@@ -456,6 +456,36 @@ void Game_Window::reload(){
     }
 }
 
+void Game_Window::log_audio_playback_devices(){
+    int audio_playback_devices=SDL_GetNumAudioDevices(0);
+
+    string log="Detecting audio playback devices...\n";
+
+    for(int i=0;i<audio_playback_devices;i++){
+        string device=SDL_GetAudioDeviceName(i,0);
+
+        log+=device+"\n";
+    }
+
+    log+="\n";
+
+    Log::add_log(log);
+}
+
+bool Game_Window::is_audio_playback_device_present(string audio_device_name){
+    int audio_playback_devices=SDL_GetNumAudioDevices(0);
+
+    for(int i=0;i<audio_playback_devices;i++){
+        string device=SDL_GetAudioDeviceName(i,0);
+
+        if(device.length()>0 && device==audio_device_name){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 bool Game_Window::pre_initialize(){
     if(!pre_initialized){
         if(SDL_Init(SDL_INIT_EVERYTHING)!=0){
@@ -510,14 +540,25 @@ bool Game_Window::initialize(){
         get_renderer_logical_size(&logical_width,&logical_height);
         Controller_Manager::scale_touch_controller(logical_width,logical_height);
 
-        if(Mix_Init(MIX_INIT_OGG)==0){
-            msg="SDL2_mixer initialization failed: ";
+        log_audio_playback_devices();
+
+        int audio_startup_error=0;
+
+        if(Options::audio_playback_device.length()>0 && is_audio_playback_device_present(Options::audio_playback_device)){
+            audio_startup_error=Mix_OpenAudioDevice(44100,AUDIO_S16SYS,2,1024,Options::audio_playback_device.c_str(),0);
+        }
+        else{
+            audio_startup_error=Mix_OpenAudio(44100,AUDIO_S16SYS,2,1024);
+        }
+
+        if(audio_startup_error==-1){
+            msg="SDL2_mixer failed to open mixer: ";
             msg+=Mix_GetError();
             Log::add_error(msg);
         }
         else{
-            if(Mix_OpenAudio(44100,MIX_DEFAULT_FORMAT,2,1024)==-1){
-                msg="SDL2_mixer failed to open mixer: ";
+            if(Mix_Init(MIX_INIT_OGG)==0){
+                msg="SDL2_mixer initialization failed: ";
                 msg+=Mix_GetError();
                 Log::add_error(msg);
             }
@@ -569,8 +610,8 @@ void Game_Window::deinitialize(){
 
         IMG_Quit();
 
-        Mix_CloseAudio();
         Mix_Quit();
+        Mix_CloseAudio();
 
         cleanup_video();
     }
@@ -698,6 +739,7 @@ void Game_Window::update_display_number(){
 }
 
 void Game_Window::set_sdl_hints(){
+    SDL_SetHint(SDL_HINT_ORIENTATIONS,"LandscapeLeft LandscapeRight");
     SDL_SetHint(SDL_HINT_RENDER_DRIVER,"opengl");
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"nearest");
     SDL_SetHint(SDL_HINT_RENDER_VSYNC,Strings::num_to_string((int)Options::vsync).c_str());

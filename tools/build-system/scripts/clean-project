@@ -10,6 +10,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -f "$PROJECT_DIRECTORY/CMakeCache.txt"
 	rm -f "$PROJECT_DIRECTORY/Makefile"
 	rm -f "$PROJECT_DIRECTORY/cmake_install.cmake"
+	rm -f "$PROJECT_DIRECTORY/compile_commands.json"
 else
 	echo "clean-project - clean the passed project"
 	echo "Usage: clean-project PROJECT-DIRECTORY"

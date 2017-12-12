@@ -71,6 +71,7 @@ void Console::setup_commands(){
     commands.push_back("cl_mute_global");
     commands.push_back("cl_mute_sound");
     commands.push_back("cl_mute_music");
+    commands.push_back("cl_audio_playback_device");
 
     setup_game_commands();
 

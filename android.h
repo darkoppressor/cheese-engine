@@ -15,11 +15,12 @@
     #include <SDL.h>
     #include <jni.h>
 
-    #include <gpg/gpg.h>
+    // Uncomment to enable the Google Play Games SDK
+    //#include <gpg/gpg.h>
 #endif
 
 //This value should equal the highest numbered sensor type from the Android SENSOR_TYPE constants (which come from Android's Sensor class)
-const int SENSOR_TYPE_COUNT=20;
+const int SENSOR_TYPE_COUNT=21;
 
 //The highest number of values any sensor has
 const int SENSOR_VALUES_MAX=6;
@@ -76,7 +77,8 @@ public:
 };
 
 #ifdef GAME_OS_ANDROID
-    class Android_Google_Play_Games{
+    // Uncomment to enable the Google Play Games SDK
+    /*class Android_Google_Play_Games{
     private:
 
         bool initialized;
@@ -109,7 +111,7 @@ public:
         ///void show_achievements();
         void show_leaderboard(const char* leaderboard_id);
         void show_all_leaderboards();
-    };
+    };*/
 #endif
 
 class Android{
@@ -120,7 +122,8 @@ private:
     static Android_Sensor sensors[SENSOR_TYPE_COUNT];
 
     #ifdef GAME_OS_ANDROID
-        static Android_Google_Play_Games google_play_games;
+        // Uncomment to enable the Google Play Games SDK
+        //static Android_Google_Play_Games google_play_games;
     #endif
 
     template<typename... Args>
@@ -161,6 +164,7 @@ public:
     static const int SENSOR_TYPE_GRAVITY;
     static const int SENSOR_TYPE_GYROSCOPE;
     static const int SENSOR_TYPE_GYROSCOPE_UNCALIBRATED;
+    static const int SENSOR_TYPE_HEART_RATE;
     static const int SENSOR_TYPE_LIGHT;
     static const int SENSOR_TYPE_LINEAR_ACCELERATION;
     static const int SENSOR_TYPE_MAGNETIC_FIELD;
@@ -169,6 +173,7 @@ public:
     static const int SENSOR_TYPE_PROXIMITY;
     static const int SENSOR_TYPE_RELATIVE_HUMIDITY;
     static const int SENSOR_TYPE_ROTATION_VECTOR;
+    static const int SENSOR_TYPE_SIGNIFICANT_MOTION;
     static const int SENSOR_TYPE_STEP_COUNTER;
     static const int SENSOR_TYPE_STEP_DETECTOR;
 

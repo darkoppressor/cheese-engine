@@ -238,6 +238,8 @@ int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_d
         startup+=search_path.path+pak_file_string+"\n";
     }
 
+    startup+="\n";
+
     Log::add_log(startup);
 
     Progress_Bar bar(Data_Manager::world_load_item_count+game_data_load_item_count);

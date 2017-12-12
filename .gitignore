@@ -44,6 +44,13 @@ docs/build-information
 /*cmake_install.cmake
 /*compile_commands.json
 
+/*log-Release-Android
+/*log-Release-Release-Linux-x86
+/*log-Release-Release-Linux-x86_64
+/*log-Release-Release-macOS-x86_64
+/*log-Release-Release-Windows-x86
+/*log-Release-Release-Windows-x86_64
+
 /*.dll
 /*.ico
 /*.depend
