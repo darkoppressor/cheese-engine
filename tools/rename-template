@@ -54,9 +54,6 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$PROJECT_NAME" ]; then
 			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/Template"
 			mv "$PROJECT_DIRECTORY/Template" "$PROJECT_DIRECTORY/$NAME_CAPS_DASHED"
 
-			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/project.cbp"
-			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/project.cbp"
-
 			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/CMakeLists.txt"
 			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/CMakeLists.txt"
 

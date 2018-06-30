@@ -16,12 +16,10 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 
 	cd $PROJECT_DIRECTORY
 
-	if [ "$TARGET" == "Release-Linux-x86_64" ] || [ "$TARGET" == "Release-Linux-x86" ]; then
+	if [ "$TARGET" == "Release-Linux-x86_64" ]; then
 		cmake "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
 	elif [ "$TARGET" == "Release-Windows-x86_64" ]; then
 		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-windows-x86_64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
-	elif [ "$TARGET" == "Release-Windows-x86" ]; then
-		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-windows-x86.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
 	elif [ "$TARGET" == "Release-macOS-x86_64" ]; then
 		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-macos-x86_64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
 	fi

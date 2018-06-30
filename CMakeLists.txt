@@ -166,54 +166,6 @@ target_link_libraries(Debug-Linux-x86_64
 )
 
 ########################################################################################################################
-# Release-Linux-x86
-########################################################################################################################
-
-if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
-
-add_library(Release-Linux-x86 STATIC ${SOURCE_FILES})
-
-set_target_properties(Release-Linux-x86 PROPERTIES
-OUTPUT_NAME Cheese-Engine-Linux-x86
-PREFIX lib
-SUFFIX .a
-COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m32 -DGAME_OS_LINUX"
-)
-
-target_include_directories(Release-Linux-x86 PRIVATE
-/usr/include/
-/home/tails/build-server/linux-x86/SDL2/include/
-/home/tails/build-server/linux-x86/SDL2_image/
-/home/tails/build-server/linux-x86/SDL2_mixer/
-/home/tails/build-server/linux-x86/boost/
-/home/tails/build-server/linux-x86/raknet/
-/home/tails/build-server/linux-x86/zlib/
-)
-
-target_link_libraries(Release-Linux-x86
-/home/tails/build-server/linux-x86/zlib/contrib/minizip/.libs/libminizip.a
-/home/tails/build-server/linux-x86/SDL2_image/.libs/libSDL2_image.a
-/home/tails/build-server/linux-x86/libpng/.libs/libpng.a
-/home/tails/build-server/linux-x86/zlib/libz.a
-/home/tails/build-server/linux-x86/SDL2_mixer/build/.libs/libSDL2_mixer.a
-/home/tails/build-server/linux-x86/libvorbis/lib/.libs/libvorbisfile.a
-/home/tails/build-server/linux-x86/libvorbis/lib/.libs/libvorbis.a
-/home/tails/build-server/linux-x86/libogg/src/.libs/libogg.a
-/home/tails/build-server/linux-x86/SDL2/build/.libs/libSDL2.a
-/home/tails/build-server/linux-x86/SDL2/build/.libs/libSDL2main.a
-/usr/lib/i386-linux-gnu/mesa/libGL.so.1.2.0
-/usr/lib/i386-linux-gnu/libGLU.so.1.3.1
-/usr/lib32/libpthread.so
-/usr/lib32/libdl.so
-/home/tails/build-server/linux-x86/boost/stage/lib/libboost_system.a
-/home/tails/build-server/linux-x86/boost/stage/lib/libboost_filesystem.a
-/home/tails/build-server/linux-x86/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
-"-s -m32"
-)
-
-endif()
-
-########################################################################################################################
 # Release-Windows-x86_64
 ########################################################################################################################
 
@@ -261,58 +213,6 @@ target_link_libraries(Release-Windows-x86_64
 /usr/x86_64-w64-mingw32/lib/liboleaut32.a
 /usr/x86_64-w64-mingw32/lib/libversion.a
 "-s -m64 -Wl,--stack=67108864 -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic"
-)
-
-endif()
-
-########################################################################################################################
-# Release-Windows-x86
-########################################################################################################################
-
-if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
-
-add_library(Release-Windows-x86 STATIC ${SOURCE_FILES})
-
-set_target_properties(Release-Windows-x86 PROPERTIES
-OUTPUT_NAME Cheese-Engine-Windows-x86
-PREFIX lib
-SUFFIX .a
-COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m32 -DGAME_OS_WINDOWS"
-)
-
-target_include_directories(Release-Windows-x86 PRIVATE
-/usr/i686-w64-mingw32/include
-/home/tails/build-server/windows-x86/SDL2/include/
-/home/tails/build-server/windows-x86/SDL2_image/
-/home/tails/build-server/windows-x86/SDL2_mixer/
-/home/tails/build-server/windows-x86/boost/
-/home/tails/build-server/windows-x86/raknet/
-/home/tails/build-server/windows-x86/zlib/
-)
-
-target_link_libraries(Release-Windows-x86
-/usr/i686-w64-mingw32/lib/libmingw32.a
-/home/tails/build-server/windows-x86/zlib/contrib/minizip/.libs/libminizip.a
-/home/tails/build-server/windows-x86/SDL2_image/.libs/libSDL2_image.a
-/home/tails/build-server/windows-x86/libpng/.libs/libpng.a
-/home/tails/build-server/windows-x86/zlib/libz.a
-/home/tails/build-server/windows-x86/SDL2_mixer/build/.libs/libSDL2_mixer.a
-/home/tails/build-server/windows-x86/libvorbis/lib/.libs/libvorbisfile.a
-/home/tails/build-server/windows-x86/libvorbis/lib/.libs/libvorbis.a
-/home/tails/build-server/windows-x86/libogg/src/.libs/libogg.a
-/home/tails/build-server/windows-x86/SDL2/build/.libs/libSDL2.a
-/home/tails/build-server/windows-x86/SDL2/build/.libs/libSDL2main.a
-/home/tails/build-server/windows-x86/boost/stage/lib/libboost_system.a
-/home/tails/build-server/windows-x86/boost/stage/lib/libboost_filesystem.a
-/home/tails/build-server/windows-x86/raknet/raknet/Lib/DLL/Lib/libRakNet.a
-/usr/i686-w64-mingw32/lib/libws2_32.a
-/usr/i686-w64-mingw32/lib/libwinmm.a
-/usr/i686-w64-mingw32/lib/libole32.a
-/usr/i686-w64-mingw32/lib/libimm32.a
-/usr/i686-w64-mingw32/lib/libgdi32.a
-/usr/i686-w64-mingw32/lib/liboleaut32.a
-/usr/i686-w64-mingw32/lib/libversion.a
-"-s -m32 -Wl,--stack=67108864 -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic"
 )
 
 endif()

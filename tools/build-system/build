@@ -57,14 +57,13 @@ fi
 
 NAME="${PROJECT_NAME}"
 
-VERSION="6"
+VERSION="7"
 
 RESULT=""
 
 chmod +x $HOME/build-server/cheese-engine/tools/*
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/*
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
-chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86
 chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*.cmake
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/*
 chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/data/*
@@ -183,9 +182,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		sed -i 's/local/home/g' "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
 
 		BUILD_LINUX_64="false"
-		BUILD_LINUX_32="false"
 		BUILD_WINDOWS_64="false"
-		BUILD_WINDOWS_32="false"
 		BUILD_macOS_64="false"
 		BUILD_ANDROID="false"
 		ANDROID_ABI_TARGETS=""
@@ -196,14 +193,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				if [ "$line" == "Release-Linux-x86_64" ]; then
 					BUILD_LINUX_64="true"
 				fi
-				if [ "$line" == "Release-Linux-x86" ]; then
-					BUILD_LINUX_32="true"
-				fi
 				if [ "$line" == "Release-Windows-x86_64" ]; then
 					BUILD_WINDOWS_64="true"
-				fi
-				if [ "$line" == "Release-Windows-x86" ]; then
-					BUILD_WINDOWS_32="true"
 				fi
 				if [ "$line" == "Release-macOS-x86_64" ]; then
 					BUILD_macOS_64="true"
@@ -222,7 +213,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			exit 65
 		fi
 
-		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_LINUX_32" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_WINDOWS_32" == "false" ] && [ "$BUILD_macOS_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
+		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_macOS_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
 			echo "No targets specified for building in '$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets'" | tee -a ${LOG_FILE}
 
 			exit 66
@@ -233,18 +224,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
-		if [ "$BUILD_LINUX_32" == "true" ]; then
-			log="Build target Release-Linux-x86 requested"
-			echo "$log" | tee -a $LOG_FILE
-			RESULT="$RESULT$log\n\n"
-		fi
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			log="Build target Release-Windows-x86_64 requested"
-			echo "$log" | tee -a $LOG_FILE
-			RESULT="$RESULT$log\n\n"
-		fi
-		if [ "$BUILD_WINDOWS_32" == "true" ]; then
-			log="Build target Release-Windows-x86 requested"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
@@ -266,26 +247,12 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86_64
 		fi
-		if [ "$BUILD_LINUX_32" == "true" ]; then
-			log="Attempting build of Release-Linux-x86"
-			echo "$log" | tee -a $LOG_FILE
-			RESULT="$RESULT$log\n\n"
-
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86
-		fi
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			log="Attempting build of Release-Windows-x86_64"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
 			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86_64
-		fi
-		if [ "$BUILD_WINDOWS_32" == "true" ]; then
-			log="Attempting build of Release-Windows-x86"
-			echo "$log" | tee -a $LOG_FILE
-			RESULT="$RESULT$log\n\n"
-
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86
 		fi
 		if [ "$BUILD_macOS_64" == "true" ]; then
 			log="Attempting build of Release-macOS-x86_64"
@@ -331,9 +298,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		mkdir -p "${BUILDS}"
 
 		PACKAGE_LINUX_64="true"
-		PACKAGE_LINUX_32="true"
 		PACKAGE_WINDOWS_64="true"
-		PACKAGE_WINDOWS_32="true"
 		PACKAGE_macOS="true"
 
 		if [ "$BUILD_LINUX_64" == "true" ]; then
@@ -364,34 +329,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PACKAGE_LINUX_64="false"
 		fi
 
-		if [ "$BUILD_LINUX_32" == "true" ]; then
-			PLATFORM="Linux-x86"
-			BINARY="${NAME_CAPPED}-${PLATFORM}"
-			TARGET="Release-${PLATFORM}"
-			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-				chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
-
-				log="Build succeeded for ${TARGET}"
-				echo "${log}" | tee -a ${LOG_FILE}
-				RESULT="${RESULT}${log}\n\n"
-			else
-				BUILDS_ALL_WORKED="false"
-
-				PACKAGE_LINUX_32="false"
-
-				error="Build failed for ${TARGET}:\n"
-				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-				error="${error}\n\n"
-
-				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-				RESULT="${RESULT}${error}"
-			fi
-		else
-			PACKAGE_LINUX_32="false"
-		fi
-
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			PLATFORM="Windows-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
@@ -417,33 +354,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			fi
 		else
 			PACKAGE_WINDOWS_64="false"
-		fi
-
-		if [ "$BUILD_WINDOWS_32" == "true" ]; then
-			PLATFORM="Windows-x86"
-			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
-			TARGET="Release-${PLATFORM}"
-			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
-
-				log="Build succeeded for ${TARGET}"
-				echo "${log}" | tee -a ${LOG_FILE}
-				RESULT="${RESULT}${log}\n\n"
-			else
-				BUILDS_ALL_WORKED="false"
-
-				PACKAGE_WINDOWS_32="false"
-
-				error="Build failed for ${TARGET}:\n"
-				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
-				error="${error}\n\n"
-
-				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
-
-				RESULT="${RESULT}${error}"
-			fi
-		else
-			PACKAGE_WINDOWS_32="false"
 		fi
 
 		if [ "$BUILD_macOS_64" == "true" ]; then
@@ -503,7 +413,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
 		fromdos "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
 
-		if [ "$PACKAGE_LINUX_64" == "true" ] || [ "$PACKAGE_LINUX_32" == "true" ]; then
+		if [ "$PACKAGE_LINUX_64" == "true" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_LINUX}"
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_LINUX}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
@@ -518,7 +428,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cd $DIR
 		fi
 
-		if [ "$PACKAGE_WINDOWS_64" == "true" ] || [ "$PACKAGE_WINDOWS_32" == "true" ]; then
+		if [ "$PACKAGE_WINDOWS_64" == "true" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
