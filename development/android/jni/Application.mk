@@ -5,7 +5,8 @@ APP_STL := c++_static
 
 NDK_TOOLCHAIN_VERSION := clang
 
-APP_ABI := armeabi-v7a arm64-v8a x86 x86_64
+# x86_64 is disabled for now, because it is not supported by the Google Play Games SDK
+APP_ABI := armeabi-v7a arm64-v8a x86
 #APP_ABI := armeabi-v7a
 
 # Min SDK level

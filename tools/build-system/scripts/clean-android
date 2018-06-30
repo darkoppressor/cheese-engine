@@ -28,7 +28,6 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$PROJECT_DIRECTORY/development/android/jni/armeabi-v7a/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/jni/arm64-v8a/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/jni/x86/"
-	rm -rf "$PROJECT_DIRECTORY/development/android/jni/x86_64/"
 
 	rm -f "$PROJECT_DIRECTORY/development/android/jni/include/gpg"
 	rm -f "$PROJECT_DIRECTORY/development/android/jni/include/SDL2"
