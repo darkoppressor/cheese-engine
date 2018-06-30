@@ -6,8 +6,7 @@ cd $DIR
 #echo "android-prep - prepare the android/ directory of the Cheese Engine for building"
 #echo "Usage: android-prep"
 
-# Uncomment to enable the Google Play Games SDK
-#ln -s "/home/tails/build-server/android/gpg-cpp-sdk/android" "jni/gpg"
+ln -s "/home/tails/build-server/android/gpg-cpp-sdk/android" "jni/gpg"
 ln -s "/home/tails/build-server/android/SDL2" "jni/SDL2"
 ln -s "/home/tails/build-server/android/SDL2_image" "jni/SDL2_image"
 ln -s "/home/tails/build-server/android/SDL2_mixer" "jni/SDL2_mixer"

@@ -15,8 +15,7 @@
     #include <SDL.h>
     #include <jni.h>
 
-    // Uncomment to enable the Google Play Games SDK
-    //#include <gpg/gpg.h>
+    #include <gpg/gpg.h>
 #endif
 
 //This value should equal the highest numbered sensor type from the Android SENSOR_TYPE constants (which come from Android's Sensor class)
@@ -77,8 +76,7 @@ public:
 };
 
 #ifdef GAME_OS_ANDROID
-    // Uncomment to enable the Google Play Games SDK
-    /*class Android_Google_Play_Games{
+    class Android_Google_Play_Games{
     private:
 
         bool initialized;
@@ -111,7 +109,7 @@ public:
         ///void show_achievements();
         void show_leaderboard(const char* leaderboard_id);
         void show_all_leaderboards();
-    };*/
+    };
 #endif
 
 class Android{
@@ -122,8 +120,7 @@ private:
     static Android_Sensor sensors[SENSOR_TYPE_COUNT];
 
     #ifdef GAME_OS_ANDROID
-        // Uncomment to enable the Google Play Games SDK
-        //static Android_Google_Play_Games google_play_games;
+        static Android_Google_Play_Games google_play_games;
     #endif
 
     template<typename... Args>

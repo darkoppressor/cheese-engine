@@ -109,8 +109,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 		rm -rf "$ANDROID_DIRECTORY/jni/$abi/"
 		mkdir -p "$ANDROID_DIRECTORY/jni/$abi"
 
-		# Uncomment to enable the Google Play Games SDK
-		#cp "$LIBRARY_LOCATION/android/gpg-cpp-sdk/android/lib/gnustl/$abi/libgpg.a" "$ANDROID_DIRECTORY/jni/$abi/libgpg.a"
+		cp "$LIBRARY_LOCATION/android/gpg-cpp-sdk/android/lib/gnustl/$abi/libgpg.a" "$ANDROID_DIRECTORY/jni/$abi/libgpg.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libpng.a" "$ANDROID_DIRECTORY/jni/$abi/libpng.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libogg.a" "$ANDROID_DIRECTORY/jni/$abi/libogg.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libvorbisidec.a" "$ANDROID_DIRECTORY/jni/$abi/libvorbisidec.a"
@@ -137,22 +136,21 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	rm -rf "$ANDROID_DIRECTORY/support-media-compat/"
 	rm -rf "$ANDROID_DIRECTORY/support-v4/"
 
-	# Uncomment to enable the Google Play Games SDK
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-base" "$ANDROID_DIRECTORY/play-services-base"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-basement" "$ANDROID_DIRECTORY/play-services-basement"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-drive" "$ANDROID_DIRECTORY/play-services-drive"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-games" "$ANDROID_DIRECTORY/play-services-games"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-nearby" "$ANDROID_DIRECTORY/play-services-nearby"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-tasks" "$ANDROID_DIRECTORY/play-services-tasks"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/support-compat" "$ANDROID_DIRECTORY/support-compat"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/support-core-ui" "$ANDROID_DIRECTORY/support-core-ui"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/support-core-utils" "$ANDROID_DIRECTORY/support-core-utils"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/support-fragment" "$ANDROID_DIRECTORY/support-fragment"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/support-media-compat" "$ANDROID_DIRECTORY/support-media-compat"
-	#cp -r "$LIBRARY_LOCATION/android/google-play-services/support-v4" "$ANDROID_DIRECTORY/support-v4"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-base" "$ANDROID_DIRECTORY/play-services-base"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-basement" "$ANDROID_DIRECTORY/play-services-basement"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-drive" "$ANDROID_DIRECTORY/play-services-drive"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-games" "$ANDROID_DIRECTORY/play-services-games"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-nearby" "$ANDROID_DIRECTORY/play-services-nearby"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/play-services-tasks" "$ANDROID_DIRECTORY/play-services-tasks"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-compat" "$ANDROID_DIRECTORY/support-compat"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-core-ui" "$ANDROID_DIRECTORY/support-core-ui"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-core-utils" "$ANDROID_DIRECTORY/support-core-utils"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-fragment" "$ANDROID_DIRECTORY/support-fragment"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-media-compat" "$ANDROID_DIRECTORY/support-media-compat"
+	cp -r "$LIBRARY_LOCATION/android/google-play-services/support-v4" "$ANDROID_DIRECTORY/support-v4"
 
-	#mkdir -p "$ANDROID_DIRECTORY/libs"
-	#cp "$LIBRARY_LOCATION/android/google-play-services/support-annotations.jar" "$ANDROID_DIRECTORY/libs/support-annotations.jar"
+	mkdir -p "$ANDROID_DIRECTORY/libs"
+	cp "$LIBRARY_LOCATION/android/google-play-services/support-annotations.jar" "$ANDROID_DIRECTORY/libs/support-annotations.jar"
 
 	echo "Creating symlinks to development libraries"
 
@@ -167,8 +165,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	rm -rf "$ANDROID_DIRECTORY/jni/include/"
 	mkdir -p "$ANDROID_DIRECTORY/jni/include"
 
-	# Uncomment to enable the Google Play Games SDK
-	#ln -s "/home/tails/build-server/android/gpg-cpp-sdk/android/include" "$ANDROID_DIRECTORY/jni/include/gpg"
+	ln -s "/home/tails/build-server/android/gpg-cpp-sdk/android/include" "$ANDROID_DIRECTORY/jni/include/gpg"
 	ln -s "/home/tails/build-server/android/SDL2" "$ANDROID_DIRECTORY/jni/include/SDL2"
 	ln -s "/home/tails/build-server/android/SDL2_image" "$ANDROID_DIRECTORY/jni/include/SDL2_image"
 	ln -s "/home/tails/build-server/android/SDL2_mixer" "$ANDROID_DIRECTORY/jni/include/SDL2_mixer"
