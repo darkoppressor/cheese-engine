@@ -109,7 +109,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 		rm -rf "$ANDROID_DIRECTORY/jni/$abi/"
 		mkdir -p "$ANDROID_DIRECTORY/jni/$abi"
 
-		cp "$LIBRARY_LOCATION/android/gpg-cpp-sdk/android/lib/gnustl/$abi/libgpg.a" "$ANDROID_DIRECTORY/jni/$abi/libgpg.a"
+		cp "$LIBRARY_LOCATION/android/gpg-cpp-sdk/android/lib/c++/$abi/libgpg.a" "$ANDROID_DIRECTORY/jni/$abi/libgpg.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libpng.a" "$ANDROID_DIRECTORY/jni/$abi/libpng.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libogg.a" "$ANDROID_DIRECTORY/jni/$abi/libogg.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libvorbisidec.a" "$ANDROID_DIRECTORY/jni/$abi/libvorbisidec.a"
