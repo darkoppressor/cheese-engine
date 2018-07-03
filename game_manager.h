@@ -49,6 +49,8 @@ public:
     static std::string get_random_direction_cardinal(RNG& rng);
     static std::string get_random_direction_cardinal_ordinal(RNG& rng);
 
+    static void on_startup();
+
     //Returns true if the number of effects does not exceed the effect limit
     static bool effect_allowed();
 
