@@ -244,7 +244,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\n"
 
 	OUTPUT="${OUTPUT}libgpg\t\tN/A\t\t\tN/A\t\t\tN/A\t\t\t"
-	file="/home/tails/build-server/android/gpg-cpp-sdk/README.md"
+	file="/home/tails/build-server/android/gpg-cpp-sdk/android/README.md"
 	OUTPUT="$OUTPUT$(sed -ne "/^#Google/p" "$file" | sed -e "s/^[^0-9]*//" | sed -e "s/\s*#$//")"
 	OUTPUT="${OUTPUT}\n\n"
 
