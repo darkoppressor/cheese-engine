@@ -385,13 +385,13 @@ Android_GPS::Android_GPS(){
         }
     }
 
-    /*void Android_Google_Play_Games::unlock_achievement(const char* achievement_id){
+    void Android_Google_Play_Games::unlock_achievement(const char* achievement_id){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
             Log::add_log("Google Play Games: Achievement unlocked");
 
             game_services->Achievements().Unlock(achievement_id);
         }
-    }*/
+    }
 
     void Android_Google_Play_Games::submit_highscore(const char* leaderboard_id,uint64_t score){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
@@ -401,13 +401,13 @@ Android_GPS::Android_GPS(){
         }
     }
 
-    /*void Android_Google_Play_Games::show_achievements(){
+    void Android_Google_Play_Games::show_achievements(){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
             Log::add_log("Google Play Games: Showing achievements");
 
             game_services->Achievements().ShowAllUI();
         }
-    }*/
+    }
 
     void Android_Google_Play_Games::show_leaderboard(const char* leaderboard_id){
         if(initialized && !is_auth_in_progress() && game_services->IsAuthorized()){
@@ -837,11 +837,11 @@ void Android::gpg_sign_out(){
     #endif
 }
 
-/**void Android::gpg_unlock_achievement(const char* achievement_id){
+void Android::gpg_unlock_achievement(const char* achievement_id){
     #ifdef GAME_OS_ANDROID
         google_play_games.unlock_achievement(achievement_id);
     #endif
-}*/
+}
 
 void Android::gpg_submit_highscore(const char* leaderboard_id,uint64_t score){
     #ifdef GAME_OS_ANDROID
@@ -849,11 +849,11 @@ void Android::gpg_submit_highscore(const char* leaderboard_id,uint64_t score){
     #endif
 }
 
-/**void Android::gpg_show_achievements(){
+void Android::gpg_show_achievements(){
     #ifdef GAME_OS_ANDROID
         google_play_games.show_achievements();
     #endif
-}*/
+}
 
 void Android::gpg_show_leaderboard(const char* leaderboard_id){
     #ifdef GAME_OS_ANDROID

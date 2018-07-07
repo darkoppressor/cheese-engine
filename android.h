@@ -104,9 +104,9 @@ public:
         gpg::GameServices* get_game_services();
         void sign_in();
         void sign_out();
-        ///void unlock_achievement(const char* achievement_id);
+        void unlock_achievement(const char* achievement_id);
         void submit_highscore(const char* leaderboard_id,uint64_t score);
-        ///void show_achievements();
+        void show_achievements();
         void show_leaderboard(const char* leaderboard_id);
         void show_all_leaderboards();
     };
@@ -203,9 +203,9 @@ public:
     static bool gpg_is_signed_in();
     static void gpg_sign_in();
     static void gpg_sign_out();
-    ///static void gpg_unlock_achievement(const char* achievement_id);
+    static void gpg_unlock_achievement(const char* achievement_id);
     static void gpg_submit_highscore(const char* leaderboard_id,uint64_t score);
-    ///static void gpg_show_achievements();
+    static void gpg_show_achievements();
     static void gpg_show_leaderboard(const char* leaderboard_id);
     static void gpg_show_all_leaderboards();
 };
