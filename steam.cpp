@@ -10,6 +10,8 @@
 
 using namespace std;
 
+bool Steam::initialized=false;
+
 bool Steam::initialize () {
     if (!initialized) {
         if (Engine_Data::steam) {
