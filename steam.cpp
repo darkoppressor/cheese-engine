@@ -3,6 +3,8 @@
 /* See the file docs/LICENSE.txt for the full license text. */
 
 #include "steam.h"
+#include "engine_data.h"
+#include "log.h"
 
 #include <steam_api.h>
 
