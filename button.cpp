@@ -183,7 +183,7 @@ void Button::reset_clicked(){
 
 void Button::mouse_over(bool previously_moused_over){
     if (!previously_moused_over && !clicked) {
-        Controller_Manager::make_rumble(Controller_Manager::CONTROLLER_ID_ALL, 0.05, 10);
+        Controller_Manager::make_rumble(Controller_Manager::CONTROLLER_ID_ALL, 0.025, 10);
 
         if (mouse_over_sound.length()>0) {
             Sound_Manager::play_sound(mouse_over_sound);
@@ -219,7 +219,7 @@ bool Button::mouse_button_up(Window* parent_window){
             window_opened_on_top=fire_event(parent_window);
         }
 
-        Controller_Manager::make_rumble(Controller_Manager::CONTROLLER_ID_ALL, 0.075, 20);
+        Controller_Manager::make_rumble(Controller_Manager::CONTROLLER_ID_ALL, 0.05, 20);
 
         if(event_fire_sound.length()>0){
             Sound_Manager::play_sound(event_fire_sound);
