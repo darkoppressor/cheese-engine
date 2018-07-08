@@ -21,6 +21,7 @@
 #include "engine_version.h"
 #include "vfs.h"
 #include "engine_strings.h"
+#include "steam.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -217,6 +218,10 @@ int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_d
         Android::initialize();
     #endif
 
+    if (!Steam::initialize()) {
+        return 5;
+    }
+
     string startup=Engine_Data::game_title;
     startup+="\nDeveloped by: "+Engine_Data::developer;
     startup+="\nVersion: "+Engine_Version::get_version()+" "+Engine_Version::get_status();
@@ -247,7 +252,7 @@ int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_d
     Log::add_log("Initializing");
 
     if(!Data_Manager::load_world(bar)){
-        return 5;
+        return 6;
     }
 
     for(int i=0;i<Engine_Data::starting_windows.size();i++){

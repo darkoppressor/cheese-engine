@@ -22,6 +22,9 @@ string Engine_Data::resolution_mode="";
 
 bool Engine_Data::android_gpg=false;
 
+bool Engine_Data::steam=false;
+uint32_t Engine_Data::steam_app_id=0;
+
 bool Engine_Data::network_lockstep=false;
 
 double Engine_Data::sound_falloff=0.0;
@@ -123,6 +126,12 @@ void Engine_Data::load_engine_data(File_IO_Load* load){
         }
         else if(Data_Reader::check_prefix(line,"android_gpg:")){
             android_gpg=Strings::string_to_bool(line);
+        }
+        else if(Data_Reader::check_prefix(line,"steam:")){
+            steam=Strings::string_to_bool(line);
+        }
+        else if(Data_Reader::check_prefix(line,"steam_app_id:")){
+            steam_app_id=Strings::string_to_unsigned_long(line);
         }
         else if(Data_Reader::check_prefix(line,"network_lockstep:")){
             network_lockstep=Strings::string_to_bool(line);

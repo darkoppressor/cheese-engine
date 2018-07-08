@@ -273,7 +273,10 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	done
 	google_play_services="$(sed -ne "/^VERSION=/p" "/home/tails/build-server/android/prepare-google-play-services" | sed -e "s/^VERSION=\"//" | sed -e "s/\"$//")"
 	android_support="$(sed -ne "/^SUPPORT_VERSION=/p" "/home/tails/build-server/android/prepare-google-play-services" | sed -e "s/^SUPPORT_VERSION=\"//" | sed -e "s/\"$//")"
-	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $(sed -ne "/^r/p" "$file"), $($android_compiler --version | sed -n 1p), SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools, Google Play Services $google_play_services, Android Support v4 $android_support"
+	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $(sed -ne "/^r/p" "$file"), $($android_compiler --version | sed -n 1p), SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools, Google Play Services $google_play_services, Android Support v4 $android_support\n"
+
+	file="/home/tails/build-server/steamworks-sdk/Readme.txt"
+	OUTPUT="${OUTPUT}Steam\t\t$(sed -ne "0,/^v/p" "$file" | tail -n 1)"
 
 	echo -e "$OUTPUT" > "$PROJECT_DIRECTORY/docs/build-information"
 else

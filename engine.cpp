@@ -22,6 +22,7 @@
 #include "vfs.h"
 #include "directories.h"
 #include "android.h"
+#include "steam.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/crc.hpp>
@@ -196,6 +197,8 @@ void Engine::quit(){
     #ifdef GAME_OS_ANDROID
         Android::deinitialize();
     #endif
+
+    Steam::deinitialize();
 
     exit(EXIT_SUCCESS);
 }

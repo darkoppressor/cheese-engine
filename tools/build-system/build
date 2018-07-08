@@ -280,7 +280,9 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 		PACKAGING="$HOME/build-server/projects/${PROJECT_NAME}/packaging"
 		PACKAGING_LINUX="${PROJECT_NAME}-linux-${PROJECT_VERSION}"
+		PACKAGING_LINUX_STEAM="${PROJECT_NAME}-linux-steam-${PROJECT_VERSION}"
 		PACKAGING_WINDOWS="${PROJECT_NAME}-windows-${PROJECT_VERSION}"
+		PACKAGING_WINDOWS_STEAM="${PROJECT_NAME}-windows-steam-${PROJECT_VERSION}"
 		cd "$HOME/build-server/projects/${PROJECT_NAME}/development"
 		PACKAGING_macOS="$(find -maxdepth 1 -type d -name '*.app'| head -n1)"
 		cd $DIR
@@ -309,8 +311,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
 
-				cp "$HOME/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so" "${PACKAGING}/${PACKAGING_LINUX}"
-
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
 				RESULT="${RESULT}${log}\n\n"
@@ -338,8 +338,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
-				cp "$HOME/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.dll" "${PACKAGING}/${PACKAGING_WINDOWS}"
-
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
 				RESULT="${RESULT}${log}\n\n"
@@ -366,8 +364,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			TARGET="Release-${PLATFORM}"
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
-
-				cp "$HOME/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
@@ -425,6 +421,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_LINUX}"
 
+			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_LINUX}/data/engine"
+
 			cd "${PACKAGING}"
 
 			tar cpzf "${PACKAGING_LINUX}.tar.gz" "${PACKAGING_LINUX}"
@@ -432,12 +430,24 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			mv "${PACKAGING_LINUX}.tar.gz" "${BUILDS}"
 
 			cd $DIR
+
+			cp "$HOME/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so" "${PACKAGING}/${PACKAGING_LINUX}"
+
+			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_LINUX}/data/engine"
+
+			cd "${PACKAGING}"
+
+			tar cpzf "${PACKAGING_LINUX_STEAM}.tar.gz" "${PACKAGING_LINUX}"
+
+			mv "${PACKAGING_LINUX_STEAM}.tar.gz" "${BUILDS}"
 		fi
 
 		if [ "$PACKAGE_WINDOWS_64" == "true" ]; then
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
+
+			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_WINDOWS}/data/engine"
 
 			cd "${PACKAGING}"
 
@@ -446,6 +456,16 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			mv "${PACKAGING_WINDOWS}.zip" "${BUILDS}"
 
 			cd $DIR
+
+			cp "$HOME/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.dll" "${PACKAGING}/${PACKAGING_WINDOWS}"
+
+			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_WINDOWS}/data/engine"
+
+			cd "${PACKAGING}"
+
+			7z a -tzip -mx=9 -mmt=on "${PACKAGING_WINDOWS_STEAM}.zip" "${PACKAGING_WINDOWS}"
+
+			mv "${PACKAGING_WINDOWS_STEAM}.zip" "${BUILDS}"
 		fi
 
 		if [ "$PACKAGE_macOS" == "true" ]; then
@@ -456,6 +476,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			xcf2png "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.xcf" -o "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
 			png2icns "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/icon.icns" "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
+
+			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/engine"
 
 			cd "${PACKAGING}"
 
@@ -488,6 +510,16 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			#mv "${DMG}" "${BUILDS}"
 
 			cd $DIR
+
+			cp "$HOME/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
+
+			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/engine"
+
+			cd "${PACKAGING}"
+
+			7z a -tzip -mx=9 -mmt=on "${PACKAGING_macOS}.zip" "${PACKAGING_macOS}"
+
+			mv "${PACKAGING_macOS}.zip" "${BUILDS}/${PROJECT_NAME}-macos-steam-${PROJECT_VERSION}.zip"
 		fi
 
 		if [ "${BUILDS_ALL_WORKED}" == "true" ]; then

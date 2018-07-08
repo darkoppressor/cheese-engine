@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 class Engine_Data{
 public:
@@ -26,6 +27,11 @@ public:
     //If true, Google Play Games will be initialized
     //If false, Google Play Games will not be initialized
     static bool android_gpg;
+
+    //If true, Steam support will be initialized
+    //If false, Steam support will not be initialized
+    static bool steam;
+    static std::uint32_t steam_app_id;
 
     static bool network_lockstep;
 
