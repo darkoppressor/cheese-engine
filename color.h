@@ -32,6 +32,8 @@ public:
     Color();
     Color(short load_red,short load_green,short load_blue,short load_alpha);
 
+    std::string get_hex_string();
+
     short get_red() const;
     short get_green() const;
     short get_blue() const;

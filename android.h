@@ -192,8 +192,8 @@ public:
 
     static void open_url(std::string url);
 
-    static void set_status_bar_color (std::string color_string);
-    static void set_navigation_bar_color (std::string color_string);
+    static void set_status_bar_color (std::string color_name);
+    static void set_navigation_bar_color (std::string color_name);
 
     static bool get_gps_availability();
     static bool get_gps_accessibility();

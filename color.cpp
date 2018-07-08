@@ -4,6 +4,9 @@
 
 #include "color.h"
 
+#include <sstream>
+#include <iomanip>
+
 using namespace std;
 
 Color::Color(){
@@ -16,6 +19,19 @@ Color::Color(short load_red,short load_green,short load_blue,short load_alpha){
     name="";
 
     set(load_red,load_green,load_blue,load_alpha);
+}
+
+string Color::get_hex_string () {
+    ostringstream buffer;
+
+    buffer.flags(ios_base::hex | ios_base::left);
+    buffer.fill('0');
+
+    buffer << setw(2) << red
+           << setw(2) << green
+           << setw(2) << blue;
+
+    return buffer.str();
 }
 
 short Color::get_red() const{
