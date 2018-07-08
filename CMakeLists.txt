@@ -91,6 +91,7 @@ COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -DGAM
 target_include_directories(Release-Linux-x86_64 PRIVATE
 /usr/include/
 /usr/include/x86_64-linux-gnu/
+/home/tails/build-server/steamworks-sdk/public/steam/
 /home/tails/build-server/linux-x86_64/SDL2/include/
 /home/tails/build-server/linux-x86_64/SDL2_image/
 /home/tails/build-server/linux-x86_64/SDL2_mixer/
@@ -117,6 +118,7 @@ target_link_libraries(Release-Linux-x86_64
 /home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/linux-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+/home/tails/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so
 "-s -m64"
 )
 
@@ -136,6 +138,7 @@ COMPILE_FLAGS "-std=c++11 -Wall -Wextra -g -m64 -DGAME_OS_LINUX"
 target_include_directories(Debug-Linux-x86_64 PRIVATE
 /usr/include/
 /usr/include/x86_64-linux-gnu/
+/home/tails/build-server/steamworks-sdk/public/steam/
 /home/tails/build-server/linux-x86_64/SDL2/include/
 /home/tails/build-server/linux-x86_64/SDL2_image/
 /home/tails/build-server/linux-x86_64/SDL2_mixer/
@@ -162,6 +165,7 @@ target_link_libraries(Debug-Linux-x86_64
 /home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/linux-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/linux-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+/home/tails/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so
 "-m64"
 )
 
@@ -182,6 +186,7 @@ COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -DGAM
 
 target_include_directories(Release-Windows-x86_64 PRIVATE
 /usr/x86_64-w64-mingw32/include
+/home/tails/build-server/steamworks-sdk/public/steam/
 /home/tails/build-server/windows-x86_64/SDL2/include/
 /home/tails/build-server/windows-x86_64/SDL2_image/
 /home/tails/build-server/windows-x86_64/SDL2_mixer/
@@ -205,6 +210,7 @@ target_link_libraries(Release-Windows-x86_64
 /home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/windows-x86_64/raknet/raknet/Lib/DLL/Lib/libRakNet.a
+/home/tails/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.lib
 /usr/x86_64-w64-mingw32/lib/libws2_32.a
 /usr/x86_64-w64-mingw32/lib/libwinmm.a
 /usr/x86_64-w64-mingw32/lib/libole32.a
@@ -234,6 +240,7 @@ COMPILE_FLAGS "-fexpensive-optimizations -O2 -std=c++11 -Wall -Wextra -m64 -stdl
 
 target_include_directories(Release-macOS-x86_64 PRIVATE
 /home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/include/
+/home/tails/build-server/steamworks-sdk/public/steam/
 /home/tails/build-server/osx-x86_64/SDL2/include/
 /home/tails/build-server/osx-x86_64/SDL2_image/
 /home/tails/build-server/osx-x86_64/SDL2_mixer/
@@ -256,6 +263,7 @@ target_link_libraries(Release-macOS-x86_64
 /home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/osx-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
+/home/tails/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib
 /home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/lib/libiconv.dylib
 "-m64 -arch x86_64 -mmacosx-version-min=10.7 -stdlib=libc++ -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo"
 )
