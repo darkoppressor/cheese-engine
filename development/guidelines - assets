@@ -15,14 +15,12 @@ Then, open in Audacity and export as ogg, default quality
 
 *--LMMS--*
 Same as music
-Then, open in Audacity, cut out any silence at the end, and export as ogg, default quality
 
 *----Music----*
 
 *--LMMS--*
 Export as .ogg, samplerate 44100 Hz, bitrate 160 Kbits/s, depth 16 bit integer,
-interpolation Sinc Fastest, oversampling 1x (None), Export as loop
-Then, open in Audacity and export as ogg, default quality
+interpolation Sinc Medium, oversampling 1x (None), Export as loop
 
 *----Notes----*
 Sound effects and music are referred to in the engine by their filename minus their file extension.
