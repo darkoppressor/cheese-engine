@@ -57,7 +57,7 @@ fi
 
 NAME="${PROJECT_NAME}"
 
-VERSION="7"
+VERSION="8"
 
 RESULT=""
 
@@ -309,6 +309,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
 
+				cp "$HOME/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so" "${PACKAGING}/${PACKAGING_LINUX}"
+
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
 				RESULT="${RESULT}${log}\n\n"
@@ -336,6 +338,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
+				cp "$HOME/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.dll" "${PACKAGING}/${PACKAGING_WINDOWS}"
+
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
 				RESULT="${RESULT}${log}\n\n"
@@ -362,6 +366,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			TARGET="Release-${PLATFORM}"
 			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
 				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
+
+				cp "$HOME/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
