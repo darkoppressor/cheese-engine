@@ -64,6 +64,7 @@ server.cpp
 sound_data.cpp
 sound_manager.cpp
 sprite.cpp
+steam.cpp
 symbols.cpp
 timer.cpp
 toast.cpp
