@@ -153,8 +153,13 @@ public:
     }
 };
 
-class Collision{
+class Collision {
 public:
+
+    static size_t VERTEX_UPPER_LEFT;
+    static size_t VERTEX_UPPER_RIGHT;
+    static size_t VERTEX_LOWER_LEFT;
+    static size_t VERTEX_LOWER_RIGHT;
 
     template<typename T>
     static bool check_rect(const Collision_Rect<T>& box_a,const Collision_Rect<T>& box_b){
@@ -242,13 +247,19 @@ public:
         std::vector<Coords<double>> vertices_b;
         box_b.get_vertices(vertices_b,angle_b);
 
-        std::vector<Coords<double>> axes;
-        axes.push_back(Coords<double>(vertices_a[1].x-vertices_a[0].x,vertices_a[1].y-vertices_a[0].y));
-        axes.push_back(Coords<double>(vertices_a[1].x-vertices_a[2].x,vertices_a[1].y-vertices_a[2].y));
-        axes.push_back(Coords<double>(vertices_b[0].x-vertices_b[3].x,vertices_b[0].y-vertices_b[3].y));
-        axes.push_back(Coords<double>(vertices_b[0].x-vertices_b[1].x,vertices_b[0].y-vertices_b[1].y));
+        return check_vertices_rect(vertices_a, vertices_b);
+    }
 
-        for(size_t a=0;a<axes.size();a++){
+    //Note that while this function takes as input any type T vertices, it works with doubles internally
+    template<typename T>
+    static bool check_vertices_rect (const std::vector<Coords<T>>& vertices_a, const std::vector<Coords<T>>& vertices_b) {
+        std::vector<Coords<double>> axes;
+        axes.push_back(Coords<double>(vertices_a[VERTEX_UPPER_RIGHT].x-vertices_a[VERTEX_UPPER_LEFT].x,vertices_a[VERTEX_UPPER_RIGHT].y-vertices_a[VERTEX_UPPER_LEFT].y));
+        axes.push_back(Coords<double>(vertices_a[VERTEX_UPPER_RIGHT].x-vertices_a[VERTEX_LOWER_LEFT].x,vertices_a[VERTEX_UPPER_RIGHT].y-vertices_a[VERTEX_LOWER_LEFT].y));
+        axes.push_back(Coords<double>(vertices_b[VERTEX_UPPER_LEFT].x-vertices_b[VERTEX_LOWER_RIGHT].x,vertices_b[VERTEX_UPPER_LEFT].y-vertices_b[VERTEX_LOWER_RIGHT].y));
+        axes.push_back(Coords<double>(vertices_b[VERTEX_UPPER_LEFT].x-vertices_b[VERTEX_UPPER_RIGHT].x,vertices_b[VERTEX_UPPER_LEFT].y-vertices_b[VERTEX_UPPER_RIGHT].y));
+
+        for (size_t a = 0; a < axes.size(); a++) {
             std::vector<double> dot_products_a;
             for(size_t i=0;i<vertices_a.size();i++){
                 dot_products_a.push_back(get_projection_dot_product(vertices_a[i],axes[a]));
@@ -287,6 +298,12 @@ public:
         }
 
         return true;
+    }
+
+    //Note that while this function takes as input any type T vertices, it works with doubles internally
+    template<typename T>
+    static Coords<T> get_vertices_center_rect (const std::vector<Coords<T>>& vertices) {
+        return Coords<T>((vertices[VERTEX_UPPER_LEFT].x + vertices[VERTEX_LOWER_RIGHT].x) / 2.0, (vertices[VERTEX_UPPER_LEFT].y + vertices[VERTEX_LOWER_RIGHT].y) / 2.0);
     }
 
     //Returns a rectangle containing the collision area of the two passed rectangles
