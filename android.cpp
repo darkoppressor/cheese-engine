@@ -717,14 +717,14 @@ void Android::set_sensor_enabled(string sensor_type,bool enabled){
         int sensortype=jni_get_sensor_number(sensor_type.c_str());
 
         if(sensortype>0 && sensortype<=SENSOR_TYPE_COUNT){
-            call_android_method("enableSensor","(IZ)V",sensortype,enabled);
+            call_android_method_static("enableSensor","(IZ)V",sensortype,enabled);
         }
     #endif
 }
 
 void Android::set_gps_enabled(bool enabled,uint32_t minimum_update_time,float minimum_update_distance){
     #ifdef GAME_OS_ANDROID
-        call_android_method("enableGPS","(ZIF)V",enabled,minimum_update_time,minimum_update_distance);
+        call_android_method_static("enableGPS","(ZIF)V",enabled,minimum_update_time,minimum_update_distance);
     #endif
 }
 
@@ -737,11 +737,11 @@ void Android::disable_sensor(string sensor_type){
 }
 
 void Android::vibrate(uint32_t length){
-    call_android_method("vibrate","(I)V",(int)length);
+    call_android_method_static("vibrate","(I)V",(int)length);
 }
 
 void Android::vibrate_stop(){
-    call_android_method("vibrateStop","()V");
+    call_android_method_static("vibrateStop","()V");
 }
 
 void Android::open_url(string url){
@@ -751,7 +751,7 @@ void Android::open_url(string url){
         if(env!=0){
             jstring jstr=env->NewStringUTF(url.c_str());
 
-            call_android_method("openUrl","(Ljava/lang/String;)V",jstr);
+            call_android_method_static("openUrl","(Ljava/lang/String;)V",jstr);
         }
         else {
             Log::add_error("Error opening URL '"+url+"': SDL_AndroidGetJNIEnv returned 0");
