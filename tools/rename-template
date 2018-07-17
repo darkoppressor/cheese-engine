@@ -66,6 +66,8 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$PROJECT_NAME" ]; then
 			sed -i -e "s/template/$NAME_LOWER_CASE/g" "$PROJECT_DIRECTORY/development/android/src/org/cheeseandbacon/template/Game.java"
 			mv "$PROJECT_DIRECTORY/development/android/src/org/cheeseandbacon/template" "$PROJECT_DIRECTORY/development/android/src/org/cheeseandbacon/$NAME_LOWER_CASE_DASHED"
 
+			sed -i -e "s/import org.cheeseandbacon.template.R;/import org\.cheeseandbacon\.$NAME_LOWER_CASE\.R;/g" "$PROJECT_DIRECTORY/development/android/src/org/libsdl/app/SDLActivity.java"
+
 			sed -i -e "s/template/$NAME_LOWER_CASE/g" "$PROJECT_DIRECTORY/development/android/AndroidManifest.xml"
 
 			sed -i -e "s/Template/$NAME_CAPS_DASHED/g" "$PROJECT_DIRECTORY/development/android/build.xml"

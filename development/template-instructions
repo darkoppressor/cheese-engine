@@ -49,6 +49,7 @@ Rename the development/android/src/org/cheeseandbacon/template directory to the 
 (all lower case, dashed)
 
 Change the package name in Game.java in the above directory (all lower case, no spaces or dashes)
+Change the import statement in development/android/src/org/libsdl/app/SDLActivity.java (all lower case, no spaces or dashes)
 
 Change the package name in development/android/AndroidManifest.xml (all lower case, no spaces or dashes)
 If the game will use networking, enable the INTERNET permission in development/android/AndroidManifest.xml
