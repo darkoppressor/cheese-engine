@@ -102,8 +102,9 @@ public:
     void set_info_text(int mutable_info_number,std::string get_text);
     void set_info_tooltip(int mutable_info_number,std::string get_text);
 
-    //Sets the state data/tooltip in the stated button represented by the passed number
+    //Sets the state states/data/tooltip in the stated button represented by the passed number
     //This number relates only to stated buttons
+    void set_stated_button_states(int stated_button_number, std::vector<std::string> states);
     void set_stated_button_state_index(int stated_button_number,uint32_t get_state_index);
     void set_stated_button_tooltip(int stated_button_number,std::string get_text);
 

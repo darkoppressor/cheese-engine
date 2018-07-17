@@ -64,7 +64,8 @@ public:
 
     static void apply_options_audio(const std::string& cl_volume_global,const std::string& cl_mute_global,
                              const std::string& cl_volume_sound,const std::string& cl_mute_sound,
-                             const std::string& cl_volume_music,const std::string& cl_mute_music);
+                             const std::string& cl_volume_music,const std::string& cl_mute_music,
+                             const std::string& cl_audio_playback_device);
 
     static void apply_options_input(const std::string& cl_bind_cursor,const std::string& cl_screen_keyboard,const std::string& cl_accelerometer_controller,
                              const std::string& cl_touch_controller_state,const std::string& cl_touch_controller_opacity);

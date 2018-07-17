@@ -13,6 +13,8 @@
 #include "engine.h"
 #include "vfs.h"
 #include "render.h"
+#include "sound_manager.h"
+#include "music_manager.h"
 
 #include <SDL_mixer.h>
 #include <SDL_image.h>
@@ -464,7 +466,9 @@ void Game_Window::log_audio_playback_devices(){
     for(int i=0;i<audio_playback_devices;i++){
         string device=SDL_GetAudioDeviceName(i,0);
 
-        log+=device+"\n";
+        if (device.length() > 0) {
+            log+=device+"\n";
+        }
     }
 
     log+="\n";
@@ -472,18 +476,43 @@ void Game_Window::log_audio_playback_devices(){
     Log::add_log(log);
 }
 
-bool Game_Window::is_audio_playback_device_present(string audio_device_name){
-    int audio_playback_devices=SDL_GetNumAudioDevices(0);
+void Game_Window::initialize_audio () {
+    int audio_startup_error=0;
 
-    for(int i=0;i<audio_playback_devices;i++){
-        string device=SDL_GetAudioDeviceName(i,0);
-
-        if(device.length()>0 && device==audio_device_name){
-            return true;
-        }
+    if(Options::audio_playback_device.length()>0 && is_audio_playback_device_present(Options::audio_playback_device)){
+        audio_startup_error=Mix_OpenAudioDevice(44100,AUDIO_S16SYS,2,1024,Options::audio_playback_device.c_str(),0);
+    }
+    else{
+        audio_startup_error=Mix_OpenAudio(44100,AUDIO_S16SYS,2,1024);
     }
 
-    return false;
+    string msg="";
+
+    if(audio_startup_error==-1){
+        msg="SDL2_mixer failed to open mixer: ";
+        msg+=Mix_GetError();
+        Log::add_error(msg);
+    }
+    else{
+        if(Mix_Init(MIX_INIT_OGG)==0){
+            msg="SDL2_mixer initialization failed: ";
+            msg+=Mix_GetError();
+            Log::add_error(msg);
+        }
+        else{
+            int channels_requested=2048;
+            int channels_allocated=Mix_AllocateChannels(channels_requested);
+            if(channels_allocated!=channels_requested){
+                msg="Error allocating mixer channels: Requested "+Strings::num_to_string(channels_requested)+", allocated "+Strings::num_to_string(channels_allocated)+".";
+                Log::add_error(msg);
+            }
+        }
+    }
+}
+
+void Game_Window::deinitialize_audio () {
+    Mix_Quit();
+    Mix_CloseAudio();
 }
 
 bool Game_Window::pre_initialize(){
@@ -542,35 +571,7 @@ bool Game_Window::initialize(){
 
         log_audio_playback_devices();
 
-        int audio_startup_error=0;
-
-        if(Options::audio_playback_device.length()>0 && is_audio_playback_device_present(Options::audio_playback_device)){
-            audio_startup_error=Mix_OpenAudioDevice(44100,AUDIO_S16SYS,2,1024,Options::audio_playback_device.c_str(),0);
-        }
-        else{
-            audio_startup_error=Mix_OpenAudio(44100,AUDIO_S16SYS,2,1024);
-        }
-
-        if(audio_startup_error==-1){
-            msg="SDL2_mixer failed to open mixer: ";
-            msg+=Mix_GetError();
-            Log::add_error(msg);
-        }
-        else{
-            if(Mix_Init(MIX_INIT_OGG)==0){
-                msg="SDL2_mixer initialization failed: ";
-                msg+=Mix_GetError();
-                Log::add_error(msg);
-            }
-            else{
-                int channels_requested=2048;
-                int channels_allocated=Mix_AllocateChannels(channels_requested);
-                if(channels_allocated!=channels_requested){
-                    msg="Error allocating mixer channels: Requested "+Strings::num_to_string(channels_requested)+", allocated "+Strings::num_to_string(channels_allocated)+".";
-                    Log::add_error(msg);
-                }
-            }
-        }
+        initialize_audio();
 
         if(IMG_Init(IMG_INIT_PNG)==0){
             msg="SDL2_image initialization failed: ";
@@ -610,8 +611,7 @@ void Game_Window::deinitialize(){
 
         IMG_Quit();
 
-        Mix_Quit();
-        Mix_CloseAudio();
+        deinitialize_audio();
 
         cleanup_video();
     }
@@ -645,6 +645,48 @@ int Game_Window::width(){
 
 int Game_Window::height(){
     return SCREEN_HEIGHT;
+}
+
+bool Game_Window::is_audio_playback_device_present(string audio_device_name){
+    int audio_playback_devices=SDL_GetNumAudioDevices(0);
+
+    for(int i=0;i<audio_playback_devices;i++){
+        string device=SDL_GetAudioDeviceName(i,0);
+
+        if(device.length()>0 && device==audio_device_name){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+vector<string> Game_Window::get_audio_devices () {
+    vector<string> audio_devices;
+
+    int audio_playback_devices = SDL_GetNumAudioDevices(0);
+
+    for (int i = 0; i < audio_playback_devices; i++) {
+        string device = SDL_GetAudioDeviceName(i, 0);
+
+        if (device.length() > 0) {
+            audio_devices.push_back(device);
+        }
+    }
+
+    return audio_devices;
+}
+
+void Game_Window::reinitialize_audio () {
+    Sound_Manager::unload_sounds();
+    Music_Manager::unload_tracks();
+
+    deinitialize_audio();
+
+    initialize_audio();
+
+    Sound_Manager::load_sounds();
+    Music_Manager::prepare_tracks();
 }
 
 void Game_Window::get_renderer_logical_size(int* width,int* height){

@@ -2,7 +2,7 @@
 	name:options_audio
 	starting_position:-1,-1
 	width:256
-	height:118
+	height:146
 	title:Audio Options
 
 	<info>
@@ -89,8 +89,22 @@
 		sound_click:click_1
 	</button>
 
+	<info>
+		location:2,102
+		text:Audio Device:
+		font:small
+	</info>
+
 	<button>
-		location:100,102
+		location:4,116
+		states:System default
+		font:small
+		sound_moused:moused_1
+		sound_click:click_1
+	</button>
+
+	<button>
+		location:100,130
 		text:OK
 		font:small
 		event:options_audio
@@ -99,7 +113,7 @@
 	</button>
 
 	<button>
-		location:111,102
+		location:111,130
 		text:Apply
 		font:small
 		event:options_audio_apply
@@ -108,7 +122,7 @@
 	</button>
 
 	<button>
-		location:134,102
+		location:134,130
 		text:Cancel
 		font:small
 		event:close_window

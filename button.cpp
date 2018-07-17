@@ -127,6 +127,10 @@ void Button::set_text(const string& get_text){
     set_dimensions();
 }
 
+void Button::set_states (vector<string> new_states) {
+    states = new_states;
+}
+
 bool Button::has_states(){
     if(states.size()>0){
         return true;

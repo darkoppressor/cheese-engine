@@ -258,7 +258,7 @@ string Options::get_option_description(string option){
         return "mute music";
     }
     else if(option=="cl_audio_playback_device"){
-        return "the audio playback device that the game should use\n - changes to this option are only applied when the game is restarted";
+        return "the audio playback device that the game should use";
     }
 
     return Object_Manager::get_game_option_description(option);
@@ -368,6 +368,9 @@ void Options::change_option(string option,string new_value){
     }
     else if(option=="cl_audio_playback_device"){
         audio_playback_device=new_value;
+
+        Game_Window::reinitialize_audio();
+        Music_Manager::set_track_volumes();
     }
 
     else{
@@ -412,7 +415,8 @@ void Options::apply_options_graphics(const string& cl_screen_width,const string&
 
 void Options::apply_options_audio(const string& cl_volume_global,const string& cl_mute_global,
                                            const string& cl_volume_sound,const string& cl_mute_sound,
-                                           const string& cl_volume_music,const string& cl_mute_music){
+                                           const string& cl_volume_music,const string& cl_mute_music,
+                                           const std::string& cl_audio_playback_device){
     double volume_global=1.0;
     if(cl_volume_global=="Low"){
         volume_global=0.25;
@@ -442,6 +446,8 @@ void Options::apply_options_audio(const string& cl_volume_global,const string& c
     }
     change_option("cl_volume_music",Strings::num_to_string(volume_music));
     change_option("cl_mute_music",cl_mute_music);
+
+    change_option("cl_audio_playback_device", cl_audio_playback_device);
 }
 
 void Options::apply_options_input(const string& cl_bind_cursor,const string& cl_screen_keyboard,const string& cl_accelerometer_controller,

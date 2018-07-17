@@ -128,6 +128,22 @@ void Window::set_info_tooltip(int mutable_info_number,string get_text){
     Log::add_error("Error accessing mutable info number '"+Strings::num_to_string(mutable_info_number)+"' in window '"+name+"'");
 }
 
+void Window::set_stated_button_states (int stated_button_number, vector<string> states) {
+    int current_number=-1;
+
+    for(int i=0;i<buttons.size();i++){
+        if(buttons[i].has_states()){
+            if(++current_number==stated_button_number){
+                buttons[i].set_states(states);
+
+                return;
+            }
+        }
+    }
+
+    Log::add_error("Error accessing stated button number '"+Strings::num_to_string(stated_button_number)+"' in window '"+name+"'");
+}
+
 void Window::set_stated_button_state_index(int stated_button_number,uint32_t get_state_index){
     int current_number=-1;
 

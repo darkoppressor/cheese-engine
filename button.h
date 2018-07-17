@@ -89,6 +89,7 @@ public:
 
     void set_text(const std::string& get_text);
 
+    void set_states(std::vector<std::string> new_states);
     bool has_states();
     void set_state_index(std::uint32_t get_state_index);
     std::string get_state();

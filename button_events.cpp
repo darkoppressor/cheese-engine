@@ -19,9 +19,14 @@
 #include "log.h"
 #include "engine_math.h"
 
+#include <vector>
+#include <cstdint>
+
 #include <boost/algorithm/string.hpp>
 
 using namespace std;
+
+string Button_Events::DEFAULT_AUDIO_DEVICE = "System default";
 
 bool Button_Events::handle_button_event(string button_event,Window* parent_window){
     bool window_opened_on_top=false;
@@ -225,6 +230,25 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
             window->set_stated_button_state_index(5,Strings::string_to_bool(Options::get_option_value("cl_mute_music")));
             window->set_stated_button_tooltip(5,Options::get_option_description("cl_mute_music"));
 
+            vector<string> audio_devices = Game_Window::get_audio_devices();
+            audio_devices.insert(audio_devices.begin(), DEFAULT_AUDIO_DEVICE);
+            string current_device = Options::get_option_value("cl_audio_playback_device");
+            uint32_t state_index = 0;
+
+            if (current_device.length() > 0 && Game_Window::is_audio_playback_device_present(current_device)) {
+                for (size_t i = 0; i < audio_devices.size(); i++) {
+                    if (current_device == audio_devices[i]) {
+                        state_index = i;
+
+                        break;
+                    }
+                }
+            }
+
+            window->set_stated_button_states(6, audio_devices);
+            window->set_stated_button_state_index(6, state_index);
+            window->set_stated_button_tooltip(6, Options::get_option_description("cl_audio_playback_device"));
+
             window->toggle_on();
             window_opened_on_top=true;
         }
@@ -245,7 +269,12 @@ bool Button_Events::handle_button_event(string button_event,Window* parent_windo
                     mute_music="true";
                 }
 
-                Options::apply_options_audio(parent_window->get_stated_button_state(0),mute_global,parent_window->get_stated_button_state(2),mute_sound,parent_window->get_stated_button_state(4),mute_music);
+                string audio_device = parent_window->get_stated_button_state(6);
+                if (audio_device == DEFAULT_AUDIO_DEVICE) {
+                    audio_device = "";
+                }
+
+                Options::apply_options_audio(parent_window->get_stated_button_state(0),mute_global,parent_window->get_stated_button_state(2),mute_sound,parent_window->get_stated_button_state(4),mute_music,audio_device);
 
                 if(button_event=="options_audio"){
                     handle_button_event("close_window",parent_window);

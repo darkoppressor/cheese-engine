@@ -12,6 +12,8 @@
 class Button_Events{
 public:
 
+    static std::string DEFAULT_AUDIO_DEVICE;
+
     //Returns true if the button event opened a new window on top of previous ones
     //Returns false otherwise
     static bool handle_button_event(std::string button_event,Window* parent_window=0);

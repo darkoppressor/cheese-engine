@@ -10,6 +10,7 @@
 
 #include <string>
 #include <cstdint>
+#include <vector>
 
 #include <SDL.h>
 
@@ -49,7 +50,8 @@ private:
 
     static void log_audio_playback_devices();
 
-    static bool is_audio_playback_device_present(std::string audio_device_name);
+    static void initialize_audio();
+    static void deinitialize_audio();
 
 public:
 
@@ -68,6 +70,10 @@ public:
 
     static int width();
     static int height();
+
+    static bool is_audio_playback_device_present(std::string audio_device_name);
+    static std::vector<std::string> get_audio_devices();
+    static void reinitialize_audio();
 
     static void get_renderer_logical_size(int* width,int* height);
     static void get_renderer_viewport(SDL_Rect* rect);
