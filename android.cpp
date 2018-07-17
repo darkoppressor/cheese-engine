@@ -759,38 +759,6 @@ void Android::open_url(string url){
     #endif
 }
 
-void Android::set_status_bar_color (string color_name) {
-    #ifdef GAME_OS_ANDROID
-        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-
-        if (env != 0) {
-            Color* color = Object_Manager::get_color(color_name);
-
-            jstring jstr = env->NewStringUTF(color->get_hex_string().c_str());
-
-            call_android_method("setStatusBarColor", "(Ljava/lang/String;)V", jstr);
-        } else {
-            Log::add_error("Error setting status bar color to '" + color_name + "': SDL_AndroidGetJNIEnv returned 0");
-        }
-    #endif
-}
-
-void Android::set_navigation_bar_color (string color_name) {
-    #ifdef GAME_OS_ANDROID
-        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-
-        if (env != 0) {
-            Color* color = Object_Manager::get_color(color_name);
-
-            jstring jstr = env->NewStringUTF(color->get_hex_string().c_str());
-
-            call_android_method("setNavigationBarColor", "(Ljava/lang/String;)V", jstr);
-        } else {
-            Log::add_error("Error setting navigation bar color to '" + color_name + "': SDL_AndroidGetJNIEnv returned 0");
-        }
-    #endif
-}
-
 bool Android::get_gps_availability(){
     #ifdef GAME_OS_ANDROID
         return jni_get_gps_available();
