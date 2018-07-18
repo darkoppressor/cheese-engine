@@ -13,6 +13,8 @@ public:
 
     static std::string save_location;
 
+    static std::string version;
+
     static int screen_width;
     static int screen_height;
     static int display_number;

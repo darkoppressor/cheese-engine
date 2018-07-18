@@ -267,6 +267,8 @@ int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_d
 
     Engine::console.exec_file("autoexec.cfg");
 
+    Engine::load_changelog();
+
     Game_Manager::on_startup();
 
     Game_Manager::setup_title();

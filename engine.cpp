@@ -23,6 +23,7 @@
 #include "directories.h"
 #include "android.h"
 #include "steam.h"
+#include "file_io.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/crc.hpp>
@@ -40,6 +41,9 @@ string Engine::CHECKSUM="";
 string Engine::current_mod="";
 bool Engine::mod_is_changing=false;
 string Engine::new_mod="";
+
+string Engine::changelog = "";
+bool Engine::save_data_version_is_different = false;
 
 vector<Toast> Engine::toasts;
 
@@ -359,6 +363,22 @@ void Engine::set_initial_mod(const string& mod){
     if(mod_exists(mod)){
         current_mod=mod;
     }
+}
+
+void Engine::load_changelog () {
+    changelog = "";
+
+    File_IO_Load load("docs/changelog.txt");
+
+    if (load.is_opened()) {
+        changelog = load.get_data();
+
+        load.close();
+    }
+}
+
+string Engine::get_changelog () {
+    return changelog;
 }
 
 void Engine::get_rgba_masks(uint32_t* rmask,uint32_t* gmask,uint32_t* bmask,uint32_t* amask){

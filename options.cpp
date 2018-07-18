@@ -24,6 +24,8 @@ using namespace std;
 
 string Options::save_location="";
 
+string Options::version = "";
+
 int Options::screen_width=0;
 int Options::screen_height=0;
 int Options::display_number=-1;
@@ -525,6 +527,8 @@ bool Options::save_options(){
 }
 
 bool Options::load_options(){
+    version = "";
+
     File_IO_Load load(Directories::get_save_directory()+"options.cfg");
 
     if(load.is_opened()){
@@ -534,11 +538,13 @@ bool Options::load_options(){
             string& line=lines[i];
 
             if(Data_Reader::check_prefix(line,"version:")){
-                string version=line;
+                version=line;
 
                 if(!Engine_Version::is_version_compatible(version)){
                     return false;
                 }
+
+                Engine::save_data_version_is_different = (version != Engine_Version::get_version());
             }
             else if(Data_Reader::check_prefix(line,"screen_width:")){
                 screen_width=Strings::string_to_long(line);

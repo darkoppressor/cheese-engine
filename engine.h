@@ -35,6 +35,9 @@ public:
     //When changing mods, this is the new mod
     static std::string new_mod;
 
+    static std::string changelog;
+    static bool save_data_version_is_different;
+
     static std::vector<Toast> toasts;
 
     static Console console;
@@ -86,6 +89,9 @@ public:
     static void swap_mods();
     //This should only be called by process_arguments()
     static void set_initial_mod(const std::string& mod);
+
+    static void load_changelog();
+    static std::string get_changelog();
 
     static void get_rgba_masks(std::uint32_t* rmask,std::uint32_t* gmask,std::uint32_t* bmask,std::uint32_t* amask);
 
