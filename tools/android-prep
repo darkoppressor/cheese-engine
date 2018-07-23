@@ -90,6 +90,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	sed -i -e 's/local/home/g' "$ANDROID_DIRECTORY/assets/save_location.cfg"
 
 	cp -r "$PROJECT_DIRECTORY/data" "$ANDROID_DIRECTORY/assets"
+	cp -r "$PROJECT_DIRECTORY/docs" "$ANDROID_DIRECTORY/assets"
 
 	echo "Creating directory list"
 
@@ -98,6 +99,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	echo "Creating asset lists"
 
 	create_asset_lists "$ANDROID_DIRECTORY/assets/data"
+	create_asset_lists "$ANDROID_DIRECTORY/assets/docs"
 
 	echo "Copying prebuilt libraries"
 
