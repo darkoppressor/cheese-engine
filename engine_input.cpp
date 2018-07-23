@@ -365,6 +365,18 @@ bool Engine_Input::handle_input_events(bool event_ignore_command_set){
 
                     event_consumed=true;
                 }
+                //GUI nav controller scroll up
+                if(!event_consumed && Window_Manager::is_any_window_open() && !Engine::console.on && event.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_UP && Controller_Manager::controller_state(Controller_Manager::CONTROLLER_ID_ALL, SDL_CONTROLLER_BUTTON_A)){
+                    GUI_Manager::gui_scroll_up("controller");
+
+                    event_consumed=true;
+                }
+                //GUI nav controller scroll down
+                if(!event_consumed && Window_Manager::is_any_window_open() && !Engine::console.on && event.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_DOWN && Controller_Manager::controller_state(Controller_Manager::CONTROLLER_ID_ALL, SDL_CONTROLLER_BUTTON_A)){
+                    GUI_Manager::gui_scroll_down("controller");
+
+                    event_consumed=true;
+                }
                 //GUI nav controller up
                 if(!event_consumed && Window_Manager::is_any_window_open() && !Engine::console.on && event.cbutton.button==SDL_CONTROLLER_BUTTON_DPAD_UP){
                     GUI_Manager::gui_nav_up("controller");
