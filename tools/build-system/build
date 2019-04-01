@@ -11,6 +11,8 @@ CHECKSUM=""
 LOG_FILE=""
 LOG_FILE_FALLBACK="./log-build-system"
 
+BUILD_HOME="/home/tails"
+
 read_option () {
 	IFS='=' read -ra LINE_PARTS <<< "$1"
 
@@ -32,16 +34,16 @@ if [ -z "$PROJECT_PATH" ]; then
 fi
 
 if [ "${PROJECT_PATH}" == "clean" ]; then
-	rm -rf $HOME/build-server/projects
+	rm -rf $BUILD_HOME/build-server/projects
 
-	mkdir -p $HOME/build-server/projects
+	mkdir -p $BUILD_HOME/build-server/projects
 
 	echo "Emptying the projects directory" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit
 fi
 
-if [[ "$(readlink -f ${PROJECT_PATH})" == $HOME/build-server/projects* ]]; then
+if [[ "$(readlink -f ${PROJECT_PATH})" == $BUILD_HOME/build-server/projects* ]]; then
 	echo "PROJECT-DIRECTORY must be outside of '~/build-server/projects/'" | tee -a ${LOG_FILE_FALLBACK}
 
 	exit 64
@@ -61,14 +63,14 @@ VERSION="8"
 
 RESULT=""
 
-chmod +x $HOME/build-server/cheese-engine/tools/*
-chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/*
-chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
-chmod -x $HOME/build-server/cheese-engine/tools/build-system/scripts/*.cmake
-chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/android/*
-chmod +x $HOME/build-server/cheese-engine/tools/build-system/scripts/data/*
+chmod +x $BUILD_HOME/build-server/cheese-engine/tools/*
+chmod +x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/*
+chmod -x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
+chmod -x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/*.cmake
+chmod +x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/android/*
+chmod +x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/*
 
-mkdir -p $HOME/build-server/projects
+mkdir -p $BUILD_HOME/build-server/projects
 
 if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 	compatible="false"
@@ -81,11 +83,11 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 	done <"${PROJECT_PATH}/development/build-system-version"
 
 	if [ "$compatible" == "true" ]; then
-		rm -rf "$HOME/build-server/projects/${PROJECT_NAME}"
+		rm -rf "$BUILD_HOME/build-server/projects/${PROJECT_NAME}"
 
-		cp -r "${PROJECT_PATH}" "$HOME/build-server/projects/$PROJECT_NAME"
+		cp -r "${PROJECT_PATH}" "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
 
-		LOG_FILE="$HOME/build-server/projects/${PROJECT_NAME}/log-build-system"
+		LOG_FILE="$BUILD_HOME/build-server/projects/${PROJECT_NAME}/log-build-system"
 
 		NAME_CAPPED=""
 
@@ -162,24 +164,24 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		echo "" | tee -a ${LOG_FILE}
 		RESULT="${RESULT}${log}\n\n"
 
-		$HOME/build-server/cheese-engine/tools/build-information "$HOME/build-server/projects/$PROJECT_NAME"
+		$BUILD_HOME/build-server/cheese-engine/tools/build-information "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
 
 		if [ "$OPTION_REBUILD_IMAGES" == "true" ]; then
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-images "$HOME/build-server/projects/$PROJECT_NAME"
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-images "$HOME/build-server/projects/$PROJECT_NAME"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-images "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-images "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
 		fi
 
 		if [ "$OPTION_REBUILD_MUSIC" == "true" ]; then
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-music "$HOME/build-server/projects/$PROJECT_NAME"
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-music "$HOME/build-server/projects/$PROJECT_NAME"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-music "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-music "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
 		fi
 
 		if [ "$OPTION_REBUILD_SOUNDS" == "true" ]; then
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-sounds "$HOME/build-server/projects/$PROJECT_NAME"
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-sounds "$HOME/build-server/projects/$PROJECT_NAME"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/clean-sounds "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/build-sounds "$BUILD_HOME/build-server/projects/$PROJECT_NAME"
 		fi
 
-		sed -i 's/local/home/g' "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
+		sed -i 's/local/home/g' "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg"
 
 		BUILD_LINUX_64="false"
 		BUILD_WINDOWS_64="false"
@@ -187,7 +189,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		BUILD_ANDROID="false"
 		ANDROID_ABI_TARGETS=""
 
-		if [ -f "$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets" ]; then
+		if [ -f "$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets" ]; then
 			while read line
 			do
 				if [ "$line" == "Release-Linux-x86_64" ]; then
@@ -204,17 +206,17 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 					ANDROID_ABI_TARGETS=$(echo $line | sed s/Android//)
 
-					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/jni/Application.mk"
+					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/jni/Application.mk"
 				fi
-			done <"$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets"
+			done <"$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets"
 		else
-			echo "'$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets' does not exist" | tee -a ${LOG_FILE}
+			echo "'$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets' does not exist" | tee -a ${LOG_FILE}
 
 			exit 65
 		fi
 
 		if [ "$BUILD_LINUX_64" == "false" ] && [ "$BUILD_WINDOWS_64" == "false" ] && [ "$BUILD_macOS_64" == "false" ] && [ "$BUILD_ANDROID" == "false" ]; then
-			echo "No targets specified for building in '$HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets'" | tee -a ${LOG_FILE}
+			echo "No targets specified for building in '$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets'" | tee -a ${LOG_FILE}
 
 			exit 66
 		fi
@@ -245,31 +247,31 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86_64
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" Release-Linux-x86_64
 		fi
 		if [ "$BUILD_WINDOWS_64" == "true" ]; then
 			log="Attempting build of Release-Windows-x86_64"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86_64
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86_64
 		fi
 		if [ "$BUILD_macOS_64" == "true" ]; then
 			log="Attempting build of Release-macOS-x86_64"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$HOME/build-server/projects/${PROJECT_NAME}" Release-macOS-x86_64
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" Release-macOS-x86_64
 		fi
 		if [ "$BUILD_ANDROID" == "true" ]; then
 			log="Attempting build of Release-Android targeting ABIs: $ANDROID_ABI_TARGETS"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$HOME/build-server/projects/${PROJECT_NAME}"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$BUILD_HOME/build-server/projects/${PROJECT_NAME}"
 		fi
 
-		PROJECT_VERSION=$(grep -F "android:versionName" "$HOME/build-server/projects/${PROJECT_NAME}/development/android/AndroidManifest.xml")
+		PROJECT_VERSION=$(grep -F "android:versionName" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/AndroidManifest.xml")
 
 		PV_PREFIX="*android:versionName=\""
 		PV_SUFFIX="\"*"
@@ -278,23 +280,23 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 		BUILDS_ALL_WORKED="true"
 
-		PACKAGING="$HOME/build-server/projects/${PROJECT_NAME}/packaging"
+		PACKAGING="$BUILD_HOME/build-server/projects/${PROJECT_NAME}/packaging"
 		PACKAGING_LINUX="${PROJECT_NAME}-linux-${PROJECT_VERSION}"
 		PACKAGING_LINUX_STEAM="${PROJECT_NAME}-linux-steam-${PROJECT_VERSION}"
 		PACKAGING_WINDOWS="${PROJECT_NAME}-windows-${PROJECT_VERSION}"
 		PACKAGING_WINDOWS_STEAM="${PROJECT_NAME}-windows-steam-${PROJECT_VERSION}"
-		cd "$HOME/build-server/projects/${PROJECT_NAME}/development"
+		cd "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development"
 		PACKAGING_macOS="$(find -maxdepth 1 -type d -name '*.app'| head -n1)"
 		cd $DIR
 		macOS_PREFIX="./"
 		PACKAGING_macOS="${PACKAGING_macOS##$macOS_PREFIX}"
 		PACKAGING_ANDROID="${PROJECT_NAME}-android-${PROJECT_VERSION}"
-		BUILDS="$HOME/build-server/builds"
+		BUILDS="$BUILD_HOME/build-server/builds"
 
 		mkdir "${PACKAGING}"
 		mkdir "${PACKAGING}/${PACKAGING_LINUX}"
 		mkdir "${PACKAGING}/${PACKAGING_WINDOWS}"
-		mv "$HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_macOS}" "${PACKAGING}"
+		mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/${PACKAGING_macOS}" "${PACKAGING}"
 		mkdir -p "$PACKAGING/$PACKAGING_macOS/Contents/MacOS"
 		mkdir -p "$PACKAGING/$PACKAGING_macOS/Contents/Resources"
 		mkdir -p "${BUILDS}"
@@ -307,9 +309,9 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PLATFORM="Linux-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
-			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-				chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
+			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				chmod +x "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}"
+				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_LINUX}"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
@@ -320,7 +322,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				PACKAGE_LINUX_64="false"
 
 				error="Build failed for ${TARGET}:\n"
-				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}$(<$BUILD_HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
 				error="${error}\n\n"
 
 				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
@@ -335,8 +337,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PLATFORM="Windows-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}.exe"
 			TARGET="Release-${PLATFORM}"
-			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
@@ -347,7 +349,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				PACKAGE_WINDOWS_64="false"
 
 				error="Build failed for ${TARGET}:\n"
-				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}$(<$BUILD_HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
 				error="${error}\n\n"
 
 				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
@@ -362,8 +364,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			PLATFORM="macOS-x86_64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
-			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
+			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then
+				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
@@ -374,7 +376,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				PACKAGE_macOS="false"
 
 				error="Build failed for ${TARGET}:\n"
-				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}$(<$BUILD_HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
 				error="${error}\n\n"
 
 				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
@@ -388,8 +390,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		if [ "$BUILD_ANDROID" == "true" ]; then
 			BINARY="${NAME_CAPPED}-release.apk"
 			TARGET="Release-Android"
-			if [ -f "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
-				mv "$HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
+			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
+				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
@@ -399,7 +401,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				BUILDS_ALL_WORKED="false"
 
 				error="Build failed for ${TARGET}:\n"
-				error="${error}$(<$HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
+				error="${error}$(<$BUILD_HOME/build-server/projects/${PROJECT_NAME}/log-${TARGET})"
 				error="${error}\n\n"
 
 				echo "Build failed for ${TARGET}" | tee -a ${LOG_FILE}
@@ -409,17 +411,17 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			fi
 		fi
 
-		CHECKSUM_DIR="$HOME/build-server/projects/${PROJECT_NAME}/data"
-		CHECKSUM="$($HOME/build-server/cheese-engine/tools/Checksum-Linux-x86_64 ${CHECKSUM_DIR} 1)"
+		CHECKSUM_DIR="$BUILD_HOME/build-server/projects/${PROJECT_NAME}/data"
+		CHECKSUM="$($BUILD_HOME/build-server/cheese-engine/tools/Checksum-Linux-x86_64 ${CHECKSUM_DIR} 1)"
 
-		chmod +x "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
-		fromdos "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
+		chmod +x "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
+		fromdos "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}"
 
 		if [ "$PACKAGE_LINUX_64" == "true" ]; then
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_LINUX}"
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_LINUX}"
-			cp "$HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
-			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_LINUX}"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_LINUX}/data/engine"
 
@@ -431,7 +433,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			cd $DIR
 
-			cp "$HOME/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so" "${PACKAGING}/${PACKAGING_LINUX}"
+			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so" "${PACKAGING}/${PACKAGING_LINUX}"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_LINUX}/data/engine"
 
@@ -443,9 +445,9 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		fi
 
 		if [ "$PACKAGE_WINDOWS_64" == "true" ]; then
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_WINDOWS}"
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
-			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_WINDOWS}/data/engine"
 
@@ -457,7 +459,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			cd $DIR
 
-			cp "$HOME/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.dll" "${PACKAGING}/${PACKAGING_WINDOWS}"
+			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.dll" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_WINDOWS}/data/engine"
 
@@ -469,13 +471,13 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		fi
 
 		if [ "$PACKAGE_macOS" == "true" ]; then
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
-			cp -r "$HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
-			cp "$HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
+			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/data" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
+			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
+			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources"
 
-			xcf2png "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.xcf" -o "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
+			xcf2png "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.xcf" -o "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
-			png2icns "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/icon.icns" "$HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
+			png2icns "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/icon.icns" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/engine"
 
@@ -511,7 +513,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			cd $DIR
 
-			cp "$HOME/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
+			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/engine"
 
@@ -600,7 +602,7 @@ if [ -n "$SUPPRESS_EMAIL" ] && [ "$SUPPRESS_EMAIL" == "true" ]; then
 	echo "${log}" | tee -a ${LOG_FINAL}
 	RESULT="${RESULT}${log}\n"
 else
-	$HOME/server/sendmail "${SUBJECT}" "${RESULT}"
+	$BUILD_HOME/server/sendmail "${SUBJECT}" "${RESULT}"
 fi
 
 if [ "${SUCCESS}" == "false" ]; then
