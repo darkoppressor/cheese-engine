@@ -8,6 +8,7 @@ PROJECT_DIRECTORY=$1
 BUILD_HOME="/home/tails"
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
+	rm -rf "$BUILD_HOME/build-server/cheese-engine-previous"
 	mv "$BUILD_HOME/build-server/cheese-engine/" "$BUILD_HOME/build-server/cheese-engine-previous"
 
 	cp -r "$PROJECT_DIRECTORY" "$BUILD_HOME/build-server/cheese-engine"
