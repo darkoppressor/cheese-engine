@@ -212,6 +212,8 @@ target_link_libraries(Release-Windows-x86_64
 /home/tails/build-server/windows-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/windows-x86_64/raknet/raknet/Lib/DLL/Lib/libRakNet.a
 /home/tails/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.lib
+/usr/x86_64-w64-mingw32/lib/libhid.a
+/usr/x86_64-w64-mingw32/lib/libsetupapi.a
 /usr/x86_64-w64-mingw32/lib/libws2_32.a
 /usr/x86_64-w64-mingw32/lib/libwinmm.a
 /usr/x86_64-w64-mingw32/lib/libole32.a
