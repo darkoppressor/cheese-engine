@@ -31,6 +31,8 @@ pipeline {
                 sh 'chmod +x development/android/clean-android'
 
                 sh 'tools/build-system/scripts/build-engine $(pwd)'
+
+                sh 'tools/build-system/scripts/deploy-engine $(pwd)'
             }
         }
     }

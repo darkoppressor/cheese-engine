@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+BUILD_HOME="/home/tails"
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	mv "$BUILD_HOME/build-server/cheese-engine/" "$BUILD_HOME/build-server/cheese-engine-previous"
+
+	cp -r "$PROJECT_DIRECTORY" "$BUILD_HOME/build-server/cheese-engine"
+
+	$BUILD_HOME/build-server/make_executable
+else
+	echo "deploy-engine -  deploy the specified Cheese Engine library"
+	echo "Usage: deploy-engine CHEESE-ENGINE-DIRECTORY"
+fi
