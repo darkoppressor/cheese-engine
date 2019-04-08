@@ -1,3 +1,5 @@
+Update Android builds to use SDL2 1.0.9
+
 Update build-instructions and template-instructions
 
 In Desktop mode, fullscreen, 1280x720, the small font looks terrible
