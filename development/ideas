@@ -4,6 +4,8 @@ Can I use the new SDL2 sensor API to replace the current Android sensors?
 
 Can I use the new SDL2 SDL_GameControllerRumble to replace the current rumble implementation?
 
+Script for automatically installing dependencies for the build system
+
 Unicode support in bitmap fonts
 
 Enable joining a game in progress
