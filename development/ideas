@@ -1,6 +1,10 @@
+Scroll bar for scrolling buttons and text
+
 Can I use the new SDL2 sensor API to replace the current Android sensors?
 
 Can I use the new SDL2 SDL_GameControllerRumble to replace the current rumble implementation?
+
+Unicode support in bitmap fonts
 
 Enable joining a game in progress
 
@@ -48,8 +52,6 @@ Can the sound volume falloff be based on some actual physics thing and made more
 Implement the Doppler Effect
 I think this would require something more than SDL2_Mixer for sounds, so I could change the pitch of them to implement this effect
 
-Scroll bar for scrolling buttons and text
-
 Add text colors to buttons, windows, tooltips, and toasts
 
 Write up guidelines for contributors
@@ -95,31 +97,3 @@ Add SDL2 audio capture support
 Add android mic recording support
 Add audio comparison code
 Could be used in say bit beast for calling your pet by name
-
-A program that runs in the background (service on android, maybe a regular program on other platforms) that knows where save data is for cheese and bacon games' games
-Its purpose would be to detect other instances of the program on other devices
-Then it could do street pass like stuff
-Of course, this would only be worth it if the devices could detect each other and connect automatically...
-A program for all cheese and bacon games, free
-Has some kind of currency, earned by simple things like steps taken
-Will be cross platform, so I'd prefer to come up with something simple to earn currency on desktop platforms too
-Knows where cheese and bacon games are saved on the current platform
-What if the user has them elsewhere? Maybe an option to specify the location of various games' save data?
-When setting up first time, user creates a profile name
-User is assigned randomly generated number. Use some actual real life - based seed, better than just time
-These together represent user
-User can also set some basic info about them self, and a personal message
-Through a connection, the program can detect other instances of itself on other devices
-Two instances that see each other do a swap
-The program keeps track of what IDs it has swapped with in the past x hours and won't swap with the same ID until the time has passed
-Both programs must agree to swap for any data to be exchanged
-Both programs agree after swapping of all data is done that it was successful
-Only after registering a swap success is any of the swap data actually saved
-No record will exist of failed/partial swaps
-First, profile data is swapped, including name, message, list of saved games (with swapping permitted), etc.
-Keeps a list of all swaps and when they occurred (and if possible maybe even where they occurred?)
-Each compatible game has a special save file for this, for swap outgoing
-Swapping is enabled on a pergame basis
-The swap file contains the permission boolean, along with the game specific data, which is simply swapped out all in one big string
-Received swap data for a game is stored in a swap incoming file, inside of a <swap> block
-If both programs have a game in common, its data is swapped
