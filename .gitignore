@@ -3,7 +3,6 @@ CMakeFiles/**
 mods/**
 screenshots/**
 
-tools/*Linux-x86_64
 /*.a
 
 development/android/assets/**
