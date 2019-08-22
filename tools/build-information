@@ -245,7 +245,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	OUTPUT="${OUTPUT}libgpg\t\tN/A\t\t\tN/A\t\t\tN/A\t\t\t"
 	file="/home/tails/build-server/android/gpg-cpp-sdk/android/README.md"
-	OUTPUT="$OUTPUT$(sed -ne "/^#Google/p" "$file" | sed -e "s/^[^0-9]*//" | sed -e "s/\s*#$//")"
+	OUTPUT="$OUTPUT$(sed -ne "/^# Google/p" "$file" | sed -e "s/^[^0-9]*//" | sed -e "s/\s*#$//")"
 	OUTPUT="${OUTPUT}\n\n"
 
 	OUTPUT="${OUTPUT}Build System\n"
@@ -253,7 +253,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	OUTPUT="${OUTPUT}Linux\t\t$(gcc --version | sed -n 1p), $(ldd --version | sed -n 1p)\n"
 	OUTPUT="${OUTPUT}Windows\t\t$(x86_64-w64-mingw32-gcc --version | sed -n 1p)\n"
-	OUTPUT="${OUTPUT}macOS\t\t$(o64-clang --version | sed -n 1p), Xcode 6.4\n"
+	OUTPUT="${OUTPUT}macOS\t\t$(o64-clang --version | sed -n 1p), Xcode 10.3\n"
 	file="/home/tails/build-server/android/android-ndk/CHANGELOG.md"
 	android_compiler=$(/home/tails/build-server/android/android-ndk/ndk-which gcc)
 	sdk_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/tools/source.properties" | sed -e "s/^Pkg.Revision=//")
