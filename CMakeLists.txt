@@ -266,7 +266,7 @@ target_link_libraries(Release-macOS-x86_64
 /home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_system.a
 /home/tails/build-server/osx-x86_64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/osx-x86_64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
-/home/tails/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib
+/home/tails/build-server/steamworks-sdk/redistributable_bin/osx/libsteam_api.dylib
 /home/tails/build-server/osx-x86_64/osxcross/target/SDK/MacOSX.sdk/usr/lib/libiconv.dylib
 "-m64 -arch x86_64 -mmacosx-version-min=10.9 -stdlib=libc++ -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo"
 )

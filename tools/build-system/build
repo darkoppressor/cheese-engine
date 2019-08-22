@@ -479,6 +479,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			png2icns "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/icon.icns" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
+			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/osx/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS"
+
 			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/engine"
 
 			cd "${PACKAGING}"
@@ -512,8 +514,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			#mv "${DMG}" "${BUILDS}"
 
 			cd $DIR
-
-			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/osx32/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS/game"
 
 			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/engine"
 
