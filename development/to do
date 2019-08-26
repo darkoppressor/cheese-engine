@@ -1,8 +1,8 @@
 Use the new SDL2 sensor API to replace the current Android sensors
-
-Reimplement GPS support
-
-Reimplement Google Play Games
+Reimplement Android vibration support
+Reimplement Android URL support
+Reimplement Android GPS support
+Reimplement Android Google Play Games support
 
 Update build-instructions and template-instructions
 
