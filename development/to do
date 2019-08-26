@@ -1,3 +1,9 @@
+Use the new SDL2 sensor API to replace the current Android sensors
+
+Reimplement GPS support
+
+Reimplement Google Play Games
+
 Update build-instructions and template-instructions
 
 In Desktop mode, fullscreen, 1280x720, the small font looks terrible
