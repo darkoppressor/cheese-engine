@@ -12,47 +12,12 @@ using namespace std;
 
 #ifdef GAME_OS_ANDROID
     extern "C" {
-        static bool sensor_available[SENSOR_TYPE_COUNT];
-        static bool sensor_enabled[SENSOR_TYPE_COUNT];
-        static int sensor_value_count_actual[SENSOR_TYPE_COUNT];
-        static float sensor_values[SENSOR_TYPE_COUNT][SENSOR_VALUES_MAX];
         static bool gps_available;
         static bool gps_accessible;
         static bool gps_enabled;
         static double gps_values[GPS_VALUES_MAX];
 
-        /*void Java_org_libsdl_app_SDLActivity_nativeUpdateSensorAvailable (JNIEnv* env, jclass jcls, jint sensortype,
-                                                                          jboolean available) {
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                sensor_available[sensortype - 1] = available;
-            }
-           }
-
-           void Java_org_libsdl_app_SDLActivity_nativeUpdateSensorEnabled (JNIEnv* env, jclass jcls, jint sensortype,
-                                                                        jboolean enabled) {
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                sensor_enabled[sensortype - 1] = enabled;
-            }
-           }
-
-           void Java_org_libsdl_app_SDLActivity_nativeSensorUpdate (JNIEnv* env, jclass jcls, jint sensortype,
-                                                                 jfloatArray values) {
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                jsize length = env->GetArrayLength(values);
-
-                sensor_value_count_actual[sensortype - 1] = length;
-
-                jfloat* values_array = env->GetFloatArrayElements(values, 0);
-
-                for (int i = 0; i < length && i < SENSOR_VALUES_MAX; i++) {
-                    sensor_values[sensortype - 1][i] = values_array[i];
-                }
-
-                env->ReleaseFloatArrayElements(values, values_array, 0);
-            }
-           }
-
-           void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls, jboolean available)
+        /*void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls, jboolean available)
               {
             gps_available = available;
            }
@@ -78,106 +43,12 @@ using namespace std;
            }
 
            void jni_initialize () {
-            for (int i = 0; i < SENSOR_TYPE_COUNT; i++) {
-                sensor_available[i] = false;
-                sensor_enabled[i] = false;
-                sensor_value_count_actual[i] = 0;
-
-                for (int n = 0; n < SENSOR_VALUES_MAX; n++) {
-                    sensor_values[i][n] = 0.0f;
-                }
-            }
-
             gps_available = false;
             gps_accessible = false;
             gps_enabled = false;
 
             for (int i = 0; i < GPS_VALUES_MAX; i++) {
                 gps_values[i] = 0.0;
-            }
-           }
-
-           int jni_get_sensor_number (const char* sensor_name) {
-            if (strcmp(sensor_name, "accelerometer") == 0) {
-                return Android::SENSOR_TYPE_ACCELEROMETER;
-            } else if (strcmp(sensor_name, "ambient_temperature") == 0) {
-                return Android::SENSOR_TYPE_AMBIENT_TEMPERATURE;
-            } else if (strcmp(sensor_name, "game_rotation_vector") == 0) {
-                return Android::SENSOR_TYPE_GAME_ROTATION_VECTOR;
-            } else if (strcmp(sensor_name, "geomagnetic_rotation_vector") == 0) {
-                return Android::SENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR;
-            } else if (strcmp(sensor_name, "gravity") == 0) {
-                return Android::SENSOR_TYPE_GRAVITY;
-            } else if (strcmp(sensor_name, "gyroscope") == 0) {
-                return Android::SENSOR_TYPE_GYROSCOPE;
-            } else if (strcmp(sensor_name, "gyroscope_uncalibrated") == 0) {
-                return Android::SENSOR_TYPE_GYROSCOPE_UNCALIBRATED;
-            } else if (strcmp(sensor_name, "heart_rate") == 0) {
-                return Android::SENSOR_TYPE_HEART_RATE;
-            } else if (strcmp(sensor_name, "light") == 0) {
-                return Android::SENSOR_TYPE_LIGHT;
-            } else if (strcmp(sensor_name, "linear_acceleration") == 0) {
-                return Android::SENSOR_TYPE_LINEAR_ACCELERATION;
-            } else if (strcmp(sensor_name, "magnetic_field") == 0) {
-                return Android::SENSOR_TYPE_MAGNETIC_FIELD;
-            } else if (strcmp(sensor_name, "magnetic_field_uncalibrated") == 0) {
-                return Android::SENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED;
-            } else if (strcmp(sensor_name, "pressure") == 0) {
-                return Android::SENSOR_TYPE_PRESSURE;
-            } else if (strcmp(sensor_name, "proximity") == 0) {
-                return Android::SENSOR_TYPE_PROXIMITY;
-            } else if (strcmp(sensor_name, "relative_humidity") == 0) {
-                return Android::SENSOR_TYPE_RELATIVE_HUMIDITY;
-            } else if (strcmp(sensor_name, "rotation_vector") == 0) {
-                return Android::SENSOR_TYPE_ROTATION_VECTOR;
-            } else if (strcmp(sensor_name, "significant_motion") == 0) {
-                return Android::SENSOR_TYPE_SIGNIFICANT_MOTION;
-            } else if (strcmp(sensor_name, "step_counter") == 0) {
-                return Android::SENSOR_TYPE_STEP_COUNTER;
-            } else if (strcmp(sensor_name, "step_detector") == 0) {
-                return Android::SENSOR_TYPE_STEP_DETECTOR;
-            } else {
-                return 0;
-            }
-           }
-
-           bool jni_get_sensor_available (const char* sensor_name) {
-            int sensortype = jni_get_sensor_number(sensor_name);
-
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                return sensor_available[sensortype - 1];
-            } else {
-                return false;
-            }
-           }
-
-           bool jni_get_sensor_enabled (const char* sensor_name) {
-            int sensortype = jni_get_sensor_number(sensor_name);
-
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                return sensor_enabled[sensortype - 1];
-            } else {
-                return false;
-            }
-           }
-
-           int jni_get_sensor_value_count_actual (const char* sensor_name) {
-            int sensortype = jni_get_sensor_number(sensor_name);
-
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                return sensor_value_count_actual[sensortype - 1];
-            } else {
-                return 0;
-            }
-           }
-
-           void jni_get_sensor_values (const char* sensor_name, float values[SENSOR_VALUES_MAX]) {
-            int sensortype = jni_get_sensor_number(sensor_name);
-
-            if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-                for (int i = 0; i < SENSOR_VALUES_MAX; i++) {
-                    values[i] = sensor_values[sensortype - 1][i];
-                }
             }
            }
 
@@ -204,6 +75,8 @@ using namespace std;
 Android_Sensor::Android_Sensor () {
     value_count = 0;
     units = "";
+    enabled = false;
+    sdlSensor = 0;
 }
 
 void Android_Sensor::setup (int get_value_count, string get_units, const vector<string>& get_value_labels) {
@@ -220,6 +93,8 @@ void Android_Sensor::setup (int get_value_count, string get_units, const vector<
 void Android_Sensor::reset () {
     value_count = 0;
     units = "";
+    enabled = false;
+    sdlSensor = 0;
 
     value_labels.clear();
 }
@@ -421,33 +296,152 @@ Android_GPS::Android_GPS () {
 #endif
 
 const int Android::SENSOR_TYPE_ACCELEROMETER = 1;
+const int Android::SENSOR_TYPE_ACCELEROMETER_UNCALIBRATED = 35;
 const int Android::SENSOR_TYPE_AMBIENT_TEMPERATURE = 13;
 const int Android::SENSOR_TYPE_GAME_ROTATION_VECTOR = 15;
 const int Android::SENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR = 20;
 const int Android::SENSOR_TYPE_GRAVITY = 9;
 const int Android::SENSOR_TYPE_GYROSCOPE = 4;
 const int Android::SENSOR_TYPE_GYROSCOPE_UNCALIBRATED = 16;
+const int Android::SENSOR_TYPE_HEART_BEAT = 31;
 const int Android::SENSOR_TYPE_HEART_RATE = 21;
 const int Android::SENSOR_TYPE_LIGHT = 5;
 const int Android::SENSOR_TYPE_LINEAR_ACCELERATION = 10;
+const int Android::SENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT = 34;
 const int Android::SENSOR_TYPE_MAGNETIC_FIELD = 2;
 const int Android::SENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED = 14;
+const int Android::SENSOR_TYPE_MOTION_DETECT = 30;
+const int Android::SENSOR_TYPE_POSE_6DOF = 28;
 const int Android::SENSOR_TYPE_PRESSURE = 6;
 const int Android::SENSOR_TYPE_PROXIMITY = 8;
 const int Android::SENSOR_TYPE_RELATIVE_HUMIDITY = 12;
 const int Android::SENSOR_TYPE_ROTATION_VECTOR = 11;
 const int Android::SENSOR_TYPE_SIGNIFICANT_MOTION = 17;
+const int Android::SENSOR_TYPE_STATIONARY_DETECT = 29;
 const int Android::SENSOR_TYPE_STEP_COUNTER = 19;
 const int Android::SENSOR_TYPE_STEP_DETECTOR = 18;
 bool Android::initialized = false;
+int Android::sdlSensorCount = 0;
 Android_Sensor Android::sensors[SENSOR_TYPE_COUNT];
 
 #ifdef GAME_OS_ANDROID
     // Android_Google_Play_Games Android::google_play_games;
 #endif
 
+int Android::getSensorNumber (string sensorName) {
+    if (sensorName == "accelerometer") {
+        return Android::SENSOR_TYPE_ACCELEROMETER;
+    } else if (sensorName == "accelerometer_uncalibrated") {
+        return Android::SENSOR_TYPE_ACCELEROMETER_UNCALIBRATED;
+    } else if (sensorName == "ambient_temperature") {
+        return Android::SENSOR_TYPE_AMBIENT_TEMPERATURE;
+    } else if (sensorName == "game_rotation_vector") {
+        return Android::SENSOR_TYPE_GAME_ROTATION_VECTOR;
+    } else if (sensorName == "geomagnetic_rotation_vector") {
+        return Android::SENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR;
+    } else if (sensorName == "gravity") {
+        return Android::SENSOR_TYPE_GRAVITY;
+    } else if (sensorName == "gyroscope") {
+        return Android::SENSOR_TYPE_GYROSCOPE;
+    } else if (sensorName == "gyroscope_uncalibrated") {
+        return Android::SENSOR_TYPE_GYROSCOPE_UNCALIBRATED;
+    } else if (sensorName == "heart_beat") {
+        return Android::SENSOR_TYPE_HEART_BEAT;
+    } else if (sensorName == "heart_rate") {
+        return Android::SENSOR_TYPE_HEART_RATE;
+    } else if (sensorName == "light") {
+        return Android::SENSOR_TYPE_LIGHT;
+    } else if (sensorName == "linear_acceleration") {
+        return Android::SENSOR_TYPE_LINEAR_ACCELERATION;
+    } else if (sensorName == "low_latency_off_body_detect") {
+        return Android::SENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT;
+    } else if (sensorName == "magnetic_field") {
+        return Android::SENSOR_TYPE_MAGNETIC_FIELD;
+    } else if (sensorName == "magnetic_field_uncalibrated") {
+        return Android::SENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED;
+    } else if (sensorName == "motion_detect") {
+        return Android::SENSOR_TYPE_MOTION_DETECT;
+    } else if (sensorName == "pose_6dof") {
+        return Android::SENSOR_TYPE_POSE_6DOF;
+    } else if (sensorName == "pressure") {
+        return Android::SENSOR_TYPE_PRESSURE;
+    } else if (sensorName == "proximity") {
+        return Android::SENSOR_TYPE_PROXIMITY;
+    } else if (sensorName == "relative_humidity") {
+        return Android::SENSOR_TYPE_RELATIVE_HUMIDITY;
+    } else if (sensorName == "rotation_vector") {
+        return Android::SENSOR_TYPE_ROTATION_VECTOR;
+    } else if (sensorName == "significant_motion") {
+        return Android::SENSOR_TYPE_SIGNIFICANT_MOTION;
+    } else if (sensorName == "stationary_detect") {
+        return Android::SENSOR_TYPE_STATIONARY_DETECT;
+    } else if (sensorName == "step_counter") {
+        return Android::SENSOR_TYPE_STEP_COUNTER;
+    } else if (sensorName == "step_detector") {
+        return Android::SENSOR_TYPE_STEP_DETECTOR;
+    } else {
+        return 0;
+    }
+}
+
+bool Android::isSensorAvailable (string sensorType) {
+    int sensorNumber = getSensorNumber(sensorType);
+
+    if (sensorNumber > 0 && sensorNumber <= SENSOR_TYPE_COUNT) {
+        return sdlSensors.count(sensorNumber);
+    } else {
+        return false;
+    }
+}
+
+void Android::setSensorEnabled (string sensorType, bool enabled) {
+    int sensorNumber = getSensorNumber(sensorType);
+
+    if (sensorNumber > 0 && sensorNumber <= SENSOR_TYPE_COUNT) {
+        if (isSensorAvailable(sensorType)) {
+            if (!sensors[sensorNumber - 1].enabled) {
+                int sdlDeviceIndex = sdlSensors.at(sensorNumber);
+                SDL_Sensor* sdlSensor = SDL_SensorOpen(sdlDeviceIndex);
+
+                if (sdlSensor != 0) {
+                    sensors[sensorNumber - 1].enabled = true;
+                    sensors[sensorNumber - 1].sdlSensor = sdlSensor;
+                }
+            } else {
+                sensors[sensorNumber - 1].enabled = false;
+
+                if (sensors[sensorNumber - 1].sdlSensor != 0) {
+                    SDL_SensorClose(sensors[sensorNumber - 1].sdlSensor);
+                    sensors[sensorNumber - 1].sdlSensor = 0;
+                }
+            }
+        }
+    }
+}
+
+void Android::set_gps_enabled (bool enabled, uint32_t minimum_update_time, float minimum_update_distance) {
+    #ifdef GAME_OS_ANDROID
+        // call_android_method_static("enableGPS", "(ZIF)V", enabled, minimum_update_time, minimum_update_distance);
+    #endif
+}
+
 void Android::initialize () {
     if (!initialized) {
+        sdlSensorCount = SDL_NumSensors();
+        sdlSensors.clear();
+
+        for (int i = 0; i < sdlSensorCount; i++) {
+            SDL_SensorType sdlSensorType = SDL_SensorGetDeviceType(i);
+
+            if (sdlSensorType == SDL_SENSOR_ACCEL) {
+                sdlSensors.emplace(Android::SENSOR_TYPE_ACCELEROMETER, i);
+            } else if (sdlSensorType == SDL_SENSOR_GYRO) {
+                sdlSensors.emplace(Android::SENSOR_TYPE_GYROSCOPE, i);
+            } else {
+                sdlSensors.emplace(SDL_SensorGetDeviceNonPortableType(i), i);
+            }
+        }
+
         vector<string> value_labels;
 
         value_labels.clear();
@@ -455,6 +449,15 @@ void Android::initialize () {
         value_labels.push_back("Acceleration on the y-axis");
         value_labels.push_back("Acceleration on the z-axis");
         sensors[SENSOR_TYPE_ACCELEROMETER - 1].setup(3, "m/s" + Symbols::squared(), value_labels);
+
+        value_labels.clear();
+        value_labels.push_back("Acceleration on the x-axis without bias compensation");
+        value_labels.push_back("Acceleration on the y-axis without bias compensation");
+        value_labels.push_back("Acceleration on the z-axis without bias compensation");
+        value_labels.push_back("Estimated x-axis bias");
+        value_labels.push_back("Estimated y-axis bias");
+        value_labels.push_back("Estimated z-axis bias");
+        sensors[SENSOR_TYPE_ACCELEROMETER_UNCALIBRATED - 1].setup(6, "m/s" + Symbols::squared(), value_labels);
 
         value_labels.clear();
         value_labels.push_back("Ambient temperature");
@@ -497,6 +500,10 @@ void Android::initialize () {
         sensors[SENSOR_TYPE_GYROSCOPE_UNCALIBRATED - 1].setup(6, "rad/s", value_labels);
 
         value_labels.clear();
+        value_labels.push_back("Confidence");
+        sensors[SENSOR_TYPE_HEART_BEAT - 1].setup(1, "", value_labels);
+
+        value_labels.clear();
         value_labels.push_back("Heart rate");
         sensors[SENSOR_TYPE_HEART_RATE - 1].setup(1, "bpm", value_labels);
 
@@ -509,6 +516,10 @@ void Android::initialize () {
         value_labels.push_back("Acceleration without gravity on the y-axis");
         value_labels.push_back("Acceleration without gravity on the z-axis");
         sensors[SENSOR_TYPE_LINEAR_ACCELERATION - 1].setup(3, "m/s" + Symbols::squared(), value_labels);
+
+        value_labels.clear();
+        value_labels.push_back("Off-body state");
+        sensors[SENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT - 1].setup(1, "", value_labels);
 
         value_labels.clear();
         value_labels.push_back("Ambient magnetic field in the x-axis");
@@ -524,6 +535,28 @@ void Android::initialize () {
         value_labels.push_back("Estimated iron bias in the y-axis");
         value_labels.push_back("Estimated iron bias in the z-axis");
         sensors[SENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED - 1].setup(6, "uT", value_labels);
+
+        value_labels.clear();
+        value_labels.push_back("Motion detected");
+        sensors[SENSOR_TYPE_MOTION_DETECT - 1].setup(1, "", value_labels);
+
+        value_labels.clear();
+        value_labels.push_back("x*sin(θ/2)");
+        value_labels.push_back("y*sin(θ/2)");
+        value_labels.push_back("z*sin(θ/2)");
+        value_labels.push_back("cos(θ/2)");
+        value_labels.push_back("Translation along x-axis from an arbitrary origin");
+        value_labels.push_back("Translation along y-axis from an arbitrary origin");
+        value_labels.push_back("Translation along z-axis from an arbitrary origin");
+        value_labels.push_back("Delta quaternion rotation x*sin(θ/2)");
+        value_labels.push_back("Delta quaternion rotation y*sin(θ/2)");
+        value_labels.push_back("Delta quaternion rotation z*sin(θ/2)");
+        value_labels.push_back("Delta quaternion rotation cos(θ/2)");
+        value_labels.push_back("Delta translation along x-axis");
+        value_labels.push_back("Delta translation along y-axis");
+        value_labels.push_back("Delta translation along z-axis");
+        value_labels.push_back("Sequence number");
+        sensors[SENSOR_TYPE_POSE_6DOF - 1].setup(15, "", value_labels);
 
         value_labels.clear();
         value_labels.push_back("Atmospheric pressure");
@@ -546,11 +579,15 @@ void Android::initialize () {
         sensors[SENSOR_TYPE_ROTATION_VECTOR - 1].setup(5, "", value_labels);
 
         value_labels.clear();
-        value_labels.push_back("Steps");
-        sensors[SENSOR_TYPE_STEP_COUNTER - 1].setup(1, "", value_labels);
+        sensors[SENSOR_TYPE_SIGNIFICANT_MOTION - 1].setup(0, "", value_labels);
 
         value_labels.clear();
-        sensors[SENSOR_TYPE_SIGNIFICANT_MOTION - 1].setup(0, "", value_labels);
+        value_labels.push_back("Device determined to be stationary");
+        sensors[SENSOR_TYPE_STATIONARY_DETECT - 1].setup(1, "", value_labels);
+
+        value_labels.clear();
+        value_labels.push_back("Steps");
+        sensors[SENSOR_TYPE_STEP_COUNTER - 1].setup(1, "", value_labels);
 
         value_labels.clear();
         value_labels.push_back("");
@@ -632,107 +669,93 @@ void Android::deinitialize () {
                jni_initialize();*/
         #endif
 
+        sdlSensorCount = 0;
+        sdlSensors.clear();
+
         for (int i = 0; i < SENSOR_TYPE_COUNT; i++) {
             sensors[i].reset();
         }
     }
 }
 
-bool Android::get_sensor_availability (string sensor_type) {
-    #ifdef GAME_OS_ANDROID
+string Android::getSensorsString () {
+    string sensorsString = "";
 
-        return false; // return jni_get_sensor_available(sensor_type.c_str());
-    #endif
+    for (int i = 0; i < sdlSensorCount; i++) {
+        const char* sdlSensorName = SDL_SensorGetDeviceName(i);
+
+        sensorsString += sdlSensorName;
+        sensorsString += "\n";
+    }
+
+    return sensorsString;
+}
+
+bool Android::get_sensor_availability (string sensorType) {
+    return isSensorAvailable(sensorType);
+}
+
+bool Android::get_sensor_state (string sensorType) {
+    int sensorNumber = getSensorNumber(sensorType);
+
+    if (sensorNumber > 0 && sensorNumber <= SENSOR_TYPE_COUNT) {
+        if (isSensorAvailable(sensorType)) {
+            return sensors[sensorNumber - 1].enabled;
+        }
+    }
 
     return false;
 }
 
-bool Android::get_sensor_state (string sensor_type) {
-    #ifdef GAME_OS_ANDROID
+int Android::get_sensor_value_count (string sensorType) {
+    int sensorNumber = getSensorNumber(sensorType);
 
-        return false; // return jni_get_sensor_enabled(sensor_type.c_str());
-    #endif
-
-    return false;
-}
-
-int Android::get_sensor_value_count_actual (string sensor_type) {
-    #ifdef GAME_OS_ANDROID
-
-        return 0; // return jni_get_sensor_value_count_actual(sensor_type.c_str());
-    #endif
+    if (sensorNumber > 0 && sensorNumber <= SENSOR_TYPE_COUNT) {
+        return sensors[sensorNumber - 1].value_count;
+    }
 
     return 0;
 }
 
-int Android::get_sensor_value_count (string sensor_type) {
-    #ifdef GAME_OS_ANDROID
-        /*int sensortype = jni_get_sensor_number(sensor_type.c_str());
+string Android::get_sensor_units (string sensorType) {
+    int sensorNumber = getSensorNumber(sensorType);
 
-           if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-            return sensors[sensortype - 1].value_count;
-           }*/
-
-    #endif
-
-    return 0;
-}
-
-string Android::get_sensor_units (string sensor_type) {
-    #ifdef GAME_OS_ANDROID
-        /*int sensortype = jni_get_sensor_number(sensor_type.c_str());
-
-           if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-            return sensors[sensortype - 1].units;
-           }*/
-
-    #endif
+    if (sensorNumber > 0 && sensorNumber <= SENSOR_TYPE_COUNT) {
+        return sensors[sensorNumber - 1].units;
+    }
 
     return "";
 }
 
-void Android::get_sensor_value_labels (string sensor_type, string value_labels[SENSOR_VALUES_MAX]) {
-    #ifdef GAME_OS_ANDROID
-        /*int sensortype = jni_get_sensor_number(sensor_type.c_str());
+void Android::get_sensor_value_labels (string sensorType, string valueLabels[SENSOR_VALUES_MAX]) {
+    int sensorNumber = getSensorNumber(sensorType);
 
-           if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-            for (int i = 0; i < SENSOR_VALUES_MAX; i++) {
-                value_labels[i] = sensors[sensortype - 1].value_labels[i];
-            }
-           }*/
-
-    #endif
+    if (sensorNumber > 0 && sensorNumber <= SENSOR_TYPE_COUNT) {
+        for (int i = 0; i < SENSOR_VALUES_MAX; i++) {
+            valueLabels[i] = sensors[sensorNumber - 1].value_labels[i];
+        }
+    }
 }
 
-void Android::get_sensor_values (string sensor_type, float values[SENSOR_VALUES_MAX]) {
-    #ifdef GAME_OS_ANDROID
-        // jni_get_sensor_values(sensor_type.c_str(), values);
-    #endif
+bool Android::get_sensor_values (string sensorType, float values[SENSOR_VALUES_MAX]) {
+    if (isSensorAvailable(sensorType) && get_sensor_state(sensorType)) {
+        int sensorNumber = getSensorNumber(sensorType);
+
+        if (SDL_SensorGetData(sensors[sensorNumber - 1].sdlSensor, values,
+                              sensors[sensorNumber - 1].value_count) == 0) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
-void Android::set_sensor_enabled (string sensor_type, bool enabled) {
-    #ifdef GAME_OS_ANDROID
-        /*int sensortype = jni_get_sensor_number(sensor_type.c_str());
-
-           if (sensortype > 0 && sensortype <= SENSOR_TYPE_COUNT) {
-            call_android_method_static("enableSensor", "(IZ)V", sensortype, enabled);
-           }*/
-
-    #endif
+void Android::enable_sensor (string sensorType) {
+    setSensorEnabled(sensorType, true);
 }
 
-void Android::set_gps_enabled (bool enabled, uint32_t minimum_update_time, float minimum_update_distance) {
-    #ifdef GAME_OS_ANDROID
-        // call_android_method_static("enableGPS", "(ZIF)V", enabled, minimum_update_time, minimum_update_distance);
-    #endif
-}
-
-void Android::enable_sensor (string sensor_type) {
-    set_sensor_enabled(sensor_type, true);
-}
-
-void Android::disable_sensor (string sensor_type) {
-    set_sensor_enabled(sensor_type, false);
+void Android::disable_sensor (string sensorType) {
+    setSensorEnabled(sensorType, false);
 }
 
 void Android::vibrate (uint32_t length) {

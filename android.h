@@ -8,20 +8,23 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <map>
+
+#include <SDL.h>
+#include <SDL_sensor.h>
 
 #ifdef GAME_OS_ANDROID
     #include "log.h"
 
-    #include <SDL.h>
     #include <jni.h>
 #endif
 
-// This value should equal the highest numbered sensor type from the Android SENSOR_TYPE constants (which come from
+// This value should equal the highest numbered sensor type from the Android TYPE_ constants (which come from
 // Android's Sensor class)
-const int SENSOR_TYPE_COUNT = 21;
+const int SENSOR_TYPE_COUNT = 35;
 
 // The highest number of values any sensor has
-const int SENSOR_VALUES_MAX = 6;
+const int SENSOR_VALUES_MAX = 15;
 
 // The number of values we read from GPS
 const int GPS_VALUES_MAX = 6;
@@ -29,11 +32,6 @@ const int GPS_VALUES_MAX = 6;
 #ifdef GAME_OS_ANDROID
     extern "C" {
         /*extern void jni_initialize();
-           extern int jni_get_sensor_number(const char* sensor_name);
-           extern bool jni_get_sensor_available(const char* sensor_name);
-           extern bool jni_get_sensor_enabled(const char* sensor_name);
-           extern int jni_get_sensor_value_count_actual(const char* sensor_name);
-           extern void jni_get_sensor_values(const char* sensor_name,float values[SENSOR_VALUES_MAX]);
            extern bool jni_get_gps_available();
            extern bool jni_get_gps_accessible();
            extern bool jni_get_gps_enabled();
@@ -46,6 +44,8 @@ class Android_Sensor {
         int value_count;
         std::string units;
         std::vector<std::string> value_labels;
+        bool enabled;
+        SDL_Sensor* sdlSensor;
 
         Android_Sensor ();
 
@@ -109,6 +109,9 @@ class Android_GPS {
 class Android {
     private:
         static bool initialized;
+        static int sdlSensorCount;
+        // A map of SENSOR_TYPE_ constants paired to their corresponding SDL sensor device indices
+        static std::map<int, int> sdlSensors;
         static Android_Sensor sensors[SENSOR_TYPE_COUNT];
 
         #ifdef GAME_OS_ANDROID
@@ -165,40 +168,49 @@ class Android {
             #endif
         }
 
-        static void set_sensor_enabled(std::string sensor_type, bool enabled);
+        static int getSensorNumber(std::string sensorName);
+        static bool isSensorAvailable(std::string sensorType);
+        static void setSensorEnabled(std::string sensorType, bool enabled);
         static void set_gps_enabled(bool enabled, std::uint32_t minimum_update_time, float minimum_update_distance);
 
     public:
         static const int SENSOR_TYPE_ACCELEROMETER;
+        static const int SENSOR_TYPE_ACCELEROMETER_UNCALIBRATED;
         static const int SENSOR_TYPE_AMBIENT_TEMPERATURE;
         static const int SENSOR_TYPE_GAME_ROTATION_VECTOR;
         static const int SENSOR_TYPE_GEOMAGNETIC_ROTATION_VECTOR;
         static const int SENSOR_TYPE_GRAVITY;
         static const int SENSOR_TYPE_GYROSCOPE;
         static const int SENSOR_TYPE_GYROSCOPE_UNCALIBRATED;
+        static const int SENSOR_TYPE_HEART_BEAT;
         static const int SENSOR_TYPE_HEART_RATE;
         static const int SENSOR_TYPE_LIGHT;
         static const int SENSOR_TYPE_LINEAR_ACCELERATION;
+        static const int SENSOR_TYPE_LOW_LATENCY_OFFBODY_DETECT;
         static const int SENSOR_TYPE_MAGNETIC_FIELD;
         static const int SENSOR_TYPE_MAGNETIC_FIELD_UNCALIBRATED;
+        static const int SENSOR_TYPE_MOTION_DETECT;
+        static const int SENSOR_TYPE_POSE_6DOF;
         static const int SENSOR_TYPE_PRESSURE;
         static const int SENSOR_TYPE_PROXIMITY;
         static const int SENSOR_TYPE_RELATIVE_HUMIDITY;
         static const int SENSOR_TYPE_ROTATION_VECTOR;
         static const int SENSOR_TYPE_SIGNIFICANT_MOTION;
+        static const int SENSOR_TYPE_STATIONARY_DETECT;
         static const int SENSOR_TYPE_STEP_COUNTER;
         static const int SENSOR_TYPE_STEP_DETECTOR;
         static void initialize();
         static void deinitialize();
-        static bool get_sensor_availability(std::string sensor_type);
-        static bool get_sensor_state(std::string sensor_type);
-        static int get_sensor_value_count_actual(std::string sensor_type);
-        static int get_sensor_value_count(std::string sensor_type);
-        static std::string get_sensor_units(std::string sensor_type);
-        static void get_sensor_value_labels(std::string sensor_type, std::string value_labels[SENSOR_VALUES_MAX]);
-        static void get_sensor_values(std::string sensor_type, float values[SENSOR_VALUES_MAX]);
-        static void enable_sensor(std::string sensor_type);
-        static void disable_sensor(std::string sensor_type);
+        static std::string getSensorsString();
+        static bool get_sensor_availability(std::string sensorType);
+        static bool get_sensor_state(std::string sensorType);
+        static int get_sensor_value_count(std::string sensorType);
+        static std::string get_sensor_units(std::string sensorType);
+        static void get_sensor_value_labels(std::string sensorType, std::string valueLabels[SENSOR_VALUES_MAX]);
+        // Returns true if values were retrieved successfully
+        static bool get_sensor_values(std::string sensorType, float values[SENSOR_VALUES_MAX]);
+        static void enable_sensor(std::string sensorType);
+        static void disable_sensor(std::string sensorType);
         static void vibrate(std::uint32_t length);
         static void vibrate_stop();
         static void open_url(std::string url);
