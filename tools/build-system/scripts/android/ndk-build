@@ -1,0 +1,36 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $DIR
+
+PROJECT_DIRECTORY=$1
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	export NDK_PROJECT_PATH="$PROJECT_DIRECTORY/development/android"
+
+	CPU_COUNT=$(nproc --all)
+
+	ndk_version=""
+	for d in /home/tails/build-server/android/android-sdk/ndk/*/ ; do
+		if [ -d "$d" ]; then
+			PREFIX=/home/tails/build-server/android/android-sdk/ndk/
+			SUFFIX=/
+			WNAME=${d#$PREFIX}
+			WNAME=${WNAME%$SUFFIX}
+
+			ndk_version="${WNAME}"
+
+			break
+		fi
+	done
+
+	if [ -n "$ndk_version" ]; then
+		/home/tails/build-server/android/android-sdk/ndk/$ndk_version/ndk-build APP_MODULES="SDL2_main SDL2_static SDL2_image_static SDL2_mixer_static RakNet_static Cheese-Engine" -j $CPU_COUNT
+	else
+		echo "ndk-build failed for $PROJECT_DIRECTORY: could not detect an NDK installation" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
+		exit 64
+	fi
+else
+	echo "ndk-build - run ndk-build on the passed project"
+	echo "Usage: build PROJECT-DIRECTORY"
+fi

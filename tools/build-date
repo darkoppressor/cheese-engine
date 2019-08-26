@@ -15,9 +15,9 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		MONTH=$(date +%m)
 		DAY=$(date +%d)
 
-		sed -i -e "s/^.*\/\/YEAR$/    return \"$YEAR\"; \/\/YEAR/" "$VERSION_FILE"
-		sed -i -e "s/^.*\/\/MONTH$/    return \"$MONTH\"; \/\/MONTH/" "$VERSION_FILE"
-		sed -i -e "s/^.*\/\/DAY$/    return \"$DAY\"; \/\/DAY/" "$VERSION_FILE"
+		sed -i -e "s/^.*\/\/ YEAR$/    return \"$YEAR\"; \/\/ YEAR/" "$VERSION_FILE"
+		sed -i -e "s/^.*\/\/ MONTH$/    return \"$MONTH\"; \/\/ MONTH/" "$VERSION_FILE"
+		sed -i -e "s/^.*\/\/ DAY$/    return \"$DAY\"; \/\/ DAY/" "$VERSION_FILE"
 	else
 		echo "No such version file: $VERSION_FILE"
 	fi

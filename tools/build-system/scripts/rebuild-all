@@ -14,7 +14,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./rebuild-target $PROJECT_DIRECTORY Release-macOS-x86_64
 
-	./rebuild-android $PROJECT_DIRECTORY
+	./clean-android $PROJECT_DIRECTORY
+	./build-android $PROJECT_DIRECTORY
 else
 	echo "rebuild-all - rebuild all targets for the passed project"
 	echo "Usage: rebuild-all PROJECT-DIRECTORY"

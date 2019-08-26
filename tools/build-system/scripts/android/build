@@ -4,14 +4,30 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 PROJECT_DIRECTORY=$1
+TARGET=$2
 
-if [ -n "$PROJECT_DIRECTORY" ]; then
-	export NDK_PROJECT_PATH="$PROJECT_DIRECTORY/development/android"
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
+	if [ "$TARGET" != "release" ] && [ "$TARGET" != "debug" ]; then
+		echo "TARGET must be either 'release' or 'debug'"
 
-	CPU_COUNT=$(nproc --all)
+		exit 64
+	fi
 
-	/home/tails/build-server/android/android-ndk/ndk-build -j $CPU_COUNT
+	GRADLE="$PROJECT_DIRECTORY/development/android/gradlew"
+
+	chmod +x $GRADLE
+
+	cd "$PROJECT_DIRECTORY/development/android"
+
+	$GRADLE androidDependencies
+
+	if [ "$TARGET" == "release" ]; then
+		$GRADLE clean assembleRelease :app:bundleRelease
+	else
+		$GRADLE clean assembleDebug
+	fi
 else
-	echo "build - run ndk-build on the passed project"
-	echo "Usage: build PROJECT-DIRECTORY"
+	echo "build - run Gradle build on the passed project"
+	echo "Usage: build PROJECT-DIRECTORY TARGET"
+	echo "TARGET must be either 'release' or 'debug'"
 fi

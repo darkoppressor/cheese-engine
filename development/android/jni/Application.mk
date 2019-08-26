@@ -1,15 +1,13 @@
-
 # Uncomment this if you're using STL in your project
-# See CPLUSPLUS-SUPPORT.html in the NDK documentation for more information
+# You can find more information here:
+# https://developer.android.com/ndk/guides/cpp-support
 APP_STL := c++_static
 
 NDK_TOOLCHAIN_VERSION := clang
 
-# x86_64 is disabled for now, because it is not supported by the Google Play Games SDK
-APP_ABI := armeabi-v7a arm64-v8a x86
-#APP_ABI := armeabi-v7a
+APP_ABI := armeabi-v7a arm64-v8a x86 x86_64
 
-# Min SDK level
+# Min runtime API level
 APP_PLATFORM=android-26
 
 # Release options:

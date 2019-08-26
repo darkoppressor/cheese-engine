@@ -204,7 +204,9 @@ void Engine::quit(){
 
     Steam::deinitialize();
 
-    exit(EXIT_SUCCESS);
+    #ifndef GAME_OS_ANDROID
+        exit(EXIT_SUCCESS);
+    #endif
 }
 
 void Engine::set_mutable_info(Information* ptr_info){

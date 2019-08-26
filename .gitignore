@@ -15,8 +15,6 @@ development/android/jni/SDL2_image/**
 development/android/jni/SDL2_mixer/**
 development/android/jni/RakNet/**
 development/android/jni/boost/**
-development/android/ant.properties
-development/android/local.properties
 
 /*Windows-x86_64.exe
 /*Windows-Debug-x86_64.exe

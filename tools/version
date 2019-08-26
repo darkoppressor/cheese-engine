@@ -21,9 +21,9 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 		if [ -n "$VERSION_FILE" ]; then
 			echo "Reading current version number for the project in $PROJECT_DIRECTORY"
 
-			OLD_MAJOR=$(sed -ne "/^.*\/\/MAJOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
-			OLD_MINOR=$(sed -ne "/^.*\/\/MINOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
-			OLD_MICRO=$(sed -ne "/^.*\/\/MICRO$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+			OLD_MAJOR=$(sed -ne "/^.*\/\/ MAJOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+			OLD_MINOR=$(sed -ne "/^.*\/\/ MINOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+			OLD_MICRO=$(sed -ne "/^.*\/\/ MICRO$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
 
 			NEW_MAJOR=$OLD_MAJOR
 			NEW_MINOR=$OLD_MINOR
@@ -42,12 +42,12 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 
 			echo "Incrementing the version.cpp version number for the project in $PROJECT_DIRECTORY"
 
-			sed -i -e "s/^.*\/\/MAJOR$/    return $NEW_MAJOR; \/\/MAJOR/" "$VERSION_FILE"
-			sed -i -e "s/^.*\/\/MINOR$/    return $NEW_MINOR; \/\/MINOR/" "$VERSION_FILE"
-			sed -i -e "s/^.*\/\/MICRO$/    return $NEW_MICRO; \/\/MICRO/" "$VERSION_FILE"
+			sed -i -e "s/^.*\/\/ MAJOR$/    return $NEW_MAJOR; \/\/ MAJOR/" "$VERSION_FILE"
+			sed -i -e "s/^.*\/\/ MINOR$/    return $NEW_MINOR; \/\/ MINOR/" "$VERSION_FILE"
+			sed -i -e "s/^.*\/\/ MICRO$/    return $NEW_MICRO; \/\/ MICRO/" "$VERSION_FILE"
 
 			if [ -n "$STATUS" ]; then
-				sed -i -e "s/^.*\/\/STATUS$/    return \"$STATUS\"; \/\/STATUS/" "$VERSION_FILE"
+				sed -i -e "s/^.*\/\/ STATUS$/    return \"$STATUS\"; \/\/ STATUS/" "$VERSION_FILE"
 			fi
 
 			DEVELOPMENT_DIRECTORY="$PROJECT_DIRECTORY/development"
@@ -77,15 +77,15 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 				echo "Failed to locate .app directory"
 			fi
 
-			echo "Incrementing the AndroidManifest.xml version number for the project in $PROJECT_DIRECTORY"
+			echo "Incrementing the versions.gradle version number for the project in $PROJECT_DIRECTORY"
 
-			MANIFEST="$PROJECT_DIRECTORY/development/android/AndroidManifest.xml"
+			GRADLE_FILE="$PROJECT_DIRECTORY/development/android/versions.gradle"
 
-			sed -i -e "s/$OLD_MAJOR\.$OLD_MINOR\.$OLD_MICRO/$NEW_MAJOR\.$NEW_MINOR\.$NEW_MICRO/" "$MANIFEST"
-
-			VERSION_CODE=$(sed -ne "/^.*android:versionCode.*$/p" "$MANIFEST" | sed -e "s/[^0-9]//g")
+			VERSION_CODE=$(sed -ne "/^.*deps.version_code.*$/p" "$GRADLE_FILE" | sed -e "s/[^0-9]//g")
 			VERSION_CODE=$((VERSION_CODE + 1))
-			sed -i -e "s/^.*android:versionCode.*$/      android:versionCode=\"$VERSION_CODE\"/" "$MANIFEST"
+			sed -i -e "s/^.*deps.version_code.*$/deps.version_code = $VERSION_CODE/" "$GRADLE_FILE"
+
+			sed -i -e "s/^.*deps.version_name.*$/deps.version_name = '$NEW_MAJOR\.$NEW_MINOR\.$NEW_MICRO'/" "$GRADLE_FILE"
 		else
 			echo "No such version file: $VERSION_FILE"
 		fi

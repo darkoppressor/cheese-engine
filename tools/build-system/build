@@ -59,7 +59,7 @@ fi
 
 NAME="${PROJECT_NAME}"
 
-VERSION="9"
+VERSION="10"
 
 RESULT=""
 
@@ -206,7 +206,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 					ANDROID_ABI_TARGETS=$(echo $line | sed s/Android//)
 
-					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/jni/Application.mk"
+					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/jni/Application.mk"
 				fi
 			done <"$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets"
 		else
@@ -271,10 +271,10 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$BUILD_HOME/build-server/projects/${PROJECT_NAME}"
 		fi
 
-		PROJECT_VERSION=$(grep -F "android:versionName" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/AndroidManifest.xml")
+		PROJECT_VERSION=$(grep -F "deps.version_name" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/versions.gradle")
 
-		PV_PREFIX="*android:versionName=\""
-		PV_SUFFIX="\"*"
+		PV_PREFIX="*deps.version_name = '"
+		PV_SUFFIX="'*"
 		PROJECT_VERSION=${PROJECT_VERSION##$PV_PREFIX}
 		PROJECT_VERSION=${PROJECT_VERSION%%$PV_SUFFIX}
 
@@ -388,10 +388,13 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		fi
 
 		if [ "$BUILD_ANDROID" == "true" ]; then
-			BINARY="${NAME_CAPPED}-release.apk"
+			BINARY="app-release.apk"
+			BUNDLE="app-release.aab"
 			TARGET="Release-Android"
-			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" ]; then
-				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/bin/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
+			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/apk/release/${BINARY}" ] && \
+				[ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/bundle/release/${BUNDLE}" ]; then
+				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/apk/release/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
+				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/bundle/release/${BUNDLE}" "${BUILDS}/${PACKAGING_ANDROID}.aab"
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}

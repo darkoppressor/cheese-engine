@@ -5,7 +5,9 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
-KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key"
+KEY_STORE_LOCATION="\/home\/tails\/build-server\/android\/keystore\/cheese-and-bacon-games-app-bundle\.keystore"
+KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key-app-bundle"
+KEY_ALIAS="key0"
 
 check_status () {
 	local status=$?
@@ -20,50 +22,12 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	./clean-android $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	cd ../../
-	./android-prep $PROJECT_DIRECTORY $KEY_PASSWORDS_LOCATION >> "$PROJECT_DIRECTORY/log-Release-Android"
+	./android-prep $PROJECT_DIRECTORY $KEY_STORE_LOCATION $KEY_PASSWORDS_LOCATION $KEY_ALIAS >> "$PROJECT_DIRECTORY/log-Release-Android"
 	cd $DIR
 
-	android/build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	android/build "$PROJECT_DIRECTORY" "release" >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	check_status
-
-	ANDROID_ABI_TARGETS=""
-
-	while read line
-	do
-		if [[ $line == Android* ]]; then
-			ANDROID_ABI_TARGETS=$(echo $line | sed s/Android//)
-		fi
-	done <"$PROJECT_DIRECTORY/development/build-system-targets"
-
-	ANDROID_ABI_RESULTS=""
-
-	for d in $PROJECT_DIRECTORY/development/android/libs/* ; do
-		PREFIX=$PROJECT_DIRECTORY/development/android/libs/
-		SUFFIX=/
-		LIB_NAME=${d#$PREFIX}
-		LIB_NAME=${LIB_NAME%$SUFFIX}
-
-		# Ignore any non-ABI files
-		if [ "$LIB_NAME" != "support-annotations.jar" ]; then
-			ANDROID_ABI_RESULTS="$ANDROID_ABI_RESULTS $LIB_NAME"
-
-			if ! [ -e "$d/libmain.so" ]; then
-				echo "build-android failed for $PROJECT_DIRECTORY: missing library '$d/libmain.so'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-				exit 64
-			fi
-		fi
-	done
-
-	IFS=' ' read -a ARRAY <<< "$ANDROID_ABI_TARGETS"
-	for i in "${ARRAY[@]}" ; do
-		if ! [[ $ANDROID_ABI_RESULTS == *"$i"* ]]; then
-			echo "build-android failed for $PROJECT_DIRECTORY: missing ABI '$i'" | tee -a "$PROJECT_DIRECTORY/log-Release-Android"
-			exit 65
-		fi
-	done
-
-	android/ant $PROJECT_DIRECTORY release >> "$PROJECT_DIRECTORY/log-Release-Android"
 else
 	echo "build-android - build the android target for the passed project"
 	echo "Usage: build-android PROJECT-DIRECTORY"

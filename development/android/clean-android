@@ -6,13 +6,8 @@ cd $DIR
 #echo "clean-android - clean the android target for the Cheese Engine"
 #echo "Usage: clean-android"
 
-rm -rf "assets/"
-rm -rf "bin/"
-rm -rf "gen/"
-rm -rf "libs/"
 rm -rf "obj/"
 
-rm -f "jni/gpg"
 rm -f "jni/SDL2"
 rm -f "jni/SDL2_image"
 rm -f "jni/SDL2_mixer"
