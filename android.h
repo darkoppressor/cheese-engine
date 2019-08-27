@@ -31,11 +31,11 @@ const int GPS_VALUES_MAX = 6;
 
 #ifdef GAME_OS_ANDROID
     extern "C" {
-        /*extern void jni_initialize();
-           extern bool jni_get_gps_available();
-           extern bool jni_get_gps_accessible();
-           extern bool jni_get_gps_enabled();
-           extern void jni_get_gps_values(double values[GPS_VALUES_MAX]);*/
+        extern void jni_initialize();
+        extern bool jni_get_gps_available();
+        extern bool jni_get_gps_accessible();
+        extern bool jni_get_gps_enabled();
+        extern void jni_get_gps_values(double values[GPS_VALUES_MAX]);
     }
 #endif
 
@@ -121,9 +121,9 @@ class Android {
         template<typename... Args>
         static void call_android_method (std::string method_name, std::string signature, Args... args) {
             #ifdef GAME_OS_ANDROID
-                /*JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+                JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
 
-                   if (env != 0) {
+                if (env != 0) {
                     jobject activity = (jobject) SDL_AndroidGetActivity();
 
                     if (activity != NULL) {
@@ -136,19 +136,20 @@ class Android {
                         Log::add_error(
                             "Error calling Android method '" + method_name + "': SDL_AndroidGetActivity returned NULL");
                     }
-                   } else {
+                } else {
                     Log::add_error("Error calling Android method '" + method_name +
                                    "': SDL_AndroidGetJNIEnv returned 0");
-                   }*/
+                }
+
             #endif
         }
 
         template<typename... Args>
         static void call_android_method_static (std::string method_name, std::string signature, Args... args) {
             #ifdef GAME_OS_ANDROID
-                /*JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+                JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
 
-                   if (env != 0) {
+                if (env != 0) {
                     jobject activity = (jobject) SDL_AndroidGetActivity();
 
                     if (activity != NULL) {
@@ -161,10 +162,11 @@ class Android {
                         Log::add_error(
                             "Error calling Android method '" + method_name + "': SDL_AndroidGetActivity returned NULL");
                     }
-                   } else {
+                } else {
                     Log::add_error("Error calling Android method '" + method_name +
                                    "': SDL_AndroidGetJNIEnv returned 0");
-                   }*/
+                }
+
             #endif
         }
 

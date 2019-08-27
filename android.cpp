@@ -17,21 +17,19 @@ using namespace std;
         static bool gps_enabled;
         static double gps_values[GPS_VALUES_MAX];
 
-        /*void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls, jboolean available)
-              {
+        void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls, jboolean available) {
             gps_available = available;
-           }
+        }
 
-           void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAccessible (JNIEnv* env, jclass jcls, jboolean
-              accessible) {
+        void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAccessible (JNIEnv* env, jclass jcls, jboolean accessible) {
             gps_accessible = accessible;
-           }
+        }
 
-           void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSEnabled (JNIEnv* env, jclass jcls, jboolean enabled) {
+        void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSEnabled (JNIEnv* env, jclass jcls, jboolean enabled) {
             gps_enabled = enabled;
-           }
+        }
 
-           void Java_org_libsdl_app_SDLActivity_nativeGPSUpdate (JNIEnv* env, jclass jcls, jfloat accuracy,
+        void Java_org_libsdl_app_SDLActivity_nativeGPSUpdate (JNIEnv* env, jclass jcls, jfloat accuracy,
                                                               jdouble altitude, jfloat bearing, jdouble latitude,
                                                               jdouble longitude, jfloat speed) {
             gps_values[0] = accuracy;
@@ -40,9 +38,9 @@ using namespace std;
             gps_values[3] = latitude;
             gps_values[4] = longitude;
             gps_values[5] = speed;
-           }
+        }
 
-           void jni_initialize () {
+        void jni_initialize () {
             gps_available = false;
             gps_accessible = false;
             gps_enabled = false;
@@ -50,25 +48,25 @@ using namespace std;
             for (int i = 0; i < GPS_VALUES_MAX; i++) {
                 gps_values[i] = 0.0;
             }
-           }
+        }
 
-           bool jni_get_gps_available () {
+        bool jni_get_gps_available () {
             return gps_available;
-           }
+        }
 
-           bool jni_get_gps_accessible () {
+        bool jni_get_gps_accessible () {
             return gps_accessible;
-           }
+        }
 
-           bool jni_get_gps_enabled () {
+        bool jni_get_gps_enabled () {
             return gps_enabled;
-           }
+        }
 
-           void jni_get_gps_values (double values[GPS_VALUES_MAX]) {
+        void jni_get_gps_values (double values[GPS_VALUES_MAX]) {
             for (int i = 0; i < GPS_VALUES_MAX; i++) {
                 values[i] = gps_values[i];
             }
-           }*/
+        }
     }
 #endif
 
@@ -322,6 +320,7 @@ const int Android::SENSOR_TYPE_STEP_COUNTER = 19;
 const int Android::SENSOR_TYPE_STEP_DETECTOR = 18;
 bool Android::initialized = false;
 int Android::sdlSensorCount = 0;
+map<int, int> Android::sdlSensors;
 Android_Sensor Android::sensors[SENSOR_TYPE_COUNT];
 
 #ifdef GAME_OS_ANDROID
@@ -420,9 +419,7 @@ void Android::setSensorEnabled (string sensorType, bool enabled) {
 }
 
 void Android::set_gps_enabled (bool enabled, uint32_t minimum_update_time, float minimum_update_distance) {
-    #ifdef GAME_OS_ANDROID
-        // call_android_method_static("enableGPS", "(ZIF)V", enabled, minimum_update_time, minimum_update_distance);
-    #endif
+    call_android_method_static("enableGPS", "(ZIF)V", enabled, minimum_update_time, minimum_update_distance);
 }
 
 void Android::initialize () {
@@ -594,7 +591,7 @@ void Android::initialize () {
         sensors[SENSOR_TYPE_STEP_DETECTOR - 1].setup(1, "", value_labels);
 
         #ifdef GAME_OS_ANDROID
-            // jni_initialize();
+            jni_initialize();
 
             if (Engine_Data::android_gpg) {
                 /*JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
@@ -664,9 +661,9 @@ void Android::deinitialize () {
         initialized = false;
 
         #ifdef GAME_OS_ANDROID
-            /*google_play_games.deinitialize();
+            // google_play_games.deinitialize();
 
-               jni_initialize();*/
+            jni_initialize();
         #endif
 
         sdlSensorCount = 0;
@@ -759,24 +756,24 @@ void Android::disable_sensor (string sensorType) {
 }
 
 void Android::vibrate (uint32_t length) {
-    // call_android_method_static("vibrate", "(I)V", (int) length);
+    call_android_method_static("vibrate", "(I)V", (int) length);
 }
 
 void Android::vibrate_stop () {
-    // call_android_method_static("vibrateStop", "()V");
+    call_android_method_static("vibrateStop", "()V");
 }
 
 void Android::open_url (string url) {
     #ifdef GAME_OS_ANDROID
-        /*JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
 
-           if (env != 0) {
+        if (env != 0) {
             jstring jstr = env->NewStringUTF(url.c_str());
 
             call_android_method_static("openUrl", "(Ljava/lang/String;)V", jstr);
-           } else {
+        } else {
             Log::add_error("Error opening URL '" + url + "': SDL_AndroidGetJNIEnv returned 0");
-           }*/
+        }
 
     #endif
 }
@@ -784,7 +781,7 @@ void Android::open_url (string url) {
 bool Android::get_gps_availability () {
     #ifdef GAME_OS_ANDROID
 
-        return false; // return jni_get_gps_available();
+        return jni_get_gps_available();
     #endif
 
     return false;
@@ -793,7 +790,7 @@ bool Android::get_gps_availability () {
 bool Android::get_gps_accessibility () {
     #ifdef GAME_OS_ANDROID
 
-        return false; // return jni_get_gps_accessible();
+        return jni_get_gps_accessible();
     #endif
 
     return false;
@@ -802,7 +799,7 @@ bool Android::get_gps_accessibility () {
 bool Android::get_gps_state () {
     #ifdef GAME_OS_ANDROID
 
-        return false; // return jni_get_gps_enabled();
+        return jni_get_gps_enabled();
     #endif
 
     return false;
@@ -812,16 +809,16 @@ Android_GPS Android::get_gps_readout () {
     Android_GPS gps;
 
     #ifdef GAME_OS_ANDROID
-        /*double values[GPS_VALUES_MAX];
+        double values[GPS_VALUES_MAX];
 
-           jni_get_gps_values(values);
+        jni_get_gps_values(values);
 
-           gps.accuracy = values[0];
-           gps.altitude = values[1];
-           gps.bearing = values[2];
-           gps.latitude = values[3];
-           gps.longitude = values[4];
-           gps.speed = values[5];*/
+        gps.accuracy = values[0];
+        gps.altitude = values[1];
+        gps.bearing = values[2];
+        gps.latitude = values[3];
+        gps.longitude = values[4];
+        gps.speed = values[5];
     #endif
 
     return gps;
