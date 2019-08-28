@@ -27,7 +27,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./clean-android $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
-	echo "Loading Android key"
+	echo "Loading Android key" >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	KEY_STORE_LOCATION=""
 	KEY_PASSWORDS_LOCATION=""
