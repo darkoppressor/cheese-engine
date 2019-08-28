@@ -5,10 +5,6 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
-KEY_STORE_LOCATION="\/home\/tails\/build-server\/android\/keystore\/cheese-and-bacon-games\.keystore"
-KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key"
-KEY_ALIAS="key0"
-
 check_status () {
 	local status=$?
 	if [ $status -ne 0 ]; then
@@ -16,10 +12,57 @@ check_status () {
 	fi
 }
 
+read_android_key () {
+	IFS='=' read -ra LINE_PARTS <<< "$1"
+
+	if [ ${#LINE_PARTS[@]} -ge 2 ]; then
+		echo "${LINE_PARTS[1]}"
+	else
+		echo ""
+	fi
+}
+
 if [ -n "$PROJECT_DIRECTORY" ]; then
 	../../build-date $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	./clean-android $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+
+	echo "Loading Android key"
+
+	KEY_STORE_LOCATION=""
+	KEY_PASSWORDS_LOCATION=""
+	KEY_ALIAS=""
+
+	if [ -f "${PROJECT_DIRECTORY}/development/build-system-android-key" ]; then
+		while read line
+		do
+			if ! [[ $line =~ ^\# ]]; then
+				if [[ $line =~ ^key_store_location ]]; then
+					result=$(read_android_key "$line")
+
+					if [ -n "$result" ]; then
+						KEY_STORE_LOCATION="$result"
+					fi
+				fi
+
+				if [[ $line =~ ^key_passwords_location ]]; then
+					result=$(read_android_key "$line")
+
+					if [ -n "$result" ]; then
+						KEY_PASSWORDS_LOCATION="$result"
+					fi
+				fi
+
+				if [[ $line =~ ^key_alias ]]; then
+					result=$(read_android_key "$line")
+
+					if [ -n "$result" ]; then
+						KEY_ALIAS="$result"
+					fi
+				fi
+			fi
+		done <"${PROJECT_DIRECTORY}/development/build-system-android-key"
+	fi
 
 	cd ../../
 	./android-prep $PROJECT_DIRECTORY $KEY_STORE_LOCATION $KEY_PASSWORDS_LOCATION $KEY_ALIAS >> "$PROJECT_DIRECTORY/log-Release-Android"

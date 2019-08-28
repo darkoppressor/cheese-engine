@@ -153,7 +153,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 
 	sed -i -e "s/KEY_ALIAS/$KEY_ALIAS/g" "$ANDROID_DIRECTORY/app/build.gradle"
 	sed -i -e "s/KEY_PASSWORD/$ALIAS_PASSWORD/g" "$ANDROID_DIRECTORY/app/build.gradle"
-	sed -i -e "s/STORE_FILE/$KEY_STORE_LOCATION/g" "$ANDROID_DIRECTORY/app/build.gradle"
+	sed -i -e "s/STORE_FILE/$(echo $KEY_STORE_LOCATION | sed -e 's/\//\\\//g; s/\./\\\./g')/g" "$ANDROID_DIRECTORY/app/build.gradle"
 	sed -i -e "s/STORE_PASSWORD/$KEY_STORE_PASSWORD/g" "$ANDROID_DIRECTORY/app/build.gradle"
 else
 	echo "android-prep - prepare the android/ directory of a Cheese Engine project for building"
