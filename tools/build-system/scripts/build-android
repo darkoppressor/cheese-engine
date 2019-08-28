@@ -5,8 +5,8 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
-KEY_STORE_LOCATION="\/home\/tails\/build-server\/android\/keystore\/cheese-and-bacon-games-app-bundle\.keystore"
-KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key-app-bundle"
+KEY_STORE_LOCATION="\/home\/tails\/build-server\/android\/keystore\/cheese-and-bacon-games\.keystore"
+KEY_PASSWORDS_LOCATION="/home/tails/build-server/android/keystore/key"
 KEY_ALIAS="key0"
 
 check_status () {

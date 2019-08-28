@@ -10,12 +10,12 @@
 #include <cstdint>
 #include <map>
 
+#include "log.h"
+
 #include <SDL.h>
 #include <SDL_sensor.h>
 
 #ifdef GAME_OS_ANDROID
-    #include "log.h"
-
     #include <jni.h>
 #endif
 
@@ -31,11 +31,13 @@ const int GPS_VALUES_MAX = 6;
 
 #ifdef GAME_OS_ANDROID
     extern "C" {
-        extern void jni_initialize();
-        extern bool jni_get_gps_available();
-        extern bool jni_get_gps_accessible();
-        extern bool jni_get_gps_enabled();
-        extern void jni_get_gps_values(double values[GPS_VALUES_MAX]);
+        extern void jni_reset();
+        extern bool get_gps_available();
+        extern bool get_gps_accessible();
+        extern bool get_gps_enabled();
+        extern void get_gps_values(double values[GPS_VALUES_MAX]);
+        extern bool getGooglePlayServicesSilentSignInAttemptComplete();
+        extern bool getGooglePlayServicesSignedIn();
     }
 #endif
 
@@ -71,41 +73,6 @@ class Android_GPS {
         Android_GPS ();
 };
 
-#ifdef GAME_OS_ANDROID
-    /*class Android_Google_Play_Games {
-        private:
-            bool initialized;
-            bool auth_in_progress;
-            std::unique_ptr<gpg::GameServices> game_services;
-            bool silent_sign_in_attempt_complete;
-            bool signed_in;
-
-        public:
-            Android_Google_Play_Games ();
-
-            void reset();
-
-            void initialize(gpg::PlatformConfiguration const& pc,
-                            gpg::GameServices::Builder::OnAuthActionStartedCallback started_callback,
-                            gpg::GameServices::Builder::OnAuthActionFinishedCallback finished_callback);
-            void deinitialize();
-
-            bool is_auth_in_progress();
-
-            bool is_silent_sign_in_attempt_complete() const;
-            bool is_signed_in() const;
-
-            gpg::GameServices* get_game_services();
-            void sign_in();
-            void sign_out();
-            void unlock_achievement(const char* achievement_id);
-            void submit_highscore(const char* leaderboard_id, uint64_t score);
-            void show_achievements();
-            void show_leaderboard(const char* leaderboard_id);
-            void show_all_leaderboards();
-       };*/
-#endif
-
 class Android {
     private:
         static bool initialized;
@@ -113,10 +80,6 @@ class Android {
         // A map of SENSOR_TYPE_ constants paired to their corresponding SDL sensor device indices
         static std::map<int, int> sdlSensors;
         static Android_Sensor sensors[SENSOR_TYPE_COUNT];
-
-        #ifdef GAME_OS_ANDROID
-            // static Android_Google_Play_Games google_play_games;
-        #endif
 
         template<typename... Args>
         static void call_android_method (std::string method_name, std::string signature, Args... args) {
@@ -226,10 +189,10 @@ class Android {
         static bool gpg_is_signed_in();
         static void gpg_sign_in();
         static void gpg_sign_out();
-        static void gpg_unlock_achievement(const char* achievement_id);
-        static void gpg_submit_highscore(const char* leaderboard_id, uint64_t score);
+        static void gpg_unlock_achievement(std::string achievement_id);
+        static void gpg_submit_highscore(std::string leaderboard_id, uint64_t score);
         static void gpg_show_achievements();
-        static void gpg_show_leaderboard(const char* leaderboard_id);
+        static void gpg_show_leaderboard(std::string leaderboard_id);
         static void gpg_show_all_leaderboards();
 };
 
