@@ -621,17 +621,13 @@ bool Android::gpg_is_signed_in () {
 }
 
 void Android::gpg_sign_in () {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Signing in");
-        call_android_method_static("signInToGooglePlayServices", "()V");
-    #endif
+    Log::add_log("Google Play Games: Signing in");
+    call_android_method_static("signInToGooglePlayServices", "()V");
 }
 
 void Android::gpg_sign_out () {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Signing out");
-        call_android_method_static("signOutOfGooglePlayServices", "()V");
-    #endif
+    Log::add_log("Google Play Games: Signing out");
+    call_android_method_static("signOutOfGooglePlayServices", "()V");
 }
 
 void Android::gpg_unlock_achievement (string achievement_id) {
@@ -671,10 +667,8 @@ void Android::gpg_submit_highscore (string leaderboard_id, uint64_t score) {
 }
 
 void Android::gpg_show_achievements () {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Displaying achievements UI");
-        call_android_method_static("showAchievements", "()V");
-    #endif
+    Log::add_log("Google Play Games: Displaying achievements UI");
+    call_android_method_static("showAchievements", "()V");
 }
 
 void Android::gpg_show_leaderboard (string leaderboard_id) {
@@ -695,8 +689,6 @@ void Android::gpg_show_leaderboard (string leaderboard_id) {
 }
 
 void Android::gpg_show_all_leaderboards () {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Displaying all leaderboards");
-        call_android_method_static("showAllLeaderboards", "()V");
-    #endif
+    Log::add_log("Google Play Games: Displaying all leaderboards");
+    call_android_method_static("showAllLeaderboards", "()V");
 }
