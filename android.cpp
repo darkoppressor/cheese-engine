@@ -12,28 +12,31 @@ using namespace std;
 
 #ifdef GAME_OS_ANDROID
     extern "C" {
-        static bool gps_available;
-        static bool gps_accessible;
-        static bool gps_enabled;
+        static bool gps_available = false;
+        static bool gps_accessible = false;
+        static bool gps_enabled = false;
         static double gps_values[GPS_VALUES_MAX];
-        static bool googlePlayServicesSilentSignInAttemptComplete;
-        static bool googlePlayServicesSignedIn;
-
-        void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls, jboolean available) {
+        static bool googlePlayServicesSilentSignInAttemptComplete = false;
+        static bool googlePlayServicesSignedIn = false;
+        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls,
+                                                                                         jboolean available) {
             gps_available = available;
         }
 
-        void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAccessible (JNIEnv* env, jclass jcls, jboolean accessible) {
+        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAccessible (JNIEnv* env, jclass jcls,
+                                                                                          jboolean accessible) {
             gps_accessible = accessible;
         }
 
-        void Java_org_libsdl_app_SDLActivity_nativeUpdateGPSEnabled (JNIEnv* env, jclass jcls, jboolean enabled) {
+        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeUpdateGPSEnabled (JNIEnv* env, jclass jcls,
+                                                                                       jboolean enabled) {
             gps_enabled = enabled;
         }
 
-        void Java_org_libsdl_app_SDLActivity_nativeGPSUpdate (JNIEnv* env, jclass jcls, jfloat accuracy,
-                                                              jdouble altitude, jfloat bearing, jdouble latitude,
-                                                              jdouble longitude, jfloat speed) {
+        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeGPSUpdate (JNIEnv* env, jclass jcls,
+                                                                                jfloat accuracy, jdouble altitude,
+                                                                                jfloat bearing, jdouble latitude,
+                                                                                jdouble longitude, jfloat speed) {
             gps_values[0] = accuracy;
             gps_values[1] = altitude;
             gps_values[2] = bearing;
@@ -42,15 +45,14 @@ using namespace std;
             gps_values[5] = speed;
         }
 
-        void Java_org_libsdl_app_SDLActivity_nativeGooglePlayServicesSilentSignInAttemptComplete (JNIEnv* env,
-                                                                                                  jclass jcls,
-                                                                                                  jboolean silentSignInAttemptComplete)
-        {
+        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeGooglePlayServicesSilentSignInAttemptComplete (
+            JNIEnv* env, jclass jcls, jboolean silentSignInAttemptComplete) {
             googlePlayServicesSilentSignInAttemptComplete = silentSignInAttemptComplete;
         }
 
-        void Java_org_libsdl_app_SDLActivity_nativeGooglePlayServicesSignedIn (JNIEnv* env, jclass jcls,
-                                                                               jboolean signedIn) {
+        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeGooglePlayServicesSignedIn (JNIEnv* env,
+                                                                                                 jclass jcls,
+                                                                                                 jboolean signedIn) {
             googlePlayServicesSignedIn = signedIn;
         }
 
@@ -430,10 +432,6 @@ void Android::initialize () {
         value_labels.push_back("");
         sensors[SENSOR_TYPE_STEP_DETECTOR - 1].setup(1, "", value_labels);
 
-        #ifdef GAME_OS_ANDROID
-            jni_reset();
-        #endif
-
         initialized = true;
     }
 }
@@ -613,11 +611,21 @@ void Android::disable_gps () {
 }
 
 bool Android::gpg_is_silent_sign_in_attempt_complete () {
-    return getGooglePlayServicesSilentSignInAttemptComplete();
+    #ifdef GAME_OS_ANDROID
+
+        return getGooglePlayServicesSilentSignInAttemptComplete();
+    #endif
+
+    return false;
 }
 
 bool Android::gpg_is_signed_in () {
-    return getGooglePlayServicesSignedIn();
+    #ifdef GAME_OS_ANDROID
+
+        return getGooglePlayServicesSignedIn();
+    #endif
+
+    return false;
 }
 
 void Android::gpg_sign_in () {
