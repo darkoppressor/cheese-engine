@@ -1,5 +1,5 @@
 # cheese-engine
-[![Build Status](http://wells-family.xyz:8080/jenkins/buildStatus/icon?job=cheese-engine)](https://wells-family.xyz/jenkins/job/cheese-engine/)
+[![Build Status](https://wells-family.xyz/jenkins/buildStatus/icon?job=cheese-engine)](https://wells-family.xyz/jenkins/job/cheese-engine/)
 
 2D game engine for Windows, macOS, Linux, and Android
 http://cheeseandbacon.org/
