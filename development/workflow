@@ -1,0 +1,134 @@
+Note that as I am the sole developer on this project, I am not doing pull requests.
+I have included pull requests in the workflow documentation, however, and it should be respected if additional
+developers join the project.
+
+The branching model is essentially the one outlined here: https://nvie.com/posts/a-successful-git-branching-model/,
+with the addition of bugfix branches (which are functionally identical to feature branches).
+
+Permanent branches:
+master => main / production branch
+develop => development branch
+
+Temporary branches:
+feature/* => branches from develop, merges back into develop
+(or branches from another feature branch, and merges into develop)
+bugfix/* => branches from develop, merges back into develop
+(or branches from another bugfix branch, and merges into develop)
+release/* => branches from develop, merges back into develop and also into master
+hotfix/* => branches from master, merges back into master and also into develop (or the current release branch)
+
+A merge into master is a new production release by definition.
+
+All merges into master or develop must be preceded by a pull request.
+
+Feature and bugfix branches are functionally identical. They only differ in whether they contain a feature or bugfix.
+As these are the only two possibilities for standard changes, most new changes must be determined to be one or the
+other. The distinction is only of vague importance.
+
+Pushing a feature or bugfix branch to the remote repository triggers a build via Jenkins. This is also true for
+release and hotfix branches as well as the develop branch. Pushing to the remote master branch instead triggers a test
+via Jenkins.
+
+To begin work on a new feature, branch off from develop.
+Example:
+    git checkout -b feature/<FEATURE> develop
+Once a feature is complete, do a pull request for merging it back into develop. Once approved, merge the feature branch
+into develop.
+Example:
+    git checkout develop
+    git merge --no-ff feature/<FEATURE>
+    git branch -d feature/<FEATURE>
+    git push -d origin feature/<FEATURE>
+    git push origin develop
+Alternate flow: If a feature that is currently in a feature branch (and thus hasn't yet been merged back into develop)
+is a prerequisite for a new feature, branch off from that feature branch instead of develop.
+Let the prerequisite feature branch be called <FEATURE_A> and the new feature branch be called <FEATURE_B>.
+Example:
+    git checkout -b feature/<FEATURE_B> feature/<FEATURE_A>
+If feature/<FEATURE_A> has commits added after this, rebase feature/<FEATURE_B> onto feature/<FEATURE_A>.
+Example:
+    git rebase --no-ff --signoff feature/<FEATURE_B> --onto feature/<FEATURE_A>
+Once the new feature is complete, it cannot be merged until feature/<FEATURE_A> has been merged back into develop.
+Once the new feature is complete and feature/<FEATURE_A> has been merged back into develop, rebase feature/<FEATURE_B>
+onto develop and then do a pull request for merging it into develop. Once approved, merge feature/<FEATURE_B> into
+develop.
+Example:
+    git rebase --no-ff --signoff feature/<FEATURE_B> --onto develop
+    <Wait for pull request approval>
+    <Follow the directions above for merging a feature branch into develop>
+
+To begin work on a new bugfix, branch off from develop.
+Example:
+    git checkout -b bugfix/<BUGFIX> develop
+Once a bugfix is complete, do a pull request for merging it back into develop. Once approved, merge the bugfix branch
+into develop.
+Example:
+    git checkout develop
+    git merge --no-ff bugfix/<BUGFIX>
+    git branch -d bugfix/<BUGFIX>
+    git push origin develop
+Alternate flow: If a bugfix that is currently in a bugfix branch (and thus hasn't yet been merged back into develop)
+is a prerequisite for a new bugfix, branch off from that bugfix branch instead of develop.
+Let the prerequisite bugfix branch be called <BUGFIX_A> and the new bugfix branch be called <BUGFIX_B>.
+Example:
+    git checkout -b bugfix/<BUGFIX_B> bugfix/<BUGFIX_A>
+If bugfix/<BUGFIX_A> has commits added after this, rebase bugfix/<BUGFIX_B> onto bugfix/<BUGFIX_A>.
+Example:
+    git rebase --no-ff --signoff bugfix/<BUGFIX_B> --onto bugfix/<BUGFIX_A>
+Once the new bugfix is complete, it cannot be merged until bugfix/<BUGFIX_A> has been merged back into develop.
+Once the new bugfix is complete and bugfix/<BUGFIX_A> has been merged back into develop, rebase bugfix/<BUGFIX_B>
+onto develop and then do a pull request for merging it into develop. Once approved, merge bugfix/<BUGFIX_B> into
+develop.
+Example:
+    git rebase --no-ff --signoff bugfix/<BUGFIX_B> --onto develop
+    <Wait for pull request approval>
+    <Follow the directions above for merging a bugfix branch into develop>
+
+It is time to create a release branch when develop essentially reflects the desired state of the next release.
+All features and bugfixes targeted for the next release must have been merged into develop.
+Features and bugfixes targeting future releases must not be merged into develop until the release branch is created.
+To begin preparing a new release, branch off from develop.
+Example:
+    git checkout -b release/<RELEASE> develop
+    <update engine version>
+    git commit -a -s -m "Increment engine version"
+If any new bugfixes are needed for the release, they should be applied and committed in this release branch instead of
+develop.
+Adding new features in a release branch is strictly prohibited.
+When the release branch is ready to be released to production, do a pull request for merging it into master and another
+pull request for merging it back into develop. Once approved, merge the release branch into master, tag it, and then
+merge the branch into develop.
+Example:
+    git checkout master
+    git merge --no-ff release/<RELEASE>
+    git tag <RELEASE> -m "<RELEASE>"
+    git push --tags origin master
+    git checkout develop
+    git merge --no-ff release/<RELEASE>
+    git push origin develop
+    git branch -d release/<RELEASE>
+    git push -d origin release/<RELEASE>
+
+If the production release has a critical bug that needs to be fixed right away, a hotfix is needed.
+To begin preparing a hotfix, branch off from master.
+Example:
+    git checkout -b hotfix/<HOTFIX> master
+    <update engine version>
+    git commit -a -s -m "Increment engine version"
+Then, fix the critical bug(s) and commit those changes in this hotfix branch.
+Adding new features or non-critical bugfixes in a hotfix branch is strictly prohibited.
+When the hotfix branch is ready to be released to production, do a pull request for merging it back into master and
+another pull request for merging it into develop. Once approved, merge the hotfix branch into master, tag it, and then
+merge the branch into develop.
+Exception: If a release branch currently exists, merge into it instead of develop. Since merges into release branches do
+not require pull requests, only a pull request for the merge to master is required here in this case.
+Example:
+    git checkout master
+    git merge --no-ff hotfix/<HOTFIX>
+    git tag <HOTFIX> -m "<HOTFIX>"
+    git push --tags origin master
+    git checkout develop
+    git merge --no-ff hotfix/<HOTFIX>
+    git push origin develop
+    git branch -d hotfix/<HOTFIX>
+    git push -d origin hotfix/<HOTFIX>
