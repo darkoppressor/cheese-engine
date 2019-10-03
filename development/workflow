@@ -25,9 +25,7 @@ Feature and bugfix branches are functionally identical. They only differ in whet
 As these are the only two possibilities for standard changes, most new changes must be determined to be one or the
 other. The distinction is only of vague importance.
 
-Pushing a feature or bugfix branch to the remote repository triggers a build via Jenkins. This is also true for
-release and hotfix branches as well as the develop branch. Pushing to the remote master branch instead triggers a test
-via Jenkins.
+Pushing a branch to the remote repository triggers a build via Jenkins.
 
 To begin work on a new feature, branch off from develop.
 Example:
