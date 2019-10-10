@@ -11,101 +11,92 @@
 #include <string>
 #include <vector>
 
-class Console{
-public:
+class Console {
+    public:
+        // If true, this is a chat box
+        // If false, it is the main console
+        bool chat;
+        Information info_display;
+        Information info_input;
+        int y;
+        bool on;
+        std::string last_tab_complete_command;
 
-    //If true, this is a chat box
-    //If false, it is the main console
-    bool chat;
+        // 0 or below means instant
+        int move_speed;
+        int max_command_length;
 
-    Information info_display;
-    Information info_input;
+        // The maximum lines to recall in the console log
+        unsigned int max_log_recall;
 
-    int y;
+        // The maximum number of commands to recall
+        unsigned int max_command_recall;
 
-    bool on;
+        // The last command strings entered
+        std::vector<std::string> recalled_command_strings;
 
-    std::string last_tab_complete_command;
+        // The currently recalled string
+        // Used for scrolling around in the recalled strings
+        int current_recalled_command_string;
+        std::string font;
+        std::string font_color;
+        double background_opacity;
+        std::vector<std::string> commands;
 
-    //0 or below means instant
-    int move_speed;
+        // The time it takes for a chat line to disappear, in milliseconds
+        int line_timeout;
 
-    int max_command_length;
+        // Used to determine if a chat message should be showed even if the chat window is closed
+        std::vector<Timer> text_timers;
 
-    //The maximum lines to recall in the console log
-    unsigned int max_log_recall;
+        Console ();
 
-    //The maximum number of commands to recall
-    unsigned int max_command_recall;
+        void setup(bool get_chat);
 
-    //The last command strings entered
-    std::vector<std::string> recalled_command_strings;
+        void reset_current_recalled_command_string();
 
-    //The currently recalled string
-    //Used for scrolling around in the recalled strings
-    int current_recalled_command_string;
+        void reset_text_timers();
 
-    std::string font;
-    std::string font_color;
+        void clear_text();
 
-    double background_opacity;
+        void toggle_on();
 
-    std::vector<std::string> commands;
+        void add_text(std::string text);
 
-    //The time it takes for a chat line to disappear, in milliseconds
-    int line_timeout;
+        void send_chat();
 
-    //Used to determine if a chat message should be showed even if the chat window is closed
-    std::vector<Timer> text_timers;
+        void movement();
 
-    Console();
+        void recall_up();
+        void recall_down();
+        void tab_complete();
 
-    void setup(bool get_chat);
+        void handle_input_states();
 
-    void reset_current_recalled_command_string();
+        // Returns true if the event was consumed,
+        // false otherwise
+        bool handle_input_events();
 
-    void reset_text_timers();
+        void animate();
+        void render();
 
-    void clear_text();
+        void setup_commands();
+        void setup_game_commands();
 
-    void toggle_on();
+        std::vector<std::string> parse_input(std::string str_input);
 
-    void add_text(std::string text);
+        // Pass an option to check for and an options string from parsed input data
+        // Returns whether or not the option is in the options list
+        bool input_has_option(std::string option, std::string options);
 
-    void send_chat();
+        void exec_file(std::string filename);
 
-    void movement();
+        void do_command();
 
-    void recall_up();
-    void recall_down();
-    void tab_complete();
+        void run_commands(const std::vector<std::string>& command_list);
 
-    void handle_input_states();
-
-    //Returns true if the event was consumed,
-    //false otherwise
-    bool handle_input_events();
-
-    void animate();
-    void render();
-
-    void setup_commands();
-    void setup_game_commands();
-
-    std::vector<std::string> parse_input(std::string str_input);
-
-    //Pass an option to check for and an options string from parsed input data
-    //Returns whether or not the option is in the options list
-    bool input_has_option(std::string option,std::string options);
-
-    void exec_file(std::string filename);
-
-    void do_command();
-
-    void run_commands(const std::vector<std::string>& command_list);
-
-    //Returns true if the passed command was handled by the game
-    bool handle_game_command(const std::string& command,const std::vector<std::string>& command_input);
+        // Returns true if the passed command was handled by the game
+        bool handle_game_command(const std::string& command, const std::vector<std::string>& command_input);
 };
 
 #endif

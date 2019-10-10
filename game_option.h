@@ -7,19 +7,17 @@
 
 #include <string>
 
-class Game_Option{
-public:
+class Game_Option {
+    public:
+        std::string name;
+        std::string description;
 
-    std::string name;
-    std::string description;
+        Game_Option ();
+        std::string get_value();
+        void set_value(std::string new_value);
 
-    Game_Option();
-
-    std::string get_value();
-    void set_value(std::string new_value);
-
-    bool game_get_value(std::string& value);
-    void game_set_value(std::string value);
+        bool game_get_value(std::string& value);
+        void game_set_value(std::string value);
 };
 
 #endif

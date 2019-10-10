@@ -19,19 +19,20 @@
 
 using namespace std;
 
-void Internet::open_url(string url){
+void Internet::open_url (string url) {
     #ifdef GAME_OS_WINDOWS
-        ShellExecute(NULL,"open",url.c_str(),NULL,NULL,SW_SHOWNORMAL);
+        ShellExecute(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
     #endif
 
     #ifdef GAME_OS_LINUX
-        string open_command="xdg-open "+url;
+        string open_command = "xdg-open " + url;
         system(open_command.c_str());
     #endif
 
     #ifdef GAME_OS_MACOS
-        CFURLRef mac_url=CFURLCreateWithBytes(NULL,(uint8_t*)url.c_str(),url.length(),kCFStringEncodingASCII,NULL);
-        LSOpenCFURLRef(mac_url,NULL);
+        CFURLRef mac_url =
+            CFURLCreateWithBytes(NULL, (uint8_t*) url.c_str(), url.length(), kCFStringEncodingASCII, NULL);
+        LSOpenCFURLRef(mac_url, NULL);
         CFRelease(mac_url);
     #endif
 

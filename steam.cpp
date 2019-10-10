@@ -12,12 +12,12 @@
 
 using namespace std;
 
-bool Steam::initialized=false;
-
+bool Steam::initialized = false;
 bool Steam::initialize () {
     if (!initialized) {
         if (Engine_Data::steam) {
             #ifndef GAME_OS_ANDROID
+
                 if (SteamAPI_RestartAppIfNecessary(Engine_Data::steam_app_id)) {
                     Log::add_error("Restarting game through Steam");
 
@@ -29,7 +29,9 @@ bool Steam::initialize () {
 
                     return false;
                 }
+
             #else
+
                 return false;
             #endif
         }

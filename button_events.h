@@ -9,18 +9,18 @@
 
 #include <string>
 
-class Button_Events{
-public:
+class Button_Events {
+    public:
+        static std::string DEFAULT_AUDIO_DEVICE;
 
-    static std::string DEFAULT_AUDIO_DEVICE;
+        // Returns true if the button event opened a new window on top of previous ones
+        // Returns false otherwise
+        static bool handle_button_event(std::string button_event, Window* parent_window = 0);
 
-    //Returns true if the button event opened a new window on top of previous ones
-    //Returns false otherwise
-    static bool handle_button_event(std::string button_event,Window* parent_window=0);
-
-    //Returns true if the passed button event was handled
-    //Returns false if the passed button event was not handled
-    static bool handle_button_event_game(std::string button_event,Window* parent_window,bool& window_opened_on_top);
+        // Returns true if the passed button event was handled
+        // Returns false if the passed button event was not handled
+        static bool handle_button_event_game(std::string button_event, Window* parent_window,
+                                             bool& window_opened_on_top);
 };
 
 #endif

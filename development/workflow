@@ -64,6 +64,7 @@ Example:
     git checkout develop
     git merge --no-ff bugfix/<BUGFIX>
     git branch -d bugfix/<BUGFIX>
+    git push -d origin bugfix/<BUGFIX>
     git push origin develop
 Alternate flow: If a bugfix that is currently in a bugfix branch (and thus hasn't yet been merged back into develop)
 is a prerequisite for a new bugfix, branch off from that bugfix branch instead of develop.
@@ -89,7 +90,7 @@ To begin preparing a new release, branch off from develop.
 Example:
     git checkout -b release/<RELEASE> develop
     <update engine version>
-    git commit -a -s -m "Increment engine version"
+    git commit -asm "Increment engine version"
 If any new bugfixes are needed for the release, they should be applied and committed in this release branch instead of
 develop.
 Adding new features in a release branch is strictly prohibited.
@@ -112,7 +113,7 @@ To begin preparing a hotfix, branch off from master.
 Example:
     git checkout -b hotfix/<HOTFIX> master
     <update engine version>
-    git commit -a -s -m "Increment engine version"
+    git commit -asm "Increment engine version"
 Then, fix the critical bug(s) and commit those changes in this hotfix branch.
 Adding new features or non-critical bugfixes in a hotfix branch is strictly prohibited.
 When the hotfix branch is ready to be released to production, do a pull request for merging it back into master and

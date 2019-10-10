@@ -8,46 +8,40 @@
 #include <string>
 #include <vector>
 
-class Directories{
-private:
+class Directories {
+    private:
+        static void make_directory(const std::string& directory);
 
-    static void make_directory(const std::string& directory);
+    public:
+        static std::string CURRENT_WORKING_DIRECTORY;
+        static std::string home_directory;
+        static bool save_location_loaded;
 
-public:
+        // If save_location is "home", and SDL_GetPrefPath failed,
+        // this is set to true and a fallback save location is used
+        static bool save_location_fallback;
+        static std::vector<std::string> directories;
 
-    static std::string CURRENT_WORKING_DIRECTORY;
+        // Returns a string with the (absolute if possible) path to the current working directory
+        static std::string get_cwd();
 
-    static std::string home_directory;
+        // Returns a string with the path to the (absolute if possible) current save location
+        static std::string get_save_directory_absolute();
 
-    static bool save_location_loaded;
+        // Returns a string with the path to the current save location
+        static std::string get_save_directory();
 
-    //If save_location is "home", and SDL_GetPrefPath failed,
-    //this is set to true and a fallback save location is used
-    static bool save_location_fallback;
+        // Create the home directory
+        static void make_home_directory();
 
-    static std::vector<std::string> directories;
+        // Returns false if there is no valid save location
+        static bool check_save_location();
+        static void create_directories_list();
+        static void add_game_directories_to_list();
 
-    //Returns a string with the (absolute if possible) path to the current working directory
-    static std::string get_cwd();
-
-    //Returns a string with the path to the (absolute if possible) current save location
-    static std::string get_save_directory_absolute();
-
-    //Returns a string with the path to the current save location
-    static std::string get_save_directory();
-
-    //Create the home directory
-    static void make_home_directory();
-
-    //Returns false if there is no valid save location
-    static bool check_save_location();
-
-    static void create_directories_list();
-    static void add_game_directories_to_list();
-
-    //Create the entire needed directory structure
-    //Returns false if the directory structure could not be created
-    static bool make_directories();
+        // Create the entire needed directory structure
+        // Returns false if the directory structure could not be created
+        static bool make_directories();
 };
 
 #endif
