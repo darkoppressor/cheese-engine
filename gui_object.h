@@ -8,35 +8,30 @@
 #include <string>
 #include <vector>
 
-class GUI_Object{
-public:
+class GUI_Object {
+    public:
+        // Valid values:
+        // button
+        // information
+        std::string type;
+        int index;
+        int x;
+        int y;
+        bool sort_by_y;
 
-    //Valid values:
-    //button
-    //information
-    std::string type;
+        GUI_Object (std::string get_type, int get_index, int get_x, int get_y);
 
-    int index;
+        bool operator<= (GUI_Object object);
 
-    int x;
-    int y;
-
-    bool sort_by_y;
-
-    GUI_Object(std::string get_type,int get_index,int get_x,int get_y);
-
-    bool operator<=(GUI_Object object);
-
-    static void set_sort_by_y(std::vector<GUI_Object>& objects,bool sort_value);
+        static void set_sort_by_y(std::vector<GUI_Object>& objects, bool sort_value);
 };
 
-class GUI_Selector_Chaser{
-public:
+class GUI_Selector_Chaser {
+    public:
+        double x;
+        double y;
 
-    double x;
-    double y;
-
-    GUI_Selector_Chaser();
+        GUI_Selector_Chaser ();
 };
 
 #endif

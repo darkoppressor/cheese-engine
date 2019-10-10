@@ -13,23 +13,21 @@
 
 #include <SDL_mixer.h>
 
-class Sound_Data{
-public:
+class Sound_Data {
+    public:
+        std::vector<std::uint8_t> custom_buffer;
+        Mix_Chunk* chunk;
 
-    std::vector<std::uint8_t> custom_buffer;
+        Sound_Data ();
 
-    Mix_Chunk* chunk;
+        void load_sound(std::string path);
+        void load_sound(Mix_Chunk* ptr_chunk);
+        // This function is still somewhat experimental
+        // Each element in sound's buffer is a (single channel, I think) of a signed 16-bit sample
+        // I believe that for stereo sound, buffer[0] and buffer[1] represent the two channels for a single sample
+        void create_custom_sound(const Custom_Sound& sound);
 
-    Sound_Data();
-
-    void load_sound(std::string path);
-	void load_sound(Mix_Chunk* ptr_chunk);
-    //This function is still somewhat experimental
-    //Each element in sound's buffer is a (single channel, I think) of a signed 16-bit sample
-    //I believe that for stereo sound, buffer[0] and buffer[1] represent the two channels for a single sample
-    void create_custom_sound(const Custom_Sound& sound);
-
-    void unload_sound();
+        void unload_sound();
 };
 
 #endif

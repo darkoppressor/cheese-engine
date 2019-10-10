@@ -7,10 +7,9 @@
 
 #include <string>
 
-class Game_Constants_Loader{
-public:
-
-    static void set_game_constant(std::string name,std::string value);
+class Game_Constants_Loader {
+    public:
+        static void set_game_constant(std::string name, std::string value);
 };
 
 #endif

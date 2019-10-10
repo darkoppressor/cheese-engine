@@ -11,25 +11,22 @@
 
 #include <SDL.h>
 
-class Cursor{
-public:
+class Cursor {
+    public:
+        std::string name;
+        Sprite sprite;
+        SDL_Cursor* hw_cursor;
 
-    std::string name;
+        Cursor ();
 
-    Sprite sprite;
+        void load_hw_cursor();
+        void free_hw_cursor();
 
-    SDL_Cursor* hw_cursor;
+        double get_width() const;
+        double get_height() const;
 
-    Cursor();
-
-    void load_hw_cursor();
-    void free_hw_cursor();
-
-    double get_width() const;
-    double get_height() const;
-
-    void animate();
-    void render(int x,int y) const;
+        void animate();
+        void render(int x, int y) const;
 };
 
 #endif

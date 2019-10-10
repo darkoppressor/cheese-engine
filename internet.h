@@ -7,10 +7,9 @@
 
 #include <string>
 
-class Internet{
-public:
-
-    static void open_url(std::string url);
+class Internet {
+    public:
+        static void open_url(std::string url);
 };
 
 #endif

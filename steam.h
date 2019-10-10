@@ -6,16 +6,14 @@
 #define steam_h
 
 class Steam {
-private:
+    private:
+        static bool initialized;
 
-    static bool initialized;
-
-public:
-
-    // Returns true if Steam initialized successfully
-    // Returns false if Steam failed to initialize
-    static bool initialize();
-    static void deinitialize();
+    public:
+        // Returns true if Steam initialized successfully
+        // Returns false if Steam failed to initialize
+        static bool initialize();
+        static void deinitialize();
 };
 
 #endif

@@ -7,12 +7,10 @@
 
 #include <string>
 
-class Special_Info{
-public:
-
-    static std::string get_special_info_text(std::string special_info);
-
-    static std::string get_special_info_sprite(std::string special_info);
+class Special_Info {
+    public:
+        static std::string get_special_info_text(std::string special_info);
+        static std::string get_special_info_sprite(std::string special_info);
 };
 
 #endif

@@ -8,60 +8,59 @@
 
 using namespace std;
 
-Timer::Timer(){
-    start_ticks=0;
-    paused_ticks=0;
-    paused=false;
-    started=false;
+Timer::Timer () {
+    start_ticks = 0;
+    paused_ticks = 0;
+    paused = false;
+    started = false;
 }
 
-void Timer::start(){
-    started=true;
+void Timer::start () {
+    started = true;
 
-    paused=false;
+    paused = false;
 
-    start_ticks=SDL_GetTicks();
+    start_ticks = SDL_GetTicks();
 }
 
-void Timer::stop(){
-    started=false;
+void Timer::stop () {
+    started = false;
 
-    paused=false;
+    paused = false;
 }
 
-void Timer::pause(){
-    if(started && !paused){
-        paused=true;
+void Timer::pause () {
+    if (started && !paused) {
+        paused = true;
 
-        paused_ticks=SDL_GetTicks()-start_ticks;
+        paused_ticks = SDL_GetTicks() - start_ticks;
     }
 }
 
-void Timer::unpause(){
-    if(paused){
-        paused=false;
+void Timer::unpause () {
+    if (paused) {
+        paused = false;
 
-        start_ticks=SDL_GetTicks()-paused_ticks;
+        start_ticks = SDL_GetTicks() - paused_ticks;
 
-        paused_ticks=0;
+        paused_ticks = 0;
     }
 }
 
-bool Timer::is_started() const{
+bool Timer::is_started () const {
     return started;
 }
 
-bool Timer::is_paused() const{
+bool Timer::is_paused () const {
     return paused;
 }
 
-uint32_t Timer::get_ticks() const{
-    if(started){
-        if(paused){
+uint32_t Timer::get_ticks () const {
+    if (started) {
+        if (paused) {
             return paused_ticks;
-        }
-        else{
-            return SDL_GetTicks()-start_ticks;
+        } else {
+            return SDL_GetTicks() - start_ticks;
         }
     }
 

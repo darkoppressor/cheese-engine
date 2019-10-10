@@ -7,14 +7,13 @@
 
 #include <SDL.h>
 
-class Controller{
-public:
+class Controller {
+    public:
+        SDL_GameController* controller;
+        SDL_JoystickID instance_id;
+        SDL_Haptic* haptic;
 
-    SDL_GameController* controller;
-    SDL_JoystickID instance_id;
-    SDL_Haptic* haptic;
-
-    Controller(SDL_GameController* get_controller);
+        Controller (SDL_GameController* get_controller);
 };
 
 #endif

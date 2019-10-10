@@ -7,32 +7,30 @@
 
 #include <cstdint>
 
-class Timer{
-private:
+class Timer {
+    private:
+        // The clock time when the timer started
+        std::uint32_t start_ticks;
 
-    //The clock time when the timer started
-    std::uint32_t start_ticks;
+        // The ticks stored when the timer was paused
+        std::uint32_t paused_ticks;
 
-    //The ticks stored when the timer was paused
-    std::uint32_t paused_ticks;
+        // Timer status
+        bool paused;
+        bool started;
 
-    //Timer status
-    bool paused;
-    bool started;
+    public:
+        Timer ();
 
-public:
+        void start();
+        void stop();
+        void pause();
+        void unpause();
 
-    Timer();
+        bool is_started() const;
+        bool is_paused() const;
 
-    void start();
-    void stop();
-    void pause();
-    void unpause();
-
-    bool is_started() const;
-    bool is_paused() const;
-
-    std::uint32_t get_ticks() const;
+        std::uint32_t get_ticks() const;
 };
 
 #endif

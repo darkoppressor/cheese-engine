@@ -10,63 +10,57 @@
 
 #include <SDL_mixer.h>
 
-class Music_Data{
-public:
+class Music_Data {
+    public:
+        Mix_Chunk* track;
+        bool playing;
+        int channel;
+        double volume;
+        double fade_speed;
 
-    Mix_Chunk* track;
-    bool playing;
-    int channel;
-    double volume;
-    double fade_speed;
-
-    Music_Data();
+        Music_Data ();
 };
 
-class Music_Manager{
-private:
+class Music_Manager {
+    private:
+        static std::vector<Music_Data> tracks;
+        static std::vector<std::string> track_names;
 
-    static std::vector<Music_Data> tracks;
-    static std::vector<std::string> track_names;
+    public:
+        static void set_track_volumes();
 
-public:
+        // Modifies volume by applying the appropriate audio option multipliers
+        static int modify_music_volume(int volume);
 
-    static void set_track_volumes();
+        // Handle the fading in and out of tracks
+        static void fadein_tracks();
+        static void fadeout_tracks();
 
-    //Modifies volume by applying the appropriate audio option multipliers
-    static int modify_music_volume(int volume);
+        // Turn off the currently playing track, if any, and start playing track
+        static void play_track(std::string track_name, double fade_speed = 0.01);
 
-    //Handle the fading in and out of tracks
-    static void fadein_tracks();
-    static void fadeout_tracks();
+        // Turn off the currently playing track, if any
+        static void stop_track(double fade_speed = 0.01);
+        static void restart_track(std::string track_name);
 
-    //Turn off the currently playing track, if any, and start playing track
-    static void play_track(std::string track_name,double fade_speed=0.01);
+        // Prepare all tracks
+        // Does not load anything
+        static void prepare_tracks();
 
-    //Turn off the currently playing track, if any
-    static void stop_track(double fade_speed=0.01);
+        // Load a single track
+        static void load_track(std::string track_path, std::string track_name);
 
-    static void restart_track(std::string track_name);
+        // Unload a single track
+        static void unload_track(int track_ident);
 
-    //Prepare all tracks
-    //Does not load anything
-    static void prepare_tracks();
+        // Unload all tracks
+        static void unload_tracks();
 
-    //Load a single track
-    static void load_track(std::string track_path,std::string track_name);
-
-    //Unload a single track
-    static void unload_track(int track_ident);
-
-    //Unload all tracks
-    static void unload_tracks();
-
-    //Returns true if the passed track is currently the playing track
-    //Returns false if the passed track is not playing
-    static bool track_is_playing(int track_ident);
-
-    static int get_track_ident(std::string track_name);
-
-    static bool channel_used(int channel);
+        // Returns true if the passed track is currently the playing track
+        // Returns false if the passed track is not playing
+        static bool track_is_playing(int track_ident);
+        static int get_track_ident(std::string track_name);
+        static bool channel_used(int channel);
 };
 
 #endif

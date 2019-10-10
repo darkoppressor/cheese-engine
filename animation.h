@@ -10,23 +10,20 @@
 #include <string>
 #include <vector>
 
-class Animation{
-public:
+class Animation {
+    public:
+        std::string name;
+        int frame_count;
+        // The time to spend on each frame of animation, in milliseconds.
+        int animation_speed;
 
-    std::string name;
+        // How the animation behaves when reaching the end of its frames.
+        std::string end_behavior;
+        std::vector<Collision_Rect<double>> sprite_sheet;
 
-    int frame_count;
-    //The time to spend on each frame of animation, in milliseconds.
-    int animation_speed;
+        Animation ();
 
-    //How the animation behaves when reaching the end of its frames.
-    std::string end_behavior;
-
-    std::vector<Collision_Rect<double>> sprite_sheet;
-
-    Animation();
-
-    void setup(double frame_width);
+        void setup(double frame_width);
 };
 
 #endif

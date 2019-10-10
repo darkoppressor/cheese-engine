@@ -22,39 +22,37 @@
 
 using namespace std;
 
-bool Data_Manager::images_loaded=false;
-bool Data_Manager::fonts_loaded=false;
-bool Data_Manager::colors_loaded=false;
-bool Data_Manager::world_loaded=false;
-
-const int Data_Manager::world_load_item_count=20;
-
-bool Data_Manager::are_images_loaded(){
+bool Data_Manager::images_loaded = false;
+bool Data_Manager::fonts_loaded = false;
+bool Data_Manager::colors_loaded = false;
+bool Data_Manager::world_loaded = false;
+const int Data_Manager::world_load_item_count = 20;
+bool Data_Manager::are_images_loaded () {
     return images_loaded;
 }
 
-bool Data_Manager::are_fonts_loaded(){
+bool Data_Manager::are_fonts_loaded () {
     return fonts_loaded;
 }
 
-bool Data_Manager::are_colors_loaded(){
+bool Data_Manager::are_colors_loaded () {
     return colors_loaded;
 }
 
-bool Data_Manager::is_world_loaded(){
+bool Data_Manager::is_world_loaded () {
     return world_loaded;
 }
 
-bool Data_Manager::load_world(Progress_Bar& bar){
+bool Data_Manager::load_world (Progress_Bar& bar) {
     GUI_Manager::initialize();
 
     load_data_game_options();
 
-    if(!Options::load_options()){
+    if (!Options::load_options()) {
         return false;
     }
 
-    if(!Game_Window::initialize()){
+    if (!Game_Window::initialize()) {
         return false;
     }
 
@@ -64,7 +62,7 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     Image_Manager::load_images();
 
-    images_loaded=true;
+    images_loaded = true;
 
     load_data_fonts(bar);
 
@@ -92,7 +90,7 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     bar.progress("Loading game commands cfg");
 
-    if(!Options::load_game_commands()){
+    if (!Options::load_game_commands()) {
         return false;
     }
 
@@ -102,13 +100,13 @@ bool Data_Manager::load_world(Progress_Bar& bar){
 
     bar.progress("Loading error image");
 
-    //To be safe, this should be at the very bottom of load_world()
+    // To be safe, this should be at the very bottom of load_world()
     Image_Manager::set_error_image();
 
     bar.progress("Done loading data");
-    Log::add_log("Data loaded in "+Strings::num_to_string(bar.get_time_elapsed())+" ms");
+    Log::add_log("Data loaded in " + Strings::num_to_string(bar.get_time_elapsed()) + " ms");
 
-    world_loaded=true;
+    world_loaded = true;
 
     Log::post_world_load_errors();
     Log::post_world_load_logs();
@@ -116,12 +114,12 @@ bool Data_Manager::load_world(Progress_Bar& bar){
     return true;
 }
 
-void Data_Manager::unload_world(){
-    if(world_loaded){
-        world_loaded=false;
-        colors_loaded=false;
-        fonts_loaded=false;
-        images_loaded=false;
+void Data_Manager::unload_world () {
+    if (world_loaded) {
+        world_loaded = false;
+        colors_loaded = false;
+        fonts_loaded = false;
+        images_loaded = false;
 
         Image_Manager::unload_images();
 
@@ -137,7 +135,7 @@ void Data_Manager::unload_world(){
     }
 }
 
-void Data_Manager::unload_data(){
+void Data_Manager::unload_data () {
     Engine::clear_mutable_info();
 
     Object_Manager::unload_data();
@@ -147,15 +145,15 @@ void Data_Manager::unload_data(){
     Game_Manager::unload_data_game();
 }
 
-void Data_Manager::load_data_colors(Progress_Bar& bar){
+void Data_Manager::load_data_colors (Progress_Bar& bar) {
     bar.progress("Loading colors");
 
     load_data("color");
 
-    colors_loaded=true;
+    colors_loaded = true;
 }
 
-void Data_Manager::load_data_fonts(Progress_Bar& bar){
+void Data_Manager::load_data_fonts (Progress_Bar& bar) {
     bar.progress("Loading animations");
 
     load_data("animation");
@@ -164,10 +162,10 @@ void Data_Manager::load_data_fonts(Progress_Bar& bar){
 
     load_data("font");
 
-    fonts_loaded=true;
+    fonts_loaded = true;
 }
 
-void Data_Manager::load_data_main(Progress_Bar& bar){
+void Data_Manager::load_data_main (Progress_Bar& bar) {
     bar.progress("Loading cursors");
 
     load_data("cursor");
@@ -203,69 +201,58 @@ void Data_Manager::load_data_main(Progress_Bar& bar){
     GUI_Manager::text_selector.set_name("text_selector");
 }
 
-bool Data_Manager::load_data_engine(){
-    bool load_result=load_data("engine");
+bool Data_Manager::load_data_engine () {
+    bool load_result = load_data("engine");
 
     Engine::build_text_input_characters();
 
     return load_result;
 }
 
-void Data_Manager::load_data_game_options(){
+void Data_Manager::load_data_game_options () {
     load_data("game_option");
 }
 
-bool Data_Manager::load_data(string tag){
-    vector<string> file_list=VFS::get_file_list("");
-    for(const auto& file : file_list){
+bool Data_Manager::load_data (string tag) {
+    vector<string> file_list = VFS::get_file_list("");
+
+    for (const auto& file : file_list) {
         File_IO_Load load(VFS::get_rwops(file));
 
-        if(load.is_opened()){
-            while(!load.eof()){
-                vector<string> lines=Data_Reader::read_data(&load,"<"+tag+">");
+        if (load.is_opened()) {
+            while (!load.eof()) {
+                vector<string> lines = Data_Reader::read_data(&load, "<" + tag + ">");
 
-                if(lines.size()>0 && Data_Reader::check_prefix(lines.back(),"<"+tag+">")){
-                    if(tag=="engine"){
+                if (lines.size() > 0 && Data_Reader::check_prefix(lines.back(), "<" + tag + ">")) {
+                    if (tag == "engine") {
                         Engine_Data::load_engine_data(&load);
-                    }
-                    else if(tag=="font"){
+                    } else if (tag == "font") {
                         Object_Manager::load_font(&load);
-                    }
-                    else if(tag=="cursor"){
+                    } else if (tag == "cursor") {
                         Object_Manager::load_cursor(&load);
-                    }
-                    else if(tag=="color"){
+                    } else if (tag == "color") {
                         Object_Manager::load_color(&load);
-                    }
-                    else if(tag=="color_theme"){
+                    } else if (tag == "color_theme") {
                         Object_Manager::load_color_theme(&load);
-                    }
-                    else if(tag=="animation"){
+                    } else if (tag == "animation") {
                         Object_Manager::load_animation(&load);
-                    }
-                    else if(tag=="window"){
+                    } else if (tag == "window") {
                         Window_Manager::load_window(&load);
-                    }
-                    else if(tag=="game_command"){
+                    } else if (tag == "game_command") {
                         Object_Manager::load_game_command(&load);
-                    }
-                    else if(tag=="game_option"){
+                    } else if (tag == "game_option") {
                         Object_Manager::load_game_option(&load);
-                    }
-                    else if(tag=="game_constant"){
+                    } else if (tag == "game_constant") {
                         Object_Manager::load_game_constant(&load);
-                    }
-                    else if(tag=="custom_sound"){
+                    } else if (tag == "custom_sound") {
                         Object_Manager::load_custom_sound(&load);
-                    }
-                    else{
-                        Game_Manager::load_data_tag_game(tag,&load);
+                    } else {
+                        Game_Manager::load_data_tag_game(tag, &load);
                     }
                 }
             }
-        }
-        else{
-            Log::add_error("Error loading tag data: '"+tag+"'");
+        } else {
+            Log::add_error("Error loading tag data: '" + tag + "'");
 
             return false;
         }
