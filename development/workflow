@@ -45,13 +45,17 @@ Example:
     git checkout -b feature/<FEATURE_B> feature/<FEATURE_A>
 If feature/<FEATURE_A> has commits added after this, rebase feature/<FEATURE_B> onto feature/<FEATURE_A>.
 Example:
+    git checkout feature/<FEATURE_B>
     git rebase --no-ff --signoff feature/<FEATURE_B> --onto feature/<FEATURE_A>
+    git pull
 Once the new feature is complete, it cannot be merged until feature/<FEATURE_A> has been merged back into develop.
 Once the new feature is complete and feature/<FEATURE_A> has been merged back into develop, rebase feature/<FEATURE_B>
 onto develop and then do a pull request for merging it into develop. Once approved, merge feature/<FEATURE_B> into
 develop.
 Example:
+    git checkout feature/<FEATURE_B>
     git rebase --no-ff --signoff feature/<FEATURE_B> --onto develop
+    git pull
     <Wait for pull request approval>
     <Follow the directions above for merging a feature branch into develop>
 
@@ -73,13 +77,17 @@ Example:
     git checkout -b bugfix/<BUGFIX_B> bugfix/<BUGFIX_A>
 If bugfix/<BUGFIX_A> has commits added after this, rebase bugfix/<BUGFIX_B> onto bugfix/<BUGFIX_A>.
 Example:
+    git checkout bugfix/<BUGFIX_B>
     git rebase --no-ff --signoff bugfix/<BUGFIX_B> --onto bugfix/<BUGFIX_A>
+    git pull
 Once the new bugfix is complete, it cannot be merged until bugfix/<BUGFIX_A> has been merged back into develop.
 Once the new bugfix is complete and bugfix/<BUGFIX_A> has been merged back into develop, rebase bugfix/<BUGFIX_B>
 onto develop and then do a pull request for merging it into develop. Once approved, merge bugfix/<BUGFIX_B> into
 develop.
 Example:
+    git checkout bugfix/<BUGFIX_B>
     git rebase --no-ff --signoff bugfix/<BUGFIX_B> --onto develop
+    git pull
     <Wait for pull request approval>
     <Follow the directions above for merging a bugfix branch into develop>
 
