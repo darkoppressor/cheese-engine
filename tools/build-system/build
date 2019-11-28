@@ -127,6 +127,8 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		OPTION_REBUILD_IMAGES="true"
 		OPTION_REBUILD_MUSIC="true"
 		OPTION_REBUILD_SOUNDS="true"
+		OPTION_GOOGLE_PLAY_SERVICE_ACCOUNT=""
+		OPTION_ANDROID_PACKAGE_NAME=""
 
 		if [ -f "${PROJECT_PATH}/development/build-system-options" ]; then
 			while read line
@@ -153,6 +155,22 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 						if [ -n "$result" ]; then
 							OPTION_REBUILD_SOUNDS="$result"
+						fi
+					fi
+
+					if [[ $line =~ ^google_play_service_account ]]; then
+						result=$(read_option "$line")
+
+						if [ -n "$result" ]; then
+							OPTION_GOOGLE_PLAY_SERVICE_ACCOUNT="$result"
+						fi
+					fi
+
+					if [[ $line =~ ^android_package_name ]]; then
+						result=$(read_option "$line")
+
+						if [ -n "$result" ]; then
+							OPTION_ANDROID_PACKAGE_NAME="$result"
 						fi
 					fi
 				fi
@@ -395,6 +413,13 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				[ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/bundle/release/${BUNDLE}" ]; then
 				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/apk/release/${BINARY}" "${BUILDS}/${PACKAGING_ANDROID}.apk"
 				mv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/build/outputs/bundle/release/${BUNDLE}" "${BUILDS}/${PACKAGING_ANDROID}.aab"
+
+				if [ -n "$OPTION_GOOGLE_PLAY_SERVICE_ACCOUNT" ] && [ -n "$OPTION_ANDROID_PACKAGE_NAME" ]; then
+					python3 -m venv "$BUILD_HOME/build-server/projects/${PROJECT_NAME}"
+					source "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/bin/activate"
+					pip3 install --upgrade pip google-auth google-auth-httplib2 google-api-python-client
+					python3 "$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/android/deploy_to_google_play.py" "$BUILD_HOME/build-server/android/google_play_service_accounts/$OPTION_GOOGLE_PLAY_SERVICE_ACCOUNT" "$OPTION_ANDROID_PACKAGE_NAME" "${BUILDS}/${PACKAGING_ANDROID}.aab"
+				fi
 
 				log="Build succeeded for ${TARGET}"
 				echo "${log}" | tee -a ${LOG_FILE}
