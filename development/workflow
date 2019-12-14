@@ -98,6 +98,9 @@ To begin preparing a new release, branch off from develop.
 Example:
     git checkout -b release/<RELEASE> develop
     <update engine version>
+        In engine_version.cpp:
+            Update the version returned by Engine_Version::get_engine_version
+            Update the date returned by Engine_Version::get_engine_date
     git commit -asm "Increment engine version"
 If any new bugfixes are needed for the release, they should be applied and committed in this release branch instead of
 develop.
