@@ -12,25 +12,19 @@
 
 #include <SDL.h>
 
-class Image_Manager{
-private:
+class Image_Manager {
+    private:
+        static std::vector<Image_Data> images;
+        static std::vector<std::string> image_names;
+        static Image_Data* error_image;
 
-    static std::vector<Image_Data> images;
-    static std::vector<std::string> image_names;
-
-    static Image_Data* error_image;
-
-public:
-
-    static void set_error_image();
-
-    static void add_image(std::string name,SDL_Surface* surface);
-    static void remove_image(std::string name);
-
-    static void load_images();
-    static void unload_images();
-
-    static Image_Data* get_image(std::string image_name);
+    public:
+        static void set_error_image();
+        static void add_image(std::string name, SDL_Surface* surface);
+        static void remove_image(std::string name);
+        static void load_images();
+        static void unload_images();
+        static Image_Data* get_image(std::string image_name);
 };
 
 #endif

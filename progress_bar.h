@@ -10,31 +10,28 @@
 #include <string>
 #include <cstdint>
 
-class Progress_Bar{
-private:
+class Progress_Bar {
+    private:
+        int items;
+        int items_done;
 
-    int items;
-    int items_done;
+        // The time that the previous step was completed
+        std::uint32_t time_of_previous_step;
+        Timer timer;
 
-    //The time that the previous step was completed
-    std::uint32_t time_of_previous_step;
+        bool is_done() const;
 
-    Timer timer;
+        void finish();
 
-    bool is_done() const;
+    public:
+        Progress_Bar (int get_items);
 
-    void finish();
+        void progress(std::string message = "");
 
-public:
+        double get_percentage_done() const;
 
-    Progress_Bar(int get_items);
-
-    void progress(std::string message="");
-
-    double get_percentage_done() const;
-
-    //in milliseconds
-    std::uint32_t get_time_elapsed() const;
+        // in milliseconds
+        std::uint32_t get_time_elapsed() const;
 };
 
 #endif

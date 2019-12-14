@@ -7,17 +7,16 @@
 
 #include <SDL.h>
 
-class Rtt_Data{
-public:
+class Rtt_Data {
+    public:
+        SDL_Texture* texture;
+        double w;
+        double h;
 
-    SDL_Texture* texture;
-    double w;
-    double h;
+        Rtt_Data ();
 
-    Rtt_Data();
-
-    void create_texture(double get_w,double get_h);
-    void unload_texture();
+        void create_texture(double get_w, double get_h);
+        void unload_texture();
 };
 
 #endif

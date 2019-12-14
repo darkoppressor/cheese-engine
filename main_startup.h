@@ -9,23 +9,22 @@
 
 #include <SDL.h>
 
-class Command_Line_Arguments{
-public:
+class Command_Line_Arguments {
+    public:
+        std::string initial_mod;
 
-    std::string initial_mod;
-
-    Command_Line_Arguments();
+        Command_Line_Arguments ();
 };
 
 void game_loop();
 
-//Handle Android/iOS events
-int handle_app_events(void* userdata,SDL_Event* event);
+// Handle Android/iOS events
+int handle_app_events(void* userdata, SDL_Event* event);
 
-int main_initialize(bool first_init,Command_Line_Arguments& arguments,int game_data_load_item_count);
+int main_initialize(bool first_init, Command_Line_Arguments& arguments, int game_data_load_item_count);
 
-void process_arguments(int argc,char* args[],Command_Line_Arguments& arguments);
+void process_arguments(int argc, char* args[], Command_Line_Arguments& arguments);
 
-int main_startup(int argc,char* args[],int game_data_load_item_count);
+int main_startup(int argc, char* args[], int game_data_load_item_count);
 
 #endif

@@ -7,25 +7,25 @@
 
 using namespace std;
 
-Rtt_Data::Rtt_Data(){
-    texture=0;
-    w=0.0;
-    h=0.0;
+Rtt_Data::Rtt_Data () {
+    texture = 0;
+    w = 0.0;
+    h = 0.0;
 }
 
-void Rtt_Data::create_texture(double get_w,double get_h){
-    w=get_w;
-    h=get_h;
+void Rtt_Data::create_texture (double get_w, double get_h) {
+    w = get_w;
+    h = get_h;
 
-    texture=Game_Window::create_texture(SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,w,h);
+    texture = Game_Window::create_texture(SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
 
-    SDL_SetTextureBlendMode(texture,SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 }
 
-void Rtt_Data::unload_texture(){
+void Rtt_Data::unload_texture () {
     SDL_DestroyTexture(texture);
 
-    texture=0;
-    w=0.0;
-    h=0.0;
+    texture = 0;
+    w = 0.0;
+    h = 0.0;
 }

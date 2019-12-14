@@ -7,28 +7,25 @@
 
 #include <string>
 
-class Toast{
-public:
+class Toast {
+    public:
+        std::string message;
+        int x;
+        int y;
+        int w;
+        int h;
+        double opacity;
+        double fade_rate;
 
-    std::string message;
+        Toast (std::string get_message, double get_fade_rate);
 
-    int x;
-    int y;
-    int w;
-    int h;
+        void set_dimensions(std::string font);
 
-    double opacity;
-    double fade_rate;
+        bool is_done();
 
-    Toast(std::string get_message,double get_fade_rate);
+        void animate();
 
-    void set_dimensions(std::string font);
-
-    bool is_done();
-
-    void animate();
-
-    void render();
+        void render();
 };
 
 #endif
