@@ -14,7 +14,7 @@ add_boost_version () {
 }
 
 add_raknet_version () {
-	local file="/home/tails/build-server/$1/raknet/raknet/readme.txt"
+	local file="/home/tails/build-server/$1/raknet/raknet/README.md"
 
 	OUTPUT="$OUTPUT$(sed -ne "/^RakNet/p" "$file" | sed -e "s/^RakNet\s*//" | sed -e "s/\s*$//")"
 }
@@ -241,14 +241,27 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			fi
 		fi
 	done
-	OUTPUT="${OUTPUT}\n"
+	OUTPUT="${OUTPUT}\n\n"
 
 	OUTPUT="${OUTPUT}Build System\n"
 	OUTPUT="$OUTPUT------------------------------------------------------\n"
 
 	OUTPUT="${OUTPUT}Linux\t\t$(gcc --version | sed -n 1p), $(ldd --version | sed -n 1p)\n"
 	OUTPUT="${OUTPUT}Windows\t\t$(x86_64-w64-mingw32-gcc --version | sed -n 1p)\n"
-	OUTPUT="${OUTPUT}macOS\t\t$(o64-clang --version | sed -n 1p), Xcode 10.3\n"
+	macOS_SDK=""
+	for f in /home/tails/build-server/osx-x86_64/osxcross/tarballs/* ; do
+		if [[ $f =~ ^\/home\/tails\/build-server\/osx-x86_64\/osxcross\/tarballs\/MacOSX ]]; then
+			PREFIX=/home/tails/build-server/osx-x86_64/osxcross/tarballs/MacOSX
+			SUFFIX=.sdk.tar.xz
+			WNAME=${f#$PREFIX}
+			WNAME=${WNAME%$SUFFIX}
+
+			macOS_SDK=${WNAME}
+
+			break
+		fi
+	done
+	OUTPUT="${OUTPUT}macOS\t\t$(o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
 	ndk_version=""
 	for d in /home/tails/build-server/android/android-sdk/ndk/*/ ; do
 		if [ -d "$d" ]; then
@@ -262,10 +275,6 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	android_compiler_version=""
-	if [ -n "$ndk_version" ]; then
-		android_compiler_version=$(/home/tails/build-server/android/android-sdk/ndk/$ndk_version/toolchains/llvm/prebuilt/linux-x86_64/bin/clang --version)
-	fi
 	sdk_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/tools/source.properties" | sed -e "s/^Pkg.Revision=//")
 	sdk_platform_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/platform-tools/source.properties" | sed -e "s/^Pkg.Revision=//")
 	sdk_build_tools=""
@@ -281,7 +290,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $ndk_version, $($android_compiler_version | sed -n 1p), SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
+	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $ndk_version, SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
 
 	file="/home/tails/build-server/steamworks-sdk/Readme.txt"
 	OUTPUT="${OUTPUT}Steam\t\t$(sed -ne "0,/^v/p" "$file" | tail -n 1)"
