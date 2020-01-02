@@ -30,7 +30,7 @@ build_project_music () {
 				if [ ! -e "$MUSIC_DIRECTORY/$file_name" ]; then
 					mkdir -p "$MUSIC_DIRECTORY/$music_dir"
 
-					/home/tails/lmms-1.2.0-linux-x86_64.AppImage --render "$file" --output "$MUSIC_DIRECTORY/$file_name" --format 'ogg' --samplerate 44100 --bitrate 160 --interpolation 'sincmedium' --oversampling 1 --loop
+					$LMMS --render "$file" --output "$MUSIC_DIRECTORY/$file_name" --format 'ogg' --samplerate 44100 --bitrate 160 --interpolation 'sincmedium' --oversampling 1 --loop
 				fi
 			fi
 		fi
