@@ -20,7 +20,7 @@ pipeline {
 
             steps {
                 sh 'python3 -m venv "."'
-                sh 'source "bin/activate"'
+                sh '. "bin/activate"'
                 sh 'chmod +x /home/tails/server/feeds/setup ; /home/tails/server/feeds/setup'
                 sh 'python3 ci-cd.py ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}'
             }
