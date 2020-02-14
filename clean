@@ -6,6 +6,12 @@ cd $DIR
 rm -rf "CMakeFiles/"
 rm -rf ".objs/"
 
+rm -rf "bin/"
+rm -rf "lib/"
+rm -rf "share/"
+rm -f "lib64"
+rm -f "pyvenv.cfg"
+
 rm -f *Windows-x86_64.a
 rm -f *Windows-Debug-x86_64.a
 rm -f *Linux-x86_64.a
