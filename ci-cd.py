@@ -2,6 +2,7 @@ import sys
 import argparse
 import logging
 import subprocess
+import os
 
 sys.path.append('/home/tails/server/feeds/')
 import feeds
@@ -24,8 +25,10 @@ def main(argv):
     ciBuildUrl = args.ciBuildUrl
 
     try:
-        text = 'Build started - ' + ciJobName + ' ' + ciBuildNumber + ' (<' + ciBuildUrl + '|Open>)'
+        text = 'Build started - ' + ciJobName + ' ' + ciBuildNumber + ' (' + ciBuildUrl + ')'
         feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
+
+        logging.warning('CWD: ' + os.getcwd())
 
         subprocess.run(['chmod', '+x', 'tools/*'])
         subprocess.run(['chmod', '+x', 'tools/build-system/*'])
@@ -37,17 +40,17 @@ def main(argv):
         subprocess.run(['chmod', '+x', 'development/android/clean-android'])
 
         if subprocess.run(['tools/build-system/scripts/build-engine', '$(pwd)']):
-            text = 'Build completed successfully - ' + ciJobName + ' ' + ciBuildNumber + ' (<' + ciBuildUrl + '|Open>)'
+            text = 'Build completed successfully - ' + ciJobName + ' ' + ciBuildNumber + ' (' + ciBuildUrl + ')'
             feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
 
             if subprocess.run(['tools/build-system/scripts/deploy-engine', '$(pwd)']):
-                text = 'Deployment completed successfully - ' + ciJobName + ' ' + ciBuildNumber + ' (<' + ciBuildUrl + '|Open>)'
+                text = 'Deployment completed successfully - ' + ciJobName + ' ' + ciBuildNumber + ' (' + ciBuildUrl + ')'
                 feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
             else:
-                text = 'Deployment failed - ' + ciJobName + ' ' + ciBuildNumber + ' (<' + ciBuildUrl + '|Open>)'
+                text = 'Deployment failed - ' + ciJobName + ' ' + ciBuildNumber + ' (' + ciBuildUrl + ')'
                 feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
         else:
-            text = 'Build failed - ' + ciJobName + ' ' + ciBuildNumber + ' (<' + ciBuildUrl + '|Open>)'
+            text = 'Build failed - ' + ciJobName + ' ' + ciBuildNumber + ' (' + ciBuildUrl + ')'
             feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
 
     except Exception as e:
