@@ -17,7 +17,12 @@ argparser.add_argument('ciBuildNumber',
 argparser.add_argument('ciBuildUrl',
                         help = 'the build URL of the CI job')
 
-def main(argv):
+def updateFeed (prefix, ciJobName, ciBuildNumber, ciBuildUrl):
+    title = prefix + ciJobName + ' ' + ciBuildNumber
+    content = title + ' (<a href="' + ciBuildUrl + '">Open</a>)'
+    feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', title, content)
+
+def main (argv):
     args = argparser.parse_args()
 
     ciJobName = args.ciJobName
@@ -25,29 +30,33 @@ def main(argv):
     ciBuildUrl = args.ciBuildUrl
 
     try:
-        text = 'Build started - ' + ciJobName + ' ' + ciBuildNumber + ' (<a href="' + ciBuildUrl + '">Open</a>)'
-        feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
+        updateFeed('Build started - ', ciJobName, ciBuildNumber, ciBuildUrl)
 
-        os.chmod('tools/*', 0o755)
-        os.chmod('tools/build-system/*', 0o755)
-        os.chmod('tools/build-system/scripts/*', 0o755)
-        os.chmod('tools/build-system/scripts/android/*', 0o755)
+        for fileName in os.listdir('tools'):
+            os.chmod(fileName, 0o755)
+
+        for fileName in os.listdir('tools/build-system'):
+            os.chmod(fileName, 0o755)
+
+        for fileName in os.listdir('tools/build-system/scripts'):
+            if not fileName.endswith('-x86_64') and not fileName.endswith('.cmake'):
+                os.chmod(fileName, 0o755)
+
+        for fileName in os.listdir('tools/build-system/scripts/android'):
+            os.chmod(fileName, 0o755)
+
         os.chmod('development/android/android-prep', 0o755)
         os.chmod('development/android/clean-android', 0o755)
 
         if subprocess.run(['tools/build-system/scripts/build-engine', '$(pwd)']):
-            text = 'Build completed successfully - ' + ciJobName + ' ' + ciBuildNumber + ' (<a href="' + ciBuildUrl + '">Open</a>)'
-            feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
+            updateFeed('Build completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)
 
             if subprocess.run(['tools/build-system/scripts/deploy-engine', '$(pwd)']):
-                text = 'Deployment completed successfully - ' + ciJobName + ' ' + ciBuildNumber + ' (<a href="' + ciBuildUrl + '">Open</a>)'
-                feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
+                updateFeed('Deployment completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)
             else:
-                text = 'Deployment failed - ' + ciJobName + ' ' + ciBuildNumber + ' (<a href="' + ciBuildUrl + '">Open</a>)'
-                feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
+                updateFeed('Deployment failed - ', ciJobName, ciBuildNumber, ciBuildUrl)
         else:
-            text = 'Build failed - ' + ciJobName + ' ' + ciBuildNumber + ' (<a href="' + ciBuildUrl + '">Open</a>)'
-            feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', text, text)
+            updateFeed('Build failed - ', ciJobName, ciBuildNumber, ciBuildUrl)
 
     except Exception as e:
         logging.exception(e)
