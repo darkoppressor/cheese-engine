@@ -7,13 +7,6 @@ PROJECT_DIRECTORY=$1
 
 BUILD_HOME="/home/tails"
 
-# QQQ
-echo "DEPLOY SCRIPT STARTED"
-echo "PROJECT_DIRECTORY: $PROJECT_DIRECTORY"
-echo "BUILD_HOME: $BUILD_HOME"
-echo "DIR: $DIR"
-echo "ls $BUILD_HOME/build-server: $(ls $BUILD_HOME/build-server)"
-
 if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$BUILD_HOME/build-server/cheese-engine-previous"
 	mv "$BUILD_HOME/build-server/cheese-engine/" "$BUILD_HOME/build-server/cheese-engine-previous"
