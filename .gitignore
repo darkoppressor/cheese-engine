@@ -3,6 +3,12 @@ CMakeFiles/**
 mods/**
 screenshots/**
 
+bin/**
+lib/**
+share/**
+lib64
+pyvenv.cfg
+
 /*.a
 
 development/android/assets/**
@@ -20,7 +26,7 @@ development/android/jni/boost/**
 /*Windows-Debug-x86_64.exe
 /*Linux-x86_64
 /*Linux-Debug-x86_64
-/*OSX-x86_64
+/*macOS-x86_64
 
 /*options.cfg
 /*game_commands.cfg
@@ -39,9 +45,10 @@ docs/build-information
 /*compile_commands.json
 
 /*log-Release-Android
-/*log-Release-Release-Linux-x86_64
-/*log-Release-Release-macOS-x86_64
-/*log-Release-Release-Windows-x86_64
+/*log-Release-Linux-x86_64
+/*log-Debug-Linux-x86_64
+/*log-Release-macOS-x86_64
+/*log-Release-Windows-x86_64
 
 /*.dll
 /*.ico
