@@ -3,6 +3,12 @@ CMakeFiles/**
 mods/**
 screenshots/**
 
+bin/**
+lib/**
+share/**
+lib64
+pyvenv.cfg
+
 /*.a
 
 development/android/assets/**
