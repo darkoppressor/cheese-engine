@@ -51,10 +51,10 @@ def main (argv):
         os.chmod('development/android/android-prep', 0o755)
         os.chmod('development/android/clean-android', 0o755)
 
-        if subprocess.run(['tools/build-system/scripts/build-engine', '$(pwd)']):
+        if subprocess.run(['tools/build-system/scripts/build-engine', "$(pwd)"]):
             updateFeed('Build completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)
 
-            if subprocess.run(['tools/build-system/scripts/deploy-engine', '$(pwd)']):
+            if subprocess.run(['tools/build-system/scripts/deploy-engine', "$(pwd)"]):
                 updateFeed('Deployment completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)
             else:
                 updateFeed('Deployment failed - ', ciJobName, ciBuildNumber, ciBuildUrl)
