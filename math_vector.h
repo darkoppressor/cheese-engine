@@ -39,6 +39,8 @@ class Vector {
         Vector_Components get_components_absolute() const;
         void set_polar_form(const Vector_Components& vc);
         Vector opposite() const;
+        Vector perpendicular_clockwise() const;
+        Vector perpendicular_anticlockwise() const;
 
         Vector operator+ (const Vector& vector1) const;
         void operator+= (const Vector& vector1);
