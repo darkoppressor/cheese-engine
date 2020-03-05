@@ -6,12 +6,16 @@
 #define color2_h
 
 #include <cstdint>
+#include <string>
 
 class Color2 {
     std::int16_t red;
     std::int16_t green;
     std::int16_t blue;
     std::int16_t alpha;
+    std::string name;
+
+    void clampColorChannel(std::int16_t& channel);
 
     public:
         static const std::int16_t MINIMUM_CHANNEL_VALUE = 0;
@@ -21,8 +25,10 @@ class Color2 {
         Color2 (std::int16_t red, std::int16_t green, std::int16_t blue, std::int16_t alpha);
         Color2 (const Color2& color);
 
-        void clear();
+        bool operator== (const Color2& color) const;
+        bool operator!= (const Color2& color) const;
 
+        void clear();
         void set(std::int16_t red, std::int16_t green, std::int16_t blue, std::int16_t alpha);
 
         std::int16_t getRed() const;
@@ -33,11 +39,22 @@ class Color2 {
         void setBlue(std::int16_t blue);
         std::int16_t getAlpha() const;
         void setAlpha(std::int16_t alpha);
+        std::string getName() const;
 
-        // adds each color channel to its corresponding channel without imposing a specific range
+        // These functions return the corresponding color channel scaled to [0.0, 1.0]:
+        double getRedScaled() const;
+        double getGreenScaled() const;
+        double getBlueScaled() const;
+        double getAlphaScaled() const;
+
+        std::string getHexStringRgb() const;
+        std::string getHexStringRgba() const;
+
+        void clamp();
+
+        // Adds each color channel to its corresponding channel without imposing a specific range
         void hdrAdd(std::int16_t red, std::int16_t green, std::int16_t blue, std::int16_t alpha);
-
-        // returns a new color representing this color, rescaled from hdr
+        // Returns a new Color2 representing this Color2, rescaled from hdr
         Color2 getHdrRescaled() const;
 };
 
