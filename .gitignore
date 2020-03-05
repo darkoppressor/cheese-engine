@@ -4,6 +4,7 @@ mods/**
 screenshots/**
 
 bin/**
+include/**
 lib/**
 share/**
 lib64

@@ -9,6 +9,7 @@ button_events.cpp
 client_data.cpp
 collision.cpp
 color.cpp
+color2.cpp
 color_theme.cpp
 console.cpp
 console_commands.cpp

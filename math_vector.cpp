@@ -106,6 +106,18 @@ Vector Vector::opposite () const {
     return operator* (-1.0);
 }
 
+Vector Vector::perpendicular_clockwise () const {
+    Vector_Components vc = get_components_absolute();
+
+    return Vector(Vector_Components(vc.b, -vc.a));
+}
+
+Vector Vector::perpendicular_anticlockwise () const {
+    Vector_Components vc = get_components_absolute();
+
+    return Vector(Vector_Components(-vc.b, vc.a));
+}
+
 Vector Vector::operator+ (const Vector& vector1) const {
     return Vector(get_components_absolute() + vector1.get_components_absolute());
 }
