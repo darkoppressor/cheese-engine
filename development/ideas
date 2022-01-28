@@ -2,8 +2,6 @@ Scroll bar for scrolling buttons and text
 
 Can I use the new SDL2 SDL_GameControllerRumble to replace the current rumble implementation?
 
-Script for automatically installing dependencies for the build system
-
 Unicode support in bitmap fonts
 
 Enable joining a game in progress
@@ -87,14 +85,6 @@ Would need a new 'error log add' function
 that takes an error message name and presents the correct message
 Needs to handle an invalid error name
 Maybe combine log and error messages into one thing, with a need to specify the type of message
-
-Unit testing
-
-Integration testing
-
-Other platforms for the Cheese Engine:
-BSDs
-iOS
 
 Add SDL2 audio capture support
 
