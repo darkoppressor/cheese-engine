@@ -9,8 +9,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/src/main/assets/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/build/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/.cxx/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/.gradle"
 
-	rm -f "$PROJECT_DIRECTORY/development/android/.gradle"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/SDL2"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/SDL2_image"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/SDL2_mixer"
