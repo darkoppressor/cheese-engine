@@ -6,7 +6,7 @@ The branching model is essentially the one outlined here: https://nvie.com/posts
 with the addition of bugfix branches (which are functionally identical to feature branches).
 
 Permanent branches:
-master => main / production branch
+main => main / production branch
 develop => development branch
 
 Temporary branches:
@@ -14,12 +14,12 @@ feature/* => branches from develop, merges back into develop
 (or branches from another feature branch, and merges into develop)
 bugfix/* => branches from develop, merges back into develop
 (or branches from another bugfix branch, and merges into develop)
-release/* => branches from develop, merges back into develop and also into master
-hotfix/* => branches from master, merges back into master and also into develop (or the current release branch)
+release/* => branches from develop, merges back into develop and also into main
+hotfix/* => branches from main, merges back into main and also into develop (or the current release branch)
 
-A merge into master is a new production release by definition.
+A merge into main is a new production release by definition.
 
-All merges into master or develop must be preceded by a pull request.
+All merges into main or develop must be preceded by a pull request.
 
 Feature and bugfix branches are functionally identical. They only differ in whether they contain a feature or bugfix.
 As these are the only two possibilities for standard changes, most new changes must be determined to be one or the
@@ -105,14 +105,14 @@ Example:
 If any new bugfixes are needed for the release, they should be applied and committed in this release branch instead of
 develop.
 Adding new features in a release branch is strictly prohibited.
-When the release branch is ready to be released to production, do a pull request for merging it into master and another
-pull request for merging it back into develop. Once approved, merge the release branch into master, tag it, and then
+When the release branch is ready to be released to production, do a pull request for merging it into main and another
+pull request for merging it back into develop. Once approved, merge the release branch into main, tag it, and then
 merge the branch into develop.
 Example:
-    git checkout master
+    git checkout main
     git merge --no-ff release/<RELEASE>
     git tag <RELEASE> -m "<RELEASE>"
-    git push --tags origin master
+    git push --tags origin main
     git checkout develop
     git merge --no-ff release/<RELEASE>
     git push origin develop
@@ -120,23 +120,23 @@ Example:
     git push -d origin release/<RELEASE>
 
 If the production release has a critical bug that needs to be fixed right away, a hotfix is needed.
-To begin preparing a hotfix, branch off from master.
+To begin preparing a hotfix, branch off from main.
 Example:
-    git checkout -b hotfix/<HOTFIX> master
+    git checkout -b hotfix/<HOTFIX> main
     <update engine version>
     git commit -asm "Increment engine version"
 Then, fix the critical bug(s) and commit those changes in this hotfix branch.
 Adding new features or non-critical bugfixes in a hotfix branch is strictly prohibited.
-When the hotfix branch is ready to be released to production, do a pull request for merging it back into master and
-another pull request for merging it into develop. Once approved, merge the hotfix branch into master, tag it, and then
+When the hotfix branch is ready to be released to production, do a pull request for merging it back into main and
+another pull request for merging it into develop. Once approved, merge the hotfix branch into main, tag it, and then
 merge the branch into develop.
 Exception: If a release branch currently exists, merge into it instead of develop. Since merges into release branches do
-not require pull requests, only a pull request for the merge to master is required here in this case.
+not require pull requests, only a pull request for the merge to main is required here in this case.
 Example:
-    git checkout master
+    git checkout main
     git merge --no-ff hotfix/<HOTFIX>
     git tag <HOTFIX> -m "<HOTFIX>"
-    git push --tags origin master
+    git push --tags origin main
     git checkout develop
     git merge --no-ff hotfix/<HOTFIX>
     git push origin develop
