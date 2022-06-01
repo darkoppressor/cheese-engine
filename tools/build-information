@@ -261,7 +261,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	OUTPUT="${OUTPUT}macOS\t\t$(o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
+	OUTPUT="${OUTPUT}macOS\t\t$(/home/tails/build-server/osx-x86_64/osxcross/target/bin/o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
 	ndk_version=""
 	for d in /home/tails/build-server/android/android-sdk/ndk/*/ ; do
 		if [ -d "$d" ]; then
