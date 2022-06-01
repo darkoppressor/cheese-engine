@@ -289,9 +289,9 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$BUILD_HOME/build-server/projects/${PROJECT_NAME}"
 		fi
 
-		PROJECT_VERSION=$(grep -F "deps.version_name" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/versions.gradle")
+		PROJECT_VERSION=$(grep -F "versionName" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/build.gradle")
 
-		PV_PREFIX="*deps.version_name = '"
+		PV_PREFIX="*versionName = '"
 		PV_SUFFIX="'*"
 		PROJECT_VERSION=${PROJECT_VERSION##$PV_PREFIX}
 		PROJECT_VERSION=${PROJECT_VERSION%%$PV_SUFFIX}
