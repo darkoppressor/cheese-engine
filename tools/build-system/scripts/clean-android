@@ -18,9 +18,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/boost"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/cheese-engine"
 
-	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/armeabi-v7a/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/arm64-v8a/"
-	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/x86/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/x86_64/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/include/"
 
