@@ -40,7 +40,7 @@ add_sdl2_image_version () {
 }
 
 add_sdl2_mixer_version () {
-	local file="/home/tails/build-server/$1/SDL2_mixer/SDL_mixer.h"
+	local file="/home/tails/build-server/$1/SDL2_mixer/include/SDL_mixer.h"
 
 	local major=$(sed -ne "/^#define\s*SDL_MIXER_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_MIXER_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MINOR_VERSION\s*//")
@@ -64,6 +64,10 @@ add_libvorbis_version () {
 add_zlib_version () {
 	local file="/home/tails/build-server/$1/zlib/zlib.h"
 
+	if [[ "$1" == "android" ]]; then
+		file="/home/tails/build-server/$1/SDL2_image/external/zlib/zlib.h"
+	fi
+
 	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*ZLIB_VERSION/p" "$file" | sed -e "s/^#define\s*ZLIB_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
 }
 
@@ -76,7 +80,12 @@ add_minizip_version () {
 add_libpng_version () {
 	local file="/home/tails/build-server/$1/libpng/config.h"
 
-	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
+	if [[ "$1" == "android" ]]; then
+		file="/home/tails/build-server/$1/SDL2_image/external/libpng/configure"
+		OUTPUT="$OUTPUT$(sed -ne "/^PACKAGE_VERSION=/p" "$file" | sed -e "s/^PACKAGE_VERSION=\s*'//" | sed -e "s/'\s*$//")"
+	else
+		OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
+	fi
 }
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
@@ -139,24 +148,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	add_libogg_version "/home/tails/build-server/windows-x86_64/libogg"
 	OUTPUT="${OUTPUT}\t\t"
 	add_libogg_version "/home/tails/build-server/osx-x86_64/libogg"
-	OUTPUT="${OUTPUT}\t\t"
-	for d in /home/tails/build-server/android/SDL2_mixer/external/*/ ; do
-		if [ -d "$d" ]; then
-			prefix=/home/tails/build-server/android/SDL2_mixer/external/
-			dir_name=${d#$prefix}
-
-			if [[ $dir_name =~ ^libogg ]]; then
-				dir_name=$(echo "$dir_name" | sed -e "s/^libogg-//")
-				suffix=/
-				dir_name=${dir_name%$suffix}
-
-				OUTPUT="$OUTPUT$dir_name"
-
-				break
-			fi
-		fi
-	done
-	OUTPUT="${OUTPUT}\n"
+	OUTPUT="${OUTPUT}\t\tN/A\n"
 
 	OUTPUT="${OUTPUT}libvorbis\t"
 	add_libvorbis_version "linux-x86_64"
@@ -166,25 +158,6 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	add_libvorbis_version "osx-x86_64"
 	OUTPUT="${OUTPUT}\t\tN/A\n"
 
-	OUTPUT="${OUTPUT}libtremor\tN/A\t\t\tN/A\t\t\tN/A\t\t\t"
-	for d in /home/tails/build-server/android/SDL2_mixer/external/*/ ; do
-		if [ -d "$d" ]; then
-			prefix=/home/tails/build-server/android/SDL2_mixer/external/
-			dir_name=${d#$prefix}
-
-			if [[ $dir_name =~ ^libvorbisidec ]]; then
-				dir_name=$(echo "$dir_name" | sed -e "s/^libvorbisidec-//")
-				suffix=/
-				dir_name=${dir_name%$suffix}
-
-				OUTPUT="$OUTPUT$dir_name"
-
-				break
-			fi
-		fi
-	done
-	OUTPUT="${OUTPUT}\n"
-
 	OUTPUT="${OUTPUT}zlib\t\t"
 	add_zlib_version "linux-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
@@ -192,22 +165,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_zlib_version "osx-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	for d in /home/tails/build-server/android/SDL2_image/external/*/ ; do
-		if [ -d "$d" ]; then
-			prefix=/home/tails/build-server/android/SDL2_image/external/
-			dir_name=${d#$prefix}
-
-			if [[ $dir_name =~ ^zlib ]]; then
-				dir_name=$(echo "$dir_name" | sed -e "s/^zlib-//")
-				suffix=/
-				dir_name=${dir_name%$suffix}
-
-				OUTPUT="$OUTPUT$dir_name"
-
-				break
-			fi
-		fi
-	done
+	add_zlib_version "android"
 	OUTPUT="${OUTPUT}\n"
 
 	OUTPUT="${OUTPUT}minizip\t\t"
@@ -225,22 +183,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_libpng_version "osx-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	for d in /home/tails/build-server/android/SDL2_image/external/*/ ; do
-		if [ -d "$d" ]; then
-			prefix=/home/tails/build-server/android/SDL2_image/external/
-			dir_name=${d#$prefix}
-
-			if [[ $dir_name =~ ^libpng ]]; then
-				dir_name=$(echo "$dir_name" | sed -e "s/^libpng-//")
-				suffix=/
-				dir_name=${dir_name%$suffix}
-
-				OUTPUT="$OUTPUT$dir_name"
-
-				break
-			fi
-		fi
-	done
+	add_libpng_version "android"
 	OUTPUT="${OUTPUT}\n\n"
 
 	OUTPUT="${OUTPUT}Build System\n"
