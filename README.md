@@ -2,7 +2,7 @@
 [![Build Status](https://wells-family.xyz/jenkins/buildStatus/icon?job=cheese-engine)](https://wells-family.xyz/jenkins/job/cheese-engine/)
 
 2D game engine for Windows, macOS, Linux, and Android
-http://cheeseandbacon.org/
+https://cheeseandbacon.org/
 
 The Cheese Engine is the engine running Cheese and Bacon Games', uh, games.
 It was developed in-house (literally, I don't have an office) by intrepid programmer Kevin Wells. That's me.
