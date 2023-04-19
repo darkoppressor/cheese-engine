@@ -49,18 +49,6 @@ add_sdl2_mixer_version () {
 	OUTPUT="$OUTPUT$major.$minor.$micro"
 }
 
-add_libogg_version () {
-	local file="$1/config.h"
-
-	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
-}
-
-add_libvorbis_version () {
-	local file="/home/tails/build-server/$1/libvorbis/config.h"
-
-	OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
-}
-
 add_zlib_version () {
 	local file="/home/tails/build-server/$1/zlib/zlib.h"
 
@@ -75,17 +63,6 @@ add_minizip_version () {
 	local file="/home/tails/build-server/$1/zlib/contrib/minizip/minizip.c"
 
 	OUTPUT="$OUTPUT$(sed -ne "/^\s*Version/p" "$file" | sed -e "s/^\s*Version\s*//" | sed -e "s/,.*$//")"
-}
-
-add_libpng_version () {
-	local file="/home/tails/build-server/$1/libpng/config.h"
-
-	if [[ "$1" == "android" ]]; then
-		file="/home/tails/build-server/$1/SDL2_image/external/libpng/configure"
-		OUTPUT="$OUTPUT$(sed -ne "/^PACKAGE_VERSION=/p" "$file" | sed -e "s/^PACKAGE_VERSION=\s*'//" | sed -e "s/'\s*$//")"
-	else
-		OUTPUT="$OUTPUT$(sed -ne "/^#define\s*PACKAGE_VERSION/p" "$file" | sed -e "s/^#define\s*PACKAGE_VERSION\s*\"//" | sed -e "s/\"\s*$//")"
-	fi
 }
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
@@ -142,22 +119,6 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	add_sdl2_mixer_version "android"
 	OUTPUT="${OUTPUT}\n"
 
-	OUTPUT="${OUTPUT}libogg\t\t"
-	add_libogg_version "/home/tails/build-server/linux-x86_64/libogg"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libogg_version "/home/tails/build-server/windows-x86_64/libogg"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libogg_version "/home/tails/build-server/osx-x86_64/libogg"
-	OUTPUT="${OUTPUT}\t\tN/A\n"
-
-	OUTPUT="${OUTPUT}libvorbis\t"
-	add_libvorbis_version "linux-x86_64"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libvorbis_version "windows-x86_64"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libvorbis_version "osx-x86_64"
-	OUTPUT="${OUTPUT}\t\tN/A\n"
-
 	OUTPUT="${OUTPUT}zlib\t\t"
 	add_zlib_version "linux-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
@@ -174,17 +135,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	add_minizip_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t\t"
 	add_minizip_version "osx-x86_64"
-	OUTPUT="${OUTPUT}\t\t\tN/A\n"
-
-	OUTPUT="${OUTPUT}libpng\t\t"
-	add_libpng_version "linux-x86_64"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libpng_version "windows-x86_64"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libpng_version "osx-x86_64"
-	OUTPUT="${OUTPUT}\t\t"
-	add_libpng_version "android"
-	OUTPUT="${OUTPUT}\n\n"
+	OUTPUT="${OUTPUT}\t\t\tN/A\n\n"
 
 	OUTPUT="${OUTPUT}Build System\n"
 	OUTPUT="$OUTPUT------------------------------------------------------\n"

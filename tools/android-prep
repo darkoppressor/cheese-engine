@@ -113,7 +113,6 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 		rm -rf "$ANDROID_DIRECTORY/app/jni/$abi/"
 		mkdir -p "$ANDROID_DIRECTORY/app/jni/$abi"
 
-		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libpng.a" "$ANDROID_DIRECTORY/app/jni/$abi/libpng.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libcpufeatures.a" "$ANDROID_DIRECTORY/app/jni/$abi/libcpufeatures.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libSDL2main.a" "$ANDROID_DIRECTORY/app/jni/$abi/libSDL2main.a"
 		cp "$LIBRARY_LOCATION/cheese-engine/development/android/obj/local/$abi/libSDL2.a" "$ANDROID_DIRECTORY/app/jni/$abi/libSDL2.a"
