@@ -3,7 +3,7 @@ Redistribution of the game data is forbidden.
 Please buy a copy of the game to obtain the data files.
 
 At the time of this writing, the game can be legally obtained at:
-http://cheeseandbacon.org/
+https://cheeseandbacon.org/
 
 The game's source code is licensed under the MIT License.
 See LICENSE.txt for the full license text.
