@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <string>
+#include <cstdint>
 
 class Network_LAN_Browser {
     public:
@@ -18,9 +19,10 @@ class Network_LAN_Browser {
         static int lan_connecting_index;
         // Ditto, but for a server in the server list
         static int server_list_connecting_index;
+
         static void set_lan_server_target(int index, std::string get_password = "");
         static void add_lan_server(std::string get_name, std::string get_address, unsigned short get_port,
-                                   bool password_required, uint32_t slots_filled, uint32_t slots_total,
+                                   bool password_required, std::uint32_t slots_filled, std::uint32_t slots_total,
                                    std::string version, int ping);
         static Server* get_lan_server(int index);
         static void lan_refresh();
