@@ -6,6 +6,7 @@
 #define server_h
 
 #include <string>
+#include <cstdint>
 
 class Server {
     public:
@@ -14,8 +15,8 @@ class Server {
         unsigned short port;
         std::string password;
         bool password_required;
-        uint32_t slots_filled;
-        uint32_t slots_total;
+        std::uint32_t slots_filled;
+        std::uint32_t slots_total;
         std::string version;
         int ping;
 
