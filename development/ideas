@@ -12,13 +12,13 @@ Probably parse the passed path and see if it is a Git address and if so, treat i
 
 Scroll bar for scrolling buttons and text
 
-Unicode support in bitmap fonts
+Unicode support in bitmap fonts?
 
 Enable joining a game in progress
 
 IPv6
 
-Move source files into a sub directory
+Move source files into a sub directory?
 
 Log could have an option to add the log to a text file alongside the error one
 
@@ -72,7 +72,7 @@ Write documentation for using the engine, from a non-code standpoint
 
 Dedicated server mode (can be implemented as a headless mode, controlled by a command line argument)
 
-String data/datafiles
+String data / datafiles
 These can be referenced in my other data files in some special way
 These can also be referenced in code (this should be really simple to do; look at how colors work?)
 Engine needs a language option (this will be a user-configurable option) (defaults to english)
@@ -81,23 +81,9 @@ When retrieving a string, retrieve the string from the currently set language
 With this all setup, this might enable my other idea for making error messages a data file thing
 I would also need to extend my stuff to use unicode or whatever instead of just ascii
 
-Change to using dynamic linking instead of static
-
-Maybe all those engine interface functions that return pointers to various objects
-should each have an "error" object of the corresponding type that they can return
-if they can't find the passed thing
-Those objects that are created via scripts could even be hardcoded into the engine, maybe
-I could even add a dev option that turns on "crash mode",
-and instead of returning error objects, the game just returns null pointers like it does currently
-
-All error messages are located in a script
-Would need a new 'error log add' function
-that takes an error message name and presents the correct message
-Needs to handle an invalid error name
-Maybe combine log and error messages into one thing, with a need to specify the type of message
+Change to using dynamic linking instead of static?
 
 Add SDL2 audio capture support
-
 Add android mic recording support
 Add audio comparison code
 Could be used in say bit beast for calling your pet by name
