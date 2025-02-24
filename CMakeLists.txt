@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2.2)
+cmake_minimum_required(VERSION 3.28.3)
 project(cheese-engine)
 
 set(SOURCE_FILES
@@ -227,7 +227,7 @@ set_target_properties(Release-macOS-x86_64 PROPERTIES
 OUTPUT_NAME Cheese-Engine-macOS-x86_64
 PREFIX lib
 SUFFIX .a
-COMPILE_FLAGS "-O2 -std=c++11 -Wall -Wextra -m64 -stdlib=libc++ -DGAME_OS_MACOS"
+COMPILE_FLAGS "-O2 -std=c++11 -Wall -Wextra -m64 -stdlib=libc++ -DCMAKE_CXX_FLAGS='-fuse-ld=o64-ld' -DGAME_OS_MACOS"
 )
 
 target_include_directories(Release-macOS-x86_64 PRIVATE
