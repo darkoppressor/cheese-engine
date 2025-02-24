@@ -7,7 +7,7 @@ NDK_TOOLCHAIN_VERSION := clang
 
 APP_ABI := arm64-v8a x86_64
 
-# Min runtime API level
+# Minimum runtime API level
 APP_PLATFORM=android-31
 
 # Release options:
