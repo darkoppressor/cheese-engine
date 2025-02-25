@@ -10,12 +10,12 @@ STATUS=$3
 print_usage () {
 	echo "version - increment a component of a Cheese Engine project's version number"
 	echo "Usage: version PROJECT-DIRECTORY VERSION-COMPONENT [STATUS]"
-	echo "VERSION-COMPONENT must be one of: 'major' 'minor' 'micro'"
+	echo "VERSION-COMPONENT must be one of: 'major' 'minor' 'patch'"
 	echo "STATUS is optional and can be any string"
 }
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
-	if [ "$VERSION_COMPONENT" == "major" ] || [ "$VERSION_COMPONENT" == "minor" ] || [ "$VERSION_COMPONENT" == "micro" ]; then
+	if [ "$VERSION_COMPONENT" == "major" ] || [ "$VERSION_COMPONENT" == "minor" ] || [ "$VERSION_COMPONENT" == "patch" ]; then
 		VERSION_FILE="$PROJECT_DIRECTORY/version.cpp"
 
 		if [ -n "$VERSION_FILE" ]; then
@@ -23,28 +23,28 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 
 			OLD_MAJOR=$(sed -ne "/^.*\/\/ MAJOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
 			OLD_MINOR=$(sed -ne "/^.*\/\/ MINOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
-			OLD_MICRO=$(sed -ne "/^.*\/\/ MICRO$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+			OLD_PATCH=$(sed -ne "/^.*\/\/ PATCH$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
 
 			NEW_MAJOR=$OLD_MAJOR
 			NEW_MINOR=$OLD_MINOR
-			NEW_MICRO=$OLD_MICRO
+			NEW_PATCH=$OLD_PATCH
 
 			if [ "$VERSION_COMPONENT" == "major" ]; then
 				NEW_MAJOR=$((NEW_MAJOR + 1))
 				NEW_MINOR=0
-				NEW_MICRO=0
+				NEW_PATCH=0
 			elif [ "$VERSION_COMPONENT" == "minor" ]; then
 				NEW_MINOR=$((NEW_MINOR + 1))
-				NEW_MICRO=0
-			elif [ "$VERSION_COMPONENT" == "micro" ]; then
-				NEW_MICRO=$((NEW_MICRO + 1))
+				NEW_PATCH=0
+			elif [ "$VERSION_COMPONENT" == "patch" ]; then
+				NEW_PATCH=$((NEW_PATCH + 1))
 			fi
 
 			echo "Incrementing the version.cpp version number for the project in $PROJECT_DIRECTORY"
 
 			sed -i -e "s/^.*\/\/ MAJOR$/    return $NEW_MAJOR; \/\/ MAJOR/" "$VERSION_FILE"
 			sed -i -e "s/^.*\/\/ MINOR$/    return $NEW_MINOR; \/\/ MINOR/" "$VERSION_FILE"
-			sed -i -e "s/^.*\/\/ MICRO$/    return $NEW_MICRO; \/\/ MICRO/" "$VERSION_FILE"
+			sed -i -e "s/^.*\/\/ PATCH$/    return $NEW_PATCH; \/\/ PATCH/" "$VERSION_FILE"
 
 			if [ -n "$STATUS" ]; then
 				sed -i -e "s/^.*\/\/ STATUS$/    return \"$STATUS\"; \/\/ STATUS/" "$VERSION_FILE"
@@ -72,7 +72,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 
 				PLIST="$PROJECT_DIRECTORY/development/$APP_DIRECTORY/Contents/Info.plist"
 
-				sed -i -e "s/$OLD_MAJOR\.$OLD_MINOR\.$OLD_MICRO/$NEW_MAJOR\.$NEW_MINOR\.$NEW_MICRO/" "$PLIST"
+				sed -i -e "s/$OLD_MAJOR\.$OLD_MINOR\.$OLD_PATCH/$NEW_MAJOR\.$NEW_MINOR\.$NEW_PATCH/" "$PLIST"
 			else
 				echo "Failed to locate .app directory"
 			fi
@@ -85,7 +85,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 			VERSION_CODE=$((VERSION_CODE + 1))
 			sed -i -e "s/^.*versionCode.*$/    versionCode = $VERSION_CODE/" "$GRADLE_FILE"
 
-			sed -i -e "s/^.*versionName.*$/    versionName = '$NEW_MAJOR\.$NEW_MINOR\.$NEW_MICRO'/" "$GRADLE_FILE"
+			sed -i -e "s/^.*versionName.*$/    versionName = '$NEW_MAJOR\.$NEW_MINOR\.$NEW_PATCH'/" "$GRADLE_FILE"
 		else
 			echo "No such version file: $VERSION_FILE"
 		fi

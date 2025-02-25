@@ -2,8 +2,7 @@ Note that as I am the sole developer on this project, I am not doing pull reques
 I have included pull requests in the workflow documentation, however, and it should be respected if additional
 developers join the project.
 
-The branching model is essentially the one outlined here: https://nvie.com/posts/a-successful-git-branching-model/,
-with the addition of bugfix branches (which are functionally identical to feature branches).
+The branching model is essentially the one outlined here: https://nvie.com/posts/a-successful-git-branching-model/.
 
 Permanent branches:
 main => main / production branch
@@ -12,18 +11,12 @@ develop => development branch
 Temporary branches:
 feature/* => branches from develop, merges back into develop
 (or branches from another feature branch, and merges into develop)
-bugfix/* => branches from develop, merges back into develop
-(or branches from another bugfix branch, and merges into develop)
 release/* => branches from develop, merges back into develop and also into main
 hotfix/* => branches from main, merges back into main and also into develop (or the current release branch)
 
 A merge into main is a new production release by definition.
 
 All merges into main or develop must be preceded by a pull request.
-
-Feature and bugfix branches are functionally identical. They only differ in whether they contain a feature or bugfix.
-As these are the only two possibilities for standard changes, most new changes must be determined to be one or the
-other. The distinction is only of vague importance.
 
 Pushing a branch to the remote repository triggers a build via Jenkins.
 
@@ -59,50 +52,30 @@ Example:
     <Wait for pull request approval>
     <Follow the directions above for merging a feature branch into develop>
 
-To begin work on a new bugfix, branch off from develop.
-Example:
-    git checkout -b bugfix/<BUGFIX> develop
-Once a bugfix is complete, do a pull request for merging it back into develop. Once approved, merge the bugfix branch
-into develop.
-Example:
-    git checkout develop
-    git merge --no-ff bugfix/<BUGFIX>
-    git branch -d bugfix/<BUGFIX>
-    git push -d origin bugfix/<BUGFIX>
-    git push origin develop
-Alternate flow: If a bugfix that is currently in a bugfix branch (and thus hasn't yet been merged back into develop)
-is a prerequisite for a new bugfix, branch off from that bugfix branch instead of develop.
-Let the prerequisite bugfix branch be called <BUGFIX_A> and the new bugfix branch be called <BUGFIX_B>.
-Example:
-    git checkout -b bugfix/<BUGFIX_B> bugfix/<BUGFIX_A>
-If bugfix/<BUGFIX_A> has commits added after this, rebase bugfix/<BUGFIX_B> onto bugfix/<BUGFIX_A>.
-Example:
-    git checkout bugfix/<BUGFIX_B>
-    git rebase --no-ff --signoff bugfix/<BUGFIX_B> --onto bugfix/<BUGFIX_A>
-    git pull
-Once the new bugfix is complete, it cannot be merged until bugfix/<BUGFIX_A> has been merged back into develop.
-Once the new bugfix is complete and bugfix/<BUGFIX_A> has been merged back into develop, rebase bugfix/<BUGFIX_B>
-onto develop and then do a pull request for merging it into develop. Once approved, merge bugfix/<BUGFIX_B> into
-develop.
-Example:
-    git checkout bugfix/<BUGFIX_B>
-    git rebase --no-ff --signoff bugfix/<BUGFIX_B> --onto develop
-    git pull
-    <Wait for pull request approval>
-    <Follow the directions above for merging a bugfix branch into develop>
-
 It is time to create a release branch when develop essentially reflects the desired state of the next release.
-All features and bugfixes targeted for the next release must have been merged into develop.
-Features and bugfixes targeting future releases must not be merged into develop until the release branch is created.
+All features targeted for the next release must have been merged into develop.
+Features targeting future releases must not be merged into develop until the release branch is created.
 To begin preparing a new release, branch off from develop.
 Example:
     git checkout -b release/<RELEASE> develop
+
+For the engine:
+
     <update engine version>
         In engine_version.cpp:
             Update the version returned by Engine_Version::get_engine_version
             Update the date returned by Engine_Version::get_engine_date
     git commit -asm "Increment engine version"
-If any new bugfixes are needed for the release, they should be applied and committed in this release branch instead of
+
+For projects:
+
+    ~/build-server/cheese-engine/tools/version <PROJECT-DIRECTORY> <VERSION-COMPONENT> [STATUS]
+    ~/build-server/cheese-engine/tools/build-date <PROJECT-DIRECTORY>
+    In version.cpp:
+        Update the version series in Engine_Version::populate_version_series to include the new version
+    git commit -asm "Increment version"
+
+If any bug fixes are needed for the release, they should be applied and committed in this release branch instead of
 develop.
 Adding new features in a release branch is strictly prohibited.
 When the release branch is ready to be released to production, do a pull request for merging it into main and another
@@ -123,10 +96,22 @@ If the production release has a critical bug that needs to be fixed right away, 
 To begin preparing a hotfix, branch off from main.
 Example:
     git checkout -b hotfix/<HOTFIX> main
+
+For the engine:
+
     <update engine version>
     git commit -asm "Increment engine version"
+
+For projects:
+
+    ~/build-server/cheese-engine/tools/version <PROJECT-DIRECTORY> <VERSION-COMPONENT> [STATUS]
+    ~/build-server/cheese-engine/tools/build-date <PROJECT-DIRECTORY>
+    In version.cpp:
+        Update the version series in Engine_Version::populate_version_series to include the new version
+    git commit -asm "Increment version"
+
 Then, fix the critical bug(s) and commit those changes in this hotfix branch.
-Adding new features or non-critical bugfixes in a hotfix branch is strictly prohibited.
+Adding new features or non-critical bug fixes in a hotfix branch is strictly prohibited.
 When the hotfix branch is ready to be released to production, do a pull request for merging it back into main and
 another pull request for merging it into develop. Once approved, merge the hotfix branch into main, tag it, and then
 merge the branch into develop.

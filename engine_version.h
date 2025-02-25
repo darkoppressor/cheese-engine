@@ -20,9 +20,9 @@ class Version {
     public:
         int major;
         int minor;
-        int micro;
+        int patch;
 
-        Version (int get_major, int get_minor, int get_micro);
+        Version (int get_major, int get_minor, int get_patch);
         Version (std::string version_string);
 
         bool operator== (const Version& version) const;
@@ -43,7 +43,7 @@ class Engine_Version {
         static std::string get_day();
         static int get_major();
         static int get_minor();
-        static int get_micro();
+        static int get_patch();
 
     public:
         static std::string get_engine_status();
