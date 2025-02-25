@@ -2,7 +2,7 @@
 
 * When creating a window via scripting, always fully define the window before adding any infos or buttons
 
-* Windows should be no larger than 800x480
+* Windows should be no larger than 1280x720
 
 * When creating colored text in an Information, use this format:
 "<color_name>Colored text looks like this<>, while regular text looks like this."
@@ -32,7 +32,7 @@
 
 ## 1280x720
 
-* Initial object height: 36
-* Object spacing: 22
-* Spacing from arbitrary height (such as between bottom of scrolling text box and button): 5
-* Window height: Height of bottom object + 27
+* Initial object height: 64
+* Object spacing: 44
+* Spacing from arbitrary height (such as between bottom of scrolling text box and button): 10
+* Window height: Height of bottom object + 54
