@@ -16,11 +16,11 @@ string Engine_Version::get_engine_status () {
 }
 
 string Engine_Version::get_engine_version () {
-    return "2.4.14";
+    return "2.4.15";
 }
 
 string Engine_Version::get_engine_date () {
-    return "2025-02-24";
+    return "2025-02-25";
 }
 
 Version_Series::Version_Series (string get_first_version, string get_last_version) {
@@ -28,10 +28,10 @@ Version_Series::Version_Series (string get_first_version, string get_last_versio
     last_version = get_last_version;
 }
 
-Version::Version (int get_major, int get_minor, int get_micro) {
+Version::Version (int get_major, int get_minor, int get_patch) {
     major = get_major;
     minor = get_minor;
-    micro = get_micro;
+    patch = get_patch;
 }
 
 Version::Version (string version_string) {
@@ -42,16 +42,16 @@ Version::Version (string version_string) {
     if (version_components.size() == 3) {
         major = Strings::string_to_long(version_components[0]);
         minor = Strings::string_to_long(version_components[1]);
-        micro = Strings::string_to_long(version_components[2]);
+        patch = Strings::string_to_long(version_components[2]);
     } else {
         major = -1;
         minor = -1;
-        micro = -1;
+        patch = -1;
     }
 }
 
 bool Version::operator== (const Version& version) const {
-    return major == version.major && minor == version.minor && micro == version.micro;
+    return major == version.major && minor == version.minor && patch == version.patch;
 }
 
 bool Version::operator< (const Version& version) const {
@@ -61,7 +61,7 @@ bool Version::operator< (const Version& version) const {
         if (minor < version.minor) {
             return true;
         } else if (minor == version.minor) {
-            if (micro < version.micro) {
+            if (patch < version.patch) {
                 return true;
             }
         }
@@ -97,7 +97,7 @@ int Version::get_version_series (const vector<Version_Series>& version_series) c
 
 string Engine_Version::get_version () {
     return Strings::num_to_string(get_major()) + "." + Strings::num_to_string(get_minor()) + "." +
-           Strings::num_to_string(get_micro());
+           Strings::num_to_string(get_patch());
 }
 
 string Engine_Version::get_build_date () {

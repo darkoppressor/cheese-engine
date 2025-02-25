@@ -5,6 +5,7 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
+NDK_VERSION="26.3.11579264"
 OUTPUT=""
 
 add_boost_version () {
@@ -24,9 +25,9 @@ add_sdl2_version () {
 
 	local major=$(sed -ne "/^#define\s*SDL_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MINOR_VERSION\s*//")
-	local micro=$(sed -ne "/^#define\s*SDL_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_PATCHLEVEL\s*//")
+	local patch=$(sed -ne "/^#define\s*SDL_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_PATCHLEVEL\s*//")
 
-	OUTPUT="$OUTPUT$major.$minor.$micro"
+	OUTPUT="$OUTPUT$major.$minor.$patch"
 }
 
 add_sdl2_image_version () {
@@ -34,9 +35,9 @@ add_sdl2_image_version () {
 
 	local major=$(sed -ne "/^#define\s*SDL_IMAGE_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_IMAGE_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MINOR_VERSION\s*//")
-	local micro=$(sed -ne "/^#define\s*SDL_IMAGE_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_PATCHLEVEL\s*//")
+	local patch=$(sed -ne "/^#define\s*SDL_IMAGE_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_PATCHLEVEL\s*//")
 
-	OUTPUT="$OUTPUT$major.$minor.$micro"
+	OUTPUT="$OUTPUT$major.$minor.$patch"
 }
 
 add_sdl2_mixer_version () {
@@ -44,9 +45,9 @@ add_sdl2_mixer_version () {
 
 	local major=$(sed -ne "/^#define\s*SDL_MIXER_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_MIXER_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MINOR_VERSION\s*//")
-	local micro=$(sed -ne "/^#define\s*SDL_MIXER_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_PATCHLEVEL\s*//")
+	local patch=$(sed -ne "/^#define\s*SDL_MIXER_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_PATCHLEVEL\s*//")
 
-	OUTPUT="$OUTPUT$major.$minor.$micro"
+	OUTPUT="$OUTPUT$major.$minor.$patch"
 }
 
 add_zlib_version () {
@@ -156,19 +157,9 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		fi
 	done
 	OUTPUT="${OUTPUT}macOS\t\t$(/home/tails/build-server/osx-x86_64/osxcross/target/bin/o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
-	ndk_version=""
-	for d in /home/tails/build-server/android/android-sdk/ndk/*/ ; do
-		if [ -d "$d" ]; then
-			PREFIX=/home/tails/build-server/android/android-sdk/ndk/
-			SUFFIX=/
-			WNAME=${d#$PREFIX}
-			WNAME=${WNAME%$SUFFIX}
-
-			ndk_version="${WNAME}"
-
-			break
-		fi
-	done
+	if [ ! -d "/home/tails/build-server/android/android-sdk/ndk/$NDK_VERSION" ]; then
+		NDK_VERSION=""
+	fi
 	sdk_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/tools/source.properties" | sed -e "s/^Pkg.Revision=//")
 	sdk_platform_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/platform-tools/source.properties" | sed -e "s/^Pkg.Revision=//")
 	sdk_build_tools=""
@@ -184,7 +175,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $ndk_version, SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
+	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $NDK_VERSION, SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
 
 	file="/home/tails/build-server/steamworks-sdk/Readme.txt"
 	OUTPUT="${OUTPUT}Steam\t\t$(sed -ne "0,/^v/p" "$file" | tail -n 1)"
