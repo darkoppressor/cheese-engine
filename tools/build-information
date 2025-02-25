@@ -25,9 +25,9 @@ add_sdl2_version () {
 
 	local major=$(sed -ne "/^#define\s*SDL_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MINOR_VERSION\s*//")
-	local micro=$(sed -ne "/^#define\s*SDL_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_PATCHLEVEL\s*//")
+	local patch=$(sed -ne "/^#define\s*SDL_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_PATCHLEVEL\s*//")
 
-	OUTPUT="$OUTPUT$major.$minor.$micro"
+	OUTPUT="$OUTPUT$major.$minor.$patch"
 }
 
 add_sdl2_image_version () {
@@ -35,9 +35,9 @@ add_sdl2_image_version () {
 
 	local major=$(sed -ne "/^#define\s*SDL_IMAGE_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_IMAGE_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MINOR_VERSION\s*//")
-	local micro=$(sed -ne "/^#define\s*SDL_IMAGE_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_PATCHLEVEL\s*//")
+	local patch=$(sed -ne "/^#define\s*SDL_IMAGE_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_PATCHLEVEL\s*//")
 
-	OUTPUT="$OUTPUT$major.$minor.$micro"
+	OUTPUT="$OUTPUT$major.$minor.$patch"
 }
 
 add_sdl2_mixer_version () {
@@ -45,9 +45,9 @@ add_sdl2_mixer_version () {
 
 	local major=$(sed -ne "/^#define\s*SDL_MIXER_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_MIXER_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_MINOR_VERSION\s*//")
-	local micro=$(sed -ne "/^#define\s*SDL_MIXER_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_PATCHLEVEL\s*//")
+	local patch=$(sed -ne "/^#define\s*SDL_MIXER_PATCHLEVEL.*$/p" "$file" | sed -e "s/^#define\s*SDL_MIXER_PATCHLEVEL\s*//")
 
-	OUTPUT="$OUTPUT$major.$minor.$micro"
+	OUTPUT="$OUTPUT$major.$minor.$patch"
 }
 
 add_zlib_version () {

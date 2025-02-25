@@ -17,7 +17,7 @@ Step 1 - Update Version
 
 Everything in this step can be automated. Do:
 'cheese-engine/tools/version PROJECT-DIRECTORY VERSION-COMPONENT STATUS'
-VERSION-COMPONENT must be one of: 'major' 'minor' 'micro'
+VERSION-COMPONENT must be one of: 'major' 'minor' 'patch'
 STATUS is optional, can be any string, and will change the release status to whatever string you pass it
 
 All Platforms
