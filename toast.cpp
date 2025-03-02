@@ -63,8 +63,9 @@ void Toast::render () {
     // Render the background.
     if (Engine::current_color_theme()->toast_background != "<INVISIBLE>") {
         Render::render_rectangle(x + Engine_Data::gui_border_thickness, y + Engine_Data::gui_border_thickness,
-                                 w - Engine_Data::gui_border_thickness*2.0, h - Engine_Data::gui_border_thickness*2.0,
-                                 opacity, Engine::current_color_theme()->toast_background);
+                                 w - Engine_Data::gui_border_thickness * 2.0,
+                                 h - Engine_Data::gui_border_thickness * 2.0, opacity,
+                                 Engine::current_color_theme()->toast_background);
     }
 
     // Display the message text.
@@ -72,7 +73,7 @@ void Toast::render () {
         ptr_font->show(x + Engine_Data::gui_border_thickness,
                        y + h / 2.0 -
                        (Strings::newline_count(message) * ptr_font->spacing_y + (Strings::newline_count(message) + 1) *
-                        ptr_font->get_letter_height()) / 2.0, message,
-                       Engine::current_color_theme()->toast_font, opacity);
+                        ptr_font->get_letter_height()) / 2.0, message, Engine::current_color_theme()->toast_font,
+                       opacity);
     }
 }

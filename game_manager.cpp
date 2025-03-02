@@ -26,6 +26,7 @@ double Game_Manager::camera_zoom = 0.0;
 string Game_Manager::current_music = "";
 vector<string> Game_Manager::command_states;
 Collision_Rect<double> Game_Manager::camera;
+
 void Game_Manager::reset () {
     paused = false;
 

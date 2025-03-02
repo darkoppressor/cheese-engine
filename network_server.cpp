@@ -30,6 +30,7 @@ uint32_t Network_Server::rate_bytes_min = 0;
 uint32_t Network_Server::rate_bytes_max = 0;
 uint32_t Network_Server::rate_updates_min = 0;
 uint32_t Network_Server::rate_updates_max = 0;
+
 bool Network_Server::start_as_server (bool allow_clients) {
     if (Network_Engine::status == "off") {
         unsigned int actual_max_clients = max_clients;
@@ -41,6 +42,7 @@ bool Network_Server::start_as_server (bool allow_clients) {
         }
 
         Network_Engine::peer = RakNet::RakPeerInterface::GetInstance();
+
         RakNet::SocketDescriptor sd(actual_port, "");
         RakNet::StartupResult startup = Network_Engine::peer->Startup(max_clients, &sd, 1);
 
@@ -160,6 +162,7 @@ void Network_Server::prepare_server_input_states () {
 void Network_Server::send_version () {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_VERSION);
 
         bitstream.WriteCompressed((RakNet::RakString) Engine_Data::game_title.c_str());
@@ -182,21 +185,27 @@ void Network_Server::send_version () {
 
 void Network_Server::receive_client_data () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     bool first_send = false;
+
     bitstream.ReadCompressed(first_send);
 
     RakNet::RakString rstring;
+
     bitstream.ReadCompressed(rstring);
 
     uint32_t client_rate_bytes = 0;
+
     bitstream.ReadCompressed(client_rate_bytes);
 
     uint32_t client_rate_updates = 0;
+
     bitstream.ReadCompressed(client_rate_updates);
 
     Client_Data* client = Network_Engine::get_packet_client();
@@ -234,6 +243,7 @@ void Network_Server::send_name_change (string old_name, string new_name, bool ow
 void Network_Server::send_initial_game_data () {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_INITIAL_GAME_DATA);
 
         bitstream.WriteCompressed(Engine::UPDATE_RATE);
@@ -248,7 +258,9 @@ void Network_Server::send_initial_game_data () {
 
 void Network_Server::receive_connected () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
@@ -284,6 +296,7 @@ void Network_Server::send_client_list () {
                 client_index++;
 
                 RakNet::BitStream bitstream;
+
                 bitstream.Write((RakNet::MessageID) ID_GAME_CLIENT_LIST);
 
                 int clients_size = 0;
@@ -349,6 +362,7 @@ void Network_Server::send_updates () {
 void Network_Server::send_update (Client_Data* client, uint32_t client_rate_bytes) {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_TIMESTAMP);
         bitstream.Write(RakNet::GetTime());
         bitstream.Write((RakNet::MessageID) ID_GAME_UPDATE);
@@ -370,7 +384,9 @@ void Network_Server::send_update (Client_Data* client, uint32_t client_rate_byte
 
 void Network_Server::receive_input () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
@@ -381,20 +397,24 @@ void Network_Server::receive_input () {
         client->command_states.clear();
 
         int command_buffer_size = 0;
+
         bitstream.ReadCompressed(command_buffer_size);
 
         for (int i = 0; i < command_buffer_size; i++) {
             RakNet::RakString rstring;
+
             bitstream.ReadCompressed(rstring);
 
             client->command_buffer.push_back(rstring.C_String());
         }
 
         int command_states_size = 0;
+
         bitstream.ReadCompressed(command_states_size);
 
         for (int i = 0; i < command_states_size; i++) {
             RakNet::RakString rstring;
+
             bitstream.ReadCompressed(rstring);
 
             client->command_states.push_back(rstring.C_String());
@@ -405,6 +425,7 @@ void Network_Server::receive_input () {
 void Network_Server::send_ping_list () {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_PING_LIST);
 
         bitstream.WriteCompressed((int) Network_Engine::clients.size());
@@ -428,6 +449,7 @@ void Network_Server::send_ping_list () {
 void Network_Server::send_paused () {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_PAUSED);
 
         Network_Engine::stat_counter_bytes_sent += bitstream.GetNumberOfBytesUsed();
@@ -439,6 +461,7 @@ void Network_Server::send_paused () {
 void Network_Server::send_sound (string sound, RakNet::RakNetGUID target_id, bool broadcast) {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_SOUND);
 
         bitstream.WriteCompressed((RakNet::RakString) sound.c_str());
@@ -452,6 +475,7 @@ void Network_Server::send_sound (string sound, RakNet::RakNetGUID target_id, boo
 void Network_Server::send_server_ready () {
     if (Network_Engine::status == "server") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_SERVER_READY);
 
         bitstream.WriteCompressed(Network_Lockstep::get_server_completed_turn());
@@ -466,12 +490,15 @@ void Network_Server::send_server_ready () {
 
 void Network_Server::receive_client_ready () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     uint32_t turn_completed = 0;
+
     bitstream.ReadCompressed(turn_completed);
 
     Client_Data* client = Network_Engine::get_packet_client();

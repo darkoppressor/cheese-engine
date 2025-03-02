@@ -27,6 +27,7 @@ bool Data_Manager::fonts_loaded = false;
 bool Data_Manager::colors_loaded = false;
 bool Data_Manager::world_loaded = false;
 const int Data_Manager::world_load_item_count = 20;
+
 bool Data_Manager::are_images_loaded () {
     return images_loaded;
 }

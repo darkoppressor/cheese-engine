@@ -458,10 +458,13 @@ bool Information::handle_input_events (int mouse_x, int mouse_y, int x_offset, i
                                             break;
                                         } else {
                                             for (int j = 0; j < line_length; j++) {
-                                                Collision_Rect<double> box_character(
-                                                    x_offset + x + ptr_font->spacing_x * j,
-                                                    y_offset + y + ptr_font->spacing_y * line_on_screen,
-                                                    ptr_font->spacing_x, ptr_font->spacing_y);
+                                                Collision_Rect<double> box_character(x_offset + x +
+                                                                                     ptr_font->spacing_x * j,
+                                                                                     y_offset + y +
+                                                                                     ptr_font->spacing_y *
+                                                                                     line_on_screen,
+                                                                                     ptr_font->spacing_x,
+                                                                                     ptr_font->spacing_y);
 
                                                 if (Collision::check_rect(box_a, box_character)) {
                                                     // Place the cursor before the clicked character
@@ -549,8 +552,8 @@ void Information::render (int x_offset, int y_offset) {
         if (Engine::current_color_theme()->information_background != "<INVISIBLE>") {
             Render::render_rectangle(x_offset + x + Engine_Data::gui_border_thickness,
                                      y_offset + y + Engine_Data::gui_border_thickness,
-                                     w - Engine_Data::gui_border_thickness*2.0,
-                                     h - Engine_Data::gui_border_thickness*2.0, background_opacity,
+                                     w - Engine_Data::gui_border_thickness * 2.0,
+                                     h - Engine_Data::gui_border_thickness * 2.0, background_opacity,
                                      Engine::current_color_theme()->information_background);
         }
     }
@@ -560,6 +563,7 @@ void Information::render (int x_offset, int y_offset) {
         // If we are scrolling, we will pass an SDL_Rect along to the font renderer to let it know
         // what text is allowed to be displayed.
         SDL_Rect allowed_area;
+
         allowed_area.x = -1;
         allowed_area.y = -1;
         allowed_area.w = 0;
@@ -602,8 +606,8 @@ void Information::render (int x_offset, int y_offset) {
                     if (text.length() > 0) {
                         cursor_x++;
 
-                        if (cursor_position < (int) text.length() && Strings::is_newline_character(
-                                text[cursor_position])) {
+                        if (cursor_position < (int) text.length() &&
+                            Strings::is_newline_character(text[cursor_position])) {
                             cursor_x = 0;
                             cursor_y++;
                         }
@@ -612,9 +616,8 @@ void Information::render (int x_offset, int y_offset) {
 
                 ptr_font->show(x_offset + x + Engine_Data::gui_border_thickness + (ptr_font->spacing_x * cursor_x),
                                y_offset + y + Engine_Data::gui_border_thickness + scrolling_adjust_y +
-                               (ptr_font->spacing_y * cursor_y),
-                               Symbols::cursor(), font_color_real, Engine::cursor_opacity*0.1, 1.0, 1.0, 0.0,
-                               allowed_area);
+                               (ptr_font->spacing_y * cursor_y), Symbols::cursor(), font_color_real,
+                               Engine::cursor_opacity * 0.1, 1.0, 1.0, 0.0, allowed_area);
             }
         }
     }

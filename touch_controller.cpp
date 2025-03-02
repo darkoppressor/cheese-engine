@@ -214,10 +214,12 @@ vector<SDL_GameControllerButton> Touch_Controller::check_for_button_press (float
 
     float scale_x = 0.0f;
     float scale_y = 0.0f;
+
     Game_Window::get_renderer_scale(&scale_x, &scale_y);
 
     int actual_width = 0;
     int actual_height = 0;
+
     Game_Window::get_renderer_output_size(&actual_width, &actual_height);
 
     double touch_x = x * (float) actual_width;
@@ -298,6 +300,7 @@ void Touch_Controller::render () {
     double scale_y = (double) Game_Window::height() / (double) logical_height;
     double scale_mean = (scale_x + scale_y) / 2.0;
     Image_Data* image_dpad = Image_Manager::get_image("touch_controller_dpad");
+
     Render::render_texture(anchor_dpad.x * scale_x - anchor_dpad.r * scale_mean,
                            anchor_dpad.y * scale_y - anchor_dpad.r * scale_mean, image_dpad,
                            Options::touch_controller_opacity, scale_anchor_dpad * scale_mean,
@@ -305,12 +308,14 @@ void Touch_Controller::render () {
 
     if (Engine_Data::touch_controller_xy) {
         Image_Data* image_main = Image_Manager::get_image("touch_controller_main");
+
         Render::render_texture(anchor_main.x * scale_x - anchor_main.r * scale_mean,
                                anchor_main.y * scale_y - anchor_main.r * scale_mean, image_main,
                                Options::touch_controller_opacity, scale_anchor_main * scale_mean,
                                scale_anchor_main * scale_mean);
     } else {
         Image_Data* image_main = Image_Manager::get_image("touch_controller_main_small");
+
         Render::render_texture(anchor_main.x * scale_x - anchor_main.r * scale_mean,
                                anchor_main.y * scale_y - anchor_main.r * scale_mean, image_main,
                                Options::touch_controller_opacity, scale_anchor_main * scale_mean,
@@ -319,12 +324,14 @@ void Touch_Controller::render () {
 
     if (Engine_Data::touch_controller_shoulders) {
         Image_Data* image_shoulder_left = Image_Manager::get_image("touch_controller_shoulder_left");
+
         Render::render_texture(shoulder_left.x * scale_x - shoulder_left.r * scale_mean,
                                shoulder_left.y * scale_y - shoulder_left.r * scale_mean, image_shoulder_left,
                                Options::touch_controller_opacity, scale_shoulders * scale_mean,
                                scale_shoulders * scale_mean);
 
         Image_Data* image_shoulder_right = Image_Manager::get_image("touch_controller_shoulder_right");
+
         Render::render_texture(shoulder_right.x * scale_x - shoulder_right.r * scale_mean,
                                shoulder_right.y * scale_y - shoulder_right.r * scale_mean, image_shoulder_right,
                                Options::touch_controller_opacity, scale_shoulders * scale_mean,
@@ -333,18 +340,20 @@ void Touch_Controller::render () {
 
     if (Engine_Data::touch_controller_guide) {
         Image_Data* image_middle = Image_Manager::get_image("touch_controller_middle");
+
         Render::render_texture(anchor_middle.x * scale_x, anchor_middle.y * scale_y, image_middle,
                                Options::touch_controller_opacity, scale_anchor_middle_x * scale_x,
                                scale_anchor_middle_y * scale_y);
     } else {
         Image_Data* image_middle = Image_Manager::get_image("touch_controller_middle_small");
+
         Render::render_texture(anchor_middle.x * scale_x, anchor_middle.y * scale_y, image_middle,
                                Options::touch_controller_opacity, scale_anchor_middle_x * scale_x,
                                scale_anchor_middle_y * scale_y);
     }
 
-    ///NOTE:
-    ///These don't currently account for different logical and actual screen size.
+    // NOTE:
+    // These don't currently account for different logical and actual screen size.
     /**Collision_Circ* show_circ=0;
 
        show_circ=&dpad_left;

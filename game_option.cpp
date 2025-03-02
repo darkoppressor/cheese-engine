@@ -97,6 +97,7 @@ void Game_Option::set_value (string new_value) {
         Options::camera_zoom = Strings::string_to_double(new_value);
     } else if (name == "cl_name") {
         string old_name = Options::name;
+
         Options::name = new_value;
 
         Network_Server::send_name_change(old_name, Options::name, true);

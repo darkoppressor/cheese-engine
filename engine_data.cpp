@@ -56,6 +56,7 @@ vector<string> Engine_Data::starting_windows;
 double Engine_Data::ZOOM_RATE = 0.0;
 double Engine_Data::ZOOM_MIN = 0.0;
 double Engine_Data::ZOOM_MAX = 0.0;
+
 void Engine_Data::load_engine_data (File_IO_Load* load) {
     vector<string> lines = Data_Reader::read_data(load, "</engine>");
 
@@ -86,6 +87,7 @@ void Engine_Data::load_engine_data (File_IO_Load* load) {
             resolution_mode = line;
         } else if (Data_Reader::check_prefix(line, "logic_update_rate:")) {
             uint32_t new_update_rate = Strings::string_to_unsigned_long(line);
+
             Network_Client::recall_update_rate = new_update_rate;
 
             Engine::set_logic_update_rate(new_update_rate);

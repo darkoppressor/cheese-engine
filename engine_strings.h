@@ -61,7 +61,9 @@ class Strings {
         static bool string_to_bool(const std::string& get_string);
         static std::string bool_to_string(bool get_bool);
         static long string_to_long(const std::string& get_string);
+
         static unsigned long string_to_unsigned_long(const std::string& get_string);
+
         static double string_to_double(const std::string& get_string);
         static void slashes_to_slash(std::string* str_input);
         static void slashes_to_backslash(std::string* str_input);
@@ -95,6 +97,7 @@ class Strings {
 
             if (num >= 4000) {
                 int x = (num - num % 4000) / 1000;
+
                 message = "(" + convert_num_to_roman_numeral(x) + ")";
                 num %= 4000;
             }

@@ -108,8 +108,8 @@ void Update::events () {
     if (Game_Manager::in_progress && !Game_Manager::paused && Network_Lockstep::logic_update_allowed()) {
         Game_World::events();
     } else {
-        Sound_Manager::set_listener(Game_Manager::camera.center_x(),
-                                    Game_Manager::camera.center_y(), Game_Manager::camera_zoom);
+        Sound_Manager::set_listener(Game_Manager::camera.center_x(), Game_Manager::camera.center_y(),
+                                    Game_Manager::camera_zoom);
     }
 }
 

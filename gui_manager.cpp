@@ -23,6 +23,7 @@ vector<GUI_Selector_Chaser> GUI_Manager::gui_selector_chasers;
 string GUI_Manager::gui_axis_nav_last_direction = "none";
 int GUI_Manager::counter_gui_scroll_axis = 0;
 Sprite GUI_Manager::text_selector;
+
 void GUI_Manager::initialize () {
     if (!initialized) {
         for (int i = 0; i < 2; i++) {

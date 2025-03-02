@@ -16,6 +16,7 @@ class Log {
         static std::vector<std::string> world_load_errors;
         static std::vector<std::string> error_log_unready_errors;
         static std::vector<std::string> world_load_logs;
+
         static void add_world_load_error(std::string message);
         static void add_error_log_unready_error(std::string message);
         static void add_world_load_log(std::string message);

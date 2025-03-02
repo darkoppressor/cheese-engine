@@ -29,6 +29,7 @@ class Network_Client {
         static std::uint32_t recall_update_rate;
         static RakNet::Time last_update_time;
         static std::vector<std::string> command_buffer;
+
         static void set_server_target(std::string get_address, unsigned short get_port, std::string get_password);
         static void set_server_target(int index, std::string get_password = "");
         // Pass 0 for get_password to not touch the password

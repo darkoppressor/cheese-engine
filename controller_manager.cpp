@@ -19,6 +19,7 @@ Touch_Controller Controller_Manager::touch_controller;
 const int Controller_Manager::CONTROLLER_ID_ALL = -1;
 const int Controller_Manager::CONTROLLER_ID_TOUCH = -2;
 bool Controller_Manager::touch_controls = false;
+
 void Controller_Manager::remove_controllers () {
     for (size_t i = 0; i < controllers.size(); i++) {
         if (controllers[i].haptic != 0 && SDL_HapticOpened(SDL_HapticIndex(controllers[i].haptic))) {
@@ -37,16 +38,16 @@ void Controller_Manager::initialize () {
             string msg = "";
 
             if (SDL_IsGameController(i)) {
-                if (Options::accelerometer_controller ||
-                    !boost::algorithm::icontains(SDL_JoystickNameForIndex(i), "accelerometer")) {
+                if (Options::accelerometer_controller || !boost::algorithm::icontains(SDL_JoystickNameForIndex(i),
+                                                                                      "accelerometer")) {
                     controllers.push_back(Controller(SDL_GameControllerOpen(i)));
 
                     Controller* controller_object = &controllers.back();
                     SDL_GameController* controller = controller_object->controller;
 
                     if (controller != 0) {
-                        controller_object->instance_id = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(
-                                                                                    controller));
+                        controller_object->instance_id =
+                            SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(controller));
 
                         if (SDL_JoystickIsHaptic(SDL_GameControllerGetJoystick(controller))) {
                             controller_object->haptic =
@@ -84,7 +85,9 @@ void Controller_Manager::initialize () {
                 if ((joystick = SDL_JoystickOpen(i)) != 0) {
                     string joystick_name = SDL_JoystickName(joystick);
                     char ch_joystick_guid[64];
+
                     SDL_JoystickGetGUIDString(SDL_JoystickGetGUID(joystick), ch_joystick_guid, 64);
+
                     string joystick_guid = ch_joystick_guid;
                     string joystick_axes = Strings::num_to_string(SDL_JoystickNumAxes(joystick));
                     string joystick_balls = Strings::num_to_string(SDL_JoystickNumBalls(joystick));
@@ -136,8 +139,9 @@ void Controller_Manager::add_controller (const SDL_Event& event) {
                 if (controller_object->haptic != 0) {
                     if (SDL_HapticRumbleSupported(controller_object->haptic)) {
                         if (SDL_HapticRumbleInit(controller_object->haptic) != 0) {
-                            string msg = "Error initializing rumble for haptic on controller " + Strings::num_to_string(
-                                event.cdevice.which) + ": ";
+                            string msg = "Error initializing rumble for haptic on controller " +
+                                         Strings::num_to_string(event.cdevice.which) + ": ";
+
                             msg += SDL_GetError();
                             Log::add_error(msg);
 
@@ -148,12 +152,14 @@ void Controller_Manager::add_controller (const SDL_Event& event) {
                 } else {
                     string msg = "Error opening haptic for controller " + Strings::num_to_string(event.cdevice.which) +
                                  ": ";
+
                     msg += SDL_GetError();
                     Log::add_error(msg);
                 }
             }
         } else {
             string msg = "Error opening controller " + Strings::num_to_string(event.cdevice.which) + ": ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
 
@@ -161,8 +167,9 @@ void Controller_Manager::add_controller (const SDL_Event& event) {
         }
     } else {
         string joystick_name = SDL_JoystickNameForIndex(event.cdevice.which);
-        Log::add_error(
-            "Joystick \"" + joystick_name + "\" detected, but not supported by the game controller interface.");
+
+        Log::add_error("Joystick \"" + joystick_name +
+                       "\" detected, but not supported by the game controller interface.");
     }
 }
 
@@ -200,6 +207,7 @@ void Controller_Manager::finger_down (const SDL_Event& event) {
 
     for (int i = 0; i < touch_buttons.size(); i++) {
         SDL_Event touch_controller_event;
+
         touch_controller_event.type = SDL_CONTROLLERBUTTONDOWN;
         touch_controller_event.common.type = touch_controller_event.type;
         touch_controller_event.common.timestamp = SDL_GetTicks();
@@ -311,8 +319,8 @@ bool Controller_Manager::controller_state (int controller_number, SDL_GameContro
 
 int Controller_Manager::controller_state (int controller_number, SDL_GameControllerAxis axis) {
     if (controller_number == CONTROLLER_ID_ALL || controller_number == CONTROLLER_ID_TOUCH) {
-        ///Check the touch controller for the passed axis state.
-        ///... but the touch controller doesn't currently have any axes.
+        // Check the touch controller for the passed axis state.
+        // ... but the touch controller doesn't currently have any axes.
     }
 
     for (int i = 0; i < controllers.size(); i++) {

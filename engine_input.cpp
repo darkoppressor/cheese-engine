@@ -22,6 +22,7 @@
 using namespace std;
 
 SDL_Event Engine_Input::event;
+
 bool Engine_Input::poll_event (SDL_Event* event_storage) {
     if (SDL_PollEvent(event_storage)) {
         return true;
@@ -76,6 +77,7 @@ bool Engine_Input::handle_input_events_drag_and_drop () {
 
             if (!event_consumed) {
                 string file = event.drop.file;
+
                 SDL_free(event.drop.file);
 
                 Game_Manager::handle_drag_and_drop(file);
@@ -89,10 +91,12 @@ bool Engine_Input::handle_input_events_drag_and_drop () {
 
             if (!event_consumed) {
                 string file = event.drop.file;
+
                 SDL_free(event.drop.file);
 
                 if (Engine::mutable_info_selected()) {
                     vector<string> lines;
+
                     boost::algorithm::split(lines, file, boost::algorithm::is_any_of("\n"));
 
                     for (int i = 0; i < lines.size(); i++) {
@@ -624,9 +628,11 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                     if (SDL_HasClipboardText() && Engine::mutable_info_selected()) {
                         char* text = SDL_GetClipboardText();
                         string str_text = text;
+
                         SDL_free(text);
 
                         vector<string> lines;
+
                         boost::algorithm::split(lines, str_text, boost::algorithm::is_any_of("\n"));
 
                         for (int i = 0; i < lines.size(); i++) {

@@ -11,8 +11,10 @@ using namespace std;
 bool Data_Reader::check_for_comment_ender (string& line) {
     if (boost::algorithm::contains(line, "*/")) {
         boost::iterator_range<string::iterator> range_comment_end = boost::algorithm::find_first(line, "*/");
-        boost::iterator_range<string::iterator> range_start_to_comment_end = boost::make_iterator_range(
-            line.begin(), range_comment_end.end());
+        boost::iterator_range<string::iterator> range_start_to_comment_end = boost::make_iterator_range(line.begin(),
+                                                                                                        range_comment_end
+                                                                                                        .end());
+
         boost::algorithm::erase_range(line, range_start_to_comment_end);
         boost::algorithm::trim(line);
 

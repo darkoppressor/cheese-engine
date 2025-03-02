@@ -19,6 +19,7 @@ vector<Color_Theme> Object_Manager::color_themes;
 vector<Game_Command> Object_Manager::game_commands;
 vector<Game_Option> Object_Manager::game_options;
 vector<Cursor> Object_Manager::cursors;
+
 void Object_Manager::unload_data () {
     for (size_t i = 0; i < cursors.size(); i++) {
         cursors[i].free_hw_cursor();
@@ -51,11 +52,12 @@ void Object_Manager::load_color (File_IO_Load* load) {
             colors.back().name = line;
         } else if (Data_Reader::check_prefix(line, "rgb:")) {
             vector<string> rgb_values;
+
             boost::algorithm::split(rgb_values, line, boost::algorithm::is_any_of(","));
 
             if (rgb_values.size() == 3) {
-                colors.back().set(Strings::string_to_long(rgb_values[0]), Strings::string_to_long(
-                                      rgb_values[1]), Strings::string_to_long(rgb_values[2]), 255l);
+                colors.back().set(Strings::string_to_long(rgb_values[0]), Strings::string_to_long(rgb_values[1]),
+                                  Strings::string_to_long(rgb_values[2]), 255l);
             }
         }
     }
@@ -286,6 +288,7 @@ size_t Object_Manager::load_custom_sound_data (vector<string>& lines, size_t lin
             return i;
         } else {
             vector<string> components;
+
             boost::algorithm::split(components, line, boost::algorithm::is_any_of(","));
 
             if (components.size() > 0 && components[0].length() > 0) {

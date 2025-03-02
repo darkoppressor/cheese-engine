@@ -92,12 +92,13 @@ class Android {
                     if (activity != NULL) {
                         jclass clazz(env->GetObjectClass(activity));
                         jmethodID method_id = env->GetMethodID(clazz, method_name.c_str(), signature.c_str());
+
                         env->CallVoidMethod(activity, method_id, args...);
                         env->DeleteLocalRef(activity);
                         env->DeleteLocalRef(clazz);
                     } else {
-                        Log::add_error(
-                            "Error calling Android method '" + method_name + "': SDL_AndroidGetActivity returned NULL");
+                        Log::add_error("Error calling Android method '" + method_name +
+                                       "': SDL_AndroidGetActivity returned NULL");
                     }
                 } else {
                     Log::add_error("Error calling Android method '" + method_name +
@@ -118,12 +119,13 @@ class Android {
                     if (activity != NULL) {
                         jclass clazz(env->GetObjectClass(activity));
                         jmethodID method_id = env->GetStaticMethodID(clazz, method_name.c_str(), signature.c_str());
+
                         env->CallStaticVoidMethod(clazz, method_id, args...);
                         env->DeleteLocalRef(activity);
                         env->DeleteLocalRef(clazz);
                     } else {
-                        Log::add_error(
-                            "Error calling Android method '" + method_name + "': SDL_AndroidGetActivity returned NULL");
+                        Log::add_error("Error calling Android method '" + method_name +
+                                       "': SDL_AndroidGetActivity returned NULL");
                     }
                 } else {
                     Log::add_error("Error calling Android method '" + method_name +
@@ -164,6 +166,7 @@ class Android {
         static const int SENSOR_TYPE_STATIONARY_DETECT;
         static const int SENSOR_TYPE_STEP_COUNTER;
         static const int SENSOR_TYPE_STEP_DETECTOR;
+
         static void initialize();
         static void deinitialize();
         static std::string getSensorsString();

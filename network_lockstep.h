@@ -29,7 +29,7 @@ class Network_Lockstep {
         static std::uint32_t logic_updates_this_turn;
 
         // The minimum amount of ms to wait between turns
-        ///For now, this doesn't change
+        // For now, this doesn't change
         static std::uint32_t current_turn_limit;
 
     public:

@@ -9,6 +9,7 @@
 
 const double Math::PI = 3.14159265358979323846;
 const double Math::E = 2.71828182845904523536;
+
 double Math::abs (double x) {
     return std::abs(x);
 }

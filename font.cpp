@@ -83,8 +83,8 @@ void Bitmap_Font::set_shadow_distance (int distance) {
 void Bitmap_Font::show (double x, double y, string text, string font_color, double opacity, double scale_x,
                         double scale_y, double angle, const SDL_Rect& allowed_area,
                         const vector<string>& character_colors) {
-    show(x, y, text, Object_Manager::get_color(
-             font_color), opacity, scale_x, scale_y, angle, allowed_area, character_colors);
+    show(x, y, text, Object_Manager::get_color(font_color), opacity, scale_x, scale_y, angle, allowed_area,
+         character_colors);
 }
 
 void Bitmap_Font::show (double x, double y, string text, Color* font_color, double opacity, double scale_x,
@@ -116,9 +116,8 @@ void Bitmap_Font::show (double x, double y, string text, Color* font_color, doub
                     if (shadow_distance != 0 && Options::font_shadows) {
                         // Render the shadow
                         Render::render_sprite(X + shadow_distance, Y + shadow_distance,
-                                              Image_Manager::get_image(
-                                                  sprite.name), &chars[ascii], opacity, scale_x, scale_y, angle,
-                                              "ui_black");
+                                              Image_Manager::get_image(sprite.name), &chars[ascii], opacity, scale_x,
+                                              scale_y, angle, "ui_black");
                     }
 
                     Color* character_color = font_color;
@@ -128,9 +127,8 @@ void Bitmap_Font::show (double x, double y, string text, Color* font_color, doub
                     }
 
                     // Render the character
-                    Render::render_sprite(X, Y, Image_Manager::get_image(
-                                              sprite.name), &chars[ascii], opacity, scale_x, scale_y, angle, character_color, false,
-                                          false);
+                    Render::render_sprite(X, Y, Image_Manager::get_image(sprite.name), &chars[ascii], opacity, scale_x,
+                                          scale_y, angle, character_color, false, false);
                 }
             }
 

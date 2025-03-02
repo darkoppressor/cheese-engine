@@ -93,6 +93,7 @@ class File_IO {
 
         #ifdef GAME_OS_ANDROID
             static bool external_storage_available();
+
         #endif
 };
 
@@ -102,6 +103,7 @@ class File_IO_Directory_Iterator {
             std::string directory;
             std::vector<std::string> asset_list;
             std::uint32_t entry;
+
         #else
             boost::filesystem::directory_iterator it;
         #endif

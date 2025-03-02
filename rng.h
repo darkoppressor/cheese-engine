@@ -9,8 +9,12 @@
 
 class RNG {
     public:
-        enum class Weight : std::uint8_t{
-            WEAK, NORMAL, STRONG, VERY_STRONG};
+        enum class Weight : std::uint8_t {
+            WEAK,
+            NORMAL,
+            STRONG,
+            VERY_STRONG
+        };
 
     private:
         std::uint32_t Q[4096];
@@ -20,6 +24,7 @@ class RNG {
         static const std::uint32_t WEIGHT_NORMAL;
         static const std::uint32_t WEIGHT_STRONG;
         static const std::uint32_t WEIGHT_VERY_STRONG;
+
         std::uint32_t get_number();
         std::uint32_t get_time_number() const;
 

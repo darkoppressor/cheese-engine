@@ -23,6 +23,7 @@ Music_Data::Music_Data () {
 
 vector<Music_Data> Music_Manager::tracks;
 vector<string> Music_Manager::track_names;
+
 void Music_Manager::set_track_volumes () {
     for (int i = 0; i < tracks.size(); i++) {
         // Set the track's channel volume
@@ -171,6 +172,7 @@ void Music_Manager::load_track (string track_path, string track_name) {
 
         // Load the new song
         VFS_RWops rwops = VFS::get_rwops(track_path, true);
+
         tracks[track_ident].track = Mix_LoadWAV_RW(rwops.rwops, 1);
         rwops.close_buffer();
         tracks[track_ident].playing = false;

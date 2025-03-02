@@ -32,6 +32,7 @@ class Object_Manager {
 
     public:
         static int configure_command;
+
         static void unload_data();
         static void load_hw_cursors();
         static void load_color(File_IO_Load* load);
@@ -64,7 +65,9 @@ class Object_Manager {
         static bool set_game_option(const std::string& option, const std::string& new_value);
         // Add game options to console commands list
         static void add_game_options_to_commands(std::vector<std::string>& commands);
+
         static const std::vector<Game_Command>& get_game_commands();
+
         static void clear_game_commands();
         // If the game command uses a key or button:
         // Returns 1 if the passed game command's corresponding input is currently pressed

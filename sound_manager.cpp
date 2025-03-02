@@ -20,6 +20,7 @@ vector<string> Sound_Manager::sound_names;
 double Sound_Manager::listener_x = 0.0;
 double Sound_Manager::listener_y = 0.0;
 double Sound_Manager::listener_zoom = 1.0;
+
 void Sound_Manager::add_sound (const Custom_Sound& sound) {
     sounds.push_back(Sound_Data());
 
