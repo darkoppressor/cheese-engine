@@ -1,3 +1,5 @@
+# GUI guidelines
+
 * Any/all scrolling buttons in a window must use the same size font
 
 * When creating a window via scripting, always fully define the window before adding any infos or buttons

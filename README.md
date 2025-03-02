@@ -30,8 +30,8 @@ When an updated version has been pushed to main, tag the commit locally and remo
 
 ## License
 
-This engine's source code is licensed under the MIT License. See [LICENSE.txt](docs/LICENSE.txt) for the full license
+This engine's source code is licensed under the MIT License. See [LICENSE.md](docs/LICENSE.md) for the full license
 text.
 
-Please note that there are a couple of files in the docs/ directory named CONTENT-LICENSE...
-These are for use with various engine projects, and do not pertain to the engine itself.
+Please note that there are a couple of files in the docs/ directory named contentLicense<Type>.md
+These are for use with projects using the engine, and do not pertain to the engine itself.

@@ -1,3 +1,5 @@
+# Ideas
+
 Linux Cheese Engine on Steam Deck defaults to touch controls, but the buttons work
 Can the touch controls default to off for Steam Deck?
 Ideally in a way that isn't actually specific to Steam Deck

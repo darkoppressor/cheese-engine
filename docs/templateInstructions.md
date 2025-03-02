@@ -1,3 +1,5 @@
+# Template instructions
+
 This file contains instructions for starting a new game project from the template.
 
 Automated

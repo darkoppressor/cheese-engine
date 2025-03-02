@@ -1,9 +1,9 @@
+# Style guide
+
 This guide applies specifically to code written in C++.
 It also applies in large part to C and Java.
 
-------------------------------------------------------------------------------------------------------------------------
-Identifier naming
-------------------------------------------------------------------------------------------------------------------------
+## Identifier naming
 
 Identifier length:
 Single letters are only acceptable as iterators (such as in 'for' loops)
@@ -30,11 +30,7 @@ Regarding letter case, treat acronyms like any other normal word
 Do not use either Apps or Systems Hungarian notation
 Avoid acronyms and abbreviations unless they are a standard usage (such as HTML)
 
-------------------------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------------------------------------
-Comments
-------------------------------------------------------------------------------------------------------------------------
+## Comments
 
 Single line and multiline comments are both allowed
 Lines including a comment should begin with that comment
@@ -67,11 +63,7 @@ Other comments, such as those indicating what units a variable is in, can begin 
 Generally, comments are not considered proper sentences, and do not include periods at the end
 However, other punctuation is frequently used, and no punctuation is expressly forbidden
 
-------------------------------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------------------------------------
-Indentation, whitespace, line length, and source file format
-------------------------------------------------------------------------------------------------------------------------
+## Indentation, whitespace, line length, and source file format
 
 The opening brace of a compound statement should be placed on the line
 above the first line of the compound statement's code
@@ -107,5 +99,3 @@ Line length should be less than or equal to 120 characters
 
 Source files should be UTF-8 encoded
 Source files should end in an empty line
-
-------------------------------------------------------------------------------------------------------------------------
