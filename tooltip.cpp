@@ -22,6 +22,7 @@ int Tooltip::x = 0;
 int Tooltip::y = 0;
 int Tooltip::w = 0;
 int Tooltip::h = 0;
+
 void Tooltip::set_on (bool get_on) {
     on = get_on;
 }
@@ -112,8 +113,8 @@ void Tooltip::render () {
         // Render the background
         if (Engine::current_color_theme()->tooltip_background != "<INVISIBLE>") {
             Render::render_rectangle(x + Engine_Data::gui_border_thickness, y + Engine_Data::gui_border_thickness,
-                                     w - Engine_Data::gui_border_thickness*2.0,
-                                     h - Engine_Data::gui_border_thickness*2.0, 1.0,
+                                     w - Engine_Data::gui_border_thickness * 2.0,
+                                     h - Engine_Data::gui_border_thickness * 2.0, 1.0,
                                      Engine::current_color_theme()->tooltip_background);
         }
 
@@ -122,8 +123,8 @@ void Tooltip::render () {
             ptr_font->show(x + Engine_Data::gui_border_thickness,
                            y + h / 2.0 -
                            (Strings::newline_count(message) * ptr_font->spacing_y +
-                            (Strings::newline_count(message) + 1) *
-                            ptr_font->get_letter_height()) / 2.0, message, Engine::current_color_theme()->tooltip_font);
+                            (Strings::newline_count(message) + 1) * ptr_font->get_letter_height()) / 2.0, message,
+                           Engine::current_color_theme()->tooltip_font);
         }
     }
 }

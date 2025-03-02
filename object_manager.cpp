@@ -17,6 +17,7 @@
 using namespace std;
 
 int Object_Manager::configure_command = -1;
+
 void Object_Manager::add_color (string name, const Color& color) {
     for (size_t i = 0; i < colors.size(); i++) {
         if (colors[i].name == name) {
@@ -148,9 +149,10 @@ void Object_Manager::save_game_commands (stringstream& save) {
             axis = caxis;
         }
 
-        save << "\t" << game_commands[i].name << "," << game_commands[i].title << "," << Strings::add_newlines(
-            game_commands[i].description) << "," << Strings::bool_to_string(game_commands[i].dev) << "," << key <<
-        "," << button << "," << axis << "\n";
+        save << "\t" << game_commands[i].name << "," << game_commands[i].title << "," <<
+            Strings::add_newlines(game_commands[i].description) << "," <<
+        Strings::bool_to_string(game_commands[i].dev) <<
+            "," << key << "," << button << "," << axis << "\n";
     }
 }
 
@@ -275,8 +277,9 @@ int Object_Manager::game_command_state (string name) {
 
             if (game_commands[i].key_valid() && keystates[game_commands[i].key]) {
                 return true;
-            } else if (game_commands[i].button_valid() &&
-                       Controller_Manager::controller_state(-1, game_commands[i].button)) {
+            } else if (game_commands[i].button_valid() && Controller_Manager::controller_state(-1,
+                                                                                               game_commands[i].button))
+            {
                 return true;
             } else if (game_commands[i].axis_valid()) {
                 int state = Controller_Manager::controller_state(-1, game_commands[i].axis);

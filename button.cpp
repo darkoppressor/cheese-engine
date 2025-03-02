@@ -201,18 +201,21 @@ bool Button::mouse_button_up (Window* parent_window) {
     if (clicked) {
         if (((GUI_Manager::gui_mode == "mouse" || GUI_Manager::gui_mode == "keyboard") &&
              (keystates[SDL_SCANCODE_RCTRL] || keystates[SDL_SCANCODE_LCTRL])) ||
-            (GUI_Manager::gui_mode == "controller" &&
-             Controller_Manager::controller_state(-1, SDL_CONTROLLER_BUTTON_LEFTSHOULDER))) {
+            (GUI_Manager::gui_mode == "controller" && Controller_Manager::controller_state(-1,
+                                                                                           SDL_CONTROLLER_BUTTON_LEFTSHOULDER)))
+        {
             window_opened_on_top = fire_alt_event1(parent_window);
         } else if (((GUI_Manager::gui_mode == "mouse" || GUI_Manager::gui_mode == "keyboard") &&
                     (keystates[SDL_SCANCODE_RSHIFT] || keystates[SDL_SCANCODE_LSHIFT])) ||
-                   (GUI_Manager::gui_mode == "controller" &&
-                    Controller_Manager::controller_state(-1, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER))) {
+                   (GUI_Manager::gui_mode == "controller" && Controller_Manager::controller_state(-1,
+                                                                                                  SDL_CONTROLLER_BUTTON_RIGHTSHOULDER)))
+        {
             window_opened_on_top = fire_alt_event2(parent_window);
         } else if (((GUI_Manager::gui_mode == "mouse" || GUI_Manager::gui_mode == "keyboard") &&
                     keystates[SDL_SCANCODE_SLASH]) ||
-                   (GUI_Manager::gui_mode == "controller" &&
-                    Controller_Manager::controller_state(-1, SDL_CONTROLLER_BUTTON_X))) {
+                   (GUI_Manager::gui_mode == "controller" && Controller_Manager::controller_state(-1,
+                                                                                                  SDL_CONTROLLER_BUTTON_X)))
+        {
             window_opened_on_top = fire_alt_event3(parent_window);
         } else {
             window_opened_on_top = fire_event(parent_window);
@@ -308,8 +311,8 @@ void Button::render (int x_offset, int y_offset) {
             if (Engine::current_color_theme()->button_background != "<INVISIBLE>") {
                 Render::render_rectangle(x_offset + x + Engine_Data::gui_border_thickness,
                                          y_offset + y + Engine_Data::gui_border_thickness,
-                                         w - Engine_Data::gui_border_thickness*2.0,
-                                         h - Engine_Data::gui_border_thickness*2.0, 1.0,
+                                         w - Engine_Data::gui_border_thickness * 2.0,
+                                         h - Engine_Data::gui_border_thickness * 2.0, 1.0,
                                          Engine::current_color_theme()->button_background);
             }
 
@@ -324,10 +327,10 @@ void Button::render (int x_offset, int y_offset) {
                 }
 
                 ptr_font->show(x_offset + x + Engine_Data::gui_border_thickness + x_offset_sprite,
-                               y_offset + y + h / 2.0 - (Strings::newline_count(
-                                                             text) * ptr_font->spacing_y + (Strings::newline_count(
-                                                                                                text) + 1) *
-                                                         ptr_font->get_letter_height()) / 2.0, text, font_color_real);
+                               y_offset + y + h / 2.0 -
+                               (Strings::newline_count(text) * ptr_font->spacing_y +
+                                (Strings::newline_count(text) + 1) * ptr_font->get_letter_height()) / 2.0, text,
+                               font_color_real);
             }
         }
     }
@@ -347,8 +350,8 @@ void Button::render (int x_offset, int y_offset) {
             if (Engine::current_color_theme()->button_background_moused != "<INVISIBLE>") {
                 Render::render_rectangle(x_offset + x + Engine_Data::gui_border_thickness,
                                          y_offset + y + Engine_Data::gui_border_thickness,
-                                         w - Engine_Data::gui_border_thickness*2.0,
-                                         h - Engine_Data::gui_border_thickness*2.0, 1.0,
+                                         w - Engine_Data::gui_border_thickness * 2.0,
+                                         h - Engine_Data::gui_border_thickness * 2.0, 1.0,
                                          Engine::current_color_theme()->button_background_moused);
             }
 
@@ -363,10 +366,10 @@ void Button::render (int x_offset, int y_offset) {
                 }
 
                 ptr_font->show(x_offset + x + Engine_Data::gui_border_thickness + x_offset_sprite,
-                               y_offset + y + h / 2.0 - (Strings::newline_count(
-                                                             text) * ptr_font->spacing_y + (Strings::newline_count(
-                                                                                                text) + 1) *
-                                                         ptr_font->get_letter_height()) / 2.0, text, font_color_real);
+                               y_offset + y + h / 2.0 -
+                               (Strings::newline_count(text) * ptr_font->spacing_y +
+                                (Strings::newline_count(text) + 1) * ptr_font->get_letter_height()) / 2.0, text,
+                               font_color_real);
             }
         }
     }
@@ -386,8 +389,8 @@ void Button::render (int x_offset, int y_offset) {
             if (Engine::current_color_theme()->button_background_click != "<INVISIBLE>") {
                 Render::render_rectangle(x_offset + x + Engine_Data::gui_border_thickness,
                                          y_offset + y + Engine_Data::gui_border_thickness,
-                                         w - Engine_Data::gui_border_thickness*2.0,
-                                         h - Engine_Data::gui_border_thickness*2.0, 1.0,
+                                         w - Engine_Data::gui_border_thickness * 2.0,
+                                         h - Engine_Data::gui_border_thickness * 2.0, 1.0,
                                          Engine::current_color_theme()->button_background_click);
             }
 
@@ -402,10 +405,10 @@ void Button::render (int x_offset, int y_offset) {
                 }
 
                 ptr_font->show(x_offset + x + Engine_Data::gui_border_thickness + x_offset_sprite,
-                               y_offset + y + h / 2.0 - (Strings::newline_count(
-                                                             text) * ptr_font->spacing_y + (Strings::newline_count(
-                                                                                                text) + 1) *
-                                                         ptr_font->get_letter_height()) / 2.0, text, font_color_real);
+                               y_offset + y + h / 2.0 -
+                               (Strings::newline_count(text) * ptr_font->spacing_y +
+                                (Strings::newline_count(text) + 1) * ptr_font->get_letter_height()) / 2.0, text,
+                               font_color_real);
             }
         }
     }

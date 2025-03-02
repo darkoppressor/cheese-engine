@@ -14,6 +14,7 @@ bool Log::is_error_log_ready = false;
 vector<string> Log::world_load_errors;
 vector<string> Log::error_log_unready_errors;
 vector<string> Log::world_load_logs;
+
 void Log::add_world_load_error (string message) {
     world_load_errors.push_back(message);
 }
@@ -142,6 +143,7 @@ string Log::get_timestamp (bool include_date, bool include_time, bool filename) 
     char buff[BUFSIZ];
     time_t now = time(NULL);
     struct tm* tm_now = localtime(&now);
+
     strftime(buff, sizeof buff, time_stamp.c_str(), tm_now);
 
     return buff;

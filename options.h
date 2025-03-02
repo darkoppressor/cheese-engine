@@ -43,6 +43,7 @@ class Options {
         static bool screen_shake;
         static bool rumble;
         static bool screensaver;
+
         static bool save_save_location();
         static bool load_save_location();
         static std::string get_option_value(std::string option);

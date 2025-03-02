@@ -10,6 +10,7 @@
 class Engine_Input {
     public:
         static SDL_Event event;
+
         static bool poll_event(SDL_Event* event_storage);
         static void input_backspace();
         static void input_delete();

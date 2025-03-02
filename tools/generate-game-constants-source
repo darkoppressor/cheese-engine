@@ -127,7 +127,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	if [ -f "$filename_header" ]; then
 		file_header=$(<"$filename_header")
 
-		file_header=$(echo "$file_header" | perl -pe 'BEGIN{undef $/;} s/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS.*?\/\/\/ END SCRIPT-GENERATED CONSTANT DECLARATIONS/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS    \/\/\/ END SCRIPT-GENERATED CONSTANT DECLARATIONS/sm')
+		file_header=$(echo "$file_header" | perl -pe 'BEGIN{undef $/;} s/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS.*?\/\/ END SCRIPT-GENERATED CONSTANT DECLARATIONS/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS    \/\/ END SCRIPT-GENERATED CONSTANT DECLARATIONS/sm')
 
 		content=""
 
@@ -169,7 +169,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			fi
 		done
 
-		echo "$file_header" | sed -e "s/^\s*\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS/    \/\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS\n$content/" > "$filename_header"
+		echo "$file_header" | sed -e "s/^\s*\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS/    \/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS\n$content/" > "$filename_header"
 	fi
 
 	filename_source="$PROJECT_DIRECTORY/game_constants.cpp"
@@ -177,7 +177,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	if [ -f "$filename_source" ]; then
 		file_source=$(<"$filename_source")
 
-		file_source=$(echo "$file_source" | perl -pe 'BEGIN{undef $/;} s/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS.*?\/\/\/ END SCRIPT-GENERATED CONSTANT INITIALIZATIONS/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS\/\/\/ END SCRIPT-GENERATED CONSTANT INITIALIZATIONS/sm')
+		file_source=$(echo "$file_source" | perl -pe 'BEGIN{undef $/;} s/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS.*?\/\/ END SCRIPT-GENERATED CONSTANT INITIALIZATIONS/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS\/\/ END SCRIPT-GENERATED CONSTANT INITIALIZATIONS/sm')
 
 		content=""
 
@@ -247,9 +247,9 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			fi
 		done
 
-		file_source=$(echo "$file_source" | sed -e "s/^\s*\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS\n$content/")
+		file_source=$(echo "$file_source" | sed -e "s/^\s*\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS/\/\/ BEGIN SCRIPT-GENERATED CONSTANT INITIALIZATIONS\n$content/")
 
-		file_source=$(echo "$file_source" | perl -pe 'BEGIN{undef $/;} s/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP.*?\/\/\/ END SCRIPT-GENERATED CONSTANT SETUP/\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP    \/\/\/ END SCRIPT-GENERATED CONSTANT SETUP/sm')
+		file_source=$(echo "$file_source" | perl -pe 'BEGIN{undef $/;} s/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP.*?\/\/ END SCRIPT-GENERATED CONSTANT SETUP/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP    \/\/ END SCRIPT-GENERATED CONSTANT SETUP/sm')
 
 		content=""
 
@@ -291,7 +291,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			content+=";\n    }\n"
 		done
 
-		echo "$file_source" | sed -e "s/^\s*\/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP/    \/\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP\n$content/" > "$filename_source"
+		echo "$file_source" | sed -e "s/^\s*\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP/    \/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP\n$content/" > "$filename_source"
 	fi
 else
     echo "generate-game-constants-source - generate source code for game constants read from data files"

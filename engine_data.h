@@ -85,6 +85,7 @@ class Engine_Data {
         static double ZOOM_RATE;
         static double ZOOM_MIN;
         static double ZOOM_MAX;
+
         static void load_engine_data(File_IO_Load* load);
 };
 

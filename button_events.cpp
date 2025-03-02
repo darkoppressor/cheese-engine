@@ -27,6 +27,7 @@
 using namespace std;
 
 string Button_Events::DEFAULT_AUDIO_DEVICE = "System default";
+
 bool Button_Events::handle_button_event (string button_event, Window* parent_window) {
     bool window_opened_on_top = false;
 
@@ -57,6 +58,7 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
 
             while (save_path.length() * spacing_x > window_width) {
                 uint32_t i = window_width / spacing_x;
+
                 lines.push_back(string(save_path, 0, i));
                 save_path.erase(save_path.begin(), save_path.begin() + i);
             }
@@ -99,7 +101,8 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
             window->set_info_tooltip(0, Options::get_option_description("cl_effect_limit"));
 
             window->set_stated_button_state_index(0,
-                                                  Strings::string_to_bool(Options::get_option_value("cl_screen_shake")));
+                                                  Strings::string_to_bool(Options::get_option_value(
+                                                                              "cl_screen_shake")));
             window->set_stated_button_tooltip(0, Options::get_option_description("cl_screen_shake"));
 
             window->set_stated_button_state_index(1, Strings::string_to_bool(Options::get_option_value("cl_rumble")));
@@ -110,12 +113,10 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
         } else if (button_event == "options" || button_event == "options_apply") {
             if (parent_window != 0) {
                 Options::apply_options(parent_window->get_info_text(0),
-                                       Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                       get_stated_button_state(
-                                                                                           0))),
-                                       Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                       get_stated_button_state(
-                                                                                           1))));
+                                       Strings::bool_to_string(Strings::string_to_bool(
+                                                                   parent_window->get_stated_button_state(0))),
+                                       Strings::bool_to_string(Strings::string_to_bool(
+                                                                   parent_window->get_stated_button_state(1))));
 
                 if (button_event == "options") {
                     handle_button_event("close_window", parent_window);
@@ -160,32 +161,28 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
             window->set_stated_button_tooltip(4, Options::get_option_description("cl_hw_cursor"));
 
             window->set_stated_button_state_index(5,
-                                                  Strings::string_to_bool(Options::get_option_value("cl_font_shadows")));
+                                                  Strings::string_to_bool(Options::get_option_value(
+                                                                              "cl_font_shadows")));
             window->set_stated_button_tooltip(5, Options::get_option_description("cl_font_shadows"));
 
             window->toggle_on();
             window_opened_on_top = true;
         } else if (button_event == "options_graphics" || button_event == "options_graphics_apply") {
             if (parent_window != 0) {
-                Options::apply_options_graphics(parent_window->get_info_text(0), parent_window->get_info_text(
-                                                    1), parent_window->get_info_text(2),
-                                                Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                                get_stated_button_state(
-                                                                                                    0))),
-                                                Strings::lower_case(parent_window->get_stated_button_state(
-                                                                        2)),
-                                                Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                                get_stated_button_state(
-                                                                                                    1))),
-                                                Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                                get_stated_button_state(
-                                                                                                    3))),
-                                                Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                                get_stated_button_state(
-                                                                                                    4))),
-                                                Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                                get_stated_button_state(
-                                                                                                    5))));
+                Options::apply_options_graphics(parent_window->get_info_text(0), parent_window->get_info_text(1),
+                                                parent_window->get_info_text(2),
+                                                Strings::bool_to_string(Strings::string_to_bool(
+                                                                            parent_window->get_stated_button_state(0))),
+                                                Strings::lower_case(parent_window->get_stated_button_state(2)),
+                                                Strings::bool_to_string(Strings::string_to_bool(
+                                                                            parent_window->get_stated_button_state(1))),
+                                                Strings::bool_to_string(Strings::string_to_bool(
+                                                                            parent_window->get_stated_button_state(3))),
+                                                Strings::bool_to_string(Strings::string_to_bool(
+                                                                            parent_window->get_stated_button_state(4))),
+                                                Strings::bool_to_string(Strings::string_to_bool(
+                                                                            parent_window->get_stated_button_state(
+                                                                                5))));
 
                 if (button_event == "options_graphics") {
                     handle_button_event("close_window", parent_window);
@@ -205,8 +202,8 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
             window->set_stated_button_state_index(0, n_volume_global);
             window->set_stated_button_tooltip(0, Options::get_option_description("cl_volume_global"));
 
-            window->set_stated_button_state_index(1, Strings::string_to_bool(Options::get_option_value(
-                                                                                 "cl_mute_global")));
+            window->set_stated_button_state_index(1,
+                                                  Strings::string_to_bool(Options::get_option_value("cl_mute_global")));
             window->set_stated_button_tooltip(1, Options::get_option_description("cl_mute_global"));
 
             double volume_sound = Strings::string_to_double(Options::get_option_value("cl_volume_sound"));
@@ -242,7 +239,9 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
             window->set_stated_button_tooltip(5, Options::get_option_description("cl_mute_music"));
 
             vector<string> audio_devices = Game_Window::get_audio_devices();
+
             audio_devices.insert(audio_devices.begin(), DEFAULT_AUDIO_DEVICE);
+
             string current_device = Options::get_option_value("cl_audio_playback_device");
             uint32_t state_index = 0;
 
@@ -288,10 +287,9 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
                     audio_device = "";
                 }
 
-                Options::apply_options_audio(parent_window->get_stated_button_state(
-                                                 0), mute_global, parent_window->get_stated_button_state(
-                                                 2), mute_sound, parent_window->get_stated_button_state(
-                                                 4), mute_music, audio_device);
+                Options::apply_options_audio(parent_window->get_stated_button_state(0), mute_global,
+                                             parent_window->get_stated_button_state(2), mute_sound,
+                                             parent_window->get_stated_button_state(4), mute_music, audio_device);
 
                 if (button_event == "options_audio") {
                     handle_button_event("close_window", parent_window);
@@ -300,8 +298,8 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
         } else if (button_event == "options_input_window") {
             Window* window = Window_Manager::get_window("options_input");
 
-            window->set_stated_button_state_index(0, Strings::string_to_bool(Options::get_option_value(
-                                                                                 "cl_bind_cursor")));
+            window->set_stated_button_state_index(0,
+                                                  Strings::string_to_bool(Options::get_option_value("cl_bind_cursor")));
             window->set_stated_button_tooltip(0, Options::get_option_description("cl_bind_cursor"));
 
             window->set_stated_button_state_index(1,
@@ -335,19 +333,15 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
             window_opened_on_top = true;
         } else if (button_event == "options_input" || button_event == "options_input_apply") {
             if (parent_window != 0) {
-                Options::apply_options_input(Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                             get_stated_button_state(
-                                                                                                 0))),
-                                             Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                             get_stated_button_state(
-                                                                                                 1))),
-                                             Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                             get_stated_button_state(
-                                                                                                 2))),
-                                             Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                             get_stated_button_state(
-                                                                                                 3))), parent_window->get_stated_button_state(
-                                                 4));
+                Options::apply_options_input(Strings::bool_to_string(Strings::string_to_bool(
+                                                                         parent_window->get_stated_button_state(0))),
+                                             Strings::bool_to_string(Strings::string_to_bool(
+                                                                         parent_window->get_stated_button_state(1))),
+                                             Strings::bool_to_string(Strings::string_to_bool(
+                                                                         parent_window->get_stated_button_state(2))),
+                                             Strings::bool_to_string(Strings::string_to_bool(
+                                                                         parent_window->get_stated_button_state(3))),
+                                             parent_window->get_stated_button_state(4));
 
                 if (button_event == "options_input") {
                     handle_button_event("close_window", parent_window);
@@ -369,9 +363,8 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
         } else if (button_event == "options_network" || button_event == "options_network_apply") {
             if (parent_window != 0) {
                 Options::apply_options_network(parent_window->get_info_text(0),
-                                               Strings::bool_to_string(Strings::string_to_bool(parent_window->
-                                                                                               get_stated_button_state(
-                                                                                                   0))));
+                                               Strings::bool_to_string(Strings::string_to_bool(
+                                                                           parent_window->get_stated_button_state(0))));
 
                 if (button_event == "options_network") {
                     handle_button_event("close_window", parent_window);
@@ -453,19 +446,18 @@ bool Button_Events::handle_button_event (string button_event, Window* parent_win
                     password_required = true;
                 }
 
-                Network_Client::add_server(parent_window->get_info_text(0), parent_window->get_info_text(
-                                               1), Strings::string_to_unsigned_long(parent_window->get_info_text(
-                                                                                        2)), &password, password_required, 0, 0, "",
-                                           0);
+                Network_Client::add_server(parent_window->get_info_text(0), parent_window->get_info_text(1),
+                                           Strings::string_to_unsigned_long(parent_window->get_info_text(2)), &password,
+                                           password_required, 0, 0, "", 0);
 
                 handle_button_event("close_window", parent_window);
             }
         } else if (button_event == "edit_server") {
             if (parent_window != 0) {
-                Network_Client::edit_server(Engine::editing_server, parent_window->get_info_text(
-                                                0), parent_window->get_info_text(1),
-                                            Strings::string_to_unsigned_long(parent_window->get_info_text(
-                                                                                 2)), parent_window->get_info_text(3));
+                Network_Client::edit_server(Engine::editing_server, parent_window->get_info_text(0),
+                                            parent_window->get_info_text(1),
+                                            Strings::string_to_unsigned_long(parent_window->get_info_text(2)),
+                                            parent_window->get_info_text(3));
 
                 Window_Manager::get_window("server_list")->rebuild_scrolling_buttons();
                 Window_Manager::get_window("server_list_delete")->rebuild_scrolling_buttons();

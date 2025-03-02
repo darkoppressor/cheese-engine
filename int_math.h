@@ -34,8 +34,8 @@ class Int_Math {
         static std::int32_t get_angle_to_point(const Coords<std::int32_t>& point_a,
                                                const Coords<std::int32_t>& point_b);
 
-        ///get_distance_between_points may be removed at some point, if it is not needed
-        ///get_distance_between_points_no_sqrt is much faster
+        // get_distance_between_points may be removed at some point, if it is not needed
+        // get_distance_between_points_no_sqrt is much faster
         static std::uint64_t get_distance_between_points(const Coords<std::int32_t>& point_a,
                                                          const Coords<std::int32_t>& point_b);
         static std::uint64_t get_distance_between_points_no_sqrt(const Coords<std::int32_t>& point_a,

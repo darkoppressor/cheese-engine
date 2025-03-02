@@ -29,6 +29,7 @@ class Network_Engine {
         static std::uint64_t stat_bytes_sent;
         static std::uint64_t stat_counter_bytes_sent;
         static RakNet::RakNetGUID server_id;
+
         static void reset();
         static void stop();
         static void tick();

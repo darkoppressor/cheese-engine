@@ -27,6 +27,7 @@ void Cursor::load_hw_cursor () {
         int width = sprite.get_width();
         int height = sprite.get_height();
         uint32_t rmask, gmask, bmask, amask;
+
         Engine::get_rgba_masks(&rmask, &gmask, &bmask, &amask);
 
         surface_final = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask);
@@ -34,6 +35,7 @@ void Cursor::load_hw_cursor () {
         if (SDL_MUSTLOCK(surface_final)) {
             if (SDL_LockSurface(surface_final) != 0) {
                 string msg = "Error locking surface for hardware cursor: ";
+
                 msg += SDL_GetError();
                 Log::add_error(msg);
             }

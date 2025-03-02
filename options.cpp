@@ -55,6 +55,7 @@ uint32_t Options::max_players = 0;
 bool Options::screen_shake = false;
 bool Options::rumble = false;
 bool Options::screensaver = false;
+
 bool Options::save_save_location () {
     stringstream save("");
 
@@ -216,6 +217,7 @@ void Options::change_option (string option, string new_value) {
     if (option == "cl_logic_update_rate") {
         if (Network_Engine::status == "off") {
             uint32_t new_update_rate = Strings::string_to_unsigned_long(new_value);
+
             Network_Client::recall_update_rate = new_update_rate;
 
             Engine::set_logic_update_rate(new_update_rate);
@@ -569,7 +571,7 @@ bool Options::save_servers () {
 
     for (int i = 0; i < Network_Client::server_list.size(); i++) {
         save << "\t" << Network_Client::server_list[i].name << "," << Network_Client::server_list[i].address << "," <<
-        Network_Client::server_list[i].port << "," << Network_Client::server_list[i].password << "\n";
+            Network_Client::server_list[i].port << "," << Network_Client::server_list[i].password << "\n";
     }
 
     save << "</servers>\n";
@@ -586,6 +588,7 @@ bool Options::load_servers () {
 
     if (load.is_opened()) {
         Network_Client::server_list.clear();
+
         vector<string> lines = Data_Reader::read_data(&load, "</servers>");
 
         for (size_t i = 0; i < lines.size(); i++) {
@@ -593,6 +596,7 @@ bool Options::load_servers () {
 
             if (!Data_Reader::check_prefix(line, "</servers>")) {
                 vector<string> command_parts;
+
                 boost::algorithm::split(command_parts, line, boost::algorithm::is_any_of(","));
 
                 if (command_parts.size() == 4) {

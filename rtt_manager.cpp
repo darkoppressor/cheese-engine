@@ -11,6 +11,7 @@ using namespace std;
 
 vector<Rtt_Data> Rtt_Manager::textures;
 vector<string> Rtt_Manager::texture_names;
+
 void Rtt_Manager::add_texture (string name, double width, double height) {
     textures.push_back(Rtt_Data());
 
@@ -64,6 +65,7 @@ void Rtt_Manager::set_render_target (string name) {
 
     if (Game_Window::set_render_target(ptr->texture) != 0) {
         string msg = "Unable to set render target to '" + name + "': ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }
@@ -74,6 +76,7 @@ void Rtt_Manager::set_render_target (string name) {
 void Rtt_Manager::reset_render_target () {
     if (Game_Window::set_render_target(0) != 0) {
         string msg = "Unable to reset render target: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }

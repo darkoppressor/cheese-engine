@@ -54,6 +54,7 @@ int Engine::counter_cursor = 0;
 bool Engine::cursor_fade_direction = false;
 int Engine::cursor_opacity = 10;
 int Engine::editing_server = 0;
+
 void Engine::build_text_input_characters () {
     characters_symbols.clear();
 
@@ -266,6 +267,7 @@ void Engine::compute_checksum () {
 
     if (checksum_data.length() > 0) {
         boost::crc_32_type result;
+
         result.process_bytes(checksum_data.data(), checksum_data.length());
 
         CHECKSUM = Strings::num_to_string((uint32_t) result.checksum());
@@ -553,6 +555,7 @@ void Engine::get_mouse_state (int* mouse_x, int* mouse_y) {
 
     float scale_x = 0.0f;
     float scale_y = 0.0f;
+
     Game_Window::get_renderer_scale(&scale_x, &scale_y);
 
     SDL_GetMouseState(mouse_x, mouse_y);
@@ -674,25 +677,32 @@ string Engine::get_system_info () {
     Game_Window::get_renderer_logical_size(&logical_width, &logical_height);
 
     SDL_Rect rect;
+
     Game_Window::get_renderer_viewport(&rect);
 
     float scale_x = 0.0;
     float scale_y = 0.0;
+
     Game_Window::get_renderer_scale(&scale_x, &scale_y);
 
     int actual_width = 0;
     int actual_height = 0;
+
     Game_Window::get_renderer_output_size(&actual_width, &actual_height);
 
     SDL_RendererInfo info;
+
     Game_Window::get_renderer_info(&info);
+
     string renderer_name = info.name;
     int mouse_x = 0;
     int mouse_y = 0;
+
     Engine::get_mouse_state(&mouse_x, &mouse_y);
 
     int mouse_real_x = 0;
     int mouse_real_y = 0;
+
     SDL_GetMouseState(&mouse_real_x, &mouse_real_y);
 
     int power_seconds = 0;
@@ -703,22 +713,22 @@ string Engine::get_system_info () {
 
     Controller_Manager::get_controller_info(msg);
 
-    msg += "Resolution (Logical): " + Strings::num_to_string(logical_width) + " x " + Strings::num_to_string(
-        logical_height) + "\n";
+    msg += "Resolution (Logical): " + Strings::num_to_string(logical_width) + " x " +
+           Strings::num_to_string(logical_height) + "\n";
     msg += "Logical Viewport: " + Strings::num_to_string(rect.x) + "," + Strings::num_to_string(rect.y) + "," +
            Strings::num_to_string(rect.w) + "," + Strings::num_to_string(rect.h) + "\n";
     msg += "Render Scale: " + Strings::num_to_string(scale_x) + "," + Strings::num_to_string(scale_y) + "\n";
     msg += "Resolution (Actual): " + Strings::num_to_string(actual_width) + " x " +
            Strings::num_to_string(actual_height) + "\n";
     msg += "Renderer: " + renderer_name + "\n";
-    msg += "Max Texture Size: " + Strings::num_to_string(info.max_texture_width) + " x " + Strings::num_to_string(
-        info.max_texture_height) + "\n";
+    msg += "Max Texture Size: " + Strings::num_to_string(info.max_texture_width) + " x " +
+           Strings::num_to_string(info.max_texture_height) + "\n";
     msg += "Current Gui Mode: " + Strings::first_letter_capital(GUI_Manager::gui_mode) + "\n";
 
     msg += "Mouse Position (Logical): " + Strings::num_to_string(mouse_x) + "," + Strings::num_to_string(mouse_y) +
            "\n";
-    msg += "Mouse Position (Actual): " + Strings::num_to_string(mouse_real_x) + "," + Strings::num_to_string(
-        mouse_real_y) + "\n";
+    msg += "Mouse Position (Actual): " + Strings::num_to_string(mouse_real_x) + "," +
+           Strings::num_to_string(mouse_real_y) + "\n";
 
     msg += "Power State: ";
 
@@ -811,8 +821,8 @@ void Engine::render_small_text_inputter () {
     Render::render_rectangle(0, 0, Game_Window::width(), Game_Window::height(), 0.75,
                              current_color_theme()->window_border);
     Render::render_rectangle(Engine_Data::window_border_thickness, Engine_Data::window_border_thickness,
-                             Game_Window::width() - Engine_Data::window_border_thickness*2.0,
-                             Game_Window::height() - Engine_Data::window_border_thickness*2.0, 0.75,
+                             Game_Window::width() - Engine_Data::window_border_thickness * 2.0,
+                             Game_Window::height() - Engine_Data::window_border_thickness * 2.0, 0.75,
                              current_color_theme()->window_background);
 
     if (mutable_info_selected()) {
@@ -932,8 +942,8 @@ void Engine::render_text_inputter () {
 
     Render::render_rectangle(x_adjust, 0, Game_Window::width() / 2, Game_Window::height(), 0.75,
                              current_color_theme()->window_background);
-    Render::render_rectangle_empty(x_adjust, 0, Game_Window::width() / 2,
-                                   Game_Window::height(), 0.75, current_color_theme()->window_border, 2.0);
+    Render::render_rectangle_empty(x_adjust, 0, Game_Window::width() / 2, Game_Window::height(), 0.75,
+                                   current_color_theme()->window_border, 2.0);
     Render::render_circle(outer_center_x + 4, outer_center_y + 4, outer_radius, 1.0, "ui_black");
     Render::render_circle(outer_center_x, outer_center_y, outer_radius, 1.0, current_color_theme()->window_border);
 
@@ -943,36 +953,31 @@ void Engine::render_text_inputter () {
     string text = "";
 
     text = "(Press for Return)";
-    font->show(
-        x_adjust + (Game_Window::width() / 2 - text.length() * font->spacing_x) / 2, outer_center_y - 8.0 + font->spacing_y, text,
-        "ui_white");
+    font->show(x_adjust + (Game_Window::width() / 2 - text.length() * font->spacing_x) / 2,
+               outer_center_y - 8.0 + font->spacing_y, text, "ui_white");
 
     text = "[LB] Backspace";
     font->show(x_adjust + 100, words_y, text, current_color_theme()->window_font);
     text = "Space [RB]";
-    font->show(
-        x_adjust + Game_Window::width() / 2 - text.length() * font->spacing_x - 100, words_y, text,
-        current_color_theme()->window_font);
+    font->show(x_adjust + Game_Window::width() / 2 - text.length() * font->spacing_x - 100, words_y, text,
+               current_color_theme()->window_font);
 
     text = "(LT) Caps";
     font->show(x_adjust + 100, words_y + 30, text, current_color_theme()->window_font);
     text = "Numbers (RT)";
-    font->show(
-        x_adjust + Game_Window::width() / 2 - text.length() * font->spacing_x - 100, words_y + 30, text,
-        current_color_theme()->window_font);
+    font->show(x_adjust + Game_Window::width() / 2 - text.length() * font->spacing_x - 100, words_y + 30, text,
+               current_color_theme()->window_font);
 
     if (selected_chunk == -1) {
         if (is_console_selected()) {
             text = "(A) Auto-complete";
-            font->show(
-                x_adjust + (Game_Window::width() / 2 - text.length() * font->spacing_x) / 2, words_y + 60, text,
-                current_color_theme()->window_font);
+            font->show(x_adjust + (Game_Window::width() / 2 - text.length() * font->spacing_x) / 2, words_y + 60, text,
+                       current_color_theme()->window_font);
         }
 
         text = "(B) Back/Done";
-        font->show(
-            x_adjust + (Game_Window::width() / 2 - text.length() * font->spacing_x) / 2, words_y + 90, text,
-            current_color_theme()->window_font);
+        font->show(x_adjust + (Game_Window::width() / 2 - text.length() * font->spacing_x) / 2, words_y + 90, text,
+                   current_color_theme()->window_font);
     }
 
     int character_chunk = 0;
@@ -1034,16 +1039,15 @@ void Engine::render_text_editing () {
         Bitmap_Font* font = Object_Manager::get_font("small");
         string text = ptr_mutable_info->get_cursor_line();
 
-        Render::render_rectangle(0.0, 0.0,
-                                 Game_Window::width(), font->spacing_y + Engine_Data::window_border_thickness*2.0, 0.75,
+        Render::render_rectangle(0.0, 0.0, Game_Window::width(),
+                                 font->spacing_y + Engine_Data::window_border_thickness * 2.0, 0.75,
                                  current_color_theme()->window_border);
         Render::render_rectangle(Engine_Data::window_border_thickness, Engine_Data::window_border_thickness,
-                                 Game_Window::width() - Engine_Data::window_border_thickness*2.0, font->spacing_y, 0.75,
-                                 current_color_theme()->window_background);
+                                 Game_Window::width() - Engine_Data::window_border_thickness * 2.0, font->spacing_y,
+                                 0.75, current_color_theme()->window_background);
 
-        font->show(
-            (Game_Window::width() - (text.length() * font->spacing_x)) / 2.0, Engine_Data::window_border_thickness, text,
-            current_color_theme()->window_font);
+        font->show((Game_Window::width() - (text.length() * font->spacing_x)) / 2.0,
+                   Engine_Data::window_border_thickness, text, current_color_theme()->window_font);
     }
 }
 
@@ -1090,6 +1094,7 @@ void Engine::render (int render_rate, double ms_per_frame, int logic_frame_rate)
             (Engine_Data::cursor_render_always || Window_Manager::is_any_window_open() || console.on)) {
             int mouse_x = 0;
             int mouse_y = 0;
+
             get_mouse_state(&mouse_x, &mouse_y);
 
             get_current_cursor()->render(mouse_x, mouse_y);

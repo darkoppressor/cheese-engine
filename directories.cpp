@@ -21,6 +21,7 @@ string Directories::home_directory = "";
 bool Directories::save_location_loaded = false;
 bool Directories::save_location_fallback = false;
 vector<string> Directories::directories;
+
 void Directories::make_directory (const string& directory) {
     if (!File_IO::exists(directory)) {
         File_IO::create_directory(directory);
@@ -37,6 +38,7 @@ string Directories::get_cwd () {
         SDL_free(base_path);
     } else {
         string msg = "Error getting base path: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }
@@ -73,6 +75,7 @@ string Directories::get_save_directory () {
             pref_path_loaded = true;
         } else {
             string msg = "Error getting pref path: ";
+
             msg += SDL_GetError();
             Log::add_error(msg, false);
         }
@@ -96,12 +99,14 @@ string Directories::get_save_directory () {
                 str_home += "/.";
                 str_home += game_name;
                 str_home += "/";
+
             #endif
 
             #ifdef GAME_OS_MACOS
                 FSRef fsref;
                 OSType folder_type = kApplicationSupportFolderType;
                 char path[PATH_MAX];
+
                 FSFindFolder(kUserDomain, folder_type, kCreateFolder, &fsref);
                 FSRefMakePath(&fsref, (uint8_t*) &path, PATH_MAX);
 
@@ -109,6 +114,7 @@ string Directories::get_save_directory () {
                 str_home += "/";
                 str_home += game_name;
                 str_home += "/";
+
             #endif
 
             #ifdef GAME_OS_ANDROID
@@ -124,6 +130,7 @@ string Directories::get_save_directory () {
                         using_external_storage = true;
                     } else {
                         string msg = "Error getting external storage path: ";
+
                         msg += SDL_GetError();
                         Log::add_error(msg, false);
                     }
@@ -137,6 +144,7 @@ string Directories::get_save_directory () {
                         str_home += "/";
                     } else {
                         string msg = "Error getting internal storage path: ";
+
                         msg += SDL_GetError();
                         Log::add_error(msg, false);
                     }
@@ -159,6 +167,7 @@ void Directories::make_home_directory () {
 
             if (save_location_fallback) {
                 string str_my_games = getenv("USERPROFILE");
+
                 str_my_games += "/My Documents/My Games";
 
                 Strings::slashes_to_slash(&str_my_games);

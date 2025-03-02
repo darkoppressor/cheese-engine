@@ -28,6 +28,7 @@ SDL_Renderer* Game_Window::renderer = 0;
 int Game_Window::SCREEN_WIDTH = 0;
 int Game_Window::SCREEN_HEIGHT = 0;
 bool Game_Window::need_to_reload = false;
+
 bool Game_Window::initialize_video () {
     int position_x = SDL_WINDOWPOS_CENTERED;
     int position_y = SDL_WINDOWPOS_CENTERED;
@@ -49,29 +50,28 @@ bool Game_Window::initialize_video () {
 
     if (Options::fullscreen) {
         if (Options::fullscreen_mode == "desktop") {
-            screen = SDL_CreateWindow(
-                Engine_Data::game_title.c_str(), position_x, position_y, 0, 0, flags | SDL_WINDOW_FULLSCREEN_DESKTOP);
+            screen = SDL_CreateWindow(Engine_Data::game_title.c_str(), position_x, position_y, 0, 0,
+                                      flags | SDL_WINDOW_FULLSCREEN_DESKTOP);
         } else if (Options::fullscreen_mode == "standard") {
-            screen = SDL_CreateWindow(
-                Engine_Data::game_title.c_str(), position_x, position_y, desired_resolution_x, desired_resolution_y,
-                flags | SDL_WINDOW_FULLSCREEN);
+            screen = SDL_CreateWindow(Engine_Data::game_title.c_str(), position_x, position_y, desired_resolution_x,
+                                      desired_resolution_y, flags | SDL_WINDOW_FULLSCREEN);
         } else if (Options::fullscreen_mode == "windowed") {
-            screen = SDL_CreateWindow(
-                Engine_Data::game_title.c_str(), position_x, position_y, desired_resolution_x, desired_resolution_y,
-                flags | SDL_WINDOW_BORDERLESS);
+            screen = SDL_CreateWindow(Engine_Data::game_title.c_str(), position_x, position_y, desired_resolution_x,
+                                      desired_resolution_y, flags | SDL_WINDOW_BORDERLESS);
         } else {
             Log::add_error("Invalid value for fullscreen_mode: '" + Options::fullscreen_mode + "'");
 
             return false;
         }
     } else {
-        screen = SDL_CreateWindow(
-            Engine_Data::game_title.c_str(), position_x, position_y, desired_resolution_x, desired_resolution_y, flags);
+        screen = SDL_CreateWindow(Engine_Data::game_title.c_str(), position_x, position_y, desired_resolution_x,
+                                  desired_resolution_y, flags);
     }
 
     // If the screen could not be set up.
     if (screen == 0) {
         string msg = "Unable to create window: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
 
@@ -81,6 +81,7 @@ bool Game_Window::initialize_video () {
     if (Engine_Data::resolution_mode != "fixed" && Options::fullscreen) {
         int window_width = 0;
         int window_height = 0;
+
         SDL_GetWindowSize(screen, &window_width, &window_height);
 
         Engine_Rect display_res = get_display_resolution();
@@ -90,15 +91,16 @@ bool Game_Window::initialize_video () {
             if (Options::fullscreen_mode == "standard") {
                 if (display_res_max.w > -1 && display_res_max.h > -1) {
                     if (window_width > display_res_max.w || window_height > display_res_max.h) {
-                        Log::add_error("Window dimensions of " + Strings::num_to_string(
-                                           window_width) + "x" + Strings::num_to_string(
-                                           window_height) + " exceed the maximum display dimensions of " +
-                                       Strings::num_to_string(display_res_max.w) + "x" + Strings::num_to_string(
-                                           display_res_max.h) +
+                        Log::add_error("Window dimensions of " + Strings::num_to_string(window_width) + "x" +
+                                       Strings::num_to_string(window_height) +
+                                       " exceed the maximum display dimensions of " +
+                                       Strings::num_to_string(display_res_max.w) + "x" +
+                                       Strings::num_to_string(display_res_max.h) +
                                        ", adjusting window resolution to current display resolution");
 
                         if (SDL_SetWindowFullscreen(screen, 0) != 0) {
                             string msg = "Error toggling fullscreen: ";
+
                             msg += SDL_GetError();
                             Log::add_error(msg);
 
@@ -109,6 +111,7 @@ bool Game_Window::initialize_video () {
 
                         if (SDL_SetWindowFullscreen(screen, SDL_WINDOW_FULLSCREEN) != 0) {
                             string msg = "Error toggling fullscreen: ";
+
                             msg += SDL_GetError();
                             Log::add_error(msg);
 
@@ -131,6 +134,7 @@ bool Game_Window::initialize_video () {
 
     if (renderer == 0) {
         string msg = "Unable to create renderer: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
 
@@ -150,6 +154,7 @@ bool Game_Window::initialize_video () {
 
     if (texture == 0) {
         string msg = "Unable to check renderer features: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
 
@@ -160,6 +165,7 @@ bool Game_Window::initialize_video () {
 
     if (support_alpha_blending != 0) {
         string msg = "Alpha blending unsupported by renderer: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
 
@@ -170,6 +176,7 @@ bool Game_Window::initialize_video () {
 
     if (support_alpha_mod != 0) {
         string msg = "Alpha modding unsupported by renderer: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
 
@@ -180,6 +187,7 @@ bool Game_Window::initialize_video () {
 
     if (support_color_mod != 0) {
         string msg = "Color modding unsupported by renderer: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
 
@@ -219,11 +227,13 @@ Engine_Rect Game_Window::get_display_resolution () {
                 resolution.h = mode.h;
             } else {
                 string msg = "Unable to get display mode for display #" + Strings::num_to_string(display_index) + ": ";
+
                 msg += SDL_GetError();
                 Log::add_error(msg);
             }
         } else {
             string msg = "Unable to get display index for window: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
         }
@@ -262,17 +272,20 @@ Engine_Rect Game_Window::get_display_resolution_max (int display_number) {
                     } else {
                         string msg = "Unable to get display mode #" + Strings::num_to_string(i) + " for display #" +
                                      Strings::num_to_string(display_index) + ": ";
+
                         msg += SDL_GetError();
                         Log::add_error(msg);
                     }
                 }
             } else {
                 string msg = "Unable to get display modes for display #" + Strings::num_to_string(display_index) + ": ";
+
                 msg += SDL_GetError();
                 Log::add_error(msg);
             }
         } else {
             string msg = "Unable to get display index for window: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
         }
@@ -336,11 +349,11 @@ bool Game_Window::set_position (int* desired_resolution_x, int* desired_resoluti
                         if (display_res_max.w > -1 && display_res_max.h > -1) {
                             if (*desired_resolution_x > display_res_max.w ||
                                 *desired_resolution_y > display_res_max.h) {
-                                Log::add_error("Window dimensions of " + Strings::num_to_string(
-                                                   *desired_resolution_x) + "x" + Strings::num_to_string(
-                                                   *desired_resolution_y) + " exceed the maximum display dimensions of " + Strings::num_to_string(
-                                                   display_res_max.w) + "x" + Strings::num_to_string(
-                                                   display_res_max.h) +
+                                Log::add_error("Window dimensions of " + Strings::num_to_string(*desired_resolution_x) +
+                                               "x" + Strings::num_to_string(*desired_resolution_y) +
+                                               " exceed the maximum display dimensions of " +
+                                               Strings::num_to_string(display_res_max.w) + "x" +
+                                               Strings::num_to_string(display_res_max.h) +
                                                ", adjusting window resolution to display resolution");
 
                                 *desired_resolution_x = display_bounds.w;
@@ -358,13 +371,15 @@ bool Game_Window::set_position (int* desired_resolution_x, int* desired_resoluti
 
                 return true;
             } else {
-                string msg = "Unable to get display bounds for display #" + Strings::num_to_string(
-                    Options::display_number) + ": ";
+                string msg = "Unable to get display bounds for display #" +
+                             Strings::num_to_string(Options::display_number) + ": ";
+
                 msg += SDL_GetError();
                 Log::add_error(msg);
             }
         } else {
             string msg = "Unable to get number of displays: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
         }
@@ -390,11 +405,11 @@ void Game_Window::reload () {
                 if (Options::fullscreen_mode == "standard") {
                     if (display_res_max.w > -1 && display_res_max.h > -1) {
                         if (desired_resolution_x > display_res_max.w || desired_resolution_y > display_res_max.h) {
-                            Log::add_error("Window dimensions of " + Strings::num_to_string(
-                                               desired_resolution_x) + "x" + Strings::num_to_string(
-                                               desired_resolution_y) + " exceed the maximum display dimensions of " + Strings::num_to_string(
-                                               display_res_max.w) + "x" + Strings::num_to_string(
-                                               display_res_max.h) +
+                            Log::add_error("Window dimensions of " + Strings::num_to_string(desired_resolution_x) +
+                                           "x" + Strings::num_to_string(desired_resolution_y) +
+                                           " exceed the maximum display dimensions of " +
+                                           Strings::num_to_string(display_res_max.w) + "x" +
+                                           Strings::num_to_string(display_res_max.h) +
                                            ", adjusting window resolution to current display resolution");
 
                             desired_resolution_x = display_res.w;
@@ -452,12 +467,14 @@ void Game_Window::reload () {
 
         if (toggle_fullscreen != 0) {
             string msg = "Error toggling fullscreen: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
         }
 
         int logical_width = 0;
         int logical_height = 0;
+
         get_renderer_logical_size(&logical_width, &logical_height);
         Controller_Manager::scale_touch_controller(logical_width, logical_height);
     }
@@ -485,8 +502,8 @@ void Game_Window::initialize_audio () {
 
     if (Options::audio_playback_device.length() > 0 &&
         is_audio_playback_device_present(Options::audio_playback_device)) {
-        audio_startup_error = Mix_OpenAudioDevice(44100, AUDIO_S16SYS, 2, 1024,
-                                                  Options::audio_playback_device.c_str(), 0);
+        audio_startup_error = Mix_OpenAudioDevice(44100, AUDIO_S16SYS, 2, 1024, Options::audio_playback_device.c_str(),
+                                                  0);
     } else {
         audio_startup_error = Mix_OpenAudio(44100, AUDIO_S16SYS, 2, 1024);
     }
@@ -524,6 +541,7 @@ bool Game_Window::pre_initialize () {
     if (!pre_initialized) {
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
             string msg = "Unable to init SDL: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
 
@@ -550,6 +568,7 @@ bool Game_Window::initialize () {
         SDL_Surface* loaded_image = 0;
         SDL_Surface* icon = 0;
         VFS_RWops rwops = VFS::get_rwops("images/icons/standard.png", true);
+
         loaded_image = IMG_Load_RW(rwops.rwops, 1);
         rwops.close_buffer();
 
@@ -570,6 +589,7 @@ bool Game_Window::initialize () {
 
         int logical_width = 0;
         int logical_height = 0;
+
         get_renderer_logical_size(&logical_width, &logical_height);
         Controller_Manager::scale_touch_controller(logical_width, logical_height);
 
@@ -724,14 +744,17 @@ void Game_Window::screenshot () {
             "Sorry, screenshots are disabled in Android, due to them exploding. Please use Android's own screenshot feature.");
 
         return;
+
     #endif
 
     string screenshot_name = Directories::get_save_directory() + "screenshots/";
+
     screenshot_name += Log::get_timestamp(true, true, true);
     screenshot_name += ".png";
 
     int actual_width = 0;
     int actual_height = 0;
+
     SDL_GetRendererOutputSize(renderer, &actual_width, &actual_height);
 
     unsigned char* pixel_data = new unsigned char[4 * actual_width * actual_height];
@@ -739,11 +762,13 @@ void Game_Window::screenshot () {
     if (pixel_data != 0) {
         if (SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ABGR8888, pixel_data, actual_width * 4) != 0) {
             string msg = "Error reading renderer pixels: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
         }
 
         uint32_t rmask, gmask, bmask, amask;
+
         Engine::get_rgba_masks(&rmask, &gmask, &bmask, &amask);
 
         SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixel_data, actual_width, actual_height, 32, actual_width * 4,
@@ -751,11 +776,13 @@ void Game_Window::screenshot () {
 
         if (surface == 0) {
             string msg = "Error creating surface for screenshot: ";
+
             msg += SDL_GetError();
             Log::add_error(msg);
         } else {
             if (IMG_SavePNG(surface, screenshot_name.c_str()) != 0) {
                 string msg = "Error saving screenshot: ";
+
                 msg += IMG_GetError();
                 Log::add_error(msg);
             }
@@ -780,6 +807,7 @@ void Game_Window::update_display_number () {
         }
     } else {
         string msg = "Unable to get display index for window: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }
@@ -822,8 +850,8 @@ void Game_Window::set_render_draw_blend_mode (SDL_BlendMode blend_mode) {
 }
 
 void Game_Window::set_render_draw_color (const Color& color, double opacity) {
-    SDL_SetRenderDrawColor(renderer, (uint8_t) color.get_red(), (uint8_t) color.get_green(),
-                           (uint8_t) color.get_blue(), (uint8_t) (opacity * 255.0));
+    SDL_SetRenderDrawColor(renderer, (uint8_t) color.get_red(), (uint8_t) color.get_green(), (uint8_t) color.get_blue(),
+                           (uint8_t) (opacity * 255.0));
 }
 
 void Game_Window::render_copy_ex (SDL_Texture* texture, const SDL_Rect* srcrect, const SDL_Rect* dstrect,

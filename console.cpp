@@ -232,6 +232,7 @@ void Console::send_chat () {
             reset_current_recalled_command_string();
 
             string msg = Options::name;
+
             msg += ": ";
             msg += info_input.text;
 
@@ -397,6 +398,7 @@ void Console::tab_complete () {
                         max_valid_length += 2;
 
                         vector<string> valid_command_display;
+
                         valid_command_display.push_back("");
 
                         for (int i = 0; i < valid_commands.size(); i++) {
@@ -436,6 +438,7 @@ void Console::handle_input_states () {
     if (on) {
         int mouse_x = 0;
         int mouse_y = 0;
+
         Engine::get_mouse_state(&mouse_x, &mouse_y);
 
         info_display.handle_input_states(mouse_x, mouse_y, 0, 0);
@@ -530,6 +533,7 @@ bool Console::handle_input_events () {
     if (on && Engine::mouse_allowed()) {
         int mouse_x = 0;
         int mouse_y = 0;
+
         Engine::get_mouse_state(&mouse_x, &mouse_y);
 
         if (!event_consumed) {
@@ -566,6 +570,7 @@ void Console::render () {
                 info_input.render(0, 0);
             } else {
                 Information info_temp_display = info_display;
+
                 info_temp_display.y = Game_Window::height() - info_display.h - info_input.h;
                 info_temp_display.background_type = "none";
 

@@ -38,6 +38,7 @@ class Game_Manager {
         // This is updated each frame
         static std::vector<std::string> command_states;
         static Collision_Rect<double> camera;
+
         static void reset();
         static void reset_camera_dimensions();
         static std::string get_random_direction_cardinal(RNG& rng);

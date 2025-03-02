@@ -121,9 +121,8 @@ bool Engine_Version::is_version_compatible (string options_version_string) {
     if (options_version_series == current_version_series && options_version_series > -1) {
         return true;
     } else {
-        Log::add_error(
-            "Version incompatibility! Save data was created with version: " + options_version_string + "\n" + "Current version is: " +
-            get_version());
+        Log::add_error("Version incompatibility! Save data was created with version: " + options_version_string + "\n" +
+                       "Current version is: " + get_version());
 
         return false;
     }

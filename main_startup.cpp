@@ -222,6 +222,7 @@ int main_initialize (bool first_init, Command_Line_Arguments& arguments, int gam
     }
 
     string startup = Engine_Data::game_title;
+
     startup += "\nDeveloped by: " + Engine_Data::developer;
     startup += "\nVersion: " + Engine_Version::get_version() + " " + Engine_Version::get_status();
     startup += "\nBuilt on " + Engine_Version::get_build_date();
@@ -252,6 +253,7 @@ int main_initialize (bool first_init, Command_Line_Arguments& arguments, int gam
     Log::add_log(startup);
 
     Progress_Bar bar(Data_Manager::world_load_item_count + game_data_load_item_count);
+
     Log::add_log("Loading data");
     Log::add_log("Initializing");
 
@@ -297,9 +299,11 @@ int main_startup (int argc, char* args[], int game_data_load_item_count) {
         // Set the working directory to the Resources directory of our bundle
         char path[PATH_MAX];
         CFURLRef url = CFBundleCopyResourcesDirectoryURL(CFBundleGetMainBundle());
+
         CFURLGetFileSystemRepresentation(url, true, (uint8_t*) path, PATH_MAX);
         CFRelease(url);
         chdir(path);
+
     #endif
 
     Command_Line_Arguments arguments;

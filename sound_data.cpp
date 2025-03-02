@@ -20,6 +20,7 @@ void Sound_Data::load_sound (string path) {
 
     if (chunk == 0) {
         string msg = "Error loading sound '" + path + "': ";
+
         msg += Mix_GetError();
         Log::add_error(msg);
     }
@@ -30,6 +31,7 @@ void Sound_Data::load_sound (Mix_Chunk* ptr_chunk) {
 
     if (chunk == 0) {
         string msg = "Error loading sound from chunk: ";
+
         msg += Mix_GetError();
         Log::add_error(msg);
     }
@@ -43,8 +45,8 @@ void Sound_Data::create_custom_sound (const Custom_Sound& sound) {
         size_t bytes_count = sizeof buffer[i];
         uint8_t bytes[bytes_count];
 
-        ///I think endianness might be an issue here
-        ///I need to look into that
+        // I think endianness might be an issue here
+        // I need to look into that
         copy(static_cast<const uint8_t*>(static_cast<const void*>(&buffer[i])),
              static_cast<const uint8_t*>(static_cast<const void*>(&buffer[i])) + sizeof buffer[i], bytes);
 
@@ -58,6 +60,7 @@ void Sound_Data::create_custom_sound (const Custom_Sound& sound) {
 
         if (chunk == 0) {
             string msg = "Error creating custom sound '" + sound.name + "': ";
+
             msg += Mix_GetError();
             Log::add_error(msg);
         }

@@ -19,6 +19,7 @@ uint32_t Network_Lockstep::turn = TURN_MIN;
 uint32_t Network_Lockstep::server_completed_turn = 0;
 uint32_t Network_Lockstep::logic_updates_this_turn = 0;
 uint32_t Network_Lockstep::current_turn_limit = 200;
+
 void Network_Lockstep::reset () {
     if (Engine_Data::network_lockstep) {
         turn_timer.stop();

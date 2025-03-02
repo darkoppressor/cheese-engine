@@ -29,6 +29,7 @@ uint64_t Network_Engine::stat_counter_bytes_received = 0;
 uint64_t Network_Engine::stat_bytes_sent = 0;
 uint64_t Network_Engine::stat_counter_bytes_sent = 0;
 RakNet::RakNetGUID Network_Engine::server_id = RakNet::UNASSIGNED_RAKNET_GUID;
+
 void Network_Engine::reset () {
     peer = 0;
     id = RakNet::UNASSIGNED_RAKNET_GUID;
@@ -123,8 +124,8 @@ void Network_Engine::receive_packets () {
                 case ID_CONNECTION_ATTEMPT_FAILED:
 
                     if (status == "client") {
-                        Log::add_log("Could not connect to server: " + Network_Client::server_address + "|" + Strings::num_to_string(
-                                         Network_Client::server_port));
+                        Log::add_log("Could not connect to server: " + Network_Client::server_address + "|" +
+                                     Strings::num_to_string(Network_Client::server_port));
 
                         Button_Events::handle_button_event("stop_game");
                         Engine::make_notice("Could not connect to server.");
@@ -248,10 +249,9 @@ void Network_Engine::receive_packets () {
                     break;
 
                 case ID_INCOMPATIBLE_PROTOCOL_VERSION:
-                    Log::add_log("Incompatible protocol version: " + string(packet->systemAddress.ToString(
-                                                                                true)) + "\nOur protocol: " + Strings::num_to_string(
-                                     (int) RAKNET_PROTOCOL_VERSION) + "\nServer protocol: " +
-                                 receive_incompatible_protocol());
+                    Log::add_log("Incompatible protocol version: " + string(packet->systemAddress.ToString(true)) +
+                                 "\nOur protocol: " + Strings::num_to_string((int) RAKNET_PROTOCOL_VERSION) +
+                                 "\nServer protocol: " + receive_incompatible_protocol());
 
                     if (status == "client") {
                         Button_Events::handle_button_event("stop_game");
@@ -544,9 +544,11 @@ string Network_Engine::receive_incompatible_protocol () {
     stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
 
     RakNet::MessageID type_id;
+
     bitstream.Read(type_id);
 
     unsigned char version;
+
     bitstream.Read(version);
 
     return Strings::num_to_string((int) version);
@@ -558,9 +560,11 @@ void Network_Engine::receive_chat_message () {
     stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
 
     RakNet::MessageID type_id;
+
     bitstream.Read(type_id);
 
     RakNet::RakString rstring;
+
     bitstream.ReadCompressed(rstring);
 
     Engine::add_chat(rstring.C_String());
@@ -573,6 +577,7 @@ void Network_Engine::receive_chat_message () {
 void Network_Engine::send_chat_message (string message, RakNet::RakNetGUID target_id, bool broadcast) {
     if (status != "off") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_CHAT_MESSAGE);
 
         bitstream.WriteCompressed((RakNet::RakString) message.c_str());
