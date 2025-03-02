@@ -35,6 +35,7 @@ uint32_t Network_Client::counter_commands = 0;
 uint32_t Network_Client::recall_update_rate = Engine::UPDATE_RATE;
 RakNet::Time Network_Client::last_update_time = 0;
 vector<string> Network_Client::command_buffer;
+
 void Network_Client::set_server_target (string get_address, unsigned short get_port, string get_password) {
     server_address = get_address;
     server_port = get_port;
@@ -179,6 +180,7 @@ void Network_Client::refresh_server_list () {
 bool Network_Client::start_as_client () {
     if (Network_Engine::status == "off") {
         Network_Engine::peer = RakNet::RakPeerInterface::GetInstance();
+
         RakNet::SocketDescriptor sd;
         RakNet::StartupResult startup = Network_Engine::peer->Startup(1, &sd, 1);
 
@@ -209,8 +211,8 @@ void Network_Client::connect_to_server () {
         if (server_password.length() == 0) {
             Network_Engine::peer->Connect(server_address.c_str(), server_port, 0, 0);
         } else {
-            Network_Engine::peer->Connect(server_address.c_str(), server_port,
-                                          server_password.c_str(), server_password.length());
+            Network_Engine::peer->Connect(server_address.c_str(), server_port, server_password.c_str(),
+                                          server_password.length());
         }
 
         Log::add_log("Attempting to connect to server: " + server_address + "|" + Strings::num_to_string(server_port));
@@ -221,7 +223,9 @@ void Network_Client::connect_to_server () {
 
 void Network_Client::receive_version () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
@@ -229,22 +233,25 @@ void Network_Client::receive_version () {
     RakNet::RakString rstring;
 
     bitstream.ReadCompressed(rstring);
+
     string game_title = rstring.C_String();
 
     bitstream.ReadCompressed(rstring);
+
     string version = rstring.C_String();
 
     bitstream.ReadCompressed(rstring);
+
     string checksum = rstring.C_String();
 
     bitstream.ReadCompressed(rstring);
+
     string allow_new_connection = rstring.C_String();
     string our_game_title = Engine_Data::game_title;
 
     if (game_title != our_game_title) {
-        Log::add_log("Game mismatch: " + string(Network_Engine::packet->systemAddress.ToString(
-                                                    true)) + "\nOur game: " + our_game_title + "\nServer game: " +
-                     game_title);
+        Log::add_log("Game mismatch: " + string(Network_Engine::packet->systemAddress.ToString(true)) + "\nOur game: " +
+                     our_game_title + "\nServer game: " + game_title);
 
         Button_Events::handle_button_event("stop_game");
         Engine::make_notice("Server is running a different game.");
@@ -252,17 +259,15 @@ void Network_Client::receive_version () {
         string our_version = Engine_Version::get_version();
 
         if (version != our_version) {
-            Log::add_log("Version mismatch: " + string(Network_Engine::packet->systemAddress.ToString(
-                                                           true)) + "\nOur version: " + our_version + "\nServer version: " +
-                         version);
+            Log::add_log("Version mismatch: " + string(Network_Engine::packet->systemAddress.ToString(true)) +
+                         "\nOur version: " + our_version + "\nServer version: " + version);
 
             Button_Events::handle_button_event("stop_game");
             Engine::make_notice("Version mismatch with server.");
         } else {
             if (checksum.length() > 0 && checksum != Engine::CHECKSUM) {
-                Log::add_log("Checksum mismatch: " + string(Network_Engine::packet->systemAddress.ToString(
-                                                                true)) + "\nOur checksum: " + Engine::CHECKSUM + "\nServer checksum: " +
-                             checksum);
+                Log::add_log("Checksum mismatch: " + string(Network_Engine::packet->systemAddress.ToString(true)) +
+                             "\nOur checksum: " + Engine::CHECKSUM + "\nServer checksum: " + checksum);
 
                 Button_Events::handle_button_event("stop_game");
                 Engine::make_notice("Checksum mismatch with server.");
@@ -291,6 +296,7 @@ void Network_Client::send_client_data (bool first_send) {
         }
 
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_CLIENT_DATA);
 
         bitstream.WriteCompressed(first_send);
@@ -306,12 +312,15 @@ void Network_Client::send_client_data (bool first_send) {
 
 void Network_Client::receive_initial_game_data () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     uint32_t update_rate = 0;
+
     bitstream.ReadCompressed(update_rate);
 
     Engine::set_logic_update_rate(update_rate);
@@ -328,6 +337,7 @@ void Network_Client::receive_initial_game_data () {
 void Network_Client::send_connected () {
     if (Network_Engine::status == "client") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_CONNECTED);
 
         Network_Engine::stat_counter_bytes_sent += bitstream.GetNumberOfBytesUsed();
@@ -338,20 +348,26 @@ void Network_Client::send_connected () {
 
 void Network_Client::receive_client_list () {
     Network_Engine::clients.clear();
+
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     int clients_size = 0;
+
     bitstream.ReadCompressed(clients_size);
 
     for (int i = 0; i < clients_size; i++) {
         RakNet::RakString rstring;
+
         bitstream.ReadCompressed(rstring);
 
         bool spectator = false;
+
         bitstream.ReadCompressed(spectator);
 
         Network_Engine::clients.push_back(Client_Data(RakNet::UNASSIGNED_RAKNET_GUID, RakNet::UNASSIGNED_SYSTEM_ADDRESS,
@@ -361,6 +377,7 @@ void Network_Client::receive_client_list () {
     }
 
     int client_index = 0;
+
     bitstream.ReadCompressed(client_index);
 
     if (client_index >= 0 && Network_Engine::clients.size() > client_index) {
@@ -370,15 +387,19 @@ void Network_Client::receive_client_list () {
 
 void Network_Client::receive_update () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID timestamp_id;
 
     bitstream.Read(timestamp_id);
 
     RakNet::Time timestamp;
+
     bitstream.Read(timestamp);
 
     RakNet::MessageID type_id;
+
     bitstream.Read(type_id);
 
     if (RakNet::LessThan(last_update_time, timestamp)) {
@@ -397,6 +418,7 @@ void Network_Client::send_input () {
                 commands_this_second++;
 
                 RakNet::BitStream bitstream;
+
                 bitstream.Write((RakNet::MessageID) ID_GAME_INPUT);
 
                 bitstream.WriteCompressed((int) command_buffer.size());
@@ -423,16 +445,20 @@ void Network_Client::send_input () {
 
 void Network_Client::receive_ping_list () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     int clients_size = 0;
+
     bitstream.ReadCompressed(clients_size);
 
     for (int i = 1; i < clients_size; i++) {
         int ping = 0;
+
         bitstream.ReadCompressed(ping);
 
         if (i < Network_Engine::clients.size()) {
@@ -447,7 +473,9 @@ void Network_Client::receive_ping_list () {
 
 void Network_Client::receive_paused () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
@@ -457,12 +485,15 @@ void Network_Client::receive_paused () {
 
 void Network_Client::receive_sound () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     RakNet::RakString rstring;
+
     bitstream.ReadCompressed(rstring);
 
     Sound_Manager::play_sound(rstring.C_String());
@@ -470,12 +501,15 @@ void Network_Client::receive_sound () {
 
 void Network_Client::receive_server_ready () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     uint32_t server_completed_turn = 0;
+
     bitstream.ReadCompressed(server_completed_turn);
     Network_Lockstep::set_server_completed_turn(server_completed_turn);
 
@@ -485,6 +519,7 @@ void Network_Client::receive_server_ready () {
 void Network_Client::send_client_ready () {
     if (Network_Engine::status == "client") {
         RakNet::BitStream bitstream;
+
         bitstream.Write((RakNet::MessageID) ID_GAME_CLIENT_READY);
 
         bitstream.WriteCompressed(Network_Lockstep::get_turn());

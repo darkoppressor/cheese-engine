@@ -83,12 +83,14 @@ void File_IO_Load::open (string path, bool path_is_backup, bool get_binary, bool
 
         if (SDL_RWclose(rwops) != 0 && !suppress_errors) {
             string msg = "Error closing file '" + path + "' after loading: ";
+
             msg += SDL_GetError();
             Log::add_error(msg, false);
         }
     } else {
         if (!suppress_errors) {
             string msg = "Error opening file '" + path + "' for loading: ";
+
             msg += SDL_GetError();
             Log::add_error(msg, false);
         }
@@ -189,6 +191,7 @@ void File_IO_Save::open (string get_path, bool append, bool binary) {
 
     if (!is_opened()) {
         string msg = "Error opening file '" + path + "' for saving: ";
+
         msg += SDL_GetError();
         Log::add_error(msg, false);
     }
@@ -201,6 +204,7 @@ bool File_IO_Save::close () {
 
     if (close_result != 0) {
         string msg = "Error closing file '" + path + "' after saving: ";
+
         msg += SDL_GetError();
         Log::add_error(msg, false);
 
@@ -227,6 +231,7 @@ bool File_IO_Save::write (const void* ptr, size_t data_size, size_t data_count) 
 
     if (write_count != data_count) {
         string msg = "Error saving file '" + path + "': ";
+
         msg += SDL_GetError();
         Log::add_error(msg, false);
 
@@ -359,8 +364,8 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
                 return true;
             }
         } else if (!suppress_errors) {
-            Log::add_error("Error getting file information for file '" + path + "': " + Strings::num_to_string(
-                               errno), false);
+            Log::add_error("Error getting file information for file '" + path + "': " + Strings::num_to_string(errno),
+                           false);
         }
 
         return false;
@@ -389,8 +394,8 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
     bool File_IO::rename_file (string old_path, string new_path) {
         if (is_regular_file(old_path)) {
             if (rename(old_path.c_str(), new_path.c_str()) != 0) {
-                Log::add_error("Error renaming file '" + old_path + "' to '" + new_path + "': " + Strings::num_to_string(
-                                   errno), false);
+                Log::add_error("Error renaming file '" + old_path + "' to '" + new_path + "': " +
+                               Strings::num_to_string(errno), false);
 
                 return false;
             } else {
@@ -505,6 +510,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             }
         } else {
             string msg = "External storage is unavailable: ";
+
             msg += SDL_GetError();
             Log::add_error(msg, false);
         }
@@ -617,9 +623,8 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
                 return true;
             }
         } else {
-            Log::add_error(
-                "Error getting file information for file '" + get_full_path() + "': " + Strings::num_to_string(errno),
-                false);
+            Log::add_error("Error getting file information for file '" + get_full_path() + "': " +
+                           Strings::num_to_string(errno), false);
         }
 
         return false;
@@ -634,9 +639,8 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
                 return true;
             }
         } else {
-            Log::add_error(
-                "Error getting file information for file '" + get_full_path() + "': " + Strings::num_to_string(errno),
-                false);
+            Log::add_error("Error getting file information for file '" + get_full_path() + "': " +
+                           Strings::num_to_string(errno), false);
         }
 
         return false;
@@ -655,6 +659,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             return boost::filesystem::exists(path);
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error checking existence of '" + path + "': " + error_message, false);
 
             return false;
@@ -670,6 +675,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             return boost::filesystem::is_directory(path);
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error checking directory status of '" + path + "': " + error_message, false);
 
             return false;
@@ -685,6 +691,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             return boost::filesystem::is_regular_file(path);
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error checking regular file status of '" + path + "': " + error_message, false);
 
             return false;
@@ -698,9 +705,8 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
     bool File_IO::create_directory (string path) {
         try {
             if (!boost::filesystem::create_directory(path)) {
-                Log::add_error(
-                    "Error creating directory '" + path + "': boost::filesystem::create_directory returned false",
-                    false);
+                Log::add_error("Error creating directory '" + path +
+                               "': boost::filesystem::create_directory returned false", false);
 
                 return false;
             } else {
@@ -708,6 +714,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             }
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error creating directory '" + path + "': " + error_message, false);
 
             return false;
@@ -725,6 +732,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             return true;
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error renaming file '" + old_path + "': " + error_message, false);
 
             return false;
@@ -742,6 +750,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
                     boost::filesystem::copy(old_path, new_path);
                 } catch (boost::filesystem::filesystem_error e) {
                     string error_message = e.what();
+
                     Log::add_error("Error copying file '" + old_path + "': " + error_message, false);
 
                     return false;
@@ -775,6 +784,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             }
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error removing file '" + path + "': " + error_message, false);
 
             return false;
@@ -790,6 +800,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             boost::filesystem::remove_all(path);
         } catch (boost::filesystem::filesystem_error e) {
             string error_message = e.what();
+
             Log::add_error("Error removing directory '" + path + "': " + error_message, false);
         } catch (...) {
             Log::add_error("Error removing directory '" + path + "'", false);

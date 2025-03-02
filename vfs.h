@@ -68,6 +68,7 @@ class VFS {
         static const std::string PAK_FILE_EXTENSION;
         static const size_t ZIP_MAX_FILENAME_LENGTH;
         static const char ZIP_DIRECTORY_DELIMITER;
+
         static Pak_File_Info get_pak_file_info(const std::string& path);
 
         // Returns a list of search paths, with the highest priority path being first

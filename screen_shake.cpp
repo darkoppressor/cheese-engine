@@ -18,6 +18,7 @@ double Screen_Shake::y = 0.0;
 double Screen_Shake::distance_moved = 0.0;
 bool Screen_Shake::returning = false;
 RNG Screen_Shake::rng;
+
 void Screen_Shake::reset () {
     magnitude = 0.0;
     length = 0;
@@ -45,6 +46,7 @@ void Screen_Shake::change_direction () {
     } else {
         Collision_Rect<double> box(x, y, 2.0, 2.0);
         Collision_Rect<double> box_mid(0.0, 0.0, 2.0, 2.0);
+
         direction = box.get_angle_to_rect(box_mid);
     }
 }

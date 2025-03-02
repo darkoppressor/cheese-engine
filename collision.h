@@ -217,7 +217,7 @@ class Collision {
         // Returns the dot product of the vertex's projection onto the axis and the axis
         static double get_projection_dot_product (const Coords<double>& vertex, const Coords<double>& axis) {
             double quotient = (vertex.x * axis.x + vertex.y * axis.y) / (axis.x * axis.x + axis.y * axis.y);
-            Coords<double> proj(quotient * axis.x, quotient* axis.y);
+            Coords<double> proj(quotient * axis.x, quotient * axis.y);
 
             return proj.x * axis.x + proj.y * axis.y;
         }
@@ -231,9 +231,11 @@ class Collision {
             }
 
             std::vector<Coords<double>> vertices_a;
+
             box_a.get_vertices(vertices_a, angle_a);
 
             std::vector<Coords<double>> vertices_b;
+
             box_b.get_vertices(vertices_b, angle_b);
 
             return check_vertices_rect(vertices_a, vertices_b);

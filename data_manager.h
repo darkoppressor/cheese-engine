@@ -18,6 +18,7 @@ class Data_Manager {
         // The total number of progress bar items in load_world(),
         // excluding load_data_game(), which has its own constant
         static const int world_load_item_count;
+
         static bool are_images_loaded();
         static bool are_fonts_loaded();
         static bool are_colors_loaded();

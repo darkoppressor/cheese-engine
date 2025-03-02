@@ -75,8 +75,8 @@ string Window::get_info_text (int mutable_info_number) {
         }
     }
 
-    Log::add_error("Error accessing mutable info number '" + Strings::num_to_string(
-                       mutable_info_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing mutable info number '" + Strings::num_to_string(mutable_info_number) +
+                   "' in window '" + name + "'");
 
     return "";
 }
@@ -92,8 +92,8 @@ string Window::get_stated_button_state (int stated_button_number) {
         }
     }
 
-    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(
-                       stated_button_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(stated_button_number) +
+                   "' in window '" + name + "'");
 
     return "";
 }
@@ -111,8 +111,8 @@ void Window::set_info_text (int mutable_info_number, string get_text) {
         }
     }
 
-    Log::add_error("Error accessing mutable info number '" + Strings::num_to_string(
-                       mutable_info_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing mutable info number '" + Strings::num_to_string(mutable_info_number) +
+                   "' in window '" + name + "'");
 }
 
 void Window::set_info_tooltip (int mutable_info_number, string get_text) {
@@ -128,8 +128,8 @@ void Window::set_info_tooltip (int mutable_info_number, string get_text) {
         }
     }
 
-    Log::add_error("Error accessing mutable info number '" + Strings::num_to_string(
-                       mutable_info_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing mutable info number '" + Strings::num_to_string(mutable_info_number) +
+                   "' in window '" + name + "'");
 }
 
 void Window::set_stated_button_states (int stated_button_number, vector<string> states) {
@@ -145,8 +145,8 @@ void Window::set_stated_button_states (int stated_button_number, vector<string> 
         }
     }
 
-    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(
-                       stated_button_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(stated_button_number) +
+                   "' in window '" + name + "'");
 }
 
 void Window::set_stated_button_state_index (int stated_button_number, uint32_t get_state_index) {
@@ -162,8 +162,8 @@ void Window::set_stated_button_state_index (int stated_button_number, uint32_t g
         }
     }
 
-    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(
-                       stated_button_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(stated_button_number) +
+                   "' in window '" + name + "'");
 }
 
 void Window::set_stated_button_tooltip (int stated_button_number, string get_text) {
@@ -179,8 +179,8 @@ void Window::set_stated_button_tooltip (int stated_button_number, string get_tex
         }
     }
 
-    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(
-                       stated_button_number) + "' in window '" + name + "'");
+    Log::add_error("Error accessing stated button number '" + Strings::num_to_string(stated_button_number) +
+                   "' in window '" + name + "'");
 }
 
 void Window::set_default_font () {
@@ -354,6 +354,7 @@ bool Window::is_scrolling_button_on_screen (int index) {
     }
 
     Engine_Rect allowed_area;
+
     allowed_area.x = x;
     allowed_area.y = y + Engine_Data::scrolling_buttons_offset;
     allowed_area.w = w;
@@ -376,6 +377,7 @@ bool Window::off_screen_scrolling_button_direction (int index) {
     }
 
     Engine_Rect allowed_area;
+
     allowed_area.x = x;
     allowed_area.y = y + Engine_Data::scrolling_buttons_offset;
     allowed_area.w = w;
@@ -488,6 +490,7 @@ void Window::handle_input_states () {
     if (on) {
         int mouse_x = 0;
         int mouse_y = 0;
+
         Engine::get_mouse_state(&mouse_x, &mouse_y);
 
         // If the window is moving, center it on the mouse's current position - the offsets.
@@ -580,6 +583,7 @@ bool Window::handle_input_events () {
     if (on) {
         int mouse_x = 0;
         int mouse_y = 0;
+
         Engine::get_mouse_state(&mouse_x, &mouse_y);
 
         for (int i = 0; i < informations.size() && !event_consumed; i++) {
@@ -782,8 +786,8 @@ void Window::render () {
             if (Engine::current_color_theme()->window_background != "<INVISIBLE>") {
                 Render::render_rectangle(x + Engine_Data::window_border_thickness,
                                          y + Engine_Data::window_border_thickness,
-                                         w - Engine_Data::window_border_thickness*2.0,
-                                         h - Engine_Data::window_border_thickness*2.0, 1.0,
+                                         w - Engine_Data::window_border_thickness * 2.0,
+                                         h - Engine_Data::window_border_thickness * 2.0, 1.0,
                                          Engine::current_color_theme()->window_background);
             }
         }
@@ -792,7 +796,7 @@ void Window::render () {
         if (Engine::current_color_theme()->window_title_bar != "<INVISIBLE>") {
             Render::render_rectangle(x + Engine_Data::window_border_thickness + 2,
                                      y + Engine_Data::window_border_thickness + 2,
-                                     w - Engine_Data::window_border_thickness*2.0 - 4, ptr_font->spacing_y, 1.0,
+                                     w - Engine_Data::window_border_thickness * 2.0 - 4, ptr_font->spacing_y, 1.0,
                                      Engine::current_color_theme()->window_title_bar);
         }
 
@@ -804,10 +808,9 @@ void Window::render () {
         }
 
         if (font_color_real != "<INVISIBLE>") {
-            ptr_font->show(
-                x + (w - (title.length() * ptr_font->spacing_x)) / 2,
-                y + Engine_Data::window_border_thickness + 2 + (ptr_font->spacing_y - ptr_font->get_letter_height()) / 2.0, title,
-                font_color_real);
+            ptr_font->show(x + (w - (title.length() * ptr_font->spacing_x)) / 2,
+                           y + Engine_Data::window_border_thickness + 2 +
+                           (ptr_font->spacing_y - ptr_font->get_letter_height()) / 2.0, title, font_color_real);
         }
 
         // Render the border if it's a sprite.

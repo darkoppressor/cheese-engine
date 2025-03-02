@@ -13,6 +13,7 @@ class Math {
     public:
         static const double PI;
         static const double E;
+
         static double abs(double x);
         static double ceil(double x);
         static double floor(double x);

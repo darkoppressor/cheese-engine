@@ -25,6 +25,7 @@ class Game_Window {
         static int SCREEN_WIDTH;
         static int SCREEN_HEIGHT;
         static bool need_to_reload;
+
         static bool initialize_video();
         static void cleanup_video();
         static Engine_Rect get_display_resolution();

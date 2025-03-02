@@ -32,6 +32,7 @@ class GUI_Manager {
         static std::string gui_axis_nav_last_direction;
         static int counter_gui_scroll_axis;
         static Sprite text_selector;
+
         static void initialize();
         static void deinitialize();
 

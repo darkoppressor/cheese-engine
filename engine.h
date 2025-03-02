@@ -54,6 +54,7 @@ class Engine {
         static bool cursor_fade_direction;
         static int cursor_opacity;
         static int editing_server;
+
         static void build_text_input_characters();
         static void unload();
         static void quit();
@@ -85,7 +86,9 @@ class Engine {
         static void set_render_update_rate(std::uint32_t frame_rate);
         static std::string get_text_entry_small_character();
         static int get_text_input_selected_chunk();
+
         static std::vector<std::string>* get_text_input_character_set();
+
         static void handle_text_input(std::string text);
         static void get_mouse_state(int* mouse_x, int* mouse_y);
         static bool mouse_allowed();

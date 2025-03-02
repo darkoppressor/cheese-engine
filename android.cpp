@@ -18,6 +18,7 @@ using namespace std;
         static double gps_values[GPS_VALUES_MAX];
         static bool googlePlayServicesSilentSignInAttemptComplete = false;
         static bool googlePlayServicesSignedIn = false;
+
         JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls,
                                                                                          jboolean available) {
             gps_available = available;
@@ -169,6 +170,7 @@ bool Android::initialized = false;
 int Android::sdlSensorCount = 0;
 map<int, int> Android::sdlSensors;
 Android_Sensor Android::sensors[SENSOR_TYPE_COUNT];
+
 int Android::getSensorNumber (string sensorName) {
     if (sensorName == "accelerometer") {
         return Android::SENSOR_TYPE_ACCELEROMETER;
@@ -657,8 +659,8 @@ void Android::gpg_unlock_achievement (string achievement_id) {
 
 void Android::gpg_submit_highscore (string leaderboard_id, uint64_t score) {
     #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Submitting score: '" + Strings::num_to_string(
-                         score) + "' for leaderboard '" + leaderboard_id + "'");
+        Log::add_log("Google Play Games: Submitting score: '" + Strings::num_to_string(score) + "' for leaderboard '" +
+                     leaderboard_id + "'");
 
         JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
 
@@ -667,8 +669,8 @@ void Android::gpg_submit_highscore (string leaderboard_id, uint64_t score) {
 
             call_android_method_static("submitScore", "(Ljava/lang/String;J)V", jstr);
         } else {
-            Log::add_error("Error submitting score '" + Strings::num_to_string(
-                               score) + "' for leaderboard '" + leaderboard_id + "': SDL_AndroidGetJNIEnv returned 0");
+            Log::add_error("Error submitting score '" + Strings::num_to_string(score) + "' for leaderboard '" +
+                           leaderboard_id + "': SDL_AndroidGetJNIEnv returned 0");
         }
 
     #endif

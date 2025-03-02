@@ -34,6 +34,7 @@ void Custom_Sound::set_volumes (string get_values) {
     volumes.clear();
 
     vector<string> values;
+
     boost::algorithm::split(values, get_values, boost::algorithm::is_any_of(","));
 
     for (int i = 0; i < channels; i++) {
@@ -53,6 +54,7 @@ void Custom_Sound::set_waveforms (string get_values) {
     waveforms.clear();
 
     vector<string> values;
+
     boost::algorithm::split(values, get_values, boost::algorithm::is_any_of(","));
 
     for (int i = 0; i < channels; i++) {
@@ -72,6 +74,7 @@ void Custom_Sound::set_frequencies (string get_values) {
     frequencies.clear();
 
     vector<string> values;
+
     boost::algorithm::split(values, get_values, boost::algorithm::is_any_of(","));
 
     for (int i = 0; i < channels; i++) {
@@ -104,15 +107,21 @@ double Custom_Sound::get_note_frequency (string frequency_string) {
     }
 
     if (!boost::algorithm::contains(frequency_string, "n")) {
-        if (frequency_string.length() > 0 &&
-            !boost::algorithm::contains(frequency_string,
-                                        "#") && boost::algorithm::contains(sharps, string(1, frequency_string[0]))) {
+        if (frequency_string.length() > 0 && !boost::algorithm::contains(frequency_string,
+                                                                         "#") && boost::algorithm::contains(sharps,
+                                                                                                            string(1,
+                                                                                                                   frequency_string
+                                                                                                                   [0])))
+        {
             frequency_string += "#";
         }
 
-        if (frequency_string.length() > 0 &&
-            !boost::algorithm::contains(frequency_string,
-                                        "b") && boost::algorithm::contains(flats, string(1, frequency_string[0]))) {
+        if (frequency_string.length() > 0 && !boost::algorithm::contains(frequency_string,
+                                                                         "b") && boost::algorithm::contains(flats,
+                                                                                                            string(1,
+                                                                                                                   frequency_string
+                                                                                                                   [0])))
+        {
             frequency_string += "b";
         }
     } else {
@@ -402,6 +411,7 @@ void Custom_Sound::add_note (string frequency_string, string length_string, stri
 
             double amplitude = 0.0;
             vector<string> chord;
+
             boost::algorithm::split(chord, frequency_string, boost::algorithm::is_any_of("+"));
 
             for (int c = 0; c < chord.size(); c++) {
@@ -426,10 +436,9 @@ void Custom_Sound::add_note (string frequency_string, string length_string, stri
                     } else if (waveform == "sawtooth") {
                         amplitude += 0.5 - Math::atan(Math::tan((Math::PI / 2.0) - basic_function));
                     } else if (waveform == "noise") {
-                        amplitude +=
-                            Math::sin((((double) rng.random_range(20,
-                                                                  20000) * 2.0 * Math::PI) / (double) sample_rate) *
-                                      (double) x);
+                        amplitude += Math::sin((((double) rng.random_range(20,
+                                                                           20000) * 2.0 * Math::PI) /
+                                                (double) sample_rate) * (double) x);
                     }
                 }
             }
@@ -470,8 +479,8 @@ void Custom_Sound::save (string path) {
             size_t bytes_count = sizeof samples[i];
             char bytes[bytes_count];
 
-            ///I think endianness might be an issue here
-            ///I need to look into that
+            // I think endianness might be an issue here
+            // I need to look into that
             copy(static_cast<const char*>(static_cast<const void*>(&samples[i])),
                  static_cast<const char*>(static_cast<const void*>(&samples[i])) + sizeof samples[i], bytes);
 

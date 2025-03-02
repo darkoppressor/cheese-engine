@@ -187,6 +187,7 @@ void Console::do_command () {
         reset_current_recalled_command_string();
 
         vector<string> command_list;
+
         boost::algorithm::split(command_list, info_input.text, boost::algorithm::is_any_of(";"));
 
         run_commands(command_list);
@@ -232,8 +233,8 @@ void Console::run_commands (const vector<string>& command_list) {
                 }
             } else if (command == "options") {
                 for (int i = 0; i < commands.size(); i++) {
-                    if (boost::algorithm::starts_with(commands[i],
-                                                      "cl_") || boost::algorithm::starts_with(commands[i], "sv_")) {
+                    if (boost::algorithm::starts_with(commands[i], "cl_") || boost::algorithm::starts_with(commands[i],
+                                                                                                           "sv_")) {
                         add_text(commands[i]);
                     }
                 }
@@ -256,6 +257,7 @@ void Console::run_commands (const vector<string>& command_list) {
                 Game_Window::request_reload();
             } else if (command == "about") {
                 string text = Engine_Data::game_title + "\nDeveloped by: " + Engine_Data::developer;
+
                 text += "\nVersion: " + Engine_Version::get_version() + " " + Engine_Version::get_status() +
                         " (built on " + Engine_Version::get_build_date() + ")\nChecksum: " + Engine::CHECKSUM;
                 text += "\nEngine version: " + Engine_Version::get_engine_version() + " " +
@@ -296,9 +298,8 @@ void Console::run_commands (const vector<string>& command_list) {
 
                     Engine::make_toast(command_input[1], toast_length, custom_toast_length);
                 } else {
-                    add_text(
-                        command + "\n - create a toast message\nUsage:\n" + command +
-                        " [-sml] MESSAGE CUSTOMLENGTH\n - CUSTOMLENGTH is optional, and specifies a custom length in seconds\n - options:\n    -s short message duration\n    -m medium message duration\n    -l long message duration");
+                    add_text(command + "\n - create a toast message\nUsage:\n" + command +
+                             " [-sml] MESSAGE CUSTOMLENGTH\n - CUSTOMLENGTH is optional, and specifies a custom length in seconds\n - options:\n    -s short message duration\n    -m medium message duration\n    -l long message duration");
                 }
             } else if (command == "exec") {
                 if (command_input[1].length() > 0) {
@@ -309,6 +310,7 @@ void Console::run_commands (const vector<string>& command_list) {
             } else if (command == "connect") {
                 if (command_input[1].length() > 0) {
                     vector<string> connection_data;
+
                     boost::algorithm::split(connection_data, command_input[1], boost::algorithm::is_any_of("|"));
 
                     if (connection_data.size() > 0) {
@@ -334,9 +336,8 @@ void Console::run_commands (const vector<string>& command_list) {
                         }
                     }
                 } else {
-                    add_text(
-                        command + "\n - connect to a game server\nUsage:\n" + command +
-                        " SERVER.IP|PORT PASSWORD\n - if PORT is not specified, uses the default\n - PASSWORD is optional");
+                    add_text(command + "\n - connect to a game server\nUsage:\n" + command +
+                             " SERVER.IP|PORT PASSWORD\n - if PORT is not specified, uses the default\n - PASSWORD is optional");
                 }
             } else if (command == "mod") {
                 if (command_input[1].length() > 0) {
@@ -388,7 +389,9 @@ void Console::run_commands (const vector<string>& command_list) {
 
             if (info_input.text[0] == 'd') {
                 dice_command.push_back("1");
+
                 string ds = info_input.text;
+
                 ds.erase(ds.begin());
                 dice_command.push_back(ds);
             } else {

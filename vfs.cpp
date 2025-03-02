@@ -126,36 +126,34 @@ void VFS::add_files_to_list (const VFS_Search_Path& prefix, const string& direct
                                     if (!boost::algorithm::ends_with(file_name, PAK_FILE_EXTENSION)) {
                                         clean_path(file_name);
 
-                                        if ((directory.length() == 0 &&
-                                             !boost::algorithm::contains(file_name,
-                                                                         "/")) ||
-                                            (directory.length() > 0 &&
-                                             boost::algorithm::starts_with(file_name, directory + "/"))) {
+                                        if ((directory.length() == 0 && !boost::algorithm::contains(file_name,
+                                                                                                    "/")) ||
+                                            (directory.length() > 0 && boost::algorithm::starts_with(file_name,
+                                                                                                     directory +
+                                                                                                     "/"))) {
                                             file_list.insert(file_name);
                                         }
                                     }
                                 }
                             } else {
-                                Log::add_error(
-                                    "Error reading file info in pak file: '" + prefix.path +
-                                    "' for adding files to list");
+                                Log::add_error("Error reading file info in pak file: '" + prefix.path +
+                                               "' for adding files to list");
 
                                 break;
                             }
 
                             if (i + 1 < global_info.number_entry) {
                                 if (unzGoToNextFile(file) != UNZ_OK) {
-                                    Log::add_error(
-                                        "Error reading next file in pak file: '" + prefix.path +
-                                        "' for adding files to list");
+                                    Log::add_error("Error reading next file in pak file: '" + prefix.path +
+                                                   "' for adding files to list");
 
                                     break;
                                 }
                             }
                         }
                     } else {
-                        Log::add_error(
-                            "Error reading global info in pak file: '" + prefix.path + "' for adding files to list");
+                        Log::add_error("Error reading global info in pak file: '" + prefix.path +
+                                       "' for adding files to list");
                     }
 
                     unzClose(file);
@@ -260,9 +258,11 @@ Pak_File_Info VFS::get_pak_file_info (const string& path) {
 vector<VFS_Search_Path> VFS::get_search_paths () {
     #ifdef GAME_OS_ANDROID
         vector<VFS_Search_Path> android_paths;
+
         android_paths.push_back(VFS_Search_Path("data/"));
 
         return android_paths;
+
     #endif
 
     vector<VFS_Search_Path> search_paths;
@@ -360,8 +360,8 @@ VFS_RWops VFS::get_rwops (string path, bool binary) {
                                 Log::add_error("Error opening file in pak file: '" + full_path.pak_path + "'");
                             }
                         } else {
-                            Log::add_error(
-                                "Error reading file info in pak file: '" + full_path.pak_path + "' for loading file");
+                            Log::add_error("Error reading file info in pak file: '" + full_path.pak_path +
+                                           "' for loading file");
                         }
                     } else {
                         Log::add_error("Error locating file in pak file: '" + full_path.pak_path + "'");

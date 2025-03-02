@@ -21,6 +21,7 @@ using namespace std;
 vector<Server> Network_LAN_Browser::lan_server_list;
 int Network_LAN_Browser::lan_connecting_index = -1;
 int Network_LAN_Browser::server_list_connecting_index = -1;
+
 void Network_LAN_Browser::set_lan_server_target (int index, string get_password) {
     if (index < lan_server_list.size()) {
         Network_Client::server_address = lan_server_list[index].address;
@@ -100,12 +101,15 @@ void Network_LAN_Browser::lan_refresh_quick () {
 
 void Network_LAN_Browser::receive_server_browser_info () {
     RakNet::BitStream bitstream(Network_Engine::packet->data, Network_Engine::packet->length, false);
+
     Network_Engine::stat_counter_bytes_received += bitstream.GetNumberOfBytesUsed();
+
     RakNet::MessageID type_id;
 
     bitstream.Read(type_id);
 
     RakNet::TimeMS timestamp;
+
     bitstream.Read(timestamp);
 
     unsigned int data_length = Network_Engine::packet->length - sizeof(RakNet::MessageID) - sizeof(RakNet::TimeMS);
@@ -113,12 +117,14 @@ void Network_LAN_Browser::receive_server_browser_info () {
 
     for (unsigned int i = 0; i < data_length; i++) {
         unsigned char character;
+
         bitstream.Read(character);
         str_other_data += character;
     }
 
     int other_data_fields = 6;
     vector<string> other_data;
+
     boost::algorithm::split(other_data, str_other_data, boost::algorithm::is_any_of("@"));
 
     // Merge any extra strings into the server name string
@@ -130,6 +136,7 @@ void Network_LAN_Browser::receive_server_browser_info () {
 
     string str_connection_data = Network_Engine::packet->systemAddress.ToString(true);
     vector<string> connection_data;
+
     boost::algorithm::split(connection_data, str_connection_data, boost::algorithm::is_any_of("|"));
 
     if (connection_data.size() >= 2 && other_data.size() >= other_data_fields) {

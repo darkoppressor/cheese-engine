@@ -20,6 +20,7 @@ class Controller_Manager {
         static std::vector<Controller> controllers;
         static std::vector<SDL_Event> touch_controller_events;
         static Touch_Controller touch_controller;
+
         static void remove_controllers();
 
     public:
@@ -28,6 +29,7 @@ class Controller_Manager {
 
         // If true, we are using the on-screen touch controller
         static bool touch_controls;
+
         static void initialize();
         static void deinitialize();
         static void add_controller(const SDL_Event& event);

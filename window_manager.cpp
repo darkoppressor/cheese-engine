@@ -18,6 +18,7 @@ using namespace std;
 vector<Window> Window_Manager::windows;
 vector<Window*> Window_Manager::window_z_order;
 Window* Window_Manager::window_under_mouse = 0;
+
 void Window_Manager::unload_data () {
     windows.clear();
 
@@ -37,6 +38,7 @@ void Window_Manager::load_window (File_IO_Load* load) {
             windows.back().name = line;
         } else if (Data_Reader::check_prefix(line, "starting_position:")) {
             vector<string> start_coords;
+
             boost::algorithm::split(start_coords, line, boost::algorithm::is_any_of(","));
 
             windows.back().x = Strings::string_to_long(start_coords[0]);
@@ -46,6 +48,7 @@ void Window_Manager::load_window (File_IO_Load* load) {
             windows.back().start_y = windows.back().y;
         } else if (Data_Reader::check_prefix(line, "starting_size:")) {
             vector<string> start_dimensions;
+
             boost::algorithm::split(start_dimensions, line, boost::algorithm::is_any_of(","));
 
             windows.back().start_width = Strings::string_to_long(start_dimensions[0]);
@@ -95,6 +98,7 @@ size_t Window_Manager::load_information (vector<string>& lines, size_t line_inde
 
         if (Data_Reader::check_prefix(line, "location:")) {
             vector<string> location;
+
             boost::algorithm::split(location, line, boost::algorithm::is_any_of(","));
 
             windows.back().informations.back().x = Strings::string_to_long(location[0]);
@@ -114,6 +118,7 @@ size_t Window_Manager::load_information (vector<string>& lines, size_t line_inde
             windows.back().informations.back().max_text_length = Strings::string_to_long(line);
         } else if (Data_Reader::check_prefix(line, "allowed_input:")) {
             vector<string> inputs;
+
             boost::algorithm::split(inputs, line, boost::algorithm::is_any_of(","));
 
             windows.back().informations.back().allowed_input = inputs;
@@ -121,6 +126,7 @@ size_t Window_Manager::load_information (vector<string>& lines, size_t line_inde
             windows.back().informations.back().scrolling = Strings::string_to_bool(line);
         } else if (Data_Reader::check_prefix(line, "box:")) {
             vector<string> scroll_dimensions;
+
             boost::algorithm::split(scroll_dimensions, line, boost::algorithm::is_any_of(","));
 
             windows.back().informations.back().scroll_width = Strings::string_to_long(scroll_dimensions[0]);
@@ -159,6 +165,7 @@ size_t Window_Manager::load_button (vector<string>& lines, size_t line_index) {
 
         if (Data_Reader::check_prefix(line, "location:")) {
             vector<string> location;
+
             boost::algorithm::split(location, line, boost::algorithm::is_any_of(","));
 
             windows.back().buttons.back().x = Strings::string_to_long(location[0]);
@@ -176,6 +183,7 @@ size_t Window_Manager::load_button (vector<string>& lines, size_t line_index) {
             windows.back().buttons.back().font_color = line;
         } else if (Data_Reader::check_prefix(line, "states:")) {
             vector<string> states;
+
             boost::algorithm::split(states, line, boost::algorithm::is_any_of(","));
 
             for (int n = 0; n < states.size(); n++) {
@@ -380,6 +388,7 @@ void Window_Manager::prepare_for_input () {
 
     int mouse_x = 0;
     int mouse_y = 0;
+
     Engine::get_mouse_state(&mouse_x, &mouse_y);
 
     for (int i = 0; i < window_z_order.size() && window_under_mouse == 0; i++) {

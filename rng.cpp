@@ -15,10 +15,14 @@ const uint32_t RNG::WEIGHT_WEAK = 3;
 const uint32_t RNG::WEIGHT_NORMAL = 6;
 const uint32_t RNG::WEIGHT_STRONG = 18;
 const uint32_t RNG::WEIGHT_VERY_STRONG = 256;
+
 uint32_t RNG::get_number () {
     u = (u + 1) & 4095;
+
     uint64_t t = (uint64_t) 18782 * (uint64_t) Q[u] + (uint64_t) c;
+
     c = (t >> 32);
+
     uint32_t x = t + c;
 
     if (x < c) {

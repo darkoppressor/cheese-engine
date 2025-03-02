@@ -32,6 +32,7 @@ SDL_Surface* Render::scale_surface (SDL_Surface* surface, double scale_x, double
         if (SDL_MUSTLOCK(surface)) {
             if (SDL_LockSurface(surface) != 0) {
                 string msg = "Error locking surface to scale surface: ";
+
                 msg += SDL_GetError();
                 Log::add_error(msg);
             }
@@ -40,6 +41,7 @@ SDL_Surface* Render::scale_surface (SDL_Surface* surface, double scale_x, double
         if (SDL_MUSTLOCK(new_surface)) {
             if (SDL_LockSurface(new_surface) != 0) {
                 string msg = "Error locking surface to scale surface: ";
+
                 msg += SDL_GetError();
                 Log::add_error(msg);
             }
@@ -49,9 +51,8 @@ SDL_Surface* Render::scale_surface (SDL_Surface* surface, double scale_x, double
             for (int y = 0; y < surface->h; y++) {
                 for (int o_x = 0; o_x < scale_x; o_x++) {
                     for (int o_y = 0; o_y < scale_y; o_y++) {
-                        Pixels::surface_put_pixel(new_surface, (int) ((scale_x * x) + o_x), (int) ((scale_y * y) + o_y), Pixels::surface_get_pixel(
-                                                      surface, x,
-                                                      y));
+                        Pixels::surface_put_pixel(new_surface, (int) ((scale_x * x) + o_x), (int) ((scale_y * y) + o_y),
+                                                  Pixels::surface_get_pixel(surface, x, y));
                     }
                 }
             }
@@ -66,6 +67,7 @@ SDL_Surface* Render::scale_surface (SDL_Surface* surface, double scale_x, double
         }
     } else {
         string msg = "Error creating scaled surface: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }
@@ -112,6 +114,7 @@ SDL_Surface* Render::optimize_surface (SDL_Surface* surface) {
 
     if (conv == 0) {
         string msg = "Error converting surface: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }
@@ -147,6 +150,7 @@ SDL_Texture* Render::load_texture (string path, Image_Data* id) {
 
     if (texture == 0) {
         string msg = "Error creating texture: ";
+
         msg += SDL_GetError();
         Log::add_error(msg);
     }
@@ -183,16 +187,16 @@ void Render::render_rtt (double x, double y, Rtt_Data* rtt_source, double opacit
 
     SDL_SetTextureAlphaMod(rtt_source->texture, (uint8_t) (opacity * 255.0));
 
-    SDL_SetTextureColorMod(rtt_source->texture, (uint8_t) color->get_red(),
-                           (uint8_t) color->get_green(), (uint8_t) color->get_blue());
+    SDL_SetTextureColorMod(rtt_source->texture, (uint8_t) color->get_red(), (uint8_t) color->get_green(),
+                           (uint8_t) color->get_blue());
 
     Game_Window::render_copy_ex(rtt_source->texture, 0, &rect_dst, -angle, 0, (SDL_RendererFlip) flip);
 }
 
 void Render::render_texture (double x, double y, Image_Data* image_source, double opacity, double scale_x,
                              double scale_y, double angle, string color_name, bool flip_x, bool flip_y) {
-    render_texture(x, y, image_source, opacity, scale_x, scale_y, angle, Object_Manager::get_color(
-                       color_name), flip_x, flip_y);
+    render_texture(x, y, image_source, opacity, scale_x, scale_y, angle, Object_Manager::get_color(color_name), flip_x,
+                   flip_y);
 }
 
 void Render::render_texture (double x, double y, Image_Data* image_source, double opacity, double scale_x,
@@ -216,8 +220,8 @@ void Render::render_texture (double x, double y, Image_Data* image_source, doubl
 
     SDL_SetTextureAlphaMod(image_source->texture, (uint8_t) (opacity * 255.0));
 
-    SDL_SetTextureColorMod(image_source->texture, (uint8_t) color->get_red(),
-                           (uint8_t) color->get_green(), (uint8_t) color->get_blue());
+    SDL_SetTextureColorMod(image_source->texture, (uint8_t) color->get_red(), (uint8_t) color->get_green(),
+                           (uint8_t) color->get_blue());
 
     Game_Window::render_copy_ex(image_source->texture, 0, &rect_dst, -angle, 0, (SDL_RendererFlip) flip);
 }
@@ -240,6 +244,7 @@ void Render::render_sprite (double x, double y, Image_Data* image_source, Collis
     rect_src.h = texture_clip->h;
 
     SDL_Rect rect_dst;
+
     rect_dst.x = x;
     rect_dst.y = y;
     rect_dst.w = texture_clip->w * scale_x;
@@ -257,8 +262,8 @@ void Render::render_sprite (double x, double y, Image_Data* image_source, Collis
 
     SDL_SetTextureAlphaMod(image_source->texture, (uint8_t) (opacity * 255.0));
 
-    SDL_SetTextureColorMod(image_source->texture, (uint8_t) color->get_red(),
-                           (uint8_t) color->get_green(), (uint8_t) color->get_blue());
+    SDL_SetTextureColorMod(image_source->texture, (uint8_t) color->get_red(), (uint8_t) color->get_green(),
+                           (uint8_t) color->get_blue());
 
     Game_Window::render_copy_ex(image_source->texture, &rect_src, &rect_dst, -angle, 0, (SDL_RendererFlip) flip);
 }
@@ -273,6 +278,7 @@ void Render::render_rectangle (double x, double y, double w, double h, double op
     Game_Window::set_render_draw_color(*color, opacity);
 
     SDL_Rect rect;
+
     rect.x = x;
     rect.y = y;
     rect.w = w;
@@ -302,8 +308,8 @@ void Render::render_circle (double x, double y, double radius, double opacity, C
     double sprite_size = radius * 2.0;
     double sprite_scale = sprite_size / 1024.0;
 
-    render_texture(x - radius, y - radius, Image_Manager::get_image(
-                       "circle"), opacity, sprite_scale, sprite_scale, 0.0, color, false, false);
+    render_texture(x - radius, y - radius, Image_Manager::get_image("circle"), opacity, sprite_scale, sprite_scale, 0.0,
+                   color, false, false);
 }
 
 void Render::render_circle_empty (double x, double y, double radius, double opacity, string color_name) {
@@ -314,8 +320,8 @@ void Render::render_circle_empty (double x, double y, double radius, double opac
     double sprite_size = radius * 2.0;
     double sprite_scale = sprite_size / 1024.0;
 
-    render_texture(x - radius, y - radius, Image_Manager::get_image(
-                       "circle_empty"), opacity, sprite_scale, sprite_scale, 0.0, color, false, false);
+    render_texture(x - radius, y - radius, Image_Manager::get_image("circle_empty"), opacity, sprite_scale,
+                   sprite_scale, 0.0, color, false, false);
 }
 
 void Render::render_line (double x1, double y1, double x2, double y2, double opacity, string color_name) {

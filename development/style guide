@@ -50,22 +50,17 @@ Temporary multiline comments may omit the space after the opener and before the 
 (generally done if the comment is commented out code)
 Single line comments should include a space after the opener
 Single line comments should not have any special suffix
-Single line comments that are temporary comments should use the '/// ' style
 All other single line comments should use the '// ' style
-Temporary single line comments may omit the space after the opener (generally done if the comment is commented out code)
 
-The 'QQQ' tag represents either temporary code or acts as a placeholder where additional code is required
-The 'QQQ' tag largely subsumes the meaning of common tags such as 'FIXME', 'HACK', and 'TODO'
-The 'QQQ' tag should only be used with temporary comments
-In fact, the 'QQQ' tag should almost always be included with temporary comments
-The 'QQQ' tag should always be followed by a description
-In both single line and multiline comments, the 'QQQ' tag should immediately follow the opener
-(before the space following the opener, which should always be included when using the 'QQQ' tag)
-The 'QQQ' tag's associated description should be included after the space following the opener
+The 'TODO' tag represents either temporary code or acts as a placeholder where additional code is required
+The 'TODO' tag should only be used with temporary comments
+In fact, the 'TODO' tag should always be included with temporary comments
+The 'TODO' tag should always be followed by a description
+In both single line and multiline comments, the 'TODO' tag should immediately follow the opener
+(before the space following the opener, which should always be included when using the 'TODO' tag)
+The 'TODO' tag's associated description should be included after the space following the opener
 If additional comment follows the associated description, it should be preceded by a space
-However, comments with 'QQQ' tags should generally be placed on the line below the 'QQQ' tag
-When using a 'QQQ' tag to explain a block of non-commented code, it is good practice to include an empty temporary
-comment on the line below the block of code (e.g., a line consisting of '///')
+However, comments with 'TODO' tags should generally be placed on the line below the 'TODO' tag
 
 Comments that are some sort of statement or description should begin with a capital letter
 Other comments, such as those indicating what units a variable is in, can begin with a lower case letter

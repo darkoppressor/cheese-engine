@@ -20,6 +20,7 @@ class Window_Manager {
         static std::vector<Window*> window_z_order;
         // The window that the mouse is currently over
         static Window* window_under_mouse;
+
         static void unload_data();
         static void load_window(File_IO_Load* load);
         static size_t load_information(std::vector<std::string>& lines, size_t line_index);

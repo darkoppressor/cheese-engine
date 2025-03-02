@@ -13,6 +13,7 @@ class Game_Option {
         std::string description;
 
         Game_Option ();
+
         std::string get_value();
         void set_value(std::string new_value);
 

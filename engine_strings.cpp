@@ -24,6 +24,7 @@ bool Strings::is_newline_character (char input) {
 string Strings::first_letter_capital (string str_input) {
     if (str_input.length() > 0) {
         string first_letter = "";
+
         first_letter += str_input[0];
 
         boost::algorithm::to_upper(first_letter);

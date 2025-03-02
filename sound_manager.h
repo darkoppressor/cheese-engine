@@ -19,6 +19,7 @@ class Sound_Manager {
         static double listener_x;
         static double listener_y;
         static double listener_zoom;
+
         static void _play_sound(Sound_Data* ptr_sound, int volume);
 
     public:
