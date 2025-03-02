@@ -150,7 +150,7 @@ The final step has two options (option 1 is the default):
 OR
 2. Create a disk image (.dmg) from the development/*.app/ directory using Disk Utility
 
-Name the .zip or disk image (whichever you created) '<project-name>-osx-<version>'
+Name the .zip or disk image (whichever you created) '<project-name>-macos-<version>'
 (project name is all lower case, dashed)
 
 Android

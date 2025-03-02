@@ -75,7 +75,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_boost_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	add_boost_version "osx-x86_64"
+	add_boost_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t"
 	add_boost_version "linux-x86_64"
 	OUTPUT="${OUTPUT}\n"
@@ -85,7 +85,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_raknet_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	add_raknet_version "osx-x86_64"
+	add_raknet_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t"
 	add_raknet_version "android"
 	OUTPUT="${OUTPUT}\n"
@@ -95,7 +95,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_sdl2_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	add_sdl2_version "osx-x86_64"
+	add_sdl2_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t"
 	add_sdl2_version "android"
 	OUTPUT="${OUTPUT}\n"
@@ -105,7 +105,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_sdl2_image_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	add_sdl2_image_version "osx-x86_64"
+	add_sdl2_image_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t"
 	add_sdl2_image_version "android"
 	OUTPUT="${OUTPUT}\n"
@@ -115,7 +115,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_sdl2_mixer_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	add_sdl2_mixer_version "osx-x86_64"
+	add_sdl2_mixer_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t"
 	add_sdl2_mixer_version "android"
 	OUTPUT="${OUTPUT}\n"
@@ -125,7 +125,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t"
 	add_zlib_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t"
-	add_zlib_version "osx-x86_64"
+	add_zlib_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t"
 	add_zlib_version "android"
 	OUTPUT="${OUTPUT}\n"
@@ -135,7 +135,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}\t\t\t"
 	add_minizip_version "windows-x86_64"
 	OUTPUT="${OUTPUT}\t\t\t"
-	add_minizip_version "osx-x86_64"
+	add_minizip_version "macos-arm64"
 	OUTPUT="${OUTPUT}\t\t\tN/A\n\n"
 
 	OUTPUT="${OUTPUT}Build System\n"
@@ -144,9 +144,9 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	OUTPUT="${OUTPUT}Linux\t\t$(gcc --version | sed -n 1p), $(ldd --version | sed -n 1p)\n"
 	OUTPUT="${OUTPUT}Windows\t\t$(x86_64-w64-mingw32-gcc --version | sed -n 1p)\n"
 	macOS_SDK=""
-	for f in /home/tails/build-server/osx-x86_64/osxcross/tarballs/* ; do
-		if [[ $f =~ ^\/home\/tails\/build-server\/osx-x86_64\/osxcross\/tarballs\/MacOSX ]]; then
-			PREFIX=/home/tails/build-server/osx-x86_64/osxcross/tarballs/MacOSX
+	for f in /home/tails/build-server/macos-arm64/osxcross/tarballs/* ; do
+		if [[ $f =~ ^\/home\/tails\/build-server\/macos-arm64\/osxcross\/tarballs\/MacOSX ]]; then
+			PREFIX=/home/tails/build-server/macos-arm64/osxcross/tarballs/MacOSX
 			SUFFIX=.sdk.tar.xz
 			WNAME=${f#$PREFIX}
 			WNAME=${WNAME%$SUFFIX}
@@ -156,7 +156,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	OUTPUT="${OUTPUT}macOS\t\t$(/home/tails/build-server/osx-x86_64/osxcross/target/bin/o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
+	OUTPUT="${OUTPUT}macOS\t\t$(/home/tails/build-server/macos-arm64/osxcross/target/bin/o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
 	if [ ! -d "/home/tails/build-server/android/android-sdk/ndk/$NDK_VERSION" ]; then
 		NDK_VERSION=""
 	fi
@@ -180,7 +180,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	file="/home/tails/build-server/steamworks-sdk/Readme.txt"
 	OUTPUT="${OUTPUT}Steam\t\t$(sed -ne "0,/^v/p" "$file" | tail -n 1)"
 
-	echo -e "$OUTPUT" > "$PROJECT_DIRECTORY/docs/build-information"
+	echo -e "$OUTPUT" > "$PROJECT_DIRECTORY/docs/buildInformation.md"
 else
 	echo "build-information - write the build information for a Cheese Engine project based on the current environment"
 	echo "Usage: build-information PROJECT-DIRECTORY"

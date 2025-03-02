@@ -14,10 +14,9 @@ rm -f "lib64"
 rm -f "pyvenv.cfg"
 
 rm -f *Windows-x86_64.a
-rm -f *Windows-Debug-x86_64.a
 rm -f *Linux-x86_64.a
 rm -f *Linux-Debug-x86_64.a
-rm -f *macOS-x86_64.a
+rm -f *macOS-arm64.a
 
 rm -f "docs/build-information"
 
@@ -29,7 +28,7 @@ rm -f "compile_commands.json"
 rm -f "log-Release-Android"
 rm -f "log-Release-Linux-x86_64"
 rm -f "log-Debug-Linux-x86_64"
-rm -f "log-Release-macOS-x86_64"
+rm -f "log-Release-macOS-arm64"
 rm -f "log-Release-Windows-x86_64"
 
 rm -f *.dll

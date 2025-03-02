@@ -12,7 +12,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 
 	./rebuild-target $PROJECT_DIRECTORY Release-Windows-x86_64
 
-	./rebuild-target $PROJECT_DIRECTORY Release-macOS-x86_64
+	./rebuild-target $PROJECT_DIRECTORY Release-macOS-arm64
 
 	./clean-android $PROJECT_DIRECTORY
 	./build-android $PROJECT_DIRECTORY
