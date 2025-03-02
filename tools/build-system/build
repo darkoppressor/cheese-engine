@@ -63,13 +63,6 @@ VERSION="12"
 
 RESULT=""
 
-chmod +x $BUILD_HOME/build-server/cheese-engine/tools/*
-chmod +x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/*
-chmod -x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/*-x86_64
-chmod -x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/*.cmake
-chmod +x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/android/*
-chmod +x $BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/data/*
-
 mkdir -p $BUILD_HOME/build-server/projects
 
 if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then

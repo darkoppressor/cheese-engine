@@ -22,18 +22,6 @@ def updateFeed (prefix, ciJobName, ciBuildNumber, ciBuildUrl):
     content = title + ' (<a href="' + ciBuildUrl + '">Open</a>)'
     feeds.post('jenkins', 'Wells Family Jenkins', 'Tails', 'tails.at.mobius@gmail.com', 'https://wells-family.xyz/', 'https://wells-family.xyz/favicon.png', title, content)
 
-def setFilesExecutable (directory, excludedSuffixes = None):
-    for fileName in os.listdir(directory):
-        shouldExclude = False
-        if excludedSuffixes is not None:
-            for excludedSuffix in excludedSuffixes:
-                if fileName.endswith(excludedSuffix):
-                    shouldExclude = True
-                    break
-
-        if not shouldExclude:
-            os.chmod(directory + '/' + fileName, 0o755)
-
 def main (argv):
     args = argparser.parse_args()
 
@@ -43,13 +31,6 @@ def main (argv):
 
     try:
         updateFeed('Build started - ', ciJobName, ciBuildNumber, ciBuildUrl)
-
-        setFilesExecutable('tools')
-        setFilesExecutable('tools/build-system')
-        setFilesExecutable('tools/build-system/scripts', ['-x86_64', '.cmake'])
-        setFilesExecutable('tools/build-system/scripts/android')
-        os.chmod('development/android/android-prep', 0o755)
-        os.chmod('development/android/clean-android', 0o755)
 
         if subprocess.run(['tools/build-system/scripts/build-engine', os.getcwd()]):
             updateFeed('Build completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)

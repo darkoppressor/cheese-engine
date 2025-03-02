@@ -13,9 +13,6 @@ check_status () {
 }
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	chmod +x $PROJECT_DIRECTORY/development/android/clean-android
-	chmod +x $PROJECT_DIRECTORY/development/android/android-prep
-
 	$PROJECT_DIRECTORY/development/android/clean-android
 	$PROJECT_DIRECTORY/development/android/android-prep
 
