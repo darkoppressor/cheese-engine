@@ -32,18 +32,22 @@ def main (argv):
     try:
         updateFeed('Build started - ', ciJobName, ciBuildNumber, ciBuildUrl)
 
-        if subprocess.run(['tools/build-system/scripts/build-engine', os.getcwd()]):
+        if subprocess.run(['tools/build-system/scripts/build-engine', os.getcwd()]).returncode == 0:
             updateFeed('Build completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)
 
-            if subprocess.run(['tools/build-system/scripts/deploy-engine', os.getcwd()]):
+            if subprocess.run(['tools/build-system/scripts/deploy-engine', os.getcwd()]).returncode == 0:
                 updateFeed('Deployment completed successfully - ', ciJobName, ciBuildNumber, ciBuildUrl)
+                sys.exit(0)
             else:
                 updateFeed('Deployment failed - ', ciJobName, ciBuildNumber, ciBuildUrl)
+                sys.exit(1)
         else:
             updateFeed('Build failed - ', ciJobName, ciBuildNumber, ciBuildUrl)
+            sys.exit(1)
 
     except Exception as e:
         logging.exception(e)
+        sys.exit(1)
 
 if __name__ == '__main__':
     main(sys.argv)
