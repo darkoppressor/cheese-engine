@@ -252,7 +252,7 @@ target_link_libraries(Release-macOS-arm64
 /home/tails/build-server/macos-arm64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/macos-arm64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
 /home/tails/build-server/steamworks-sdk/redistributable_bin/osx/libsteam_api.dylib
-"-m64 -arch arm64 -mmacosx-version-min=15.0.0 -stdlib=libc++ -liconv -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo -framework CoreHaptics -framework GameController"
+"-m64 -arch arm64 -stdlib=libc++ -mmacosx-version-min=15.0.0 -liconv -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo -framework CoreHaptics -framework GameController"
 )
 
 endif()
