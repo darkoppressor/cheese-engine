@@ -16,7 +16,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	$PROJECT_DIRECTORY/development/android/clean-android
 	$PROJECT_DIRECTORY/development/android/android-prep
 
-	android/ndk-build $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
+	android/ndk-build $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-Release-Android"
 
 	check_status
 

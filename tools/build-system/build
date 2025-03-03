@@ -209,7 +209,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				if [ "$line" == "Release-Windows-x86_64" ]; then
 					BUILD_WINDOWS_64="true"
 				fi
-				if [ "$line" == "Release-macOS-x86_64" ]; then
+				if [ "$line" == "Release-macOS-arm64" ]; then
 					BUILD_macOS_64="true"
 				fi
 				if [[ $line == Android* ]]; then
@@ -243,7 +243,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			RESULT="$RESULT$log\n\n"
 		fi
 		if [ "$BUILD_macOS_64" == "true" ]; then
-			log="Build target Release-macOS-x86_64 requested"
+			log="Build target Release-macOS-arm64 requested"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 		fi
@@ -268,11 +268,11 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" Release-Windows-x86_64
 		fi
 		if [ "$BUILD_macOS_64" == "true" ]; then
-			log="Attempting build of Release-macOS-x86_64"
+			log="Attempting build of Release-macOS-arm64"
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" Release-macOS-x86_64
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-target "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" Release-macOS-arm64
 		fi
 		if [ "$BUILD_ANDROID" == "true" ]; then
 			log="Attempting build of Release-Android targeting ABIs: $ANDROID_ABI_TARGETS"
@@ -372,7 +372,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 		fi
 
 		if [ "$BUILD_macOS_64" == "true" ]; then
-			PLATFORM="macOS-x86_64"
+			PLATFORM="macOS-arm64"
 			BINARY="${NAME_CAPPED}-${PLATFORM}"
 			TARGET="Release-${PLATFORM}"
 			if [ -f "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${BINARY}" ]; then

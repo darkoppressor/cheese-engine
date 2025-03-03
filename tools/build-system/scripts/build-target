@@ -7,7 +7,7 @@ PROJECT_DIRECTORY=$1
 TARGET=$2
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
-	../../build-date $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-$TARGET"
+	../../build-date $PROJECT_DIRECTORY > "$PROJECT_DIRECTORY/log-$TARGET"
 
 	rm -rf "$PROJECT_DIRECTORY/CMakeFiles/"
 	rm -f "$PROJECT_DIRECTORY/CMakeCache.txt"
@@ -22,8 +22,8 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$TARGET" ]; then
 		cmake "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
 	elif [ "$TARGET" == "Release-Windows-x86_64" ]; then
 		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-windows-x86_64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
-	elif [ "$TARGET" == "Release-macOS-x86_64" ]; then
-		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-macos-x86_64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
+	elif [ "$TARGET" == "Release-macOS-arm64" ]; then
+		cmake -DCMAKE_TOOLCHAIN_FILE="$DIR/toolchain-macos-arm64.cmake" "$PROJECT_DIRECTORY" >> "$PROJECT_DIRECTORY/log-$TARGET"
 	fi
 
 	cd $DIR
