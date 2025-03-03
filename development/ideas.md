@@ -9,9 +9,6 @@ That version might have a simple way to detect that we are on a Steam Deck, I du
 SDL_OpenURL can probably replace my current URL opening function
 Can I use the new SDL2 SDL_GameControllerRumble to replace the current rumble implementation?
 
-Make the tools/build-system/build script able to take a Git web address instead of a local path
-Probably parse the passed path and see if it is a Git address and if so, treat it as such
-
 Scroll bar for scrolling buttons and text
 
 Unicode support in bitmap fonts?
