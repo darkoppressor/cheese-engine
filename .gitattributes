@@ -26,3 +26,4 @@
 *.exe binary
 *.dll binary
 *.ttf binary
+tools/Checksum-Linux-x86_64 binary
