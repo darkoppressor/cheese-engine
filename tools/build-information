@@ -156,7 +156,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	OUTPUT="${OUTPUT}macOS\t\t$(/home/tails/build-server/macos-arm64/osxcross/target/bin/o64-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
+	OUTPUT="${OUTPUT}macOS\t\t$(/home/tails/build-server/macos-arm64/osxcross/target/bin/arm64-apple-darwin24-clang --version | sed -n 1p), macOS SDK $macOS_SDK\n"
 	if [ ! -d "/home/tails/build-server/android/android-sdk/ndk/$NDK_VERSION" ]; then
 		NDK_VERSION=""
 	fi

@@ -227,7 +227,7 @@ set_target_properties(Release-macOS-arm64 PROPERTIES
 OUTPUT_NAME Cheese-Engine-macOS-arm64
 PREFIX lib
 SUFFIX .a
-COMPILE_FLAGS "-O2 -std=c++11 -Wall -Wextra -m64 -stdlib=libc++ -mmacosx-version-min=15.0.0 -DGAME_OS_MACOS"
+COMPILE_FLAGS "-O2 -std=c++11 -Wall -Wextra -m64 -arch arm64 -stdlib=libc++ -mmacosx-version-min=15.0.0 -DGAME_OS_MACOS"
 )
 
 target_include_directories(Release-macOS-arm64 PRIVATE
@@ -252,7 +252,7 @@ target_link_libraries(Release-macOS-arm64
 /home/tails/build-server/macos-arm64/boost/stage/lib/libboost_filesystem.a
 /home/tails/build-server/macos-arm64/raknet/raknet/Lib/LibStatic/Lib/libRakNetLibStatic.a
 /home/tails/build-server/steamworks-sdk/redistributable_bin/osx/libsteam_api.dylib
-"-m64 -arch arm64 -stdlib=libc++ -mmacosx-version-min=15.0.0 -liconv -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo -framework CoreHaptics -framework GameController"
+"-L/home/tails/build-server/macos-arm64/osxcross/target/SDK/MacOSX.sdk/usr/lib -m64 -arch arm64 -stdlib=libc++ -mmacosx-version-min=15.0.0 -liconv -framework CoreFoundation -framework ApplicationServices -framework IOKit -framework AppKit -framework Carbon -framework ForceFeedback -framework CoreAudio -framework AudioUnit -framework AudioToolbox -framework OpenGL -framework CoreVideo -framework CoreHaptics -framework GameController"
 )
 
 endif()
