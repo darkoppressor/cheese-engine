@@ -346,7 +346,7 @@ void Engine::set_initial_mod (const string& mod) {
 void Engine::load_changelog () {
     changelog = "";
 
-    File_IO_Load load("docs/changelog.txt");
+    File_IO_Load load("docs/changelog.md");
 
     if (load.is_opened()) {
         changelog = load.get_data();
