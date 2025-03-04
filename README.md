@@ -16,7 +16,29 @@ Finally, to end the madness, I ripped all of the engine-specific stuff out of my
 a software library. That software library is the Cheese Engine. It is written in C++, with a little C and Java here and
 there. Peruse the source code if you dare, but be warned: No one but me has ever used this for anything.
 
-## Updating the engine version
+## Using the engine
+
+[Asset guidelines](docs/assetGuidelines.md)
+[Animation guidelines](docs/animationGuidelines.md)
+[GUI guidelines](docs/guiGuidelines.md)
+
+[Text files](docs/textFiles.md)
+[Versioning](docs/versioning.md)
+[Workflow](docs/workflow.md)
+
+[Style guide](docs/styleGuide.md)
+
+[Building the Cheese Engine for Android for debug](docs/buildingAndroidDebug.md)
+
+[Template instructions](docs/templateInstructions.md)
+[Build instructions](docs/buildInstructions.md)
+
+## Developing the engine
+
+[Ideas](development/ideas.md)
+[To do](development/toDo.md)
+
+### Updating the engine version
 
 In engine_version.cpp:
 
@@ -35,3 +57,5 @@ text.
 
 Please note that there are a couple of files in the docs/ directory named contentLicense<Type>.md
 These are for use with projects using the engine, and do not pertain to the engine itself.
+
+For third party licenses for dependencies, see [the thirdPartyLicenses directory](docs/thirdPartyLicenses).
