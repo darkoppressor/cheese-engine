@@ -18,25 +18,25 @@ there. Peruse the source code if you dare, but be warned: No one but me has ever
 
 ## Using the engine
 
-[Asset guidelines](docs/assetGuidelines.md)
-[Animation guidelines](docs/animationGuidelines.md)
-[GUI guidelines](docs/guiGuidelines.md)
+* [Asset guidelines](docs/assetGuidelines.md)
+* [Animation guidelines](docs/animationGuidelines.md)
+* [GUI guidelines](docs/guiGuidelines.md)
 
-[Text files](docs/textFiles.md)
-[Versioning](docs/versioning.md)
-[Workflow](docs/workflow.md)
+* [Text files](docs/textFiles.md)
+* [Versioning](docs/versioning.md)
+* [Workflow](docs/workflow.md)
 
-[Style guide](docs/styleGuide.md)
+* [Style guide](docs/styleGuide.md)
 
-[Building the Cheese Engine for Android for debug](docs/buildingAndroidDebug.md)
+* [Building the Cheese Engine for Android for debug](docs/buildingAndroidDebug.md)
 
-[Template instructions](docs/templateInstructions.md)
-[Build instructions](docs/buildInstructions.md)
+* [Template instructions](docs/templateInstructions.md)
+* [Build instructions](docs/buildInstructions.md)
 
 ## Developing the engine
 
-[Ideas](development/ideas.md)
-[To do](development/toDo.md)
+* [Ideas](development/ideas.md)
+* [To do](development/toDo.md)
 
 ### Updating the engine version
 
