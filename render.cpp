@@ -11,7 +11,7 @@
 
 #include <cstdint>
 
-#include <SDL_image.h>
+#include <include/SDL_image.h>
 
 using namespace std;
 

@@ -5,7 +5,7 @@ cd $DIR
 
 PROJECT_DIRECTORY=$1
 
-NDK_VERSION="26.3.11579264"
+NDK_VERSION="29.0.13113456"
 OUTPUT=""
 
 add_boost_version () {
@@ -31,7 +31,7 @@ add_sdl2_version () {
 }
 
 add_sdl2_image_version () {
-	local file="/home/tails/build-server/$1/SDL2_image/SDL_image.h"
+	local file="/home/tails/build-server/$1/SDL2_image/include/SDL_image.h"
 
 	local major=$(sed -ne "/^#define\s*SDL_IMAGE_MAJOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MAJOR_VERSION\s*//")
 	local minor=$(sed -ne "/^#define\s*SDL_IMAGE_MINOR_VERSION.*$/p" "$file" | sed -e "s/^#define\s*SDL_IMAGE_MINOR_VERSION\s*//")
