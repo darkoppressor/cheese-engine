@@ -15,7 +15,7 @@
 #include "music_manager.h"
 
 #include <SDL_mixer.h>
-#include <SDL_image.h>
+#include <include/SDL_image.h>
 
 using namespace std;
 
