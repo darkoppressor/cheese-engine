@@ -14,8 +14,7 @@ updateFeed () {
     content="$title (<a href=\"$ciBuildUrl\">$ciBuildUrl</a>)"
 
     /home/tails/build-server/cheese-engine/tools/postToFeed "$(pwd)" "jenkins" "Wells Family Jenkins" "Tails" \
-    "tails.at.mobius@gmail.com" "https://wells-family.xyz/" "https://wells-family.xyz/favicon.png" "$title" "$content" \
-    "$ciBuildUrl"
+    "tails.at.mobius@gmail.com" "https://wells-family.xyz/" "https://wells-family.xyz/favicon.png" "$title" "$content"
 }
 
 if [ -n "$CI_JOB_NAME" ] && [ -n "$CI_BUILD_NUMBER" ] && [ -n "$CI_BUILD_URL" ]; then

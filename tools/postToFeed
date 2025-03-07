@@ -9,15 +9,13 @@ FEED_AUTHOR_URI=$6
 FEED_ICON=$7
 ENTRY_TITLE=$8
 ENTRY_CONTENT=$9
-ENTRY_LINK=$10
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$FEED" ] && [ -n "$FEED_TITLE" ] && [ -n "$FEED_AUTHOR_NAME" ] && \
 	[ -n "$FEED_AUTHOR_EMAIL" ] && [ -n "$FEED_AUTHOR_URI" ] && [ -n "$FEED_ICON" ] && [ -n "$ENTRY_TITLE" ] && \
 [ -n "$ENTRY_CONTENT" ]; then
 	python3 -m venv "$PROJECT_DIRECTORY" ; source "$PROJECT_DIRECTORY/bin/activate" ; \
 	pip3 install --upgrade pip feedgen ; python3 /home/tails/server/feeds/feeds.py "$FEED" "$FEED_TITLE" \
-	"$FEED_AUTHOR_NAME" "$FEED_AUTHOR_EMAIL" "$FEED_AUTHOR_URI" "$FEED_ICON" "$ENTRY_TITLE" "$ENTRY_CONTENT" \
-	"$ENTRY_LINK"
+	"$FEED_AUTHOR_NAME" "$FEED_AUTHOR_EMAIL" "$FEED_AUTHOR_URI" "$FEED_ICON" "$ENTRY_TITLE" "$ENTRY_CONTENT"
 else
 	echo "postToFeed - post to the Jenkins feed"
 	echo "Usage: postToFeed PROJECT_DIRECTORY FEED FEED_TITLE FEED_AUTHOR_NAME FEED_AUTHOR_EMAIL FEED_AUTHOR_URI FEED_ICON ENTRY_TITLE ENTRY_CONTENT"
