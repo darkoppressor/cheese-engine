@@ -14,11 +14,11 @@ string Engine_Version::get_engine_status () {
 }
 
 string Engine_Version::get_engine_version () {
-    return "2.4.15";
+    return "2.4.16";
 }
 
 string Engine_Version::get_engine_date () {
-    return "2025-02-25";
+    return "2025-03-06";
 }
 
 Version_Series::Version_Series (string get_first_version, string get_last_version) {
