@@ -29,6 +29,7 @@ if [ -n "$CI_JOB_NAME" ] && [ -n "$CI_BUILD_NUMBER" ] && [ -n "$CI_BUILD_URL" ];
 		else
 			updateFeed "Deployment failed - " "$CI_JOB_NAME" "$CI_BUILD_NUMBER" "$CI_BUILD_URL"
 			exit 1
+		fi
 	else
 		updateFeed "Build failed - " "$CI_JOB_NAME" "$CI_BUILD_NUMBER" "$CI_BUILD_URL"
 		exit 1
