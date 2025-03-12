@@ -19,7 +19,12 @@ $(LOCAL_PATH)/$(BOOST_PATH) \
 $(LOCAL_PATH)/$(RAKNET_PATH)/..
 
 # Add your application source files here...
-LOCAL_SRC_FILES := $(wildcard $(LOCAL_PATH)/../../../../*.cpp)
+define walk
+	$(wildcard $(1)) $(foreach e, $(wildcard $(1)/*), $(call walk, $(e)))
+endef
+ALL_FILES = $(call walk, $(LOCAL_PATH))
+FILE_LIST := $(filter %.cpp, $(ALL_FILES))
+LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
 LOCAL_STATIC_LIBRARIES := SDL2_main SDL2_static SDL2_image_static SDL2_mixer_static RakNet_static
 

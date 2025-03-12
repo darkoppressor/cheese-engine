@@ -16,7 +16,7 @@ print_usage () {
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 	if [ "$VERSION_COMPONENT" == "major" ] || [ "$VERSION_COMPONENT" == "minor" ] || [ "$VERSION_COMPONENT" == "patch" ]; then
-		VERSION_FILE="$PROJECT_DIRECTORY/version.cpp"
+		VERSION_FILE="$PROJECT_DIRECTORY/src/version.cpp"
 
 		if [ -n "$VERSION_FILE" ]; then
 			echo "Reading current version number for the project in $PROJECT_DIRECTORY"
@@ -40,7 +40,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$VERSION_COMPONENT" ]; then
 				NEW_PATCH=$((NEW_PATCH + 1))
 			fi
 
-			echo "Incrementing the version.cpp version number for the project in $PROJECT_DIRECTORY"
+			echo "Incrementing the src/version.cpp version number for the project in $PROJECT_DIRECTORY"
 
 			sed -i -e "s/^.*\/\/ MAJOR$/    return $NEW_MAJOR; \/\/ MAJOR/" "$VERSION_FILE"
 			sed -i -e "s/^.*\/\/ MINOR$/    return $NEW_MINOR; \/\/ MINOR/" "$VERSION_FILE"

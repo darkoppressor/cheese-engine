@@ -18,7 +18,7 @@ rm -f *Linux-x86_64.a
 rm -f *Linux-Debug-x86_64.a
 rm -f *macOS-arm64.a
 
-rm -f "docs/build-information"
+rm -f "docs/buildInformation.md"
 
 rm -f "CMakeCache.txt"
 rm -f "Makefile"

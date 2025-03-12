@@ -24,7 +24,7 @@ STATUS is optional, can be any string, and will change the release status to wha
 
 All Platforms
 -------------
-Update the information in version.cpp
+Update the information in [src/version.cpp](src/version.cpp)
 
 macOS
 ----
