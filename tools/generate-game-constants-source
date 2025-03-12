@@ -122,7 +122,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		fi
 	done
 
-	filename_header="$PROJECT_DIRECTORY/game_constants.h"
+	filename_header="$PROJECT_DIRECTORY/src/game_constants.h"
 
 	if [ -f "$filename_header" ]; then
 		file_header=$(<"$filename_header")
@@ -172,7 +172,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		echo "$file_header" | sed -e "s/^\s*\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS/    \/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS\n$content/" > "$filename_header"
 	fi
 
-	filename_source="$PROJECT_DIRECTORY/game_constants.cpp"
+	filename_source="$PROJECT_DIRECTORY/src/game_constants.cpp"
 
 	if [ -f "$filename_source" ]; then
 		file_source=$(<"$filename_source")

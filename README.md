@@ -40,7 +40,7 @@ there. Peruse the source code if you dare, but be warned: No one but me has ever
 
 ### Updating the engine version
 
-In engine_version.cpp:
+In [src/engine_version.cpp](src/engine_version.cpp):
 
     Update the version returned by Engine_Version::get_engine_version
     Update the date returned by Engine_Version::get_engine_date

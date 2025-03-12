@@ -6,7 +6,7 @@ cd $DIR
 PROJECT_DIRECTORY=$1
 
 if [ -n "$PROJECT_DIRECTORY" ]; then
-	VERSION_FILE="$PROJECT_DIRECTORY/version.cpp"
+	VERSION_FILE="$PROJECT_DIRECTORY/src/version.cpp"
 
 	if [ -n "$VERSION_FILE" ]; then
 		echo "Refreshing the build date for the project in directory $PROJECT_DIRECTORY"

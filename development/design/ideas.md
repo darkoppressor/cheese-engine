@@ -17,8 +17,6 @@ Enable joining a game in progress
 
 IPv6
 
-Move source files into a sub directory?
-
 Log could have an option to add the log to a text file alongside the error one
 
 The whole engine should use const references wherever possible
