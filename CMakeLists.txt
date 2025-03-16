@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.28.3)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
 project(cheese-engine)
 
 set(SOURCE_FILES
