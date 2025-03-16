@@ -25,9 +25,9 @@ src/game/game_command.cpp
 src/game/game_manager.cpp
 src/image/image_data.cpp
 src/image/image_manager.cpp
-src/math/engine_math.cpp
 src/math/int/int_math.cpp
 src/math/int/int_vector.cpp
+src/math/engine_math.cpp
 src/math/math_vector.cpp
 src/music/music_manager.cpp
 src/network/client_data.cpp
