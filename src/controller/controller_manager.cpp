@@ -4,7 +4,7 @@
 #include "../options/options.h"
 #include "../strings/engine_strings.h"
 #include "../log.h"
-#include "android/android.h"
+#include "../android/android.h"
 
 #include <boost/algorithm/string.hpp>
 

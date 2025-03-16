@@ -14,7 +14,7 @@
 #include "../game/game_manager.h"
 #include "../network/network_client.h"
 #include "../options/options.h"
-#include "network/internet.h"
+#include "../network/internet.h"
 
 #include <boost/algorithm/string.hpp>
 
