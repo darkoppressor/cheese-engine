@@ -2,30 +2,30 @@
 
 #include "main_startup.h"
 #include "engine.h"
-#include "engine_math.h"
+#include "math/engine_math.h"
 #include "game_window.h"
-#include "window_manager.h"
-#include "network_engine.h"
+#include "ui/window_manager.h"
+#include "network/network_engine.h"
 #include "update.h"
-#include "network_server.h"
-#include "network_client.h"
+#include "network/network_server.h"
+#include "network/network_client.h"
 #include "log.h"
-#include "data_manager.h"
-#include "options.h"
-#include "directories.h"
-#include "engine_data.h"
-#include "network_lockstep.h"
-#include "game_manager.h"
+#include "data/data_manager.h"
+#include "options/options.h"
+#include "file/directories.h"
+#include "data/engine_data.h"
+#include "network/network_lockstep.h"
+#include "game/game_manager.h"
 #include "engine_version.h"
-#include "vfs.h"
-#include "engine_strings.h"
-#include "steam.h"
+#include "file/vfs.h"
+#include "strings/engine_strings.h"
+#include "steam/steam.h"
 
 #include <boost/algorithm/string.hpp>
 
 #ifdef GAME_OS_ANDROID
-    #include "android.h"
-    #include "file_io.h"
+    #include "android/android.h"
+    #include "file/file_io.h"
 #endif
 
 #ifdef GAME_OS_MACOS

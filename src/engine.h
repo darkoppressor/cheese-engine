@@ -3,11 +3,11 @@
 #ifndef engine_h
 #define engine_h
 
-#include "toast.h"
-#include "console.h"
-#include "coords.h"
-#include "color_theme.h"
-#include "cursor.h"
+#include "ui/toast.h"
+#include "console/console.h"
+#include "collision/coords.h"
+#include "ui/color_theme.h"
+#include "ui/cursor.h"
 
 #include <string>
 #include <vector>

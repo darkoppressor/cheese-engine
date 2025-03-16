@@ -3,8 +3,8 @@
 #ifndef screen_shake_h
 #define screen_shake_h
 
-#include "rng.h"
-#include "collision.h"
+#include "rng/rng.h"
+#include "collision/collision.h"
 
 class Screen_Shake {
     private:

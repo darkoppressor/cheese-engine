@@ -1,9 +1,9 @@
 /* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
 
 #include "log.h"
-#include "file_io.h"
-#include "directories.h"
-#include "data_manager.h"
+#include "file/file_io.h"
+#include "file/directories.h"
+#include "data/data_manager.h"
 #include "engine.h"
 
 using namespace std;

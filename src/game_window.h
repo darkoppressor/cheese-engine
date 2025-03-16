@@ -3,8 +3,8 @@
 #ifndef game_window_h
 #define game_window_h
 
-#include "color.h"
-#include "coords.h"
+#include "color/color.h"
+#include "collision/coords.h"
 
 #include <string>
 #include <cstdint>

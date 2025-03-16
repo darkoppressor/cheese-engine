@@ -3,7 +3,7 @@
 #ifndef sorting_h
 #define sorting_h
 
-#include "rng.h"
+#include "rng/rng.h"
 
 #include <vector>
 #include <cstdint>

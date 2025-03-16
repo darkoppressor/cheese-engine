@@ -1,18 +1,18 @@
 /* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
 
 #include "update.h"
-#include "game_manager.h"
-#include "game_world.h"
-#include "engine_input.h"
+#include "game/game_manager.h"
+#include "game/game_world.h"
+#include "ui/engine_input.h"
 #include "engine.h"
-#include "controller_manager.h"
-#include "object_manager.h"
-#include "window_manager.h"
-#include "sound_manager.h"
-#include "music_manager.h"
+#include "controller/controller_manager.h"
+#include "data/object_manager.h"
+#include "ui/window_manager.h"
+#include "sound/sound_manager.h"
+#include "music/music_manager.h"
 #include "game_window.h"
-#include "engine_data.h"
-#include "network_lockstep.h"
+#include "data/engine_data.h"
+#include "network/network_lockstep.h"
 
 using namespace std;
 

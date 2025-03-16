@@ -1,8 +1,8 @@
 /* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
 
 #include "engine_version.h"
-#include "engine_strings.h"
-#include "options.h"
+#include "strings/engine_strings.h"
+#include "options/options.h"
 #include "log.h"
 
 #include <boost/algorithm/string.hpp>
