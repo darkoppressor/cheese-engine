@@ -1,10 +1,10 @@
 /* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
 
 #include "screen_shake.h"
-#include "math_vector.h"
-#include "options.h"
+#include "math/math_vector.h"
+#include "options/options.h"
 #include "engine.h"
-#include "engine_math.h"
+#include "math/engine_math.h"
 
 using namespace std;
 

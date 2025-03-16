@@ -1,18 +1,18 @@
 /* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
 
 #include "game_window.h"
-#include "options.h"
-#include "engine_data.h"
+#include "options/options.h"
+#include "data/engine_data.h"
 #include "log.h"
-#include "engine_strings.h"
-#include "game_manager.h"
-#include "controller_manager.h"
-#include "directories.h"
+#include "strings/engine_strings.h"
+#include "game/game_manager.h"
+#include "controller/controller_manager.h"
+#include "file/directories.h"
 #include "engine.h"
-#include "vfs.h"
-#include "render.h"
-#include "sound_manager.h"
-#include "music_manager.h"
+#include "file/vfs.h"
+#include "render/render.h"
+#include "sound/sound_manager.h"
+#include "music/music_manager.h"
 
 #include <SDL_mixer.h>
 #include <include/SDL_image.h>
