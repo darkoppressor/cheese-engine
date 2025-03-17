@@ -17,7 +17,7 @@ buildscript {
     apply from: 'repositories.gradle'
     addRepos(getRepositories())
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.3'
+        classpath 'com.android.tools.build:gradle:8.8.2'
     }
 }
 
