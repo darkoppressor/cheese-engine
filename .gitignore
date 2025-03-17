@@ -12,10 +12,6 @@ pyvenv.cfg
 
 /*.a
 
-development/android/assets/**
-development/android/bin/**
-development/android/gen/**
-development/android/libs/**
 development/android/obj/**
 development/android/jni/SDL2/**
 development/android/jni/SDL2_image/**

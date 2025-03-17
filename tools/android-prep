@@ -154,7 +154,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	cp -r "$ENGINE_ANDROID_DIRECTORY/gradle" "$ANDROID_DIRECTORY"
 	cp "$ENGINE_ANDROID_DIRECTORY/app/build.gradle" "$ANDROID_DIRECTORY/app/build.gradle"
 	cp "$ENGINE_ANDROID_DIRECTORY/app/proguard-rules.pro" "$ANDROID_DIRECTORY/app/proguard-rules.pro"
-	cp -r "$ENGINE_ANDROID_DIRECTORY/app/src/java/org/libsdl" "$ANDROID_DIRECTORY/app/src/java/org"
+	cp -r "$ENGINE_ANDROID_DIRECTORY/app/src/main/java/org/libsdl" "$ANDROID_DIRECTORY/app/src/main/java/org"
 	cp -r "$ENGINE_ANDROID_DIRECTORY/app/jni" "$ANDROID_DIRECTORY/app"
 
 	VERSION_CODE_FILE="$ANDROID_DIRECTORY/versionCode"

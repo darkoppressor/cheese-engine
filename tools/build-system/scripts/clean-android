@@ -8,8 +8,8 @@ PROJECT_DIRECTORY=$1
 if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/src/main/assets/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/build/"
-	rm -rf "$PROJECT_DIRECTORY/development/android/app/.cxx/"
-	rm -rf "$PROJECT_DIRECTORY/development/android/.gradle"
+	rm -rf "$PROJECT_DIRECTORY/development/android/.gradle/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/build/"
 
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/SDL2"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/jni/include/SDL2_image"
@@ -29,11 +29,11 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -f "$PROJECT_DIRECTORY/development/android/local.properties"
 	rm -f "$PROJECT_DIRECTORY/development/android/repositories.gradle"
 	rm -f "$PROJECT_DIRECTORY/development/android/settings.gradle"
-	rm -rf "$PROJECT_DIRECTORY/development/android/gradle"
+	rm -rf "$PROJECT_DIRECTORY/development/android/gradle/"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/build.gradle"
 	rm -f "$PROJECT_DIRECTORY/development/android/app/proguard-rules.pro"
-	rm -rf "$PROJECT_DIRECTORY/development/android/app/src/java/org/libsdl"
-	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni"
+	rm -rf "$PROJECT_DIRECTORY/development/android/app/src/main/java/org/libsdl/"
+	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/"
 else
 	echo "clean-android - clean the android target for the passed project"
 	echo "Usage: clean-android PROJECT-DIRECTORY"
