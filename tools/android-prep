@@ -7,6 +7,7 @@ PROJECT_DIRECTORY=$1
 KEY_STORE_LOCATION=$2
 KEY_PASSWORDS_LOCATION=$3
 KEY_ALIAS=$4
+ANDROID_ABI_TARGETS=$5
 
 DIRECTORY_LIST=""
 DIRECTORY_PREFIX=""
@@ -179,7 +180,9 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	sed -i -e "s/KEY_PASSWORD/$ALIAS_PASSWORD/g" "$ANDROID_DIRECTORY/app/build.gradle"
 	sed -i -e "s/STORE_FILE/$(echo $KEY_STORE_LOCATION | sed -e 's/\//\\\//g; s/\./\\\./g')/g" "$ANDROID_DIRECTORY/app/build.gradle"
 	sed -i -e "s/STORE_PASSWORD/$KEY_STORE_PASSWORD/g" "$ANDROID_DIRECTORY/app/build.gradle"
+
+	sed -i -e "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$ANDROID_DIRECTORY/app/jni/Application.mk"
 else
 	echo "android-prep - prepare the android/ directory of a Cheese Engine project for building"
-	echo "Usage: android-prep PROJECT-DIRECTORY KEY-STORE-LOCATION KEY-PASSWORDS-LOCATION KEY-ALIAS"
+	echo "Usage: android-prep PROJECT-DIRECTORY KEY-STORE-LOCATION KEY-PASSWORDS-LOCATION KEY-ALIAS ANDROID-ABI-TARGETS"
 fi

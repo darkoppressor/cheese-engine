@@ -28,7 +28,7 @@ Update the information in [src/version.cpp](src/version.cpp)
 
 macOS
 ----
-Update CFBundleVersion and CFBundleShortVersionString in development/*.app/Contents/Info.plist
+Update CFBundleVersion and CFBundleShortVersionString in development/\*.app/Contents/Info.plist
 
 Android
 -------
@@ -80,7 +80,7 @@ Choose either release or debug options in development/android/jni/Application.mk
 is commented out
 
 Prepare everything (assets, etc.) by running:
-'cheese-engine/tools/android-prep PROJECT-DIRECTORY KEY-STORE-LOCATION KEY-PASSWORDS-LOCATION KEY-ALIAS'
+'cheese-engine/tools/android-prep PROJECT-DIRECTORY KEY-STORE-LOCATION KEY-PASSWORDS-LOCATION KEY-ALIAS ANDROID-ABI-TARGETS'
 Note that if you want to edit save_location.cfg as detailed in the Package step below,
 you need to do that before running the android prep script
 
@@ -134,14 +134,14 @@ Create a .tar.gz archive of this directory
 
 macOS
 ----
-Place the binary in development/*.app/Contents/MacOS/ and rename it to 'game'
+Place the binary in development/\*.app/Contents/MacOS/ and rename it to 'game'
 
-Copy into development/*.app/Contents/Resources/:
+Copy into development/\*.app/Contents/Resources/:
 The data/ directory
 The docs/ directory
 save_location.cfg
 
-Save the icon as a .png, use Img2icns to convert it to a .icns, and move that into development/*.app/Contents/Resources/
+Save the icon as a .png, use Img2icns to convert it to a .icns, and move that into development/\*.app/Contents/Resources/
 Name the icon file 'icon.icns'
 
 The final step has two options (option 1 is the default):

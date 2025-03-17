@@ -4,6 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 PROJECT_DIRECTORY=$1
+ANDROID_ABI_TARGETS=$2
 
 check_status () {
 	local status=$?
@@ -65,7 +66,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	fi
 
 	cd ../../
-	./android-prep $PROJECT_DIRECTORY $KEY_STORE_LOCATION $KEY_PASSWORDS_LOCATION $KEY_ALIAS >> "$PROJECT_DIRECTORY/log-Release-Android"
+	./android-prep "$PROJECT_DIRECTORY" "$KEY_STORE_LOCATION" "$KEY_PASSWORDS_LOCATION" "$KEY_ALIAS" "$ANDROID_ABI_TARGETS" >> "$PROJECT_DIRECTORY/log-Release-Android"
 	cd $DIR
 
 	android/build "$PROJECT_DIRECTORY" "release" >> "$PROJECT_DIRECTORY/log-Release-Android"
@@ -73,5 +74,5 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	check_status
 else
 	echo "build-android - build the android target for the passed project"
-	echo "Usage: build-android PROJECT-DIRECTORY"
+	echo "Usage: build-android PROJECT-DIRECTORY ANDROID-ABI-TARGETS"
 fi

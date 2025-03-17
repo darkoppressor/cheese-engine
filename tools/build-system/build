@@ -198,8 +198,6 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 					BUILD_ANDROID="true"
 
 					ANDROID_ABI_TARGETS=$(echo $line | sed s/Android//)
-
-					sed -i "s/^APP_ABI.*/APP_ABI := $ANDROID_ABI_TARGETS/" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/app/jni/Application.mk"
 				fi
 			done <"$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets"
 		else
@@ -261,7 +259,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			echo "$log" | tee -a $LOG_FILE
 			RESULT="$RESULT$log\n\n"
 
-			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$BUILD_HOME/build-server/projects/${PROJECT_NAME}"
+			$BUILD_HOME/build-server/cheese-engine/tools/build-system/scripts/build-android "$BUILD_HOME/build-server/projects/${PROJECT_NAME}" "$ANDROID_ABI_TARGETS"
 		fi
 
 		PROJECT_VERSION=$(grep -F "versionName" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/android/build.gradle")
