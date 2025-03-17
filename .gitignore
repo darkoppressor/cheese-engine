@@ -13,11 +13,12 @@ pyvenv.cfg
 /*.a
 
 development/android/obj/**
-development/android/jni/SDL2/**
-development/android/jni/SDL2_image/**
-development/android/jni/SDL2_mixer/**
-development/android/jni/RakNet/**
-development/android/jni/boost/**
+development/android/libs/**
+development/android/jni/SDL2
+development/android/jni/SDL2_image
+development/android/jni/SDL2_mixer
+development/android/jni/RakNet
+development/android/jni/boost
 
 /*Windows-x86_64.exe
 /*Linux-x86_64
