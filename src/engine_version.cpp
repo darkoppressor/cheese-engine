@@ -14,7 +14,7 @@ string Engine_Version::get_engine_status () {
 }
 
 string Engine_Version::get_engine_version () {
-    return "3.0.0";
+    return "3.0.1";
 }
 
 string Engine_Version::get_engine_date () {

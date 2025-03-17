@@ -6,6 +6,8 @@ cd $DIR
 PROJECT_PATH=$1
 SUPPRESS_EMAIL=$2
 
+VERSION="14"
+
 CHECKSUM=""
 
 LOG_FILE=""
@@ -58,8 +60,6 @@ if [ -f "$PROJECT_PATH/CMakeLists.txt" ]; then
 fi
 
 NAME="${PROJECT_NAME}"
-
-VERSION="13"
 
 RESULT=""
 
