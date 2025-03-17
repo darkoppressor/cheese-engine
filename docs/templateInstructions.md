@@ -39,11 +39,11 @@ Do git init in the game directory
 
 macOS
 ----
-Rename the development/*.app directory (capitalized, spaced)
+Rename the development/\*.app directory (capitalized, spaced)
 
-Change CFBundleName and CFBundleDisplayName in development/*.app/Contents/Info.plist (capitalized, spaced)
+Change CFBundleName and CFBundleDisplayName in development/\*.app/Contents/Info.plist (capitalized, spaced)
 
-Change CFBundleIdentifier in development/*.app/Contents/Info.plist (all lower case, dashed)
+Change CFBundleIdentifier in development/\*.app/Contents/Info.plist (all lower case, dashed)
 
 Android
 -------
@@ -51,9 +51,8 @@ Rename the development/android/src/org/cheeseandbacon/template directory to the 
 (all lower case, dashed)
 
 Change the package name in Game.java in the above directory (all lower case, no spaces or dashes)
-Change the import statement in development/android/src/org/libsdl/app/SDLActivity.java (all lower case, no spaces or dashes)
 
-Change the namespace in development/android/app/build.gradle (all lower case, no spaces or dashes)
+Change the app name in development/android/appName (all lower case, no spaces or dashes)
 If the game will use networking, enable the INTERNET permission in development/android/AndroidManifest.xml
 If the game will use GPS, enable the ACCESS_FINE_LOCATION permission in development/android/AndroidManifest.xml
 Enable any commented out features in development/android/AndroidManifest.xml that are going to be used by the game

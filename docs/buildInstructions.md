@@ -80,7 +80,7 @@ Choose either release or debug options in development/android/jni/Application.mk
 is commented out
 
 Prepare everything (assets, etc.) by running:
-'cheese-engine/tools/android-prep PROJECT-DIRECTORY KEY-PASSWORDS-LOCATION'
+'cheese-engine/tools/android-prep PROJECT-DIRECTORY KEY-STORE-LOCATION KEY-PASSWORDS-LOCATION KEY-ALIAS'
 Note that if you want to edit save_location.cfg as detailed in the Package step below,
 you need to do that before running the android prep script
 

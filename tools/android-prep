@@ -78,6 +78,7 @@ create_asset_lists () {
 
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	ANDROID_DIRECTORY="$PROJECT_DIRECTORY/development/android"
+	ENGINE_ANDROID_DIRECTORY="/home/tails/build-server/cheese-engine/tools/build-system/android"
 
 	KEY_STORE_PASSWORD=$(sed -n '1{p;q;}' $KEY_PASSWORDS_LOCATION)
 	ALIAS_PASSWORD=$(sed -n '2{p;q;}' $KEY_PASSWORDS_LOCATION)
@@ -141,11 +142,38 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	ln -s "/home/tails/build-server/linux-x86_64/boost" "$ANDROID_DIRECTORY/app/jni/include/boost"
 	ln -s "/home/tails/build-server/cheese-engine" "$ANDROID_DIRECTORY/app/jni/include/cheese-engine"
 
-	echo "Preparing .properties files"
+	echo "Copying engine files"
 
-	rm -f "$ANDROID_DIRECTORY/local.properties"
+	cp "$ENGINE_ANDROID_DIRECTORY/build.gradle" "$ANDROID_DIRECTORY/build.gradle"
+	cp "$ENGINE_ANDROID_DIRECTORY/gradle.properties" "$ANDROID_DIRECTORY/gradle.properties"
+	cp "$ENGINE_ANDROID_DIRECTORY/gradlew" "$ANDROID_DIRECTORY/gradlew"
+	cp "$ENGINE_ANDROID_DIRECTORY/gradlew.bat" "$ANDROID_DIRECTORY/gradlew.bat"
+	cp "$ENGINE_ANDROID_DIRECTORY/local.properties" "$ANDROID_DIRECTORY/local.properties"
+	cp "$ENGINE_ANDROID_DIRECTORY/repositories.gradle" "$ANDROID_DIRECTORY/repositories.gradle"
+	cp "$ENGINE_ANDROID_DIRECTORY/settings.gradle" "$ANDROID_DIRECTORY/settings.gradle"
+	cp -r "$ENGINE_ANDROID_DIRECTORY/gradle" "$ANDROID_DIRECTORY"
+	cp "$ENGINE_ANDROID_DIRECTORY/app/build.gradle" "$ANDROID_DIRECTORY/app/build.gradle"
+	cp "$ENGINE_ANDROID_DIRECTORY/app/proguard-rules.pro" "$ANDROID_DIRECTORY/app/proguard-rules.pro"
+	cp -r "$ENGINE_ANDROID_DIRECTORY/app/src/java/org/libsdl" "$ANDROID_DIRECTORY/app/src/java/org"
+	cp -r "$ENGINE_ANDROID_DIRECTORY/app/jni" "$ANDROID_DIRECTORY/app"
 
-	cp "$ANDROID_DIRECTORY/properties/local.properties" "$ANDROID_DIRECTORY/local.properties"
+	VERSION_CODE_FILE="$ANDROID_DIRECTORY/versionCode"
+	VERSION_CODE=$(sed -e "/^[0-9]+$/p" "$VERSION_CODE_FILE" | sed -e "s/[^0-9]//g")
+	VERSION_FILE="$PROJECT_DIRECTORY/src/version.cpp"
+	VERSION_NAME=""
+	if [ -n "$VERSION_FILE" ]; then
+		OLD_MAJOR=$(sed -ne "/^.*\/\/ MAJOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+		OLD_MINOR=$(sed -ne "/^.*\/\/ MINOR$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+		OLD_PATCH=$(sed -ne "/^.*\/\/ PATCH$/p" "$VERSION_FILE" | sed -e "s/[^0-9]//g")
+		VERSION_NAME="$OLD_MAJOR.$OLD_MINOR.$OLD_PATCH"
+	fi
+	sed -i -e "s/VERSION_CODE/$VERSION_CODE/g" "$ANDROID_DIRECTORY/build.gradle"
+	sed -i -e "s/VERSION_NAME/$VERSION_NAME/g" "$ANDROID_DIRECTORY/build.gradle"
+
+	APP_NAME_FILE="$ANDROID_DIRECTORY/appName"
+	APP_NAME=$(sed -e "/^[A-Za-z]+$/p" "$APP_NAME_FILE")
+	sed -i -e "s/APP_NAME/$APP_NAME/g" "$ANDROID_DIRECTORY/app/build.gradle"
+	sed -i -e "s/APP_NAME/$APP_NAME/g" "$ANDROID_DIRECTORY/app/src/main/java/org/libsdl/app/SDLActivity.java"
 
 	sed -i -e "s/KEY_ALIAS/$KEY_ALIAS/g" "$ANDROID_DIRECTORY/app/build.gradle"
 	sed -i -e "s/KEY_PASSWORD/$ALIAS_PASSWORD/g" "$ANDROID_DIRECTORY/app/build.gradle"

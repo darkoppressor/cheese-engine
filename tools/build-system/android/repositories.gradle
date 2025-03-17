@@ -1,0 +1,7 @@
+/* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
+
+static def addRepos (RepositoryHandler handler) {
+    handler.google()
+    handler.mavenCentral()
+}
+ext.addRepos = this.&addRepos

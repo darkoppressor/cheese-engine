@@ -22,7 +22,18 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/x86_64/"
 	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni/include/"
 
+	rm -f "$PROJECT_DIRECTORY/development/android/build.gradle"
+	rm -f "$PROJECT_DIRECTORY/development/android/gradle.properties"
+	rm -f "$PROJECT_DIRECTORY/development/android/gradlew"
+	rm -f "$PROJECT_DIRECTORY/development/android/gradlew.bat"
 	rm -f "$PROJECT_DIRECTORY/development/android/local.properties"
+	rm -f "$PROJECT_DIRECTORY/development/android/repositories.gradle"
+	rm -f "$PROJECT_DIRECTORY/development/android/settings.gradle"
+	rm -rf "$PROJECT_DIRECTORY/development/android/gradle"
+	rm -f "$PROJECT_DIRECTORY/development/android/app/build.gradle"
+	rm -f "$PROJECT_DIRECTORY/development/android/app/proguard-rules.pro"
+	rm -rf "$PROJECT_DIRECTORY/development/android/app/src/java/org/libsdl"
+	rm -rf "$PROJECT_DIRECTORY/development/android/app/jni"
 else
 	echo "clean-android - clean the android target for the passed project"
 	echo "Usage: clean-android PROJECT-DIRECTORY"

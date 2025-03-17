@@ -1,0 +1,41 @@
+/* Copyright (c) Cheese and Bacon Games, LLC. See docs/LICENSE.md for details. */
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+project.ext {
+    targetSdkVersion = 35
+    minSdkVersion = 35
+    buildToolsVersion = '35.0.1'
+    javaVersion = JavaVersion.VERSION_17
+    versionCode = VERSION_CODE
+    versionName = 'VERSION_NAME'
+    ndkVersion = '29.0.13113456'
+    ndkArguments = 'APP_PLATFORM=android-35'
+}
+
+buildscript {
+    apply from: 'repositories.gradle'
+    addRepos(getRepositories())
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.7.3'
+    }
+}
+
+allprojects {
+    addRepos(getRepositories())
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile).tap {
+            configureEach {
+                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+            }
+        }
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete getLayout().getBuildDirectory()
+}
+
+wrapper {
+    gradleVersion = '8.13'
+}
