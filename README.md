@@ -35,8 +35,9 @@ there. Peruse the source code if you dare, but be warned: No one but me has ever
 
 ## Developing the engine
 
-* [Ideas](development/ideas.md)
 * [To do](development/toDo.md)
+
+* [Ideas](development/design/ideas.md)
 
 ### Updating the engine version
 
