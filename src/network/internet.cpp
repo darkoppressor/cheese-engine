@@ -12,7 +12,7 @@
 #endif
 
 #ifdef GAME_OS_ANDROID
-    #include "android/android.h"
+    #include "../android/android.h"
 #endif
 
 using namespace std;

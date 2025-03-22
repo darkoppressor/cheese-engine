@@ -22,7 +22,7 @@ $(LOCAL_PATH)/$(RAKNET_PATH)/..
 define walk
 	$(wildcard $(1)) $(foreach e, $(wildcard $(1)/*), $(call walk, $(e)))
 endef
-ALL_FILES = $(call walk, $(LOCAL_PATH))
+ALL_FILES = $(call walk, $(LOCAL_PATH)/../../../../src)
 FILE_LIST := $(filter %.cpp, $(ALL_FILES))
 LOCAL_SRC_FILES := $(FILE_LIST:$(LOCAL_PATH)/%=%)
 
