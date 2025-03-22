@@ -179,6 +179,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		done
 
 		echo "$file_header" | sed -e "s/^\s*\/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS/    \/\/ BEGIN SCRIPT-GENERATED CONSTANT DECLARATIONS\n$content/" > "$filename_header"
+
+		uncrustify --no-backup -q -l "CPP" "$filename_header"
 	fi
 
 	filename_source="$PROJECT_DIRECTORY/src/game/game_constants.cpp"
@@ -222,7 +224,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 					content+="string"
 				fi
 
-				content+=" Game_Constants::${constant_names[$index]^^}="
+				content+=" Game_Constants::${constant_names[$index]^^} = "
 
 				if [ "$constant_type" == "double" ]; then
 					content+="0.0"
@@ -265,9 +267,9 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		for (( index=0; index<${#constant_names[@]}; index++ )); do
 			constant_type=$(get_type "${constant_types[$index]}" "${constant_values[$index]}")
 
-			content+="    else if(name==\"${constant_names[$index]}\"){\n"
+			content+="    else if (name == \"${constant_names[$index]}\") {\n"
 
-			content+="        Game_Constants::${constant_names[$index]^^}="
+			content+="        Game_Constants::${constant_names[$index]^^} = "
 
 			if [ "$constant_type" == "double" ]; then
 				content+="Strings::string_to_double(value)"
@@ -301,6 +303,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 		done
 
 		echo "$file_source" | sed -e "s/^\s*\/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP/    \/\/ BEGIN SCRIPT-GENERATED CONSTANT SETUP\n$content/" > "$filename_source"
+
+		uncrustify --no-backup -q -l "CPP" "$filename_source"
 	fi
 else
     echo "generate-game-constants-source - generate source code for game constants read from data files"
