@@ -197,7 +197,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 				if [[ $line == Android* ]]; then
 					BUILD_ANDROID="true"
 
-					ANDROID_ABI_TARGETS=$(echo $line | sed s/Android //)
+					ANDROID_ABI_TARGETS=$(echo $line | sed s/Android\s//)
 				fi
 			done <"$BUILD_HOME/build-server/projects/$PROJECT_NAME/development/build-system-targets"
 		else
