@@ -310,10 +310,15 @@ vector<string> VFS::get_file_list (const string& directory) {
 
     for (const auto& search_path : search_paths) {
         #ifdef GAME_OS_ANDROID
-            vector<string> directories = File_IO::get_directory_list_for_directory(search_path.path, directory);
 
-            for (const auto& listedDirectory : directories) {
-                add_files_to_list(search_path, listedDirectory, file_list, false);
+            if (!directory.empty()) {
+                vector<string> directories = File_IO::get_directory_list_for_directory(search_path.path, directory);
+
+                for (const auto& listedDirectory : directories) {
+                    add_files_to_list(search_path, listedDirectory, file_list, false);
+                }
+            } else {
+                add_files_to_list(search_path, directory, file_list, false);
             }
 
         #else
