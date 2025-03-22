@@ -41,7 +41,7 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := Cheese-Engine
 LOCAL_SRC_FILES := $(LOCAL_PATH)/../$(TARGET_ARCH_ABI)/libCheese-Engine.a
-LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../include/cheese-engine
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/../include/cheese-engine/src
 LOCAL_STATIC_LIBRARIES := cpufeatures_static SDL2_main SDL2_static SDL2_image_static SDL2_mixer_static RakNet_static
 include $(PREBUILT_STATIC_LIBRARY)
 
