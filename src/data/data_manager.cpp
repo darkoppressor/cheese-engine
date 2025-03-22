@@ -197,7 +197,7 @@ void Data_Manager::load_data_main (Progress_Bar& bar) {
 
     Object_Manager::load_hw_cursors();
 
-    GUI_Manager::text_selector.set_name("text_selector");
+    GUI_Manager::text_selector.set_name("ui/text_selector");
 }
 
 bool Data_Manager::load_data_engine () {

@@ -37,16 +37,16 @@
 		location:130,102
 		text:OK
 		event:start_server
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:165,102
 		text:Cancel
 		event:close_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

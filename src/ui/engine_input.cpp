@@ -298,7 +298,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                                 Engine::text_entry_small_selector.x = 12;
                             }
 
-                            Sound_Manager::play_sound("text_input_small_move");
+                            Sound_Manager::play_sound("ui/text_input_small_move");
 
                             event_consumed = true;
                         }
@@ -308,7 +308,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                                 Engine::text_entry_small_selector.x = 0;
                             }
 
-                            Sound_Manager::play_sound("text_input_small_move");
+                            Sound_Manager::play_sound("ui/text_input_small_move");
 
                             event_consumed = true;
                         }
@@ -318,7 +318,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                                 Engine::text_entry_small_selector.y = 7;
                             }
 
-                            Sound_Manager::play_sound("text_input_small_move");
+                            Sound_Manager::play_sound("ui/text_input_small_move");
 
                             event_consumed = true;
                         }
@@ -328,7 +328,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                                 Engine::text_entry_small_selector.y = 0;
                             }
 
-                            Sound_Manager::play_sound("text_input_small_move");
+                            Sound_Manager::play_sound("ui/text_input_small_move");
 
                             event_consumed = true;
                         }
@@ -341,7 +341,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                                 GUI_Manager::gui_nav_back_controller();
                             }
 
-                            Sound_Manager::play_sound("text_input_small_select");
+                            Sound_Manager::play_sound("ui/text_input_small_select");
 
                             event_consumed = true;
                         }
@@ -350,7 +350,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                             Engine::text_entry_small_selector.x = 12;
                             Engine::text_entry_small_selector.y = 7;
 
-                            Sound_Manager::play_sound("text_input_small_move");
+                            Sound_Manager::play_sound("ui/text_input_small_move");
 
                             event_consumed = true;
                         }
@@ -375,7 +375,7 @@ bool Engine_Input::handle_input_events (bool event_ignore_command_set) {
                                 Engine::handle_text_input(text_entry_char);
                             }
 
-                            Sound_Manager::play_sound("text_input_small_select");
+                            Sound_Manager::play_sound("ui/text_input_small_select");
 
                             event_consumed = true;
                         }

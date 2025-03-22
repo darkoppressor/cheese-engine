@@ -9,24 +9,24 @@
 		location:-1,36
 		text:Singleplayer
 		event:start_game
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:-1,58
 		text:Start Multiplayer Server
 		event:start_server_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:-1,80
 		text:Connect to Multiplayer Server
 		event:lan_server_list_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

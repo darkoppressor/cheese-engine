@@ -26,32 +26,32 @@
 	<button>
 		location:459,36
 		states:Off,On
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:265,58
 		text:OK
 		event:options_network
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:300,58
 		text:Apply
 		event:options_network_apply
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:368,58
 		text:Cancel
 		event:close_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

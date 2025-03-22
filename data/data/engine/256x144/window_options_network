@@ -30,8 +30,8 @@
 		location:167,18
 		states:Off,On
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
@@ -39,8 +39,8 @@
 		text:OK
 		font:small
 		event:options_network
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
@@ -48,8 +48,8 @@
 		text:Apply
 		font:small
 		event:options_network_apply
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
@@ -57,8 +57,8 @@
 		text:Cancel
 		font:small
 		event:close_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

@@ -26,8 +26,8 @@
 	<button>
 		location:429,36
 		states:Off,On
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -38,8 +38,8 @@
 	<button>
 		location:600,36
 		states:Off,On
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -63,8 +63,8 @@
 	<button>
 		location:429,58
 		states:Standard,Desktop,Windowed
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -75,8 +75,8 @@
 	<button>
 		location:633,58
 		states:Off,On
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -87,8 +87,8 @@
 	<button>
 		location:187,80
 		states:Off,On
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -99,8 +99,8 @@
 	<button>
 		location:396,80
 		states:Off,On
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -120,24 +120,24 @@
 		location:265,102
 		text:OK
 		event:options_graphics
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:300,102
 		text:Apply
 		event:options_graphics_apply
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:368,102
 		text:Cancel
 		event:close_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

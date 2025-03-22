@@ -10,24 +10,24 @@
 		location:225,36
 		text:Direct IP
 		event:server_list_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:335,36
 		text:Refresh
 		event:lan_refresh
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:425,36
 		text:Quick Refresh
 		event:lan_refresh_quick
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

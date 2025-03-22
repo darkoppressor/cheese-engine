@@ -21,16 +21,16 @@
 		location:113,32
 		states:Low,Medium,High
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:145,32
 		states:Unmuted,Muted
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -49,16 +49,16 @@
 		location:113,60
 		states:Low,Medium,High
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:145,60
 		states:Unmuted,Muted
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -77,16 +77,16 @@
 		location:113,88
 		states:Low,Medium,High
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
 		location:145,88
 		states:Unmuted,Muted
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<info>
@@ -99,8 +99,8 @@
 		location:4,116
 		states:System default
 		font:small
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
@@ -108,8 +108,8 @@
 		text:OK
 		font:small
 		event:options_audio
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
@@ -117,8 +117,8 @@
 		text:Apply
 		font:small
 		event:options_audio_apply
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 	<button>
@@ -126,8 +126,8 @@
 		text:Cancel
 		font:small
 		event:close_window
-		sound_moused:moused_1
-		sound_click:click_1
+		sound_moused:ui/moused_1
+		sound_click:ui/click_1
 	</button>
 
 </window>

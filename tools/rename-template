@@ -62,6 +62,7 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$PROJECT_NAME" ]; then
 			sed -i -e "s/Template/$NAME_CAPS_SPACED/g" "$PROJECT_DIRECTORY/development/Template.app/Contents/Info.plist"
 			sed -i -e "s/template/$NAME_LOWER_CASE_DASHED/g" "$PROJECT_DIRECTORY/development/Template.app/Contents/Info.plist"
 			mv "$PROJECT_DIRECTORY/development/Template.app" "$PROJECT_DIRECTORY/development/$NAME_CAPS_SPACED.app"
+			sed -i -e "s/Template\.app/$NAME_CAPS_SPACED\.app/g" "$PROJECT_DIRECTORY/.gitignore"
 
 			sed -i -e "s/template/$NAME_LOWER_CASE/g" "$PROJECT_DIRECTORY/development/android/app/src/main/java/org/cheeseandbacon/template/Game.java"
 			mv "$PROJECT_DIRECTORY/development/android/app/src/main/java/org/cheeseandbacon/template" "$PROJECT_DIRECTORY/development/android/app/src/main/java/org/cheeseandbacon/$NAME_LOWER_CASE_DASHED"

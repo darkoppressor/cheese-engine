@@ -45,6 +45,8 @@ Change CFBundleName and CFBundleDisplayName in development/\*.app/Contents/Info.
 
 Change CFBundleIdentifier in development/\*.app/Contents/Info.plist (all lower case, dashed)
 
+Change occurrences of Template.app in .gitignore (capitalized, spaced)
+
 Android
 -------
 Rename the development/android/src/org/cheeseandbacon/template directory to the name of the game

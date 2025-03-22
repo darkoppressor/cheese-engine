@@ -90,7 +90,7 @@ string Game_Manager::get_random_direction_cardinal_ordinal (RNG& rng) {
 void Game_Manager::toggle_pause () {
     paused = !paused;
 
-    Sound_Manager::play_sound("pause");
+    Sound_Manager::play_sound("ui/pause");
 }
 
 void Game_Manager::done_with_title () {
