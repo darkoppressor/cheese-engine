@@ -343,7 +343,7 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
             while (!load.eof()) {
                 load.getline(&line);
 
-                if (boost::algorithm::starts_with(line, path)) {
+                if (boost::algorithm::starts_with(line, search_path)) {
                     boost::algorithm::erase_first(line, prefix);
                     directories.push_back(line);
                 }
