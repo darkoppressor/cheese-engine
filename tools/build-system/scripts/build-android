@@ -23,7 +23,7 @@ read_android_key () {
 	fi
 }
 
-if [ -n "$PROJECT_DIRECTORY" ]; then
+if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$ANDROID_ABI_TARGETS" ]; then
 	../../build-date $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
 
 	./clean-android $PROJECT_DIRECTORY >> "$PROJECT_DIRECTORY/log-Release-Android"
