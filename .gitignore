@@ -3,6 +3,9 @@ CMakeFiles/**
 mods/**
 screenshots/**
 
+!data/images/.gitkeep
+!data/music/.gitkeep
+
 bin/**
 include/**
 lib/**
