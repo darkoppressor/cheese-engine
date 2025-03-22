@@ -75,6 +75,7 @@ class File_IO {
 
         #ifdef GAME_OS_ANDROID
             static bool is_in_directory_list(std::string path);
+            static std::vector<std::string> get_directory_list_for_directory(std::string prefix, std::string directory);
         #endif
 
         static bool exists(std::string path);

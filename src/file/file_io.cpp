@@ -326,6 +326,33 @@ bool File_IO::save_atomic (string path, string data, bool backup, bool append, b
         return false;
     }
 
+    vector<string> File_IO::get_directory_list_for_directory (string prefix, string directory) {
+        vector<string> directories;
+        string search_path = prefix + directory;
+
+        // Remove any ending slash
+        if (boost::algorithm::ends_with(search_path, "/")) {
+            boost::algorithm::erase_last(search_path, "/");
+        }
+
+        File_IO_Load load("directory_list");
+
+        if (load.is_opened()) {
+            string line = "";
+
+            while (!load.eof()) {
+                load.getline(&line);
+
+                if (boost::algorithm::starts_with(line, path)) {
+                    boost::algorithm::erase_first(line, prefix);
+                    directories.push_back(line);
+                }
+            }
+        }
+
+        return directories;
+    }
+
     bool File_IO::exists (string path) {
         // Check the directory_list
         if (is_in_directory_list(path)) {
