@@ -74,7 +74,36 @@ void VFS::clean_path (string& path) {
     }
 }
 
-void VFS::add_files_to_list (const VFS_Search_Path& prefix, const string& directory, set<string>& file_list) {
+void VFS::add_files (const string& search_directory, const string& directory, set<string>& file_list, bool recursive) {
+    if (File_IO::exists(search_directory) && File_IO::is_directory(search_directory)) {
+        for (File_IO_Directory_Iterator it(search_directory); it.evaluate(); it.iterate()) {
+            if (it.is_regular_file()) {
+                string file_name = it.get_file_name();
+
+                boost::algorithm::trim(file_name);
+
+                if (!boost::algorithm::ends_with(file_name, PAK_FILE_EXTENSION)) {
+                    file_name = directory + "/" + file_name;
+
+                    clean_path(file_name);
+
+                    file_list.insert(file_name);
+                }
+            } else if (recursive && it.is_directory()) {
+                string file_name = it.get_file_name();
+
+                boost::algorithm::trim(file_name);
+
+                clean_path(file_name);
+
+                add_files(search_directory + "/" + file_name, directory + "/" + file_name, file_list, recursive);
+            }
+        }
+    }
+}
+
+void VFS::add_files_to_list (const VFS_Search_Path& prefix, const string& directory, set<string>& file_list,
+                             bool recursive) {
     if (File_IO::exists(prefix.path)) {
         if (!prefix.pak_file && File_IO::is_directory(prefix.path)) {
             string search_directory = prefix.path + directory;
@@ -84,23 +113,7 @@ void VFS::add_files_to_list (const VFS_Search_Path& prefix, const string& direct
                 boost::algorithm::erase_last(search_directory, "/");
             }
 
-            if (File_IO::exists(search_directory) && File_IO::is_directory(search_directory)) {
-                for (File_IO_Directory_Iterator it(search_directory); it.evaluate(); it.iterate()) {
-                    if (it.is_regular_file()) {
-                        string file_name = it.get_file_name();
-
-                        boost::algorithm::trim(file_name);
-
-                        if (!boost::algorithm::ends_with(file_name, PAK_FILE_EXTENSION)) {
-                            file_name = directory + "/" + file_name;
-
-                            clean_path(file_name);
-
-                            file_list.insert(file_name);
-                        }
-                    }
-                }
-            }
+            add_files(search_directory, directory, file_list, recursive);
         } else if (prefix.pak_file && File_IO::is_regular_file(prefix.path)) {
             #ifndef GAME_OS_ANDROID
                 unzFile file = unzOpen(prefix.path.c_str());
@@ -296,7 +309,7 @@ vector<string> VFS::get_file_list (const string& directory) {
     vector<VFS_Search_Path> search_paths = get_search_paths();
 
     for (const auto& search_path : search_paths) {
-        add_files_to_list(search_path, directory, file_list);
+        add_files_to_list(search_path, directory, file_list, !directory.empty());
     }
 
     vector<string> sorted_file_list;

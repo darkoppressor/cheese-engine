@@ -57,8 +57,10 @@ class VFS_RWops {
 class VFS {
     private:
         static void clean_path(std::string& path);
+        static void add_files(const std::string& search_directory, const std::string& directory,
+                              std::set<std::string>& file_list, bool recursive);
         static void add_files_to_list(const VFS_Search_Path& prefix, const std::string& directory,
-                                      std::set<std::string>& file_list);
+                                      std::set<std::string>& file_list, bool recursive);
         static void add_pak_files_to_search_paths(std::string directory, std::vector<VFS_Search_Path>& search_paths);
         static VFS_Full_Path get_full_path(const std::string& path);
 
