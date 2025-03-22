@@ -50,6 +50,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	SOURCE_PROJECT="$PROJECT_DIRECTORY/development/images"
 	IMAGES_DIRECTORY="$PROJECT_DIRECTORY/data/images"
 
+	mkdir -p "$IMAGES_DIRECTORY/engine"
+
 	# Build all images in engine source directory
 
 	for file in $SOURCE_ENGINE/* ; do
@@ -62,8 +64,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 				file_name="$file_name.png"
 
 				# If the image does not already exist at the destination
-				if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
-					xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
+				if [ ! -e "$IMAGES_DIRECTORY/engine/$file_name" ]; then
+					xcf2png "$file" -o "$IMAGES_DIRECTORY/engine/$file_name"
 				fi
 			fi
 		fi
@@ -101,8 +103,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 				file_name="$file_name.png"
 
 				# If the image does not already exist at the destination
-				if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
-					xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
+				if [ ! -e "$IMAGES_DIRECTORY/engine/$file_name" ]; then
+					xcf2png "$file" -o "$IMAGES_DIRECTORY/engine/$file_name"
 				fi
 			fi
 		fi

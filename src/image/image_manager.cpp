@@ -14,7 +14,7 @@ vector<string> Image_Manager::image_names;
 Image_Data* Image_Manager::error_image = 0;
 
 void Image_Manager::set_error_image () {
-    error_image = get_image("error");
+    error_image = get_image("engine/error");
 }
 
 void Image_Manager::add_image (string name, SDL_Surface* surface) {

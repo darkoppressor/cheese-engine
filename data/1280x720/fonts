@@ -1,6 +1,6 @@
 <font>
 	name:standard
-	sprite:font_standard
+	sprite:engine/font_standard
 	spacing_x:11
 	spacing_y:24
 	gui_padding_x:6
@@ -10,7 +10,7 @@
 
 <font>
 	name:small
-	sprite:font_small
+	sprite:engine/font_small
 	spacing_x:7
 	spacing_y:12
 	gui_padding_x:3

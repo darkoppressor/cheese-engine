@@ -306,8 +306,8 @@ void Render::render_circle (double x, double y, double radius, double opacity, C
     double sprite_size = radius * 2.0;
     double sprite_scale = sprite_size / 1024.0;
 
-    render_texture(x - radius, y - radius, Image_Manager::get_image("circle"), opacity, sprite_scale, sprite_scale, 0.0,
-                   color, false, false);
+    render_texture(x - radius, y - radius, Image_Manager::get_image("engine/circle"), opacity, sprite_scale,
+                   sprite_scale, 0.0, color, false, false);
 }
 
 void Render::render_circle_empty (double x, double y, double radius, double opacity, string color_name) {
@@ -318,7 +318,7 @@ void Render::render_circle_empty (double x, double y, double radius, double opac
     double sprite_size = radius * 2.0;
     double sprite_scale = sprite_size / 1024.0;
 
-    render_texture(x - radius, y - radius, Image_Manager::get_image("circle_empty"), opacity, sprite_scale,
+    render_texture(x - radius, y - radius, Image_Manager::get_image("engine/circle_empty"), opacity, sprite_scale,
                    sprite_scale, 0.0, color, false, false);
 }
 
