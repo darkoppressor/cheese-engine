@@ -74,8 +74,8 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	# Determine the correct font images to build
 
 	FONT_DIR="1280x720"
-	SCREEN_WIDTH=$(sed -ne "/^.*logical_screen_width:/p" "$PROJECT_DIRECTORY/data/engine" | sed -e "s/^.*logical_screen_width://")
-	SCREEN_HEIGHT=$(sed -ne "/^.*logical_screen_height:/p" "$PROJECT_DIRECTORY/data/engine" | sed -e "s/^.*logical_screen_height://")
+	SCREEN_WIDTH=$(sed -ne "/^.*logical_screen_width:/p" "$PROJECT_DIRECTORY/data/data/engine/engine" | sed -e "s/^.*logical_screen_width://")
+	SCREEN_HEIGHT=$(sed -ne "/^.*logical_screen_height:/p" "$PROJECT_DIRECTORY/data/data/engine/engine" | sed -e "s/^.*logical_screen_height://")
 
 	for d in $SOURCE_ENGINE/fonts/*/ ; do
 		if [ -d "$d" ]; then

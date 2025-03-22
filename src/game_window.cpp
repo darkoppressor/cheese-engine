@@ -603,7 +603,7 @@ bool Game_Window::initialize () {
             return false;
         }
 
-        VFS_RWops rwops_controller = VFS::get_rwops("game_controller_db");
+        VFS_RWops rwops_controller = VFS::get_rwops("data/game_controller_db");
 
         if (SDL_GameControllerAddMappingsFromRW(rwops_controller.rwops, 1) == -1) {
             msg = "Error loading game controller database: ";

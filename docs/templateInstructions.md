@@ -22,7 +22,7 @@ Rename the launcher script in the root game directory (capitalized, dashed)
 
 Change CHEESIE_GAME_NAME in the launcher script (capitalized, dashed)
 
-Change name and home_directory in data/engine (all lower case, dashed)
+Change name and home_directory in data/data/engine/engine (all lower case, dashed)
 
 In Code::Blocks, change Project->Properties->Title (all lower case, dashed)
 

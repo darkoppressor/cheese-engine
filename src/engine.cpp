@@ -241,7 +241,7 @@ bool Engine::mutable_info_this (Information* ptr_info) {
 
 void Engine::compute_checksum () {
     vector<string> files;
-    vector<string> file_list = VFS::get_file_list("");
+    vector<string> file_list = VFS::get_file_list("data");
 
     for (const auto& file : file_list) {
         string file_name = file;

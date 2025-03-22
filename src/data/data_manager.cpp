@@ -213,7 +213,7 @@ void Data_Manager::load_data_game_options () {
 }
 
 bool Data_Manager::load_data (string tag) {
-    vector<string> file_list = VFS::get_file_list("");
+    vector<string> file_list = VFS::get_file_list("data");
 
     for (const auto& file : file_list) {
         File_IO_Load load(VFS::get_rwops(file));

@@ -33,10 +33,10 @@ get_type () {
 	fi
 }
 
-if [ -n "$PROJECT_DIRECTORY" ]; then
-	DATA_DIR="$PROJECT_DIRECTORY/data"
+get_files () {
+	local data_dir="$1"
 
-	for filename in $DATA_DIR/* ; do
+	for filename in $data_dir/* ; do
 		if [ -f "$filename" ]; then
 			file=$(<"$filename")
 
@@ -119,8 +119,17 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 					fi
 				fi
 			done
+		elif [ -d "$filename" ]; then
+			directory=$(basename "$filename")
+			get_files "$data_dir/$directory"
 		fi
 	done
+}
+
+if [ -n "$PROJECT_DIRECTORY" ]; then
+	DATA_DIR="$PROJECT_DIRECTORY/data/data"
+
+	get_files "$DATA_DIR"
 
 	filename_header="$PROJECT_DIRECTORY/src/game/game_constants.h"
 
