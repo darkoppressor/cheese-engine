@@ -80,6 +80,7 @@ create_asset_lists () {
 if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	ANDROID_DIRECTORY="$PROJECT_DIRECTORY/development/android"
 	ENGINE_ANDROID_DIRECTORY="/home/tails/build-server/cheese-engine/tools/build-system/android"
+	ENGINE_ANDROID_DEVELOPMENT_DIRECTORY="/home/tails/build-server/cheese-engine/development/android"
 
 	KEY_STORE_PASSWORD=$(sed -n '1{p;q;}' $KEY_PASSWORDS_LOCATION)
 	ALIAS_PASSWORD=$(sed -n '2{p;q;}' $KEY_PASSWORDS_LOCATION)
@@ -157,6 +158,8 @@ if [ -n "$PROJECT_DIRECTORY" ] && [ -n "$KEY_PASSWORDS_LOCATION" ]; then
 	cp "$ENGINE_ANDROID_DIRECTORY/app/proguard-rules.pro" "$ANDROID_DIRECTORY/app/proguard-rules.pro"
 	cp -r "$ENGINE_ANDROID_DIRECTORY/app/src/main/java/org/libsdl" "$ANDROID_DIRECTORY/app/src/main/java/org"
 	cp -r "$ENGINE_ANDROID_DIRECTORY/app/jni" "$ANDROID_DIRECTORY/app"
+	cp "$ENGINE_ANDROID_DEVELOPMENT_DIRECTORY/jni/Android.mk" "$ANDROID_DIRECTORY/app/jni/Android.mk"
+	cp "$ENGINE_ANDROID_DEVELOPMENT_DIRECTORY/jni/Application.mk" "$ANDROID_DIRECTORY/app/jni/Application.mk"
 
 	VERSION_CODE_FILE="$ANDROID_DIRECTORY/versionCode"
 	VERSION_CODE=$(sed -e "/^[0-9]+$/p" "$VERSION_CODE_FILE" | sed -e "s/[^0-9]//g")
