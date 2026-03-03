@@ -1,7 +1,7 @@
 # Content license
 
 This game's data is not under the same license as the source code.
-The game data is published by Cheese and Bacon Games, LLC under the Creative Commons Attribution 4.0 International
+The game data is published by Cheese and Bacon Games under the Creative Commons Attribution 4.0 International
 License.
 To view a copy of this license, visit https://creativecommons.org/licenses/by/4.0/.
 
