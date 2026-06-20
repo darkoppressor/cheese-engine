@@ -160,7 +160,6 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	if [ ! -d "/home/tails/build-server/android/android-sdk/ndk/$NDK_VERSION" ]; then
 		NDK_VERSION=""
 	fi
-	sdk_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/tools/source.properties" | sed -e "s/^Pkg.Revision=//")
 	sdk_platform_tools=$(sed -ne "/^Pkg.Revision=/p" "/home/tails/build-server/android/android-sdk/platform-tools/source.properties" | sed -e "s/^Pkg.Revision=//")
 	sdk_build_tools=""
 	for d in /home/tails/build-server/android/android-sdk/build-tools/*/ ; do
@@ -175,7 +174,7 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 			break
 		fi
 	done
-	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $NDK_VERSION, SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
+	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $NDK_VERSION, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
 
 	echo -e "$OUTPUT" > "$PROJECT_DIRECTORY/docs/buildInformation.md"
 else
