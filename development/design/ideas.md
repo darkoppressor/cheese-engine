@@ -77,8 +77,3 @@ With this all setup, this might enable my other idea for making error messages a
 I would also need to extend my stuff to use unicode or whatever instead of just ascii
 
 Change to using dynamic linking instead of static?
-
-Add SDL2 audio capture support
-Add android mic recording support
-Add audio comparison code
-Could be used in say bit beast for calling your pet by name
