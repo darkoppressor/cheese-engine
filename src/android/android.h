@@ -34,8 +34,6 @@ const int GPS_VALUES_MAX = 6;
         extern bool get_gps_accessible();
         extern bool get_gps_enabled();
         extern void get_gps_values(double values[GPS_VALUES_MAX]);
-        extern bool getGooglePlayServicesSilentSignInAttemptComplete();
-        extern bool getGooglePlayServicesSignedIn();
     }
 #endif
 
@@ -186,15 +184,6 @@ class Android {
         static Android_GPS get_gps_readout();
         static void enable_gps(std::uint32_t minimum_update_time, float minimum_update_distance);
         static void disable_gps();
-        static bool gpg_is_silent_sign_in_attempt_complete();
-        static bool gpg_is_signed_in();
-        static void gpg_sign_in();
-        static void gpg_sign_out();
-        static void gpg_unlock_achievement(std::string achievement_id);
-        static void gpg_submit_highscore(std::string leaderboard_id, uint64_t score);
-        static void gpg_show_achievements();
-        static void gpg_show_leaderboard(std::string leaderboard_id);
-        static void gpg_show_all_leaderboards();
 };
 
 #endif

@@ -14,8 +14,6 @@ using namespace std;
         static bool gps_accessible = false;
         static bool gps_enabled = false;
         static double gps_values[GPS_VALUES_MAX];
-        static bool googlePlayServicesSilentSignInAttemptComplete = false;
-        static bool googlePlayServicesSignedIn = false;
 
         JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeUpdateGPSAvailable (JNIEnv* env, jclass jcls,
                                                                                          jboolean available) {
@@ -44,17 +42,6 @@ using namespace std;
             gps_values[5] = speed;
         }
 
-        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeGooglePlayServicesSilentSignInAttemptComplete (
-            JNIEnv* env, jclass jcls, jboolean silentSignInAttemptComplete) {
-            googlePlayServicesSilentSignInAttemptComplete = silentSignInAttemptComplete;
-        }
-
-        JNIEXPORT void JNICALL Java_org_libsdl_app_SDLActivity_nativeGooglePlayServicesSignedIn (JNIEnv* env,
-                                                                                                 jclass jcls,
-                                                                                                 jboolean signedIn) {
-            googlePlayServicesSignedIn = signedIn;
-        }
-
         void jni_reset () {
             gps_available = false;
             gps_accessible = false;
@@ -63,9 +50,6 @@ using namespace std;
             for (int i = 0; i < GPS_VALUES_MAX; i++) {
                 gps_values[i] = 0.0;
             }
-
-            googlePlayServicesSilentSignInAttemptComplete = false;
-            googlePlayServicesSignedIn = false;
         }
 
         bool get_gps_available () {
@@ -84,14 +68,6 @@ using namespace std;
             for (int i = 0; i < GPS_VALUES_MAX; i++) {
                 values[i] = gps_values[i];
             }
-        }
-
-        bool getGooglePlayServicesSilentSignInAttemptComplete () {
-            return googlePlayServicesSilentSignInAttemptComplete;
-        }
-
-        bool getGooglePlayServicesSignedIn () {
-            return googlePlayServicesSignedIn;
         }
     }
 #endif
@@ -608,95 +584,4 @@ void Android::enable_gps (uint32_t minimum_update_time, float minimum_update_dis
 
 void Android::disable_gps () {
     set_gps_enabled(false, 0, 0.0f);
-}
-
-bool Android::gpg_is_silent_sign_in_attempt_complete () {
-    #ifdef GAME_OS_ANDROID
-
-        return getGooglePlayServicesSilentSignInAttemptComplete();
-    #endif
-
-    return false;
-}
-
-bool Android::gpg_is_signed_in () {
-    #ifdef GAME_OS_ANDROID
-
-        return getGooglePlayServicesSignedIn();
-    #endif
-
-    return false;
-}
-
-void Android::gpg_sign_in () {
-    Log::add_log("Google Play Games: Signing in");
-    call_android_method_static("signInToGooglePlayServices", "()V");
-}
-
-void Android::gpg_sign_out () {
-    Log::add_log("Google Play Games: Signing out");
-    call_android_method_static("signOutOfGooglePlayServices", "()V");
-}
-
-void Android::gpg_unlock_achievement (string achievement_id) {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Unlocked achievement: '" + achievement_id + "'");
-
-        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-
-        if (env != 0) {
-            jstring jstr = env->NewStringUTF(achievement_id.c_str());
-
-            call_android_method_static("unlockAchievement", "(Ljava/lang/String;)V", jstr);
-        } else {
-            Log::add_error("Error unlocking achievement '" + achievement_id + "': SDL_AndroidGetJNIEnv returned 0");
-        }
-
-    #endif
-}
-
-void Android::gpg_submit_highscore (string leaderboard_id, uint64_t score) {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Submitting score: '" + Strings::num_to_string(score) + "' for leaderboard '" +
-                     leaderboard_id + "'");
-
-        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-
-        if (env != 0) {
-            jstring jstr = env->NewStringUTF(leaderboard_id.c_str());
-
-            call_android_method_static("submitScore", "(Ljava/lang/String;J)V", jstr);
-        } else {
-            Log::add_error("Error submitting score '" + Strings::num_to_string(score) + "' for leaderboard '" +
-                           leaderboard_id + "': SDL_AndroidGetJNIEnv returned 0");
-        }
-
-    #endif
-}
-
-void Android::gpg_show_achievements () {
-    Log::add_log("Google Play Games: Displaying achievements UI");
-    call_android_method_static("showAchievements", "()V");
-}
-
-void Android::gpg_show_leaderboard (string leaderboard_id) {
-    #ifdef GAME_OS_ANDROID
-        Log::add_log("Google Play Games: Displaying leaderboard: '" + leaderboard_id + "'");
-
-        JNIEnv* env = (JNIEnv*) SDL_AndroidGetJNIEnv();
-
-        if (env != 0) {
-            jstring jstr = env->NewStringUTF(leaderboard_id.c_str());
-
-            call_android_method_static("showLeaderboard", "(Ljava/lang/String;J)V", jstr);
-        } else {
-            Log::add_error("Error displaying leaderboard '" + leaderboard_id + "': SDL_AndroidGetJNIEnv returned 0");
-        }
-
-    #endif
-}
-
-void Android::gpg_show_all_leaderboards () {
-    Log::add_log("Google Play Games: Displaying all leaderboards");
-    call_android_method_static("showAllLeaderboards", "()V");
 }

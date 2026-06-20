@@ -57,16 +57,6 @@ import androidx.annotation.NonNull;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import android.os.Looper;
 import org.cheeseandbacon.APP_NAME.R;
 
@@ -78,11 +68,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     private static final int SDL_MAJOR_VERSION = 2;
     private static final int SDL_MINOR_VERSION = 32;
     private static final int SDL_MICRO_VERSION = 2;
-    private static final int REQUEST_CODE_GOOGLE_PLAY_SERVICES_ERROR_DIALOG = 0;
-    private static final int REQUEST_CODE_GOOGLE_PLAY_SERVICES_SIGN_IN = 1;
-    private static final int REQUEST_CODE_GOOGLE_PLAY_SERVICES_SHOW_ACHIEVEMENTS = 2;
-    private static final int REQUEST_CODE_GOOGLE_PLAY_SERVICES_SHOW_LEADERBOARD = 3;
-    private static final int REQUEST_CODE_GOOGLE_PLAY_SERVICES_SHOW_ALL_LEADERBOARDS = 4;
 
     protected static boolean gps_requested;
     protected static long gps_minTime;
@@ -92,12 +77,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     protected static LocationManager mLocationManager;
     protected static LocationListener mLocationListener;
     protected static Handler mLocationHandler;
-    protected static GoogleSignInClient mGoogleSignInClient;
 
-    protected static boolean googlePlayServicesAvailable;
-    protected static boolean googlePlayServicesConnected;
-    protected static boolean googlePlayServicesSilentSignInAttemptComplete;
-    protected static boolean googlePlayServicesSignedIn;
 /*
     // Display InputType.SOURCE/CLASS of events and devices
     //
@@ -355,12 +335,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mLocationManager=null;
         mLocationListener=null;
         mLocationHandler=null;
-        mGoogleSignInClient = null;
-
-        googlePlayServicesAvailable = false;
-        googlePlayServicesConnected = false;
-        googlePlayServicesSilentSignInAttemptComplete = false;
-        googlePlayServicesSignedIn = false;
     }
 
     protected SDLSurface createSDLSurface(Context context) {
@@ -532,8 +506,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         if (!mHasMultiWindow) {
             resumeNativeThread();
         }
-
-        checkForGooglePlayServices(this);
     }
 
     @Override
@@ -1006,9 +978,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     public static native void nativeUpdateGPSEnabled(boolean enabled);
     public static native void nativeGPSUpdate(float accuracy,double altitude,float bearing,double latitude,double longitude,float speed);
 
-    public static native void nativeGooglePlayServicesSilentSignInAttemptComplete(boolean silentSignInAttemptComplete);
-    public static native void nativeGooglePlayServicesSignedIn(boolean signedIn);
-
     public static void enableFeatures(boolean enabled){
         if(enabled){
             if(gps_requested){
@@ -1103,285 +1072,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 }
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_GOOGLE_PLAY_SERVICES_ERROR_DIALOG) {
-            if (resultCode == RESULT_OK) {
-                googlePlayServicesAvailable = true;
-                googlePlayServicesConnect(this);
-            } else {
-                Log.i(TAG, "Google Play Services user resolvable error not resolved, so Google Play Services remain unavailable");
-            }
-        } else if (requestCode == REQUEST_CODE_GOOGLE_PLAY_SERVICES_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
-                try {
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
-                    onGooglePlayServicesSignedIn(this, account);
-                } catch (ApiException apiException) {
-                    String message = apiException.getMessage();
-
-                    if (message == null || message.isEmpty()) {
-                        message = "Generic API exception occurred";
-                    }
-
-                    onGooglePlayServicesSignedOut();
-
-                    Log.i(TAG, "Signing in to Google Play Games failed: " + message);
-                }
-            } else {
-                Log.i(TAG, "Signing in to Google Play Games failed");
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public static void signInToGooglePlayServices () {
-        googlePlayServicesSignIn(mSingleton);
-    }
-
-    public static void signOutOfGooglePlayServices () {
-        googlePlayServicesSignOut(mSingleton);
-    }
-
-    public static void unlockAchievement (String achievementId) {
-        googlePlayGamesUnlockAchievement(mSingleton, achievementId);
-    }
-
-    public static void submitScore (String leaderboardId, long score) {
-        googlePlayGamesSubmitScore(mSingleton, leaderboardId, score);
-    }
-
-    public static void showAchievements () {
-        googlePlayGamesShowAchievements(mSingleton);
-    }
-
-    public static void showLeaderboard (String leaderboardId) {
-        googlePlayGamesShowLeaderboard(mSingleton, leaderboardId);
-    }
-
-    public static void showAllLeaderboards () {
-        googlePlayGamesShowAllLeaderboards(mSingleton);
-    }
-
-    private static boolean isGooglePlayGamesDesired (Activity activity) {
-        return !activity.getString(R.string.app_id).equals("REPLACE_WITH_GOOGLE_PLAY_GAMES_APP_ID");
-    }
-
-    private static void checkForGooglePlayServices (Activity activity) {
-        if (isGooglePlayGamesDesired(activity)) {
-            Log.i(TAG, "Google Play Services are desired, attempting to connect");
-
-            mGoogleSignInClient = null;
-            googlePlayServicesAvailable = false;
-            googlePlayServicesConnected = false;
-            setGooglePlayServicesSilentSignInAttemptComplete(false);
-            setGooglePlayServicesSignedIn(false);
-
-            GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-            int status = googleApiAvailability.isGooglePlayServicesAvailable(activity);
-
-            switch (status) {
-                case ConnectionResult.SUCCESS:
-                    googlePlayServicesAvailable = true;
-                    googlePlayServicesConnect(activity);
-                    break;
-
-                case ConnectionResult.SERVICE_MISSING:
-                case ConnectionResult.SERVICE_UPDATING:
-                case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
-                case ConnectionResult.SERVICE_DISABLED:
-                case ConnectionResult.SERVICE_INVALID:
-                    if (googleApiAvailability.isUserResolvableError(status)) {
-                        Log.i(TAG, "Google Play Services are unavailable, but the error is user resolvable");
-                        googleApiAvailability.getErrorDialog(activity, status, REQUEST_CODE_GOOGLE_PLAY_SERVICES_ERROR_DIALOG);
-                    } else {
-                        Log.i(TAG, "Google Play Services are unavailable");
-                    }
-                    break;
-
-                default:
-                    Log.i(TAG, "Google Play Services are unavailable");
-                    break;
-            }
-        }
-    }
-
-    private static void googlePlayServicesConnect (Activity activity) {
-        if (googlePlayServicesAvailable && !googlePlayServicesConnected) {
-            Log.i(TAG, "Connecting to Google Play Services");
-
-            mGoogleSignInClient = GoogleSignIn.getClient(activity,
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
-                    .build()
-            );
-
-            googlePlayServicesConnected = true;
-
-            googlePlayServicesSignInSilently(activity);
-        }
-    }
-
-    private static void googlePlayServicesSignInSilently (Activity activity) {
-        if (googlePlayServicesAvailable && googlePlayServicesConnected && !googlePlayServicesSignedIn && !googlePlayServicesSilentSignInAttemptComplete) {
-            Log.i(TAG, "Signing in silently to Google Play Games");
-
-            mGoogleSignInClient.silentSignIn().addOnCompleteListener(activity,
-                new OnCompleteListener<GoogleSignInAccount> () {
-                    @Override
-                    public void onComplete (@NonNull Task<GoogleSignInAccount> task) {
-                        setGooglePlayServicesSilentSignInAttemptComplete(true);
-
-                        if (task.isSuccessful()) {
-                            onGooglePlayServicesSignedIn(activity, task.getResult());
-                        } else {
-                            Log.i(TAG, "Google Play Games silent sign in failed: " + task.getException().getMessage());
-
-                            onGooglePlayServicesSignedOut();
-                        }
-                    }
-                }
-            );
-        }
-    }
-
-    private static void googlePlayServicesSignIn (Activity activity) {
-        if (googlePlayServicesAvailable && googlePlayServicesConnected && !googlePlayServicesSignedIn && googlePlayServicesSilentSignInAttemptComplete) {
-            Log.i(TAG, "Signing in to Google Play Games");
-
-            activity.startActivityForResult(mGoogleSignInClient.getSignInIntent(), REQUEST_CODE_GOOGLE_PLAY_SERVICES_SIGN_IN);
-        }
-    }
-
-    private static void onGooglePlayServicesSignedIn (Activity activity, GoogleSignInAccount googleSignInAccount) {
-        Log.i(TAG, "Signed in to Google Play Games");
-
-        setGooglePlayServicesSignedIn(true);
-
-        if (GoogleSignIn.getLastSignedInAccount(activity) != googleSignInAccount) {
-            onGooglePlayServicesAccountChanged(googleSignInAccount);
-        }
-    }
-
-    private static void onGooglePlayServicesAccountChanged (GoogleSignInAccount googleSignInAccount) {
-        Log.i(TAG, "Google Play Games account changed");
-    }
-
-    private static void onGooglePlayServicesSignedOut () {
-        Log.i(TAG, "Signed out of Google Play Games");
-
-        setGooglePlayServicesSignedIn(false);
-    }
-
-    private static void googlePlayServicesSignOut (Activity activity) {
-        if (googlePlayServicesSignedIn) {
-            Log.i(TAG, "Signing out of Google Play Games");
-
-            mGoogleSignInClient.signOut().addOnCompleteListener (activity,
-                new OnCompleteListener<Void> () {
-                    @Override
-                    public void onComplete (@NonNull Task<Void> task) {
-                        if (!task.isSuccessful()) {
-                            Log.i(TAG, "Google Play Games sign out failed: " + task.getException().getMessage());
-                        }
-
-                        onGooglePlayServicesSignedOut();
-                    }
-            });
-        }
-    }
-
-    private static void googlePlayGamesUnlockAchievement (Activity activity, String achievementId) {
-        if (googlePlayServicesSignedIn) {
-            Log.i(TAG, "Unlocking Google Play Games achievement: " + achievementId);
-
-            Games.getAchievementsClient(activity, GoogleSignIn.getLastSignedInAccount(activity)).unlock(achievementId);
-        }
-    }
-
-    private static void googlePlayGamesSubmitScore (Activity activity, String leaderboardId, long score) {
-        if (googlePlayServicesSignedIn) {
-            Log.i(TAG, "Submitting Google Play Games score: " + score + " for leaderboard " + leaderboardId);
-
-            Games.getLeaderboardsClient(activity, GoogleSignIn.getLastSignedInAccount(activity)).submitScore(leaderboardId, score);
-        }
-    }
-
-    private static void googlePlayGamesShowAchievements (Activity activity) {
-        if (googlePlayServicesSignedIn) {
-            Log.i(TAG, "Displaying Google Play Games achievements");
-
-            Games.getAchievementsClient(activity, GoogleSignIn.getLastSignedInAccount(activity)).getAchievementsIntent()
-                .addOnCompleteListener(new OnCompleteListener<Intent> () {
-                    @Override
-                    public void onComplete (@NonNull Task<Intent> task) {
-                        if (task.isSuccessful()) {
-                            activity.startActivityForResult(task.getResult(), REQUEST_CODE_GOOGLE_PLAY_SERVICES_SHOW_ACHIEVEMENTS);
-                        } else {
-                            Log.i(TAG, "Google Play Games achievement display failed: " + task.getException().getMessage());
-                        }
-                    }
-                }
-            );
-        }
-    }
-
-    private static void googlePlayGamesShowLeaderboard (Activity activity, String leaderboardId) {
-        if (googlePlayServicesSignedIn) {
-            Log.i(TAG, "Displaying Google Play Games leaderboard: " + leaderboardId);
-
-            Games.getLeaderboardsClient(activity, GoogleSignIn.getLastSignedInAccount(activity)).getLeaderboardIntent(leaderboardId)
-                .addOnCompleteListener(new OnCompleteListener<Intent> () {
-                    @Override
-                    public void onComplete (@NonNull Task<Intent> task) {
-                        if (task.isSuccessful()) {
-                            activity.startActivityForResult(task.getResult(), REQUEST_CODE_GOOGLE_PLAY_SERVICES_SHOW_LEADERBOARD);
-                        } else {
-                            Log.i(TAG, "Google Play Games leaderboard display failed: " + task.getException().getMessage());
-                        }
-                    }
-                }
-            );
-        }
-    }
-
-    private static void googlePlayGamesShowAllLeaderboards (Activity activity) {
-        if (googlePlayServicesSignedIn) {
-            Log.i(TAG, "Displaying all Google Play Games leaderboards");
-
-            Games.getLeaderboardsClient(activity, GoogleSignIn.getLastSignedInAccount(activity)).getAllLeaderboardsIntent()
-                .addOnCompleteListener(new OnCompleteListener<Intent> () {
-                    @Override
-                    public void onComplete (@NonNull Task<Intent> task) {
-                        if (task.isSuccessful()) {
-                            activity.startActivityForResult(task.getResult(), REQUEST_CODE_GOOGLE_PLAY_SERVICES_SHOW_ALL_LEADERBOARDS);
-                        } else {
-                            Log.i(TAG, "Google Play Games leaderboards display failed: " + task.getException().getMessage());
-                        }
-                    }
-                }
-            );
-        }
-    }
-
-    private static void setGooglePlayServicesSilentSignInAttemptComplete (boolean googlePlayServicesSilentSignInAttemptComplete) {
-        Log.i(TAG, "Google Play Services silent sign in attempt state updated: " + googlePlayServicesSilentSignInAttemptComplete);
-
-        mSingleton.googlePlayServicesSilentSignInAttemptComplete = googlePlayServicesSilentSignInAttemptComplete;
-
-        nativeGooglePlayServicesSilentSignInAttemptComplete(googlePlayServicesSilentSignInAttemptComplete);
-    }
-
-    private static void setGooglePlayServicesSignedIn (boolean googlePlayServicesSignedIn) {
-        Log.i(TAG, "Google Play Services sign in state updated: " + googlePlayServicesSignedIn);
-
-        mSingleton.googlePlayServicesSignedIn = googlePlayServicesSignedIn;
-
-        nativeGooglePlayServicesSignedIn(googlePlayServicesSignedIn);
     }
 
     /**

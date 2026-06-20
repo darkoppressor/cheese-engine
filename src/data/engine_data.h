@@ -23,10 +23,6 @@ class Engine_Data {
         // How the game handles different logical resolutions and resolution options
         static std::string resolution_mode;
 
-        // If true, Google Play Games will be initialized
-        // If false, Google Play Games will not be initialized
-        static bool android_gpg;
-
         static bool network_lockstep;
         static double sound_falloff;
         static bool controller_text_entry_small;
