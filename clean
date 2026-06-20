@@ -38,4 +38,4 @@ rm -f *.cscope_file_list
 rm -f "Thumbs.db"
 rm -f ".DS_Store"
 
-$HOME/build-server/cheese-engine/development/android/clean-android
+development/android/clean-android
