@@ -56,9 +56,7 @@ Change the package name in Game.java in the above directory (all lower case, no 
 
 Change the app name in development/android/appName (all lower case, no spaces or dashes)
 If the game will use networking, enable the INTERNET permission in development/android/AndroidManifest.xml
-If the game will use GPS, enable the ACCESS_FINE_LOCATION permission in development/android/AndroidManifest.xml
 Enable any commented out features in development/android/AndroidManifest.xml that are going to be used by the game
-(both location and location.gps are relevant for GPS)
 
 Change the project name in development/android/build.xml (capitalized, dashed)
 

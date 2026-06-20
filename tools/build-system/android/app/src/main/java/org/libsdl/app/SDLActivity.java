@@ -53,11 +53,6 @@ import android.widget.Toast;
 import java.util.Hashtable;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Looper;
 import org.cheeseandbacon.APP_NAME.R;
 
 /**
@@ -68,16 +63,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     private static final int SDL_MAJOR_VERSION = 2;
     private static final int SDL_MINOR_VERSION = 32;
     private static final int SDL_MICRO_VERSION = 2;
-
-    protected static boolean gps_requested;
-    protected static long gps_minTime;
-    protected static float gps_minDistance;
-
-    protected static PackageManager mPackageManager;
-    protected static LocationManager mLocationManager;
-    protected static LocationListener mLocationListener;
-    protected static Handler mLocationHandler;
-
 /*
     // Display InputType.SOURCE/CLASS of events and devices
     //
@@ -326,17 +311,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mHasFocus = true;
         mNextNativeState = NativeState.INIT;
         mCurrentNativeState = NativeState.INIT;
-
-        gps_requested=false;
-        gps_minTime=0L;
-        gps_minDistance=0.0f;
-
-        mPackageManager=null;
-        mLocationManager=null;
-        mLocationListener=null;
-        mLocationHandler=null;
     }
-
+    
     protected SDLSurface createSDLSurface(Context context) {
         return new SDLSurface(context);
     }
@@ -452,11 +428,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
                 SDLActivity.onNativeDropFile(filename);
             }
         }
-
-        mPackageManager=(PackageManager)getPackageManager();
-        mLocationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        mLocationListener=new GPSListener();
-        mLocationHandler=new Handler(Looper.getMainLooper());
     }
 
     protected void pauseNativeThread() {
@@ -973,22 +944,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     public static native void nativePermissionResult(int requestCode, boolean result);
     public static native void onNativeLocaleChanged();
 
-    public static native void nativeUpdateGPSAvailable(boolean available);
-    public static native void nativeUpdateGPSAccessible(boolean accessible);
-    public static native void nativeUpdateGPSEnabled(boolean enabled);
-    public static native void nativeGPSUpdate(float accuracy,double altitude,float bearing,double latitude,double longitude,float speed);
-
-    public static void enableFeatures(boolean enabled){
-        if(enabled){
-            if(gps_requested){
-                enableGPSActual(enabled,gps_minTime,gps_minDistance);
-            }
-        }
-        else{
-            enableGPSActual(enabled,0L,0.0f);
-        }
-    }
-
     public static void vibrate(int milliseconds){
         mSurface.vibrate((long)milliseconds);
     }
@@ -999,79 +954,6 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
     public static void openUrl(String url){
         mSurface.openUrl(url);
-    }
-
-    // This should only be called by the game
-    public static void enableGPS(boolean enabled,int minTime,float minDistance){
-        gps_requested=enabled;
-        gps_minTime=(long)minTime;
-        gps_minDistance=minDistance;
-
-        enableGPSActual(enabled,gps_minTime,gps_minDistance);
-    }
-
-    protected static final class GPSListener implements LocationListener{
-        @Override
-        public void onLocationChanged(Location location){
-            SDLActivity.nativeGPSUpdate(location.getAccuracy(),location.getAltitude(),location.getBearing(),location.getLatitude(),location.getLongitude(),location.getSpeed());
-        }
-
-        @Override
-        public void onStatusChanged(String provider,int status,Bundle extras){
-        }
-
-        @Override
-        public void onProviderEnabled(String provider){
-            if(provider.equals(LocationManager.GPS_PROVIDER)){
-                SDLActivity.nativeUpdateGPSAccessible(true);
-
-                if(gps_requested){
-                    enableGPSActual(true,gps_minTime,gps_minDistance);
-                }
-            }
-        }
-
-        @Override
-        public void onProviderDisabled(String provider){
-            if(provider.equals(LocationManager.GPS_PROVIDER)){
-                SDLActivity.nativeUpdateGPSAccessible(false);
-
-                enableGPSActual(false,0L,0.0f);
-            }
-        }
-    }
-
-    public static void gpsOnUIThread(Runnable runnable){
-        mLocationHandler.post(runnable);
-    }
-
-    public static void enableGPSActual(final boolean enabled,final long minTime,final float minDistance){
-        SDLActivity.gpsOnUIThread(new Runnable(){
-            public void run(){
-                if(mSurface.is_gps_available()){
-                    if(mSurface.is_gps_accessible()){
-                        if(enabled){
-                            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,minTime,minDistance,SDLActivity.mLocationListener);
-
-                            SDLActivity.nativeUpdateGPSEnabled(true);
-                        }
-                        else{
-                            mLocationManager.removeUpdates(SDLActivity.mLocationListener);
-
-                            SDLActivity.nativeUpdateGPSEnabled(false);
-                        }
-                    }
-                    else{
-                        mLocationManager.removeUpdates(SDLActivity.mLocationListener);
-
-                        SDLActivity.nativeUpdateGPSEnabled(false);
-                    }
-                }
-                else{
-                    SDLActivity.nativeUpdateGPSEnabled(false);
-                }
-            }
-        });
     }
 
     /**
@@ -2256,3 +2138,4 @@ class SDLClipboardHandler implements
         SDLActivity.onNativeClipboardChanged();
     }
 }
+

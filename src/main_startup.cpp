@@ -238,10 +238,6 @@ int main_initialize (bool first_init, Command_Line_Arguments& arguments, int gam
         startup += search_path.path + pak_file_string + "\n";
     }
 
-    #ifdef GAME_OS_ANDROID
-        startup += "\nAvailable sensors:\n" + Android::getSensorsString();
-    #endif
-
     startup += "\n";
 
     Log::add_log(startup);

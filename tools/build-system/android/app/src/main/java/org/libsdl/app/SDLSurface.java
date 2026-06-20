@@ -1,5 +1,6 @@
 package org.libsdl.app;
 
+
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
@@ -19,9 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.net.Uri;
-import android.location.LocationManager;
 import android.os.Vibrator;
-import android.content.pm.PackageManager;
 import android.content.Intent;
 
 /**
@@ -39,9 +38,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     protected static Context mContext;
     protected Vibrator mVibrator;
-    protected PackageManager mPackageManagerSurface;
-    protected String mPackageName;
-    protected LocationManager mLocationManagerSurface;
 
     // Keep track of the surface size to normalize touch events
     protected float mWidth, mHeight;
@@ -65,9 +61,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
         mContext = context;
         mVibrator=(Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-        mPackageManagerSurface=(PackageManager)context.getPackageManager();
-        mPackageName=context.getPackageName();
-        mLocationManagerSurface=(LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 
         setOnGenericMotionListener(SDLActivity.getMotionListener());
 
@@ -80,8 +73,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     public void handlePause() {
         enableSensor(Sensor.TYPE_ACCELEROMETER, false);
-
-        SDLActivity.enableFeatures(false);
     }
 
     public void handleResume() {
@@ -91,9 +82,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setOnKeyListener(this);
         setOnTouchListener(this);
         enableSensor(Sensor.TYPE_ACCELEROMETER, true);
-
-        update_available_features();
-        SDLActivity.enableFeatures(true);
     }
 
     public Surface getNativeSurface() {
@@ -118,56 +106,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
         mIsSurfaceReady = false;
         SDLActivity.onNativeSurfaceDestroyed();
-    }
-
-    public void update_available_features(){
-        check_gps_availability();
-        check_gps_accessibility();
-    }
-
-    public boolean is_gps_permitted(){
-        if(mPackageManagerSurface.checkPermission(android.Manifest.permission.ACCESS_FINE_LOCATION,mPackageName)==PackageManager.PERMISSION_GRANTED){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public boolean is_gps_available(){
-        if(is_gps_permitted() && mPackageManagerSurface.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public boolean is_gps_accessible(){
-        if(is_gps_permitted() && mLocationManagerSurface.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    public void check_gps_availability(){
-        if(is_gps_available()){
-            SDLActivity.nativeUpdateGPSAvailable(true);
-        }
-        else{
-            SDLActivity.nativeUpdateGPSAvailable(false);
-        }
-    }
-
-    public void check_gps_accessibility(){
-        if(is_gps_accessible()){
-            SDLActivity.nativeUpdateGPSAccessible(true);
-        }
-        else{
-            SDLActivity.nativeUpdateGPSAccessible(false);
-        }
     }
 
     // Called when the surface is resized
@@ -255,9 +193,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
         SDLActivity.mNextNativeState = SDLActivity.NativeState.RESUMED;
         SDLActivity.handleNativeState();
-
-        update_available_features();
-        SDLActivity.enableFeatures(true);
     }
 
     // Key events
