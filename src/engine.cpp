@@ -20,7 +20,6 @@
 #include "file/vfs.h"
 #include "file/directories.h"
 #include "android/android.h"
-#include "steam/steam.h"
 #include "file/file_io.h"
 
 #include <boost/algorithm/string.hpp>
@@ -186,8 +185,6 @@ void Engine::quit () {
     #ifdef GAME_OS_ANDROID
         Android::deinitialize();
     #endif
-
-    Steam::deinitialize();
 
     exit(EXIT_SUCCESS);
 }

@@ -27,10 +27,6 @@ class Engine_Data {
         // If false, Google Play Games will not be initialized
         static bool android_gpg;
 
-        // If true, Steam support will be initialized
-        // If false, Steam support will not be initialized
-        static bool steam;
-        static std::uint32_t steam_app_id;
         static bool network_lockstep;
         static double sound_falloff;
         static bool controller_text_entry_small;

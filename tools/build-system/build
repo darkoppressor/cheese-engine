@@ -275,9 +275,7 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 		PACKAGING="$BUILD_HOME/build-server/projects/${PROJECT_NAME}/packaging"
 		PACKAGING_LINUX="${PROJECT_NAME}-linux-${PROJECT_VERSION}"
-		PACKAGING_LINUX_STEAM="${PROJECT_NAME}-linux-steam-${PROJECT_VERSION}"
 		PACKAGING_WINDOWS="${PROJECT_NAME}-windows-${PROJECT_VERSION}"
-		PACKAGING_WINDOWS_STEAM="${PROJECT_NAME}-windows-steam-${PROJECT_VERSION}"
 		cd "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development"
 		PACKAGING_macOS="$(find -maxdepth 1 -type d -name '*.app'| head -n1)"
 		cd $DIR
@@ -419,25 +417,11 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/${NAME_CAPPED}" "${PACKAGING}/${PACKAGING_LINUX}"
 			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_LINUX}"
 
-			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/linux64/libsteam_api.so" "${PACKAGING}/${PACKAGING_LINUX}"
-
-			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_LINUX}/data/data/engine/engine"
-
 			cd "${PACKAGING}"
 
 			tar cpzf "${PACKAGING_LINUX}.tar.gz" "${PACKAGING_LINUX}"
 
 			mv "${PACKAGING_LINUX}.tar.gz" "${BUILDS}"
-
-			cd $DIR
-
-			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_LINUX}/data/data/engine/engine"
-
-			cd "${PACKAGING}"
-
-			tar cpzf "${PACKAGING_LINUX_STEAM}.tar.gz" "${PACKAGING_LINUX}"
-
-			mv "${PACKAGING_LINUX_STEAM}.tar.gz" "${BUILDS}"
 		fi
 
 		if [ "$PACKAGE_WINDOWS_64" == "true" ]; then
@@ -445,25 +429,11 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 			cp -r "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/docs" "${PACKAGING}/${PACKAGING_WINDOWS}"
 			cp "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/save_location.cfg" "${PACKAGING}/${PACKAGING_WINDOWS}"
 
-			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/win64/steam_api64.dll" "${PACKAGING}/${PACKAGING_WINDOWS}"
-
-			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_WINDOWS}/data/data/engine/engine"
-
 			cd "${PACKAGING}"
 
 			7z a -tzip -mx=9 -mmt=on "${PACKAGING_WINDOWS}.zip" "${PACKAGING_WINDOWS}"
 
 			mv "${PACKAGING_WINDOWS}.zip" "${BUILDS}"
-
-			cd $DIR
-
-			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_WINDOWS}/data/data/engine/engine"
-
-			cd "${PACKAGING}"
-
-			7z a -tzip -mx=9 -mmt=on "${PACKAGING_WINDOWS_STEAM}.zip" "${PACKAGING_WINDOWS}"
-
-			mv "${PACKAGING_WINDOWS_STEAM}.zip" "${BUILDS}"
 		fi
 
 		if [ "$PACKAGE_macOS" == "true" ]; then
@@ -475,49 +445,11 @@ if [ -f "${PROJECT_PATH}/development/build-system-version" ]; then
 
 			png2icns "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/icon.icns" "$BUILD_HOME/build-server/projects/${PROJECT_NAME}/development/images/icons/standard.png"
 
-			cp "$BUILD_HOME/build-server/steamworks-sdk/redistributable_bin/osx/libsteam_api.dylib" "${PACKAGING}/${PACKAGING_macOS}/Contents/MacOS"
-
-			sed -i -e "s/^\s*steam:.*$/\tsteam:false/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/data/engine/engine"
-
 			cd "${PACKAGING}"
 
 			7z a -tzip -mx=9 -mmt=on "${PACKAGING_macOS}.zip" "${PACKAGING_macOS}"
 
 			mv "${PACKAGING_macOS}.zip" "${BUILDS}/${PROJECT_NAME}-macos-${PROJECT_VERSION}.zip"
-
-			#DMG="${PROJECT_NAME}-macos-${PROJECT_VERSION}.dmg"
-
-			# When writing this, I didn't figure out what size to make this
-			# My guess is that I would need to determine the total size of the .app directory and make
-			# it that size.
-			#dd if=/dev/zero of="${DMG}" bs=1M count=130
-
-			# Instead do 'hformat -l "LABEL" "${DMG}"' to give the .dmg a label
-			# The hformat manpage says that the label can only be 1-27 characters long
-			# That seems like a pain, is it true?
-			#hformat "${DMG}"
-
-			#mkdir mount_dmg
-
-			#sudo mount -t hfs -o loop "${DMG}" mount_dmg
-
-			#sudo cp -r "${PACKAGING}/${PACKAGING_macOS}" "mount_dmg"
-
-			#sudo umount mount_dmg
-
-			#rm -rf mount_dmg
-
-			#mv "${DMG}" "${BUILDS}"
-
-			cd $DIR
-
-			sed -i -e "s/^\s*steam:.*$/\tsteam:true/g" "${PACKAGING}/${PACKAGING_macOS}/Contents/Resources/data/data/engine/engine"
-
-			cd "${PACKAGING}"
-
-			7z a -tzip -mx=9 -mmt=on "${PACKAGING_macOS}.zip" "${PACKAGING_macOS}"
-
-			mv "${PACKAGING_macOS}.zip" "${BUILDS}/${PROJECT_NAME}-macos-steam-${PROJECT_VERSION}.zip"
 		fi
 
 		if [ "${BUILDS_ALL_WORKED}" == "true" ]; then

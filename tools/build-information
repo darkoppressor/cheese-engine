@@ -177,9 +177,6 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	done
 	OUTPUT="${OUTPUT}Android\t\t$(java -version 2>&1 | sed -n 1p), NDK $NDK_VERSION, SDK Tools $sdk_tools, SDK Platform Tools $sdk_platform_tools, SDK Build Tools $sdk_build_tools\n"
 
-	file="/home/tails/build-server/steamworks-sdk/Readme.txt"
-	OUTPUT="${OUTPUT}Steam\t\t$(sed -ne "0,/^v/p" "$file" | tail -n 1)"
-
 	echo -e "$OUTPUT" > "$PROJECT_DIRECTORY/docs/buildInformation.md"
 else
 	echo "build-information - write the build information for a Cheese Engine project based on the current environment"
