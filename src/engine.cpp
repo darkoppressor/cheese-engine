@@ -182,10 +182,6 @@ void Engine::unload () {
 void Engine::quit () {
     unload();
 
-    #ifdef GAME_OS_ANDROID
-        Android::deinitialize();
-    #endif
-
     exit(EXIT_SUCCESS);
 }
 

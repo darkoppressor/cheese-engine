@@ -210,11 +210,6 @@ int main_initialize (bool first_init, Command_Line_Arguments& arguments, int gam
         Log::clear_error_log();
     }
 
-    #ifdef GAME_OS_ANDROID
-        Android::initialize();
-
-    #endif
-
     string startup = Engine_Data::game_title;
 
     startup += "\nDeveloped by: " + Engine_Data::developer;
