@@ -7,32 +7,58 @@ PROJECT_DIRECTORY=$1
 
 SOURCE_PROJECT=""
 IMAGES_DIRECTORY=""
+
+get_file_name () {
+	local file=$1
+	local prefix=$2
+	local suffix=$3
+
+	file_name=${file#$prefix}
+	file_name=${file_name%$suffix}
+	file_name="$file_name.png"
+
+	echo "$file_name"
+}
+
+get_image_dir () {
+	local file=$1
+	local directory=$2
+	local suffix=$3
+
+	prefix=$directory/
+	plain_file_name=${file#$prefix}
+
+	prefix=$SOURCE_PROJECT/
+	image_dir=${file#$prefix}
+	image_dir=${image_dir%$plain_file_name}
+
+	echo "$image_dir"
+}
+
 build_project_images () {
 	local directory=$1
 
 	for file in $directory/* ; do
 		if [ -f "$file" ]; then
 			if [[ $file =~ \.xcf$ ]]; then
-				if ! [[ $file =~ colors\.xcf$ ]]; then
-					prefix=$SOURCE_PROJECT/
-					suffix=.xcf
-					file_name=${file#$prefix}
-					file_name=${file_name%$suffix}
-					file_name="$file_name.png"
+				file_name=$(get_file_name "$file" "$SOURCE_PROJECT/" ".xcf")
+				image_dir=$(get_image_dir "$file" "$directory" ".xcf")
 
-					prefix=$directory/
-					plain_file_name=${file#$prefix}
+				# If the image does not already exist at the destination
+				if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
+					mkdir -p "$IMAGES_DIRECTORY/$image_dir"
 
-					prefix=$SOURCE_PROJECT/
-					image_dir=${file#$prefix}
-					image_dir=${image_dir%$plain_file_name}
+					xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
+				fi
+			elif [[ $file =~ \.aseprite$ ]]; then
+				file_name=$(get_file_name "$file" "$SOURCE_PROJECT/" ".aseprite")
+				image_dir=$(get_image_dir "$file" "$directory" ".aseprite")
 
-					# If the image does not already exist at the destination
-					if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
-						mkdir -p "$IMAGES_DIRECTORY/$image_dir"
+				# If the image does not already exist at the destination
+				if [ ! -e "$IMAGES_DIRECTORY/$file_name" ]; then
+					mkdir -p "$IMAGES_DIRECTORY/$image_dir"
 
-						xcf2png "$file" -o "$IMAGES_DIRECTORY/$file_name"
-					fi
+					$ASEPRITE --batch "$file" --sheet "$IMAGES_DIRECTORY/$file_name"
 				fi
 			fi
 		fi
@@ -57,15 +83,18 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	for file in $SOURCE_ENGINE/* ; do
 		if [ -f "$file" ]; then
 			if [[ $file =~ \.xcf$ ]]; then
-				prefix=$SOURCE_ENGINE/
-				suffix=.xcf
-				file_name=${file#$prefix}
-				file_name=${file_name%$suffix}
-				file_name="$file_name.png"
+				file_name=$(get_file_name "$file" "$SOURCE_ENGINE/" ".xcf")
 
 				# If the image does not already exist at the destination
 				if [ ! -e "$IMAGES_DIRECTORY/engine/$file_name" ]; then
 					xcf2png "$file" -o "$IMAGES_DIRECTORY/engine/$file_name"
+				fi
+			elif [[ $file =~ \.aseprite$ ]]; then
+				file_name=$(get_file_name "$file" "$SOURCE_ENGINE/" ".aseprite")
+
+				# If the image does not already exist at the destination
+				if [ ! -e "$IMAGES_DIRECTORY/engine/$file_name" ]; then
+					$ASEPRITE --batch "$file" --sheet "$IMAGES_DIRECTORY/engine/$file_name"
 				fi
 			fi
 		fi
@@ -96,15 +125,18 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	for file in $SOURCE_ENGINE/fonts/$FONT_DIR/* ; do
 		if [ -f "$file" ]; then
 			if [[ $file =~ \.xcf$ ]]; then
-				prefix=$SOURCE_ENGINE/fonts/$FONT_DIR/
-				suffix=.xcf
-				file_name=${file#$prefix}
-				file_name=${file_name%$suffix}
-				file_name="$file_name.png"
+				file_name=$(get_file_name "$file" "$SOURCE_ENGINE/fonts/$FONT_DIR/" ".xcf")
 
 				# If the image does not already exist at the destination
 				if [ ! -e "$IMAGES_DIRECTORY/engine/$file_name" ]; then
 					xcf2png "$file" -o "$IMAGES_DIRECTORY/engine/$file_name"
+				fi
+			elif [[ $file =~ \.aseprite$ ]]; then
+				file_name=$(get_file_name "$file" "$SOURCE_ENGINE/fonts/$FONT_DIR/" ".aseprite")
+
+				# If the image does not already exist at the destination
+				if [ ! -e "$IMAGES_DIRECTORY/engine/$file_name" ]; then
+					$ASEPRITE --batch "$file" --sheet "$IMAGES_DIRECTORY/engine/$file_name"
 				fi
 			fi
 		fi
@@ -117,7 +149,12 @@ if [ -n "$PROJECT_DIRECTORY" ]; then
 	# Build the icon
 
 	if [ ! -e "$PROJECT_DIRECTORY/standard.ico" ]; then
-		xcf2png "$SOURCE_PROJECT/icons/standard.xcf" -o "$PROJECT_DIRECTORY/standard.png"
+		if [ -e "$SOURCE_PROJECT/icons/standard.xcf" ]; then
+			xcf2png "$SOURCE_PROJECT/icons/standard.xcf" -o "$PROJECT_DIRECTORY/standard.png"
+		elif [ -e "$SOURCE_PROJECT/icons/standard.aseprite" ]; then
+			$ASEPRITE --batch "$SOURCE_PROJECT/icons/standard.aseprite" --sheet "$PROJECT_DIRECTORY/standard.png"
+		fi
+
 		icotool -c -o "$PROJECT_DIRECTORY/standard.ico" "$PROJECT_DIRECTORY/standard.png"
 		rm -f "$PROJECT_DIRECTORY/standard.png"
 	fi
